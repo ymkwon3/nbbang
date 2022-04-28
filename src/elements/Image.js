@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Flex from "./Flex";
 import Text from "./Text";
 
-const Image = props => {
+const Image = (props) => {
   /*
     스타일 사용 가능한 요소들
     width, height, margin, position, display
@@ -46,9 +46,7 @@ const Image = props => {
           className={className}
           {...defaultStyles}
         ></ImageRectangle>
-        <Flex styles={{flexDirection: "column"}}>
-          {children}
-        </Flex>
+        <Flex styles={{ flexDirection: "column" }}>{children}</Flex>
       </ImageContainer>
     );
   }
@@ -56,27 +54,27 @@ const Image = props => {
 
 Image.defaultProps = {
   shape: "circle",
-  src: "",
+  src: "https://image.ajunews.com/content/image/2020/06/25/20200625140042894225.jpg",
   defaultStyles: { width: "100%", height: "auto" },
 };
 
 const ImageRectangle = styled.img`
-  width: ${props => props.width};
-  height: ${props => props.height};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
   /* object-fit: cover; */
 `;
 
 const ImageCircle = styled.div`
-  width: ${props => props.width};
-  height: ${props => props.height};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
   border-radius: 50%;
-  background-image: url(${props => props.src});
+  background-image: url(${(props) => props.src});
   background-size: cover;
 `;
 
 const ImageContainer = styled.div`
   position: relative;
-  
+
   & > div {
     position: absolute;
     top: 0;
