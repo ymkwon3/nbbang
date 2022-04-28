@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import { Flex } from "../elements";
 import { Route } from "react-router";
+import Main from '../pages/Main';
 import Login from '../pages/Login';
 import MyPage from '../pages/MyPage';
 import Main from '../pages/Main';

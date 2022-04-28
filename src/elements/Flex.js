@@ -26,6 +26,7 @@ const FlexDiv = styled.div`
   justify-content: ${props => props.jc};
   align-items: ${props => props.ai};
   width: ${props => props.width};
+  border: ${props => props.border};
 `;
 
 export default Flex;
