@@ -50,11 +50,11 @@ const PostWrite = props => {
       styles={{
         width: "400px",
         height: "100%",
-        backgroundColor: "#292d4b",
+        backgroundColor: "#fff",
         opacity: "0.95",
         position: "absolute",
         top: 0,
-        left: 0,
+        left: "500px",
         zIndex: "10",
         flexDirection: "column",
       }}

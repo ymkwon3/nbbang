@@ -1,7 +1,7 @@
 /* global kakao */
 import React from "react";
 import styled from "styled-components";
-import { PostWrite } from "../components";
+import { PostWrite, PostDetails, SideNav } from "../components";
 import { Flex } from "../elements";
 
 const Main = () => {
@@ -35,8 +35,6 @@ const Main = () => {
         const userLng = position.coords.longitude;
         // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
         geocoder.coord2Address(userLng, userLat, (result, status) => {
-          // 도로명 주소
-          const road_addr = result[0].road_address;
           // 지번 주소
           const addr = result[0].address;
 
@@ -90,7 +88,9 @@ const Main = () => {
 
   return (
       <KaKaoMap ref={containerRef}>
-        <PostWrite rerender={rerender} map={mapRef.current}></PostWrite>
+        {/* <SideNav></SideNav> */}
+        {/* <PostWrite rerender={rerender} map={mapRef.current}></PostWrite> */}
+        {/* <PostDetails></PostDetails> */}
       </KaKaoMap>
   );
 };
