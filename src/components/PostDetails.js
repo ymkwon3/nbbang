@@ -19,8 +19,13 @@ const PostDetails = (props) => {
         styles={{
           MaxWidth: "430px",
           maxHeight: "100vh",
+          backgroundColor: "#fff",
+          opacity: "0.95",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          zIndex: "10",
           height: "90vh",
-          backgroundColor: "rgba(255, 255, 255, 0.8)",
           border: "2px solid #000000",
         }}
         defaultStyles={{ width: "430px", jc: "center", ai: "center" }}
