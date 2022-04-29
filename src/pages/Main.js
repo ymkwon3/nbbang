@@ -1,7 +1,7 @@
 /* global kakao */
 import React from "react";
 import styled from "styled-components";
-import { PostWrite, PostDetails, SideNav } from "../components";
+import { PostWrite, PostDetails, SideNav, Header } from "../components";
 import { Flex } from "../elements";
 
 const Main = () => {
@@ -9,7 +9,7 @@ const Main = () => {
 
   const containerRef = React.useRef(null);
   const mapRef = React.useRef(null);
-
+  const sideNavRef = React.useRef(null);
   // mapRef에 카카오맵을 저장한 후 PostWrite에 넘겨주기 위한 강제 리렌더링
   const [rerender, setRerender] = React.useState(null);
 
@@ -48,7 +48,7 @@ const Main = () => {
         };
         mapRef.current = new kakao.maps.Map(containerRef.current, options);
         setRerender(true);
-     
+
         const markerPosition = userPosition;
         const marker = new kakao.maps.Marker({
           position: markerPosition,
@@ -62,10 +62,10 @@ const Main = () => {
             title: v.name,
           });
           m.setMap(mapRef.current);
-          var iwContent = `<div style="padding:5px;">${v.name}</div>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+          let iwContent = `<div style="padding:5px;">${v.name}</div>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
 
           // 인포윈도우를 생성합니다
-          var infowindow = new kakao.maps.InfoWindow({
+          let infowindow = new kakao.maps.InfoWindow({
             content: iwContent,
             removable: false,
           });
@@ -86,12 +86,37 @@ const Main = () => {
     );
   }, []);
 
+  const tempEvent = () => {
+    if (sideNavRef.current.style.width === "0px")
+      sideNavRef.current.style.width = "430px";
+      else sideNavRef.current.style.width = 0
+  };
+
   return (
-      <KaKaoMap ref={containerRef}>
-        {/* <SideNav></SideNav> */}
-        {/* <PostWrite rerender={rerender} map={mapRef.current}></PostWrite> */}
-        {/* <PostDetails></PostDetails> */}
-      </KaKaoMap>
+    <KaKaoMap ref={containerRef}>
+      {/* <SideNav></SideNav> */}
+
+      {/* <PostDetails></PostDetails> */}
+      <Header></Header>
+      <div
+        ref={sideNavRef}
+        style={{
+          width: "430px",
+          height: "100%",
+          position: "relative",
+          transition: "0.2s",
+          overflow: "hidden",
+        }}
+      >
+        <PostWrite rerender={rerender} map={mapRef.current}></PostWrite>
+      </div>
+      <button
+        style={{ position: "absolute", right: 50, bottom: 50, zIndex: 10 }}
+        onClick={tempEvent}
+      >
+        temp
+      </button>
+    </KaKaoMap>
   );
 };
 
