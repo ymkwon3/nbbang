@@ -1,12 +1,25 @@
 /* global kakao */
 import React from "react";
-import { Flex } from "../elements";
+import { Flex, Input, Select } from "../elements";
 
 const PostWrite = props => {
   const { map } = props;
   const geocoder = new kakao.maps.services.Geocoder();
-  const addrRef = React.useRef(null);
   const markerRef = React.useRef(null);
+  const positionRef = React.useRef(null);
+
+  const submitRef = React.useRef({
+    titleRef: null,
+    categoryRef: null, //category
+    priceRef: null, 
+    headCountRef: null,
+    endTimeRef: null,
+    addressRef: null,
+    addressDetailRef: null,
+    contentRef: null,
+    imageRef: null,
+  });
+
   const [findState, setFindState] = React.useState(false);
 
   function handler(e) {
@@ -25,8 +38,9 @@ const PostWrite = props => {
       // 지번 주소
       const addr = result[0].address;
 
-      // addrRef.current.value = addr.address_name;
-      addrRef.current.value = addr.address_name;
+
+      submitRef.current.addressRef.value = addr.address_name;
+      positionRef.current = {lat, lng};
       markerRef.current = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(lat, lng),
       });
@@ -45,34 +59,84 @@ const PostWrite = props => {
     }
   }, [findState]);
 
+  // 전송하기 버튼 이벤트
+  const clickSubmit = () => {
+    console.log(submitRef.current)
+    for(let ref in submitRef.current) {
+      if(submitRef.current[ref].value === ""){
+        console.log("빈 칸을 확인해주세요");
+        return;
+      }
+    }
+    console.log(submitRef.current.titleRef.value);
+    console.log(submitRef.current.categoryRef.value);
+    console.log(submitRef.current.priceRef.value);
+    console.log(submitRef.current.headCountRef.value);
+    console.log(submitRef.current.endTimeRef.value);
+    console.log(submitRef.current.addressRef.value);
+    console.log(submitRef.current.addressDetailRef.value);
+    console.log(submitRef.current.contentRef.value);
+    console.log(submitRef.current.imageRef.value);
+    console.log(positionRef.current);
+  };
+
   return (
     <Flex
       styles={{
-        width: "400px",
+        width: "430px",
         height: "100%",
         backgroundColor: "#fff",
         opacity: "0.95",
         position: "absolute",
         top: 0,
-        left: "500px",
-        zIndex: "10",
-        flexDirection: "column",
+        left: 0,
+        zIndex: 10,
       }}
     >
-      <input placeholder="제목"></input>
-      <input placeholder="카테고리 드롭다운"></input>
-      <select>
-        <option value="buy">같이 사자</option>
-        <option value="eat">같이 먹자</option>
-      </select>
-      <input placeholder="가격"></input>
-      <input placeholder="n명 드롭다운"></input>
-      <input placeholder="기간 일수"></input>
-      <input placeholder="주소 지도" ref={addrRef}></input>
-      <button onClick={() => setFindState(true)}>주소가져오기</button>
-      <input placeholder="상세위치"></input>
-      <input placeholder="내용"></input>
-      <input placeholder="사진"></input>
+      <Flex styles={{ width: "60%", flexDirection: "column", gap: "20px" }}>
+        <Input
+          label="제목"
+          ref={e => (submitRef.current.titleRef = e)}
+        />
+        <Select
+          ref={e => (submitRef.current.categoryRef = e)}
+          options={[
+            { key: "같이 사자", value: "buy" },
+            { key: "같이 먹자", value: "eat" },
+          ]}
+        />
+        <Input
+          label="가격"
+          ref={e => (submitRef.current.priceRef = e)}
+        />
+        <Input
+          label="인원"
+          ref={e => (submitRef.current.headCountRef = e)}
+        />
+        <Input
+          label="기간"
+          ref={e => (submitRef.current.endTimeRef = e)}
+        />
+        <Input
+          label="주소"
+          ref={e => (submitRef.current.addressRef = e)}
+          readOnly
+        />
+        <button onClick={() => setFindState(true)}>주소가져오기</button>
+        <Input
+          label="상세위치"
+          ref={e => (submitRef.current.addressDetailRef = e)}
+        />
+        <Input
+          label="내용"
+          ref={e => (submitRef.current.contentRef = e)}
+        />
+        <Input
+          label="사진"
+          ref={e => (submitRef.current.imageRef = e)}
+        />
+        <button onClick={clickSubmit}>전송하기</button>
+      </Flex>
     </Flex>
   );
 };

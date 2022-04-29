@@ -1,11 +1,30 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Button, Flex, InputLogin, Text } from "../elements";
+import { actionCreator as userActions } from "../redux/modules/user";
+import { useHistory } from "react-router-dom";
 
 const Login = props => {
+  const history = useHistory();
+  // css용도
   const [isLogin, setIsLogin] = React.useState("login");
   const refTitle = React.useRef();
   const refForm = React.useRef();
+  // 데이터 용도
+
+  const loginRef = React.useRef({
+    userEmail: null,
+    userPassword: null,
+  });
+
+  const signUpRef = React.useRef({
+    userEmail: null,
+    userName: null,
+    userPassword: null,
+    userPasswordCheck: null,
+  });
+  const dispatch = useDispatch();
 
   const moveToLogin = e => {
     setIsLogin("login");
@@ -17,6 +36,32 @@ const Login = props => {
     setIsLogin("signup");
     refTitle.current.style.marginLeft = "-50%";
     refForm.current.style.marginLeft = "-50%";
+  };
+
+  // 임시
+  const clickLogin = () => {
+    // dispatch(
+    //   userActions.loginDB({
+    //     userEmail: loginRef.current.userEmail.value,
+    //     userPassword: loginRef.current.userPassword.value,
+    //   })
+    // );
+    dispatch(
+      userActions.loginDB({
+        data: { userEmail: "test@test.com", userPassword: "1q2w3e4r" },
+        history: history,
+      })
+    );
+  };
+
+  const clickSignUp = () => {
+    dispatch(
+      userActions.signUpDB({
+        userEmail: signUpRef.current.userEmail.value,
+        userName: signUpRef.current.userName.value,
+        userPassword: signUpRef.current.userPassword.value,
+      })
+    );
   };
 
   return (
@@ -59,8 +104,15 @@ const Login = props => {
         </SlideControl>
         <div className="form-inner">
           <div className="login" ref={refForm}>
-            <InputLogin label="아이디"></InputLogin>
-            <InputLogin label="비밀번호" type="password"></InputLogin>
+            <InputLogin
+              label="아이디"
+              ref={e => (loginRef.current.userEmail = e)}
+            ></InputLogin>
+            <InputLogin
+              label="비밀번호"
+              type="password"
+              ref={e => (loginRef.current.userPassword = e)}
+            ></InputLogin>
             <Button
               styles={{
                 backgroundColor: "#000",
@@ -68,16 +120,30 @@ const Login = props => {
                 width: "300px",
                 height: "60px",
               }}
+              _onClick={clickLogin}
             >
               로그인
             </Button>
           </div>
           <div className="signup">
-            <InputLogin label="아이디"></InputLogin>
-            <InputLogin label="닉네임"></InputLogin>
-            <InputLogin label="비밀번호" type="password"></InputLogin>
-            <InputLogin label="비밀번호" type="password"></InputLogin>
-            <InputLogin label="아이디"></InputLogin>
+            <InputLogin
+              label="이메일"
+              ref={e => (signUpRef.current.userEmail = e)}
+            ></InputLogin>
+            <InputLogin
+              label="닉네임"
+              ref={e => (signUpRef.current.userName = e)}
+            ></InputLogin>
+            <InputLogin
+              label="비밀번호"
+              type="password"
+              ref={e => (signUpRef.current.userPassword = e)}
+            ></InputLogin>
+            <InputLogin
+              label="비밀번호"
+              type="password"
+              ref={e => (signUpRef.current.userPasswordCheck = e)}
+            ></InputLogin>
             <Button
               styles={{
                 backgroundColor: "#000",
@@ -85,6 +151,7 @@ const Login = props => {
                 width: "300px",
                 height: "60px",
               }}
+              _onClick={clickSignUp}
             >
               가입하기
             </Button>
