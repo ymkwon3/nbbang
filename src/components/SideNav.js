@@ -11,14 +11,12 @@ const SideNav = () => {
         width: "430px",
         height: "100%",
         flexDirection: "column",
-        justifyContent: "left",
-        position: "absolute",
+        position: "relative",
         backgroundColor: "#fff",
-        top: 0,
-        left: 0,
         zIndex: "10",
         gap: "10px",
         border: "1px solid green",
+        opacity: 0.9
       }}
     >
       <Card />

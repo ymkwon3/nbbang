@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import User from "./modules/user";
+import Post from "./modules/post";
 
 const middlewares = [];
 
@@ -14,6 +15,7 @@ if (env === "development") {
 export default configureStore({
   reducer: {
     user: User,
+    post: Post,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...middlewares),
 })

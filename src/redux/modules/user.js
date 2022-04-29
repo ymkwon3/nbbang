@@ -34,12 +34,14 @@ const userSlice = createSlice({
       userImage: "",
       tradeCount: "",
     },
+    isLogin: false,
   },
   reducers: {},
   extraReducers: builder => {
     builder.addCase(loginDB.fulfilled, (state, action) => {
       console.log(action.payload);
       state.userInfo = action.payload;
+      state.isLogin = true;
     });
   },
 });
