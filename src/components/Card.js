@@ -2,25 +2,28 @@ import React from "react";
 
 import { Flex, Image, Text } from "../elements";
 
-const Card = () => {
+const CardList = props => {
 
+    const item = props;
+    //여기 props 선언 안해주면 왜 안될까용?
     return (
-        <Flex styles={{width:"376px", height:"141px", border:"1px solid blue"}}>
-            <Image styles={{shape:"rectangle"}}/>
+        <Flex styles={{width:"376px", height:"141px", border:"1px solid blue", margin:"5px"}}>
+            
+            <Image styles={{shape:"rectangle" }} >{props.imgUrl}</Image>
             <Flex styles={{flexDirection:"column", alignItems:"flex-start", justifyContent:"flex-start"}}>
-                <Text styles={{margin:"0 0 10px 0"}}>제목</Text>
+                <Text styles={{margin:"0 0 10px 0"}}>{props.title}</Text>
                 <Flex styles={{justifyContent:"flex-start"}}>
-                    <Text>판매자 : 000</Text>
-                    <Text>카테고리</Text>
+                    <Text>{props.userName}</Text>
+                    <Text>{props.category}</Text>
                 </Flex>
                 <Flex styles={{justifyContent:"flex-start"}}>
-                    <Text>가격 : 00</Text>
-                    <Text>날짜 : 4/ 27 ~ 5/1</Text>
+                    <Text>{props.price}</Text>
+                    <Text>{props.date}</Text>
                 </Flex>
-                <Text>서울 양천구 목동로</Text>
+                <Text>{props.address}</Text> 
             </Flex>
         </Flex>
     )
 }
 
-export default Card;
+export default CardList;
