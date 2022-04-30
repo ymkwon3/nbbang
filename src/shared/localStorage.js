@@ -1,13 +1,13 @@
 const getToken = () => {
-  return localStorage.getItem('instagram_token');
+  return localStorage.getItem('nbbang_token');
 }
 
 const setToken = (token) => {
-  localStorage.setItem('instagram_token', token);
+  localStorage.setItem('nbbang_token', token);
 }
 
 const removeToken = () => {
-  localStorage.removeItem('instagram_token');
+  localStorage.removeItem('nbbang_token');
 }
 
 export {getToken, setToken, removeToken};

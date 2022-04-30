@@ -23,22 +23,38 @@ const loginDB = createAsyncThunk("user/login", async ({ data, history }) => {
   });
 });
 
+const isLoginDB = createAsyncThunk("user/isLogin", async ({ data, history }) => {
+  // 실패 시 고려해야함
+  return postAPI("/user/login", data).then(res => {
+    return res.userInfo;
+  });
+});
+
 // reducer
+const initialState = {
+  userInfo: {
+    userId: "",
+    userEmail: "",
+    userName: "",
+    userImage: "",
+    tradeCount: "",
+  },
+  isLogin: false,
+}
 const userSlice = createSlice({
   name: "user",
-  initialState: {
-    userInfo: {
-      userId: "",
-      userEmail: "",
-      userName: "",
-      userImage: "",
-      tradeCount: "",
+  initialState,
+  reducers: {
+    logout(state, action) {
+      state = initialState;
     },
-    isLogin: false,
   },
-  reducers: {},
   extraReducers: builder => {
     builder.addCase(loginDB.fulfilled, (state, action) => {
+      state.userInfo = action.payload;
+      state.isLogin = true;
+    });
+    builder.addCase(isLoginDB.fulfilled, (state, action) => {
       console.log(action.payload);
       state.userInfo = action.payload;
       state.isLogin = true;
@@ -46,12 +62,13 @@ const userSlice = createSlice({
   },
 });
 
-export default userSlice.reducer;
+const {actions, reducer} = userSlice;
+
+export default reducer;
 
 // return Action Creators to export
 const actionCreator = {
-  loginDB,
   signUpDB,
 };
 
-export { actionCreator };
+export { actionCreator, actions };
