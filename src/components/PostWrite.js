@@ -1,17 +1,20 @@
 /* global kakao */
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Flex, Input, Select } from "../elements";
+import { actionCreator as postActions } from "../redux/modules/post";
 
 const PostWrite = props => {
   const { map } = props;
   const geocoder = new kakao.maps.services.Geocoder();
   const markerRef = React.useRef(null);
   const positionRef = React.useRef(null);
+  const dispatch = useDispatch();
 
   const submitRef = React.useRef({
     titleRef: null,
     categoryRef: null, //category
-    priceRef: null, 
+    priceRef: null,
     headCountRef: null,
     endTimeRef: null,
     addressRef: null,
@@ -33,14 +36,11 @@ const PostWrite = props => {
 
     // 좌표를 통해 상세 가져오기
     geocoder.coord2Address(lng, lat, (result, status) => {
-      // 도로명 주소
-      const road_addr = result[0].road_address;
       // 지번 주소
       const addr = result[0].address;
 
-
       submitRef.current.addressRef.value = addr.address_name;
-      positionRef.current = {lat, lng};
+      positionRef.current = { lat, lng };
       markerRef.current = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(lat, lng),
       });
@@ -61,9 +61,9 @@ const PostWrite = props => {
 
   // 전송하기 버튼 이벤트
   const clickSubmit = () => {
-    console.log(submitRef.current)
-    for(let ref in submitRef.current) {
-      if(submitRef.current[ref].value === ""){
+    console.log(submitRef.current);
+    for (let ref in submitRef.current) {
+      if (submitRef.current[ref].value === "") {
         console.log("빈 칸을 확인해주세요");
         return;
       }
@@ -78,6 +78,24 @@ const PostWrite = props => {
     console.log(submitRef.current.contentRef.value);
     console.log(submitRef.current.imageRef.value);
     console.log(positionRef.current);
+
+    dispatch(
+      postActions.setPostDB({
+        title: submitRef.current.titleRef.value,
+        content: submitRef.current.contentRef.value,
+        price: submitRef.current.priceRef.value,
+        headCount: submitRef.current.headCountRef.value,
+        category: submitRef.current.categoryRef.value,
+        image: submitRef.current.imageRef.value,
+        endTime: submitRef.current.endTimeRef.value,
+        lat: positionRef.current.lat,
+        lng: positionRef.current.lng,
+        address:
+          submitRef.current.addressRef.value +
+          submitRef.current.addressDetailRef.value,
+      })
+    );
+    markerRef.current.setMap(null)
   };
 
   return (
@@ -94,10 +112,7 @@ const PostWrite = props => {
       }}
     >
       <Flex styles={{ width: "60%", flexDirection: "column", gap: "20px" }}>
-        <Input
-          label="제목"
-          ref={e => (submitRef.current.titleRef = e)}
-        />
+        <Input label="제목" ref={e => (submitRef.current.titleRef = e)} />
         <Select
           ref={e => (submitRef.current.categoryRef = e)}
           options={[
@@ -105,18 +120,9 @@ const PostWrite = props => {
             { key: "같이 먹자", value: "eat" },
           ]}
         />
-        <Input
-          label="가격"
-          ref={e => (submitRef.current.priceRef = e)}
-        />
-        <Input
-          label="인원"
-          ref={e => (submitRef.current.headCountRef = e)}
-        />
-        <Input
-          label="기간"
-          ref={e => (submitRef.current.endTimeRef = e)}
-        />
+        <Input label="가격" ref={e => (submitRef.current.priceRef = e)} />
+        <Input label="인원" ref={e => (submitRef.current.headCountRef = e)} />
+        <Input label="기간" ref={e => (submitRef.current.endTimeRef = e)} />
         <Input
           label="주소"
           ref={e => (submitRef.current.addressRef = e)}
@@ -127,14 +133,8 @@ const PostWrite = props => {
           label="상세위치"
           ref={e => (submitRef.current.addressDetailRef = e)}
         />
-        <Input
-          label="내용"
-          ref={e => (submitRef.current.contentRef = e)}
-        />
-        <Input
-          label="사진"
-          ref={e => (submitRef.current.imageRef = e)}
-        />
+        <Input label="내용" ref={e => (submitRef.current.contentRef = e)} />
+        <Input label="사진" ref={e => (submitRef.current.imageRef = e)} />
         <button onClick={clickSubmit}>전송하기</button>
       </Flex>
     </Flex>

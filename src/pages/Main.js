@@ -28,7 +28,6 @@ const Main = () => {
 
   React.useEffect(() => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
-
     navigator.geolocation.getCurrentPosition(
       position => {
         const userLat = position.coords.latitude;
@@ -89,27 +88,36 @@ const Main = () => {
   const tempEvent = () => {
     if (sideNavRef.current.style.width === "0px")
       sideNavRef.current.style.width = "430px";
-      else sideNavRef.current.style.width = 0
+    else sideNavRef.current.style.width = 0;
   };
 
   return (
     <KaKaoMap ref={containerRef}>
-      {/* <SideNav></SideNav> */}
-
-      {/* <PostDetails></PostDetails> */}
       <Header></Header>
-      <div
-        ref={sideNavRef}
-        style={{
-          width: "430px",
-          height: "100%",
+      {/* <PostDetails></PostDetails> */}
+
+      <Flex
+        styles={{
           position: "relative",
-          transition: "0.2s",
-          overflow: "hidden",
+          justifyContent: "start",
+          height: "100%",
         }}
       >
-        <PostWrite rerender={rerender} map={mapRef.current}></PostWrite>
-      </div>
+        <SideNav></SideNav>
+        <div
+          ref={sideNavRef}
+          style={{
+            width: "430px",
+            height: "100%",
+            position: "relative",
+            transition: "0.2s",
+            overflow: "hidden",
+          }}
+        >
+          {/* <PostDetails></PostDetails> */}
+          <PostWrite rerender={rerender} map={mapRef.current}></PostWrite>
+        </div>
+      </Flex>
       <button
         style={{ position: "absolute", right: 50, bottom: 50, zIndex: 10 }}
         onClick={tempEvent}
