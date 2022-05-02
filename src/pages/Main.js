@@ -115,7 +115,7 @@ const Main = () => {
           }}
         >
           {/* <PostDetails></PostDetails> */}
-          {/* <PostWrite rerender={rerender} map={mapRef.current}></PostWrite> */}
+          <PostWrite rerender={rerender} map={mapRef.current}></PostWrite>
         </div>
       </Flex>
       <button

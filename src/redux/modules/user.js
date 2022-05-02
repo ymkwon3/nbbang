@@ -54,6 +54,9 @@ const userSlice = createSlice({
       state.userInfo = action.payload;
       state.isLogin = true;
     });
+    builder.addCase(loginDB.rejected, (state, action) => {
+      alert("아이디 혹은 비밀번호를 확인해주세요")
+    });
     builder.addCase(isLoginDB.fulfilled, (state, action) => {
       console.log(action.payload);
       state.userInfo = action.payload;
@@ -69,6 +72,7 @@ export default reducer;
 // return Action Creators to export
 const actionCreator = {
   signUpDB,
+  loginDB
 };
 
 export { actionCreator, actions };

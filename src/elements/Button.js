@@ -26,7 +26,7 @@ const Button = props => {
 
 Button.defaultProps = {
   defaultStyles: {
-    bg: "#0095f6",
+    bg: "#fff",
     width: "",
     height: "",
     border: "none",
@@ -41,6 +41,7 @@ const ButtonStyle = styled.button`
   height: ${props => props.height};
   border: ${props => props.border};
   border-radius: ${props => props.borderRadius};
+  cursor: pointer;
   transition: 0.2s;
   &:active {
     opacity: 1;

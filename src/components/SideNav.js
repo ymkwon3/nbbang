@@ -17,8 +17,6 @@ const SideNav = () => {
         width: "430px",
         height: "100%",
         flexDirection: "column",
-        justifyContent: "left",
-        position: "absolute",
         backgroundColor: "#fff",
         top: 0,
         left: 0,
