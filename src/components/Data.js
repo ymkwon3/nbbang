@@ -14,7 +14,7 @@ const UserCardInfo = [
       date:
         "10월 11일",
       address:
-        "서울 경기도 메롱",
+        "서울 마포구",
     },
     {
       userId: "id2",
@@ -31,14 +31,14 @@ const UserCardInfo = [
       date:
         "10월 12일",
       address:
-        "경북 경기도 메롱",
+        "경기도 수원",
     },
     {
         userId: "id3",
         imgUrl:
           "https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/110054169_631618667480471_8395309931424378448_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=APx1rWNWYaEAX98bol-&tp=1&oh=3b2ebfd3eeb40ba096e24fc8460adfd8&oe=600B7BE1",
         title:
-          "파먹",
+          "피자",
         userName:
           "name3",
         category:
@@ -48,14 +48,14 @@ const UserCardInfo = [
         date:
           "10월 13일",
         address:
-          "경북 경기도 우리머",
+          "경북 진주",
     },
     {
         userId: "id4",
         imgUrl:
           "https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/110054169_631618667480471_8395309931424378448_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=APx1rWNWYaEAX98bol-&tp=1&oh=3b2ebfd3eeb40ba096e24fc8460adfd8&oe=600B7BE1",
         title:
-          "ㄴㅎㄱㄷ",
+          "파스타",
         userName:
           "name4",
         category:
@@ -65,25 +65,182 @@ const UserCardInfo = [
         date:
           "10월 14일",
         address:
-          "경북 경기도 ㅂ파ㅣㅜ",
+          "전남 목포",
     },
-    // {
-    //     userId: "id5",
-    //     imgUrl:
-    //       "https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/110054169_631618667480471_8395309931424378448_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=APx1rWNWYaEAX98bol-&tp=1&oh=3b2ebfd3eeb40ba096e24fc8460adfd8&oe=600B7BE1",
-    //     title:
-    //       "ㄴㅎㄱㄷ",
-    //     userName:
-    //       "name4",
-    //     category:
-    //       "4",
-    //     price:
-    //       "4000",
-    //     date:
-    //       "10월 14일",
-    //     address:
-    //       "경북 경기도 ㅂ파ㅣㅜ",
-    // },
+    {
+        userId: "id4",
+        imgUrl:
+          "https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/110054169_631618667480471_8395309931424378448_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=APx1rWNWYaEAX98bol-&tp=1&oh=3b2ebfd3eeb40ba096e24fc8460adfd8&oe=600B7BE1",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+          "https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/110054169_631618667480471_8395309931424378448_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=APx1rWNWYaEAX98bol-&tp=1&oh=3b2ebfd3eeb40ba096e24fc8460adfd8&oe=600B7BE1",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+          "https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/110054169_631618667480471_8395309931424378448_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=APx1rWNWYaEAX98bol-&tp=1&oh=3b2ebfd3eeb40ba096e24fc8460adfd8&oe=600B7BE1",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+          "https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/110054169_631618667480471_8395309931424378448_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=APx1rWNWYaEAX98bol-&tp=1&oh=3b2ebfd3eeb40ba096e24fc8460adfd8&oe=600B7BE1",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+          "https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/110054169_631618667480471_8395309931424378448_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=APx1rWNWYaEAX98bol-&tp=1&oh=3b2ebfd3eeb40ba096e24fc8460adfd8&oe=600B7BE1",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+          "https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/110054169_631618667480471_8395309931424378448_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=APx1rWNWYaEAX98bol-&tp=1&oh=3b2ebfd3eeb40ba096e24fc8460adfd8&oe=600B7BE1",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+          "https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/110054169_631618667480471_8395309931424378448_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=APx1rWNWYaEAX98bol-&tp=1&oh=3b2ebfd3eeb40ba096e24fc8460adfd8&oe=600B7BE1",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+          "https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/110054169_631618667480471_8395309931424378448_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=APx1rWNWYaEAX98bol-&tp=1&oh=3b2ebfd3eeb40ba096e24fc8460adfd8&oe=600B7BE1",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+          "https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/110054169_631618667480471_8395309931424378448_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=APx1rWNWYaEAX98bol-&tp=1&oh=3b2ebfd3eeb40ba096e24fc8460adfd8&oe=600B7BE1",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+          "https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/110054169_631618667480471_8395309931424378448_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=APx1rWNWYaEAX98bol-&tp=1&oh=3b2ebfd3eeb40ba096e24fc8460adfd8&oe=600B7BE1",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
 ];
 
-export default UserCardInfo;
+const getPostList = async() => {
+    return UserCardInfo;
+}
+
+export { getPostList };
