@@ -21,7 +21,7 @@ const setCardDB = createAsyncThunk(
 );
 
 // reducer
-const cardSlice = createSlice({ 
+const cardSlice = createSlice({
     name: "card",
     initialState: {
         postList: []
