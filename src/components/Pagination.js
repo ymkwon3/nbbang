@@ -5,7 +5,6 @@ import { Flex,Button } from "../elements/index";
 function Pagination({total, limit, page, setPage}) {
     
     const numPages = Math.ceil(total / limit);
-    console.log(total, limit, page, setPage, numPages)
     return (
         <>
             <Flex styles={{gap:"4px", margin:"16px"}}>
