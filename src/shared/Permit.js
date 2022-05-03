@@ -7,9 +7,9 @@ import { actionCreator as userActions } from "../redux/modules/user";
 const Permit = ({children}) => {
   const dispatch = useDispatch();
   const isLogin = useSelector(state => state.user.isLogin);
-  if(getToken() && !isLogin) {
-    dispatch(userActions.isLoginDB());
-  }
+  // if(getToken() && !isLogin) {
+  //   dispatch(userActions.isLoginDB());
+  // }
   return (
     <>
       {children}

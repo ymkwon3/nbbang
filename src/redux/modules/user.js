@@ -17,20 +17,27 @@ const signUpDB = createAsyncThunk("user/signUp", async data => {
 const loginDB = createAsyncThunk("user/login", async ({ data, history }) => {
   // 실패 시 고려해야함
   return postAPI("/user/login", data).then(res => {
-    setToken(res.token);
-    history.replace("/");
-    return res.userInfo;
+    if (res.msg === "fail") {
+      alert("아이디 비밀번호를 확인해주세요");
+      return null;
+    } else {
+      setToken(res.token);
+      history.replace("/");
+      return res.userInfo;
+    }
   });
 });
 
-const isLoginDB = createAsyncThunk("user/isLogin", async ({ data, history }) => {
-  // 실패 시 고려해야함
-  return postAPI("/user/login", data).then(res => {
-    return res.userInfo;
-  });
-});
+const isLoginDB = createAsyncThunk(
+  "user/isLogin",
+  async ({ data, history }) => {
+    // 실패 시 고려해야함
+    return postAPI("/user/login", data).then(res => {
+      return res.userInfo;
+    });
+  }
+);
 
-// reducer
 const initialState = {
   userInfo: {
     userId: "",
@@ -40,7 +47,9 @@ const initialState = {
     tradeCount: "",
   },
   isLogin: false,
-}
+};
+
+// reducer
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -51,11 +60,10 @@ const userSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(loginDB.fulfilled, (state, action) => {
-      state.userInfo = action.payload;
-      state.isLogin = true;
-    });
-    builder.addCase(loginDB.rejected, (state, action) => {
-      alert("아이디 혹은 비밀번호를 확인해주세요")
+      if (action.payload) {
+        state.userInfo = action.payload;
+        state.isLogin = true;
+      }
     });
     builder.addCase(isLoginDB.fulfilled, (state, action) => {
       console.log(action.payload);
@@ -65,14 +73,14 @@ const userSlice = createSlice({
   },
 });
 
-const {actions, reducer} = userSlice;
+const { actions, reducer } = userSlice;
 
 export default reducer;
 
 // return Action Creators to export
 const actionCreator = {
   signUpDB,
-  loginDB
+  loginDB,
 };
 
 export { actionCreator, actions };

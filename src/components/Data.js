@@ -86,4 +86,10 @@ const UserCardInfo = [
     // },
 ];
 
+const getPostList = async() => {
+  return UserCardInfo;
+}
+
+export {getPostList};
+
 export default UserCardInfo;
