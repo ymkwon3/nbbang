@@ -93,7 +93,8 @@ const Main = () => {
   };
 
   return (
-    <KaKaoMap ref={containerRef}>
+    // <KaKaoMap ref={containerRef}>
+    <>
       <Header></Header>
       {/* <PostDetails></PostDetails> */}
 
@@ -125,7 +126,8 @@ const Main = () => {
       >
         temp
       </button>
-    </KaKaoMap>
+    </>
+    // </KaKaoMap>
   );
 };
 

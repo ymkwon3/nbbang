@@ -9,7 +9,7 @@ const CardList = props => {
     return (
         <Flex styles={{width:"376px", height:"141px", border:"1px solid blue", margin:"5px"}}>
             
-            <Image styles={{shape:"rectangle" }} >{props.imgUrl}</Image>
+            <Image styles={{shape:"rectangle"}} defaultStyles={{width:"100px", height:"100px"}} src={props.imgUrl}/>
             <Flex styles={{flexDirection:"column", alignItems:"flex-start", justifyContent:"flex-start"}}>
                 <Text styles={{margin:"0 0 10px 0"}}>{props.title}</Text>
                 <Flex styles={{justifyContent:"flex-start"}}>
