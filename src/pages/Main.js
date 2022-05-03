@@ -39,6 +39,7 @@ const Main = () => {
 
           // 경남 진주, 서울 종로구 형식
           // addrRef.current.value = addr.address_name;
+          
         });
         const userPosition = new kakao.maps.LatLng(userLat, userLng);
         const options = {
@@ -107,7 +108,7 @@ const Main = () => {
         <div
           ref={sideNavRef}
           style={{
-            width: "430px",
+            width: "0",
             height: "100%",
             position: "relative",
             transition: "0.2s",

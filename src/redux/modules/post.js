@@ -7,9 +7,10 @@ import {
   putAPI,
 } from "../../shared/api";
 import { getToken, setToken, removeToken } from "../../shared/localStorage";
+import {getPostList} from "../../components/Data";
 
-const setPostDB = createAsyncThunk("post/add", async ({ data }) => {
-  return await data;
+const setPostDB = createAsyncThunk("post/add", async () => {
+  return await getPostList();
 });
 
 // reducer
@@ -21,8 +22,7 @@ const postSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(setPostDB.fulfilled, (state, action) => {
-      console.log(action.meta.arg);
-      state.postList.push(action.meta.arg);
+      state.postList = action.payload;
     });
   },
 });

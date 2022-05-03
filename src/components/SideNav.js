@@ -5,11 +5,16 @@ import CardList from "./Card";
 import { Flex, Text } from "../elements";
 
 import { useDispatch, useSelector } from "react-redux";
+import {actionCreator as cardActions} from "../redux/modules/card"
 
 const SideNav = () => {
 
   const dispatch = useDispatch();
-  const cardList = useSelector((state) => state.card.value);
+  const cardList = useSelector((state) => state.card.postList);
+
+  React.useEffect(() => {
+    dispatch(cardActions.setCardDB())
+  }, [])
 
   return (
     <Flex

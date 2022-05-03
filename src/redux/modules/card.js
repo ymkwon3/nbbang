@@ -7,24 +7,22 @@ import {
   putAPI,
 } from "../../shared/api";
 import { getToken, setToken, removeToken } from "../../shared/localStorage";
-import UserCardInfo from "../../components/Data";
+import {getPostList} from "../../components/Data";
 
-const setCardDB = createAsyncThunk("card/add", async ({ data }) => {
-  
-  return await data;
+const setCardDB = createAsyncThunk("card/add", async () => {
+  return await getPostList();
 });
 
 // reducer
 const cardSlice = createSlice({
   name: "card",
   initialState: {
-    value: UserCardInfo,
+    postList: [],
   },
   reducers: {},
   extraReducers: builder => {
     builder.addCase(setCardDB.fulfilled, (state, action) => {
-      console.log(action.meta.arg);
-      state.cardlist.push(action.meta.arg);
+      state.postList = action.payload;
     });
   },
 });
