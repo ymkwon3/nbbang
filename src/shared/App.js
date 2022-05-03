@@ -9,7 +9,7 @@ import Permit from "./Permit";
 
 const App = () => {
   return (
-    <Flex styles={{ height: "100vh" }}>
+    <Flex styles={{ height: "100vh" }}> 
       <Permit>
         <Route path="/" exact component={Main}></Route>
         <Route path="/mypage" exact component={MyPage}></Route>

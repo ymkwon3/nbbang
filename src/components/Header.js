@@ -40,7 +40,7 @@ const Header = props => {
         </SearchInput>
         <Button
           styles={{
-            width: "100px",
+            width: "145px",
             height: "40px",
             borderRadius: "30px",
             color: "#fff",
@@ -53,7 +53,7 @@ const Header = props => {
         </Button>
         <Button
           styles={{
-            width: "100px",
+            width: "145px",
             height: "40px",
             borderRadius: "30px",
             fontSize: "16px",
@@ -64,7 +64,7 @@ const Header = props => {
         </Button>
         <Button
           styles={{
-            width: "100px",
+            width: "145px",
             height: "40px",
             borderRadius: "30px",
             fontSize: "16px",
@@ -79,7 +79,7 @@ const Header = props => {
           <AiOutlineHeart color="#fff" size="25" />
           <IoMdNotifications color="#fff" size="25" />
           <Image
-            styles={{ width: "50px", height: "50px" }}
+            styles={{ width: "38px", height: "38px" }}
             src={userInfo.userImage}
           ></Image>
         </Flex>
