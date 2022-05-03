@@ -29,10 +29,10 @@ const loginDB = createAsyncThunk("user/login", async ({ data, history }) => {
 });
 
 const isLoginDB = createAsyncThunk(
-  "user/isLogin",
-  async ({ data, history }) => {
+  "user/islogin",
+  async () => {
     // 실패 시 고려해야함
-    return postAPI("/user/login", data).then(res => {
+    return getAPI("/user/islogin").then(res => {
       return res.userInfo;
     });
   }
@@ -66,9 +66,10 @@ const userSlice = createSlice({
       }
     });
     builder.addCase(isLoginDB.fulfilled, (state, action) => {
-      console.log(action.payload);
-      state.userInfo = action.payload;
-      state.isLogin = true;
+      if (action.payload) {
+        state.userInfo = action.payload;
+        state.isLogin = true;
+      }
     });
   },
 });
@@ -81,6 +82,7 @@ export default reducer;
 const actionCreator = {
   signUpDB,
   loginDB,
+  isLoginDB,
 };
 
 export { actionCreator, actions };
