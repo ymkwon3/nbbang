@@ -12,48 +12,30 @@ import { BiCategory } from "react-icons/bi";
 import { MdOutlinePriceChange, MdContentPaste } from "react-icons/md";
 import { GiAlarmClock } from "react-icons/gi";
 
-const PostDetails = (props) => {
+const PostDetails = props => {
   return (
-    <>
-      <Flex
-        styles={{
-          MaxWidth: "430px",
-          maxHeight: "100vh",
-          backgroundColor: "#fff",
-          opacity: "0.95",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          zIndex: "10",
-          height: "90vh",
-          border: "2px solid #000000",
-        }}
-        defaultStyles={{ width: "430px", jc: "center", ai: "center" }}
-      >
-        <Flex
-          styles={{
-            backgroundColor: "#FFFFFF",
-            boxShadow: "0px 4px 6px 2px rgba(0, 0, 0, 0.25)",
-            borderRadius: "30px",
-            height: "92%",
-            padding: "25px",
-            flexDirection: "column",
-          }}
-          defaultStyles={{ width: "90%", jc: "flex-start", ai: "center" }}
-        >
-          {/* 상세페이지  */}
-          <PostWriterInfo />
-          <PostDetailsContents />
-          <PostChattingBox />
-        </Flex>
-      </Flex>
-    </>
+    <Flex
+      styles={{
+        backgroundColor: "#FFFFFF",
+        boxShadow: "0px 4px 6px 2px rgba(0, 0, 0, 0.25)",
+        borderRadius: "30px",
+        width: "90%",
+        height: "90%",
+        padding: "25px",
+        flexDirection: "column",
+      }}
+    >
+      {/* 상세페이지  */}
+      <PostWriterInfo />
+      <PostDetailsContents />
+      <PostChattingBox />
+    </Flex>
   );
 };
 
 export default PostDetails;
 
-const PostWriterInfo = (props) => {
+const PostWriterInfo = props => {
   return (
     <>
       <Flex>
@@ -100,7 +82,7 @@ const PostWriterInfo = (props) => {
   );
 };
 
-const PostDetailsContents = (props) => {
+const PostDetailsContents = props => {
   return (
     <>
       <Flex styles={{ marginTop: "17px", flexDirection: "column" }}>
@@ -272,7 +254,7 @@ const PostDetailsContents = (props) => {
   );
 };
 
-const PostChattingBox = (props) => {
+const PostChattingBox = props => {
   return (
     <>
       <Flex

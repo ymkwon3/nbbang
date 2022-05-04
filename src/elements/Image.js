@@ -35,6 +35,18 @@ const Image = (props) => {
     );
   }
 
+  if (shape === "input") {
+    return (
+      <ImageInput
+        {...styles}
+        src={src}
+        onClick={_onClick}
+        className={className}
+        type="file"
+      ></ImageInput>
+    );
+  }
+
   // 이미지 안 텍스트 추가하기 위한 컨테이너
   if (shape === "bak") {
     return (
@@ -87,6 +99,16 @@ const ImageContainer = styled.div`
 
   &:hover > div {
     opacity: 0.6;
+  }
+`;
+
+const ImageInput = styled.input`
+  border: 1px solid #d5d5d5;
+  background-image: url(${(props) => props.src});
+  background-size: cover;
+  // margin: 4px;
+  &[type="file"]::file-selector-button {
+    display: none;
   }
 `;
 

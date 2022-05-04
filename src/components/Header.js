@@ -10,6 +10,8 @@ import { IoMdNotifications } from "react-icons/io";
 
 import { useHistory } from "react-router-dom";
 
+import logo from "../image/logo.svg"
+
 const Header = props => {
   const history = useHistory();
   const userInfo = useSelector(state => state.user.userInfo);
@@ -21,6 +23,10 @@ const Header = props => {
     history.push("/login");
   };
 
+  const clickLogo = () => {
+    history.push("/")
+  }
+
   return (
     <Flex
       styles={{
@@ -28,12 +34,12 @@ const Header = props => {
         backgroundColor: "#19253D",
         boxShadow: "0 8px 10px -4px rgba(0, 0, 0, 0.2)",
         zIndex: 11,
-        position: "relative",
-        padding: "0 20px"
+        position: "absolute",
+        padding: "0 50px"
       }}
     >
       <Flex styles={{ justifyContent: "start", gap: "15px"}}>
-        <div>로고들어가는부분</div>
+        <img src={logo} alt="logo" style={{width: "50px", height: "40px", cursor: "pointer"}} onClick={clickLogo}></img>
         <SearchInput>
           <input placeholder="검색어를 입력해주세요" />
           <RiSearchLine size="27.22" color="#19253D" />
@@ -45,7 +51,7 @@ const Header = props => {
             borderRadius: "30px",
             color: "#fff",
             backgroundColor: "#FF5C00",
-            fontSize: "16px",
+            fontSize: "18px",
             fontWeight: "500",
           }}
         >
@@ -56,7 +62,7 @@ const Header = props => {
             width: "145px",
             height: "40px",
             borderRadius: "30px",
-            fontSize: "16px",
+            fontSize: "18px",
             fontWeight: "500",
           }}
         >
@@ -67,7 +73,7 @@ const Header = props => {
             width: "145px",
             height: "40px",
             borderRadius: "30px",
-            fontSize: "16px",
+            fontSize: "18px",
             fontWeight: "500",
           }}
         >
