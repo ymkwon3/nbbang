@@ -5,7 +5,7 @@ import { Button, Flex, Image, Input, Select } from "../elements";
 import { actionCreator as postActions } from "../redux/modules/post";
 
 const PostWrite = props => {
-  const { map } = props;
+  const { map, _onClickClose, _setRightContainer } = props;
   const geocoder = new kakao.maps.services.Geocoder();
   const markerRef = React.useRef(null);
   const positionRef = React.useRef(null);
@@ -71,6 +71,10 @@ const PostWrite = props => {
         return;
       }
     }
+    if (!image) {
+      console.log("빈 칸을 확인해주세요");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("image", image);
@@ -86,8 +90,13 @@ const PostWrite = props => {
       "address",
       `${submitRef.current.addressRef.value} ${submitRef.current.addressDetailRef.value}`
     );
-    dispatch(postActions.addPostDB(formData));
-    markerRef.current.setMap(null);
+
+    // 게시물 작성이 완료되면 게시물 작성 창을 닫습니다.
+    dispatch(postActions.addPostDB(formData)).then(res => {
+      markerRef.current.setMap(null);
+      _onClickClose();
+      _setRightContainer("none");
+    });
   };
 
   const setUserImage = e => {

@@ -40,8 +40,13 @@ const postSlice = createSlice({
   name: "post",
   initialState: {
     postList: [],
+    category: "all"
   },
-  reducers: {},
+  reducers: {
+    updateCategory(state, action) {
+      state.category = action.payload;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(addPostDB.fulfilled, (state, action) => {
       state.postList.unshift(action.payload.row[0]);
@@ -57,7 +62,8 @@ export default postSlice.reducer;
 // return Action Creators to export
 const actionCreator = {
   getPostListDB,
-  addPostDB
+  addPostDB,
+  ...postSlice.actions,
 };
 
 export { actionCreator };

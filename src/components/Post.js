@@ -1,9 +1,24 @@
 import React from "react";
+import moment from "moment";
+import "moment/locale/ko";
 
 import { Flex, Image, Text } from "../elements";
 
 const Post = props => {
-  const { image, title, writer, category, price, date, address } = props;
+  const { image, title, writer, category, price, createdAt, endTime, address } =
+    props;
+
+  //span tag에 text-overflow를 주기 위함
+  const contentStyle = {
+    display: "block",
+    fontSize: "12px",
+    width: "50%",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  };
+
+  // number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") 3자리마다 콤마찍어주는 정규표현식
 
   return (
     <Flex
@@ -29,21 +44,38 @@ const Post = props => {
           alignItems: "start",
           justifyContent: "start",
           marginLeft: "13px",
+          width: "calc(100% - 123px)",
         }}
       >
-        <Flex styles={{justifyContent: "space-between"}}>
+        <Flex
+          styles={{ justifyContent: "space-between", marginBottom: "13px" }}
+        >
           <Text styles={{ fontSize: "18px", fontWeight: "700" }}>{title}</Text>
           <div>♡</div>
         </Flex>
         <Flex styles={{ justifyContent: "start" }}>
-          <Text>{writer}</Text>
-          <Text>{category}</Text>
+          <Text styles={contentStyle}>
+            <Text styles={{ fontWeight: "600" }}>작성자:</Text> {writer}
+          </Text>
+          <Text styles={contentStyle}>
+            <Text styles={{ fontWeight: "600" }}>카테고리:</Text> {category === "eat" ? "먹자" : "사자"}
+          </Text>
         </Flex>
-        <Flex styles={{ justifyContent: "flex-start" }}>
-          <Text>{price}</Text>
-          <Text>{date}</Text>
+        <Flex styles={{ justifyContent: "start" }}>
+          <Text styles={contentStyle}>
+            <Text styles={{ fontWeight: "600" }}>가격:</Text>{" "}
+            {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+          </Text>
+          <Text styles={contentStyle}>
+            <Text styles={{ fontWeight: "600" }}>마감일:</Text>{" "}
+            {moment(endTime).format("MM-DD")}
+          </Text>
         </Flex>
-        <Text>{address}</Text>
+        <Flex styles={{ justifyContent: "start" }}>
+          <Text styles={{fontSize: "12px"}}>
+            <Text styles={{ fontWeight: "600" }}>위치:</Text> {address}
+          </Text>
+        </Flex>
       </Flex>
     </Flex>
   );

@@ -82,6 +82,7 @@ const SideNav = props => {
 };
 
 const StyledPost = styled.div`
+  width: 100%;
   margin: 5px 0;
 `;
 
