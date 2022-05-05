@@ -55,7 +55,9 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logout(state, action) {
-      state = initialState;
+      state.userInfo = initialState.userInfo;
+      state.isLogin = initialState.isLogin;
+      removeToken();
     },
   },
   extraReducers: builder => {
@@ -74,15 +76,16 @@ const userSlice = createSlice({
   },
 });
 
-const { actions, reducer } = userSlice;
 
-export default reducer;
+
+export default userSlice.reducer;
 
 // return Action Creators to export
 const actionCreator = {
   signUpDB,
   loginDB,
   isLoginDB,
+  ...userSlice.actions,
 };
 
-export { actionCreator, actions };
+export { actionCreator };

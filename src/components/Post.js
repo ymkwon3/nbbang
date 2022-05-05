@@ -3,6 +3,7 @@ import moment from "moment";
 import "moment/locale/ko";
 
 import { Flex, Image, Text } from "../elements";
+import Permit from "../shared/Permit";
 
 const Post = props => {
   const { image, title, writer, category, price, createdAt, endTime, address } =
@@ -51,14 +52,17 @@ const Post = props => {
           styles={{ justifyContent: "space-between", marginBottom: "13px" }}
         >
           <Text styles={{ fontSize: "18px", fontWeight: "700" }}>{title}</Text>
-          <div>♡</div>
+          <Permit>
+            <div>♡</div>
+          </Permit>
         </Flex>
         <Flex styles={{ justifyContent: "start" }}>
           <Text styles={contentStyle}>
             <Text styles={{ fontWeight: "600" }}>작성자:</Text> {writer}
           </Text>
           <Text styles={contentStyle}>
-            <Text styles={{ fontWeight: "600" }}>카테고리:</Text> {category === "eat" ? "먹자" : "사자"}
+            <Text styles={{ fontWeight: "600" }}>카테고리:</Text>{" "}
+            {category === "eat" ? "먹자" : "사자"}
           </Text>
         </Flex>
         <Flex styles={{ justifyContent: "start" }}>
@@ -72,7 +76,7 @@ const Post = props => {
           </Text>
         </Flex>
         <Flex styles={{ justifyContent: "start" }}>
-          <Text styles={{fontSize: "12px"}}>
+          <Text styles={{ fontSize: "12px" }}>
             <Text styles={{ fontWeight: "600" }}>위치:</Text> {address}
           </Text>
         </Flex>

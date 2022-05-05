@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Flex, Image } from "../elements";
-import { removeToken } from "../shared/localStorage";
 import styled from "styled-components";
 import { actionCreator as postActions } from "../redux/modules/post";
+import { actionCreator as userActions } from "../redux/modules/user";
 
 import { RiSearchLine } from "react-icons/ri";
 import { AiOutlineHeart } from "react-icons/ai";
@@ -21,12 +21,10 @@ const Header = props => {
   const userInfo = useSelector(state => state.user.userInfo);
   const isLogin = useSelector(state => state.user.isLogin);
   const category = useSelector(state => state.post.category);
-  React.useEffect(() => {
-    console.log("location changed", location);
-  }, [location]);
 
   const clickLogout = () => {
     //temp
+    dispatch(userActions.logout());
     history.push("/login");
   };
 
@@ -68,7 +66,7 @@ const Header = props => {
         padding: "0 50px",
       }}
     >
-      <Flex>
+      <Flex styles={{justifyContent: "start"}}>
         <img
           src={logo}
           alt="logo"
