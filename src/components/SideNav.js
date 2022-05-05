@@ -4,7 +4,6 @@ import { actionCreator as itemActions } from "../redux/modules/card";
 
 import Post from "./Post";
 import { Flex, Text } from "../elements";
-import { useDispatch, useSelector } from "react-redux";
 import Pagination from "./Pagination";
 //style
 import styled from "styled-components";
@@ -40,7 +39,6 @@ const SideNav = props => {
       styles={{
         width: "430px",
         height: "100%",
-        margin:"30px 0 90px",
         flexDirection: "column",
         backgroundColor: "#fff",
         top: 0,

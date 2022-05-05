@@ -121,7 +121,6 @@ const Main = () => {
           position: "relative",
           justifyContent: "start",
           height: "100%",
-          paddingTop:"60px"
         }}
       >
         <SideNav
@@ -162,7 +161,7 @@ const Main = () => {
                 _setRightContainer={setRightContainer}
               ></PostWrite>
             ) : rightContainer === "detail" ? (
-              <PostDetails></PostDetails>
+              <PostDetail></PostDetail>
             ) : null}
           </Flex>
         </div>
