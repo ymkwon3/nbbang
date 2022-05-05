@@ -1,8 +1,9 @@
 /* global kakao */
 import React from "react";
 import styled from "styled-components";
-import { PostWrite, PostDetails, SideNav, Header } from "../components";
+import { PostWrite, SideNav, Header } from "../components";
 import { Flex } from "../elements";
+import PostDetail from "../components/PostDetail";
 
 const Main = () => {
   const geocoder = new kakao.maps.services.Geocoder();
@@ -95,16 +96,17 @@ const Main = () => {
   return (
     <KaKaoMap ref={containerRef}>
       <Header></Header>
-      {/* <PostDetails></PostDetails> */}
 
       <Flex
         styles={{
           position: "relative",
           justifyContent: "start",
           height: "100%",
+          paddingTop:"60px"
         }}
       >
         <SideNav></SideNav>
+        <PostDetail></PostDetail>
         <div
           ref={sideNavRef}
           style={{
@@ -113,10 +115,24 @@ const Main = () => {
             position: "relative",
             transition: "0.2s",
             overflow: "hidden",
+            zIndex:"10",
           }}
         >
-          {/* <PostDetails></PostDetails> */}
-          <PostWrite rerender={rerender} map={mapRef.current}></PostWrite>
+          <Flex
+            styles={{
+              width: "30px",
+              height: "100%",
+              backgroundColor: "#E7E8F4",
+              opacity: "0.95",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              zIndex: 10,
+              flexDirection: "column",
+            }}
+          >
+            <PostWrite rerender={rerender} map={mapRef.current}></PostWrite>
+          </Flex>
         </div>
       </Flex>
       <button

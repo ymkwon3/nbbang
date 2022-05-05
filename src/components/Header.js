@@ -28,7 +28,7 @@ const Header = props => {
         backgroundColor: "#19253D",
         boxShadow: "0 8px 10px -4px rgba(0, 0, 0, 0.2)",
         zIndex: 11,
-        position: "relative",
+        position: "absolute",
         padding: "0 20px"
       }}
     >
