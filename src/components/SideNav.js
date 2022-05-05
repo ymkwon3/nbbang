@@ -7,6 +7,7 @@ import { Flex, Text } from "../elements";
 import Pagination from "./Pagination";
 //style
 import styled from "styled-components";
+import Permit from "../shared/Permit";
 
 
 const SideNav = props => {
@@ -48,11 +49,12 @@ const SideNav = props => {
         padding: "30px",
         justifyContent: "start",
         overflow: "scroll",
+        boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)"
       }}
     >
       <Flex styles={{ justifyContent: "space-between" }}>
         <Text styles={{ fontSize: "32px", fontWeight: "800" }}>같이 사자</Text>
-        <button onClick={_onClickWrite}>글쓰기</button>
+        <Permit><button onClick={_onClickWrite}>글쓰기</button></Permit>
       </Flex>
       <Flex styles={{ flexDirection: "column" }}>
         {/* 맵으로 카드 돌리기, key값은 unique하게, 배열풀어서 속성으로 넘겨주기 */}

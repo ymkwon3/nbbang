@@ -27,8 +27,9 @@ const Main = () => {
   // 해당 지역의 전체 게시물과, 현재 선택된 카테고리, 카테고리로 분류된 게시물리스트
   const postList = useSelector(state => state.post.postList);
   const category = useSelector(state => state.post.category);
-  const cateList = postList.filter(v => v.category === category || category === "all")
-  
+  const cateList = postList.filter(
+    v => v.category === category || category === "all"
+  );
 
   React.useEffect(() => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
@@ -71,45 +72,49 @@ const Main = () => {
     });
     markerListRef.current = [];
     cateList.map(v => {
-   
-        const m = new kakao.maps.Marker({
-          position: new kakao.maps.LatLng(v.lat, v.lng),
-          title: v.title,
-        });
-        markerListRef.current.push(m);
-        m.setMap(mapRef.current);
-        let iwContent = `<StyledInfo>${v.title}</StyledInfo>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-  
-        // 인포윈도우를 생성합니다
-        let infowindow = new kakao.maps.InfoWindow({
-          content: iwContent,
-          removable: false,
-        });
-  
-        // 마커에 이벤트를 등록합니다
-        kakao.maps.event.addListener(m, "mouseover", function () {
-          // 마커 위에 인포윈도우를 표시합니다
-          infowindow.open(mapRef.current, m);
-        });
-        kakao.maps.event.addListener(m, "mouseout", function () {
-          // 마커 위에 인포윈도우를 제거합니다
-          infowindow.close();
-        });
- 
+      const m = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(v.lat, v.lng),
+      });
+      markerListRef.current.push(m);
+      m.setMap(mapRef.current);
+      // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+      let iwContent = 
+      `<div class="info-window flex-column-center">
+      <img src=${v.image}></img>
+      <div>${v.title}</div>
+      </div>`;
+
+      // 인포윈도우를 생성합니다
+      let infowindow = new kakao.maps.InfoWindow({
+        content: iwContent,
+        removable: false,
+      });
+      
+      // 마커에 이벤트를 등록합니다
+      kakao.maps.event.addListener(m, "mouseover", function () {
+        // 마커 위에 인포윈도우를 표시합니다
+        infowindow.open(mapRef.current, m);
+      });
+      kakao.maps.event.addListener(m, "mouseout", function () {
+        // 마커 위에 인포윈도우를 제거합니다
+        infowindow.close();
+      });
+
       return null;
     });
   }, [postList, category]);
 
+  // 글쓰기 버튼 이벤트
   const clickWrite = () => {
     sideNavRef.current.style.width = "430px";
     setRightContainer("write");
   };
-
+  // 상세보기 이벤트, 리스트의 게시물을 눌렀을 경우
   const clickDetail = () => {
     sideNavRef.current.style.width = "430px";
     setRightContainer("detail");
   };
-
+  // sidenav의 오른쪽의 접어두기 버튼 이벤트
   const clickClose = () => {
     sideNavRef.current.style.width = "0";
   };
@@ -191,10 +196,6 @@ const FoldBtn = styled.div`
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
-`;
-
-const StyledInfo = styled.div`
-background-color: black;
 `;
 
 export default Main;
