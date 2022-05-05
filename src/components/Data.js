@@ -8,7 +8,7 @@ const UserCardInfo = [
       userName:
         "name1",
       category:
-        "1",
+        "카테고리 : 같이 먹자",
       price:
         "1000",
       date:
@@ -25,7 +25,7 @@ const UserCardInfo = [
       userName:
         "name2",
       category:
-        "2",
+        "같이 사자",
       price:
         "2000",
       date:
@@ -440,7 +440,416 @@ const UserCardInfo = [
           "10월 14일",
         address:
           "전남 목포",
-    }
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    {
+        userId: "id4",
+        imgUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2F2a%2F77%2F5c%2F2a775c0aaf09897bf29befac89d4c667.jpg&type=a340",
+        title:
+          "파스타",
+        userName:
+          "name4",
+        category:
+          "4",
+        price:
+          "4000",
+        date:
+          "10월 14일",
+        address:
+          "전남 목포",
+    },
+    
 ];
 
 const getPostList = async() => {

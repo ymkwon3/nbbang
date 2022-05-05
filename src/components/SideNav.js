@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreator as itemActions } from "../redux/modules/card";
 
 import Post from "./Post";
 import { Flex, Text } from "../elements";
@@ -28,11 +30,17 @@ const SideNav = props => {
 
   //오버플로우 스크롤 추가
 
+  // const dropdown = [
+  //   "one", "two", "three"
+  // ]
+//드롭다운 추가 해야함
+
   return (
     <Flex
       styles={{
         width: "430px",
         height: "100%",
+        margin:"30px 0 90px",
         flexDirection: "column",
         backgroundColor: "#fff",
         top: 0,
@@ -78,6 +86,7 @@ const SideNav = props => {
         />
       </Flex>
     </Flex>
+    
   );
 };
 

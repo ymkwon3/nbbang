@@ -7,7 +7,7 @@ import {
   putAPI,
 } from "../../shared/api";
 import { getToken, setToken, removeToken } from "../../shared/localStorage";
-import {getPostList} from "../../components/Data";
+import { getPostList } from "../../components/Data";
 
 const getPostListDB = createAsyncThunk(`post/getlist`, async (data) => {
   return await postAPI('/main/postlist', data)

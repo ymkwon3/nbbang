@@ -62,6 +62,10 @@ const ButtonStyle = styled.button`
     height: 100%;
     background-color: yellow;
   }
+
+  &:current {
+    background-color: #cdd5ec;
+  }
 `;
 
 export default Button;

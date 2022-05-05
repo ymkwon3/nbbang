@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { PostWrite, PostDetails, SideNav } from "../components";
 import { Flex } from "../elements";
+import PostDetail from "../components/PostDetail";
 
 import { actionCreator as postActions } from "../redux/modules/post";
 
@@ -120,6 +121,7 @@ const Main = () => {
           position: "relative",
           justifyContent: "start",
           height: "100%",
+          paddingTop:"60px"
         }}
       >
         <SideNav
