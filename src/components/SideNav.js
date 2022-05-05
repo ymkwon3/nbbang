@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 
-import CardList from "./Card";
-
+import Post from "./Post";
 import { Flex, Text } from "../elements";
-
 import { useDispatch, useSelector } from "react-redux";
-import { actionCreator as itemActions } from "../redux/modules/card";
 import Pagination from "./Pagination";
+//style
+import styled from "styled-components";
 
-const SideNav = () => {
+
+const SideNav = props => {
+  const { _onClickWrite, _onClickDetail, postList } = props;
   const dispatch = useDispatch();
-  const cardList = useSelector(state => state.card.postList);
+  // const cardList = useSelector(state => state.card.postList);
   // console.log(cardList);
   // postList는 이니셜스테이트값으로 현재 mock data 값을 배열로 가지고 있는중
 
@@ -21,9 +22,9 @@ const SideNav = () => {
   const [page, setPage] = useState(1); // 현재 페이지 번호
   const offset = (page - 1) * 10; // 첫 게시물의 위치
 
-  useEffect(() => {
-    dispatch(itemActions.setCardDB()).then(data => setPosts(data));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(itemActions.setCardDB()).then(data => setPosts(data));
+  // }, []);
 
   //오버플로우 스크롤 추가
 
@@ -38,12 +39,15 @@ const SideNav = () => {
         left: 0,
         zIndex: "10",
         gap: "10px",
-        border: "1px solid green",
+        padding: "30px",
         justifyContent: "start",
         overflow: "scroll",
       }}
     >
-      <Text>같이 사자</Text>
+      <Flex styles={{ justifyContent: "space-between" }}>
+        <Text styles={{ fontSize: "32px", fontWeight: "800" }}>같이 사자</Text>
+        <button onClick={_onClickWrite}>글쓰기</button>
+      </Flex>
       <Flex styles={{ flexDirection: "column" }}>
         {/* 맵으로 카드 돌리기, key값은 unique하게, 배열풀어서 속성으로 넘겨주기 */}
 
@@ -52,14 +56,22 @@ const SideNav = () => {
             return <CardList key={`card_${i}`} {...v} />
           })} */}
 
-        {/* pagination 적용 후  */}
-        {cardList.slice(offset, offset + limit).map((v, i) => (
-          <CardList key={`card_${i}`} {...v} />
+        {postList.map((v, i) => (
+          <StyledPost onClick={_onClickDetail} key={`card_${i}`}>
+            <Post {...v} />
+          </StyledPost>
         ))}
+
+        {/* pagination 적용 후  */}
+        {/* {postList.slice(offset, offset + limit).map((v, i) => (
+          <div onClick={_onClickDetail} key={`card_${i}`}>
+            <CardList {...v} _onClick={_onClickDetail} />
+          </div>
+        ))} */}
       </Flex>
       <Flex>
         <Pagination
-          total={cardList.length}
+          total={postList.length}
           limit={limit}
           page={page}
           setPage={setPage}
@@ -68,5 +80,10 @@ const SideNav = () => {
     </Flex>
   );
 };
+
+const StyledPost = styled.div`
+  width: 100%;
+  margin: 5px 0;
+`;
 
 export default SideNav;

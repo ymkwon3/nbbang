@@ -68,8 +68,8 @@ const Login = props => {
     dispatch(
       userActions.loginDB({
         data: {
-          userEmail: loginRef.current.userEmail.value,
-          userPassword: loginRef.current.userPassword.value,
+          userEmail: email,
+          userPassword: pwd,
         },
         history: history,
       })

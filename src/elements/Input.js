@@ -18,21 +18,23 @@ const Input = forwardRef((props, ref) => {
 
 Input.defaultProps = {
   defaultStyles: {
-    fontSize: "14px",
-    fontWeight: "400",
+    fontSize: "16px",
+    fontWeight: "700",
     color: "#000",
     width: "100%",
-    borderBottom: "1px solid #333",
+    // borderBottom: "1px solid #333",
   },
 };
 
 const InputStyled = styled.div`
+  display: flex;
   font-size: ${props => props.fontSize};
   font-weight: ${props => props.fontWeight};
   color: ${props => props.color};
   width: ${props => props.width};
   border-bottom: ${props => props.borderBottom};
   & > input {
+    flex: 1;
     border: none;
     outline: none;
     padding: 5px;
