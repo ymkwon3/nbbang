@@ -11,7 +11,9 @@ import IsLogin from "./IsLogin";
 
 const App = () => {
   return (
-    <Flex styles={{ height: "100vh", flexDirection: "column",alignItems: "end" }}>
+    <Flex
+      styles={{ height: "100vh", flexDirection: "column", alignItems: "end" }}
+    >
       <Header></Header>
       <Flex
         styles={{
@@ -24,7 +26,6 @@ const App = () => {
         </IsLogin>
         <Route path="/login" exact component={Login}></Route>
         <Route path="/chat" exact component={ChatBox}></Route>
-
       </Flex>
     </Flex>
   );

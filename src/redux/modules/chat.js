@@ -31,9 +31,9 @@ const getParticipantsDB = createAsyncThunk(
 // initialState
 const initialState = {
   room: {
-    postId: "string",
-    roomId: "string",
-    chatAdmin: "string",
+    postId: "",
+    roomId: "",
+    chatAdmin: "",
     users: [],
   },
   messages: [],
@@ -48,20 +48,20 @@ const initialUserFrom = {
 };
 
 const initialMessageForm = {
-  postId: "string",
-  roomId: "string",
-  messageId: "string",
+  postId: "",
+  roomId: "",
+  messageId: "",
   sender: {
     ...initialUserFrom,
   },
-  content: "string",
-  createdAt: "string",
+  content: "",
+  createdAt: "",
 };
 
 // actions, action creators, reducers
 const userSlice = createSlice({
   name: "chat",
-  initialState: chatMockData,
+  initialState,
   reducers: {
     // logout(state, action) {
     //   state = initialState;
