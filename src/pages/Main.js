@@ -34,7 +34,7 @@ const Main = () => {
   React.useEffect(() => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     navigator.geolocation.getCurrentPosition(
-      position => {
+      (position) => {
         const userLat = position.coords.latitude;
         const userLng = position.coords.longitude;
         // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
@@ -43,7 +43,7 @@ const Main = () => {
           const addr = result[0].address;
           // 경남 진주, 서울 종로구 형식
           // addrRef.current.value = addr.address_name;
-          dispatch(postActions.getPostListDB({ address: addr.address_name }));
+          dispatch(postActions.getPostListDB({ address: addr.address_name, range: 3, userId: 7 }));
         });
         const userPosition = new kakao.maps.LatLng(userLat, userLng);
         const options = {

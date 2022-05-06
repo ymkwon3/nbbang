@@ -8,8 +8,8 @@ import {
 } from "../../shared/api";
 import { getToken, setToken, removeToken } from "../../shared/localStorage";
 
-const signUpDB = createAsyncThunk("user/signUp", async data => {
-  postAPI("/user/signUp", data).then(res => {
+const signUpDB = createAsyncThunk("user/signUp", async (data) => {
+  postAPI("/user/signUp", data).then((res) => {
     alert("회원가입이 완료되었습니다.");
   });
 });
@@ -40,11 +40,11 @@ const isLoginDB = createAsyncThunk(
 
 const initialState = {
   userInfo: {
-    userId: "",
-    userEmail: "",
-    userName: "",
-    userImage: "",
-    tradeCount: "",
+    userId: "chatAdminUserId",
+    userEmail: "chatAdminUserEmail",
+    userName: "chatAdminUserName",
+    userImage: "https://img.hankyung.com/photo/202106/ZA.26374128.1.jpg",
+    tradeCount: "chatAdminTradeCount",
   },
   isLogin: false,
 };
@@ -60,7 +60,7 @@ const userSlice = createSlice({
       removeToken();
     },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(loginDB.fulfilled, (state, action) => {
       if (action.payload) {
         state.userInfo = action.payload;
