@@ -1,5 +1,4 @@
 /* global kakao */
-import { current } from "@reduxjs/toolkit";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
@@ -28,41 +27,54 @@ const Main = () => {
   // 해당 지역의 전체 게시물과, 현재 선택된 카테고리, 카테고리로 분류된 게시물리스트
   const postList = useSelector(state => state.post.postList);
   const category = useSelector(state => state.post.category);
+  const userInfo = useSelector(state => state.user.userInfo);
+
   const cateList = postList.filter(
     v => v.category === category || category === "all"
   );
 
+  /*
+  todo: 현재 로그인 상태일 때, 게시물 데이터를 두 번 불러옴.
+  userInfo를 updateMount에 지정해주지 않으면 무조건 비회원일 때의 데이터를 불러옴
+  */
+  
   React.useEffect(() => {
-    // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const userLat = position.coords.latitude;
-        const userLng = position.coords.longitude;
-        // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
-        geocoder.coord2Address(userLng, userLat, (result, status) => {
-          // 지번 주소
-          const addr = result[0].address;
-          // 경남 진주, 서울 종로구 형식
-          // addrRef.current.value = addr.address_name;
-          dispatch(postActions.getPostListDB({ address: addr.address_name, range: 3, userId: 7 }));
-        });
-        const userPosition = new kakao.maps.LatLng(userLat, userLng);
-        const options = {
-          center: userPosition,
-          level: 3,
-        };
-        mapRef.current = new kakao.maps.Map(containerRef.current, options);
-        setRerender(true);
+      // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+          // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
+          geocoder.coord2Address(userLng, userLat, (result, status) => {
+            // 지번 주소
+            const addr = result[0].address;
+            // 경남 진주, 서울 종로구 형식
+            // addrRef.current.value = addr.address_name;
+            dispatch(
+              postActions.getPostListDB({
+                address: addr.address_name,
+                range: 3,
+                userId: userInfo?.userId,
+              })
+            );
+          });
+          const userPosition = new kakao.maps.LatLng(userLat, userLng);
+          const options = {
+            center: userPosition,
+            level: 3,
+          };
+          mapRef.current = new kakao.maps.Map(containerRef.current, options);
+          setRerender(true);
 
-        const markerPosition = userPosition;
-        const marker = new kakao.maps.Marker({
-          position: markerPosition,
-        });
-        marker.setMap(mapRef.current);
-      },
-      () => {},
-      { enableHighAccuracy: true }
-    );
+          const markerPosition = userPosition;
+          const marker = new kakao.maps.Marker({
+            position: markerPosition,
+          });
+          marker.setMap(mapRef.current);
+        },
+        () => {},
+        { enableHighAccuracy: true }
+      );
   }, []);
 
   React.useEffect(() => {
@@ -79,8 +91,7 @@ const Main = () => {
       markerListRef.current.push(m);
       m.setMap(mapRef.current);
       // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-      let iwContent = 
-      `<div class="info-window flex-column-center">
+      let iwContent = `<div class="info-window flex-column-center">
       <img src=${v.image}></img>
       <div>${v.title}</div>
       </div>`;
@@ -90,7 +101,7 @@ const Main = () => {
         content: iwContent,
         removable: false,
       });
-      
+
       // 마커에 이벤트를 등록합니다
       kakao.maps.event.addListener(m, "mouseover", function () {
         // 마커 위에 인포윈도우를 표시합니다
@@ -115,7 +126,6 @@ const Main = () => {
     sideNavRef.current.style.width = "430px";
 
     dispatch(postActions.getPostDetailDB(id));
-    console.log(PostDetail)
     setRightContainer("detail");
   };
   // sidenav의 오른쪽의 접어두기 버튼 이벤트

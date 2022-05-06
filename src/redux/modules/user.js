@@ -14,15 +14,14 @@ const signUpDB = createAsyncThunk("user/signUp", async (data) => {
   });
 });
 
-const loginDB = createAsyncThunk("user/login", async ({ data, history }) => {
+const loginDB = createAsyncThunk("user/login", async (data) => {
   // 실패 시 고려해야함
-  return postAPI("/user/login", data).then(res => {
+  return await postAPI("/user/login", data).then(res => {
     if (res.msg === "fail") {
       alert("아이디 비밀번호를 확인해주세요");
       return null;
     } else {
       setToken(res.token);
-      history.replace("/");
       return res.userInfo;
     }
   });
@@ -32,7 +31,7 @@ const isLoginDB = createAsyncThunk(
   "user/islogin",
   async () => {
     // 실패 시 고려해야함
-    return getAPI("/user/islogin").then(res => {
+    return await getAPI("/user/islogin").then(res => {
       return res.userInfo;
     });
   }
