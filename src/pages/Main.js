@@ -29,7 +29,7 @@ const Main = () => {
   React.useEffect(() => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     navigator.geolocation.getCurrentPosition(
-      position => {
+      (position) => {
         const userLat = position.coords.latitude;
         const userLng = position.coords.longitude;
         // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
@@ -55,7 +55,7 @@ const Main = () => {
         marker.setMap(mapRef.current);
 
         // DB에서 받아오는 게시글들을 마커로 표시 후 띄워줌
-        data.map(v => {
+        data.map((v) => {
           const m = new kakao.maps.Marker({
             position: new kakao.maps.LatLng(v.lat, v.lng),
             title: v.name,
