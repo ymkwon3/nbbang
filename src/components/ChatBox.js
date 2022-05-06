@@ -93,7 +93,7 @@ const ChatBox = () => {
   };
 
   React.useEffect(() => {
-    socket = io.connect("http://localhost:5000");
+    socket = io.connect("https://redpingpong.shop");
     socket.emit("setup", loggedUser);
     socket.on("connected", () => setSocketConnected(true));
     socket.on("typing", () => setIsTyping(true));
@@ -156,9 +156,14 @@ const ChatBox = () => {
     }, timerLength);
   };
 
+  const test = () => {
+    socket.emit("sendmessage", "연결 킹!!");
+  };
+
   return (
     <>
       <Flex styles={{ flexDirection: "column" }}>
+        <Button _onClick={test}>라면</Button>
         <Header />
         <Button styles={{ border: "1px solid black" }} _onClick={goToChat}>
           채팅하러가기
