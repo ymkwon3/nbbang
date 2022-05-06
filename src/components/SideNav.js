@@ -65,7 +65,7 @@ const SideNav = props => {
           })} */}
 
         {postList.map((v, i) => (
-          <StyledPost onClick={_onClickDetail} key={`card_${i}`}>
+          <StyledPost onClick={() => _onClickDetail(v.postId)} key={`card_${i}`}>
             <Post {...v} />
           </StyledPost>
         ))}
@@ -89,6 +89,7 @@ const SideNav = props => {
     
   );
 };
+
 
 const StyledPost = styled.div`
   width: 100%;

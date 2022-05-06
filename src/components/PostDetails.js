@@ -12,7 +12,7 @@
 // // import { MdOutlinePriceChange, MdContentPaste } from "react-icons/md";
 // // import { GiAlarmClock } from "react-icons/gi";
 
-// const PostDetails = props => {
+// const PostDetails = (props) => {
 //   return (
 //     <Flex
 //       styles={{
@@ -35,11 +35,74 @@
 
 // // // export default PostDetails;
 
-// const PostWriterInfo = props => {
+// const PostWriterInfo = (props) => {
 //   return (
 //     <>
 //       <Flex>
 //         <Flex defaultStyles={{ width: "100%", jc: "flex-start", ai: "center" }}>
+//           <Flex
+//             styles={{ height: "29px" }}
+//             defaultStyles={{ width: "29px", jc: "center", ai: "center" }}
+//           >
+//             <Image
+//               shape="circle"
+//               defaultStyles={{ width: "100%", height: "100%" }}
+//             />
+//           </Flex>
+//           <Flex defaultStyles={{ width: "auto", jc: "center", ai: "center" }}>
+//             <Text
+//               styles={{ lineHeight: "22px", margin: "0 0 0 7px" }}
+//               defaultStyles={{
+//                 fontSize: "18px",
+//                 fontWeight: "400",
+//                 color: "#000",
+//               }}
+//             >
+//               프로필
+//             </Text>
+//           </Flex>
+//         </Flex>
+//         <Flex
+//           styles={{ height: "29px", border: "1px solid #000000" }}
+//           defaultStyles={{ width: "70px", jc: "center", ai: "center" }}
+//         >
+//           <Text
+//             styles={{ lineHeight: "22px" }}
+//             defaultStyles={{
+//               fontSize: "18px",
+//               fontWeight: "400",
+//               color: "#000",
+//             }}
+//           >
+//             1/5
+//           </Text>
+//         </Flex>
+//       </Flex>
+//     </>
+//   );
+// };
+
+// const PostDetailsContents = (props) => {
+//   return (
+//     <>
+//       <Flex styles={{ marginTop: "17px", flexDirection: "column" }}>
+//         {/* Title */}
+//         <Flex defaultStyles={{ width: "100%", jc: "flex-start", ai: "center" }}>
+//           <Text
+//             styles={{ lineHeight: "43px" }}
+//             defaultStyles={{
+//               fontSize: "2.25rem",
+//               fontWeight: "800",
+//               color: "#000",
+//             }}
+//           >
+//             제목
+//           </Text>
+//         </Flex>
+
+//         {/* Body */}
+//         <Flex styles={{ flexDirection: "column", margin: "25px 0 0 0" }}>
+//           {/* 주소 */}
 //           <Flex
 //             styles={{ height: "29px" }}
 //             defaultStyles={{ width: "29px", jc: "center", ai: "center" }}
@@ -255,6 +318,22 @@
 // // };
 
 // const PostChattingBox = props => {
+//   return (
+//     <>
+//       <Flex
+//         styles={{
+//           height: "100%",
+//           border: "1px solid #000000",
+//           marginTop: "30px",
+//         }}
+//       >
+//         채팅창
+//       </Flex>
+//     </>
+//   );
+// };
+
+// const PostChattingBox = (props) => {
 //   return (
 //     <>
 //       <Flex

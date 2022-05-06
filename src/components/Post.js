@@ -8,7 +8,7 @@ import Permit from "../shared/Permit";
 const Post = props => {
   const { image, title, writer, category, price, createdAt, endTime, address } =
     props;
-
+    
   //span tag에 text-overflow를 주기 위함
   const contentStyle = {
     display: "block",
@@ -22,6 +22,7 @@ const Post = props => {
   // number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") 3자리마다 콤마찍어주는 정규표현식
 
   return (
+    
     <Flex
       styles={{
         boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",

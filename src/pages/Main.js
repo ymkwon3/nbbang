@@ -3,13 +3,14 @@ import { current } from "@reduxjs/toolkit";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { PostWrite, PostDetails, SideNav } from "../components";
+import { PostWrite, SideNav } from "../components";
 import { Flex } from "../elements";
 import PostDetail from "../components/PostDetail";
 
 import { actionCreator as postActions } from "../redux/modules/post";
 
 const Main = () => {
+  
   const dispatch = useDispatch();
   const geocoder = new kakao.maps.services.Geocoder();
 
@@ -109,16 +110,19 @@ const Main = () => {
     sideNavRef.current.style.width = "430px";
     setRightContainer("write");
   };
-  // 상세보기 이벤트, 리스트의 게시물을 눌렀을 경우
-  const clickDetail = () => {
+
+  const clickDetail = (id) => {
     sideNavRef.current.style.width = "430px";
+
+    dispatch(postActions.getPostDetailDB(id));
+    console.log(PostDetail)
     setRightContainer("detail");
   };
   // sidenav의 오른쪽의 접어두기 버튼 이벤트
   const clickClose = () => {
     sideNavRef.current.style.width = "0";
   };
-
+  
   return (
     <KaKaoMap ref={containerRef}>
       <Flex
