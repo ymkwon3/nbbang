@@ -19,11 +19,11 @@ const addPostDB = createAsyncThunk("post/add", async (data) => {
 
 // 서버쪽 좋아요 조회 완료되면 다시 해야함 -영민
 const postLikeDB = createAsyncThunk("post/like", async (data) => {
-  // data = { postId, isLike }
-  if(data.isLike) {
-    return await getAPI(`/main/like/${data.postId}`);
+  const { postId, isLike }= data;
+  if(isLike) {
+    // return await deleteAPI(`/main/like/${postId}`);
   }else {
-    return await deleteAPI(`/main/like/${data.postId}`);
+    // return await getAPI(`/main/like/${postId}`);
   }
 })
 
@@ -62,7 +62,6 @@ const postSlice = createSlice({
       state.postList.unshift(action.payload.row[0]);
     });
     builder.addCase(getPostListDB.fulfilled, (state, action) => {
-      console.log(action.payload.data)
       state.postList = action.payload.data;
     });
     builder.addCase(postLikeDB.fulfilled, (state, action) => {

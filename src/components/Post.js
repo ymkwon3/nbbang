@@ -9,7 +9,7 @@ import Permit from "../shared/Permit";
 
 
 const Post = props => {
-  const { image, title, writer, category, price, createdAt, endTime, address, postId } =
+  const { image, title, writer, category, price, createdAt, endTime, address, postId, isLike } =
     props;
   const dispatch = useDispatch();
   //span tag에 text-overflow를 주기 위함
@@ -23,6 +23,11 @@ const Post = props => {
   };
 
   // number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") 3자리마다 콤마찍어주는 정규표현식
+
+  const clickLike = (e) => {
+    e.stopPropagation();
+    dispatch(postActions.postLikeDB({postId: postId, isLike: isLike}))
+  }
 
   return (
     <Flex
@@ -56,7 +61,7 @@ const Post = props => {
         >
           <Text styles={{ fontSize: "18px", fontWeight: "700" }}>{title}</Text>
           <Permit>
-            <div onClick={() => dispatch(postActions.postLikeDB({postId, isLike: false}))}>♡</div>
+            {isLike ? <div onClick={clickLike}>♥</div> : <div onClick={clickLike}>♡</div>}
           </Permit>
         </Flex>
         <Flex styles={{ justifyContent: "start" }}>

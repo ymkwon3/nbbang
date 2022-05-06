@@ -1,5 +1,4 @@
 /* global kakao */
-import { current } from "@reduxjs/toolkit";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
@@ -27,10 +26,11 @@ const Main = () => {
   // 해당 지역의 전체 게시물과, 현재 선택된 카테고리, 카테고리로 분류된 게시물리스트
   const postList = useSelector(state => state.post.postList);
   const category = useSelector(state => state.post.category);
+  const userInfo = useSelector(state => state.user.userInfo);
   const cateList = postList.filter(
     v => v.category === category || category === "all"
   );
-
+   
   React.useEffect(() => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     navigator.geolocation.getCurrentPosition(
@@ -43,7 +43,8 @@ const Main = () => {
           const addr = result[0].address;
           // 경남 진주, 서울 종로구 형식
           // addrRef.current.value = addr.address_name;
-          dispatch(postActions.getPostListDB({ address: addr.address_name, range: 3, userId: 7 }));
+          console.log(userInfo)
+          dispatch(postActions.getPostListDB({ address: addr.address_name, range: 3, userId: userInfo?.userId }));
         });
         const userPosition = new kakao.maps.LatLng(userLat, userLng);
         const options = {
