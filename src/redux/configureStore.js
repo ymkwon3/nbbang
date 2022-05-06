@@ -17,7 +17,7 @@ export default configureStore({
   reducer: {
     user: User,
     post: Post,
-    card: Card,
+    card: Card, //이거 지워도 될듯?
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...middlewares),
 })

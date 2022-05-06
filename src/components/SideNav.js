@@ -4,10 +4,10 @@ import { actionCreator as itemActions } from "../redux/modules/card";
 
 import Post from "./Post";
 import { Flex, Text } from "../elements";
-import { useDispatch, useSelector } from "react-redux";
 import Pagination from "./Pagination";
 //style
 import styled from "styled-components";
+import PostDetail from "./PostDetail";
 
 
 const SideNav = props => {
@@ -40,7 +40,6 @@ const SideNav = props => {
       styles={{
         width: "430px",
         height: "100%",
-        margin:"30px 0 90px",
         flexDirection: "column",
         backgroundColor: "#fff",
         top: 0,
@@ -65,7 +64,7 @@ const SideNav = props => {
           })} */}
 
         {postList.map((v, i) => (
-          <StyledPost onClick={_onClickDetail} key={`card_${i}`}>
+          <StyledPost onClick={() => _onClickDetail(v.postId)} key={`card_${i}`}>
             <Post {...v} />
           </StyledPost>
         ))}
@@ -89,6 +88,7 @@ const SideNav = props => {
     
   );
 };
+
 
 const StyledPost = styled.div`
   width: 100%;

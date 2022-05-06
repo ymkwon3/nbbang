@@ -3,13 +3,14 @@ import { current } from "@reduxjs/toolkit";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { PostWrite, PostDetails, SideNav } from "../components";
+import { PostWrite, SideNav } from "../components";
 import { Flex } from "../elements";
 import PostDetail from "../components/PostDetail";
 
 import { actionCreator as postActions } from "../redux/modules/post";
 
 const Main = () => {
+  
   const dispatch = useDispatch();
   const geocoder = new kakao.maps.services.Geocoder();
 
@@ -42,7 +43,7 @@ const Main = () => {
           const addr = result[0].address;
           // 경남 진주, 서울 종로구 형식
           // addrRef.current.value = addr.address_name;
-          dispatch(postActions.getPostListDB({ address: addr.address_name }));
+          dispatch(postActions.getPostListDB({ address: addr.address_name, range: 3, userId: 7 }));
         });
         const userPosition = new kakao.maps.LatLng(userLat, userLng);
         const options = {
@@ -105,15 +106,18 @@ const Main = () => {
     setRightContainer("write");
   };
 
-  const clickDetail = () => {
+  const clickDetail = (id) => {
     sideNavRef.current.style.width = "430px";
+
+    dispatch(postActions.getPostDetailDB(id));
+    console.log(PostDetail)
     setRightContainer("detail");
   };
 
   const clickClose = () => {
     sideNavRef.current.style.width = "0";
   };
-
+  
   return (
     <KaKaoMap ref={containerRef}>
       <Flex
@@ -121,7 +125,6 @@ const Main = () => {
           position: "relative",
           justifyContent: "start",
           height: "100%",
-          paddingTop:"60px"
         }}
       >
         <SideNav
@@ -162,7 +165,7 @@ const Main = () => {
                 _setRightContainer={setRightContainer}
               ></PostWrite>
             ) : rightContainer === "detail" ? (
-              <PostDetails></PostDetails>
+              <PostDetail></PostDetail>
             ) : null}
           </Flex>
         </div>

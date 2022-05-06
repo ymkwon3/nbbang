@@ -13,6 +13,12 @@ const getPostListDB = createAsyncThunk(`post/getlist`, async (data) => {
   return await postAPI('/main/postlist', data)
 });
 
+const getPostDetailDB = createAsyncThunk(`post/detail`, async (postId) => {
+  return await getAPI(`/main/${postId}`).then(res => {
+    return res.data;
+  });
+})
+
 const addPostDB = createAsyncThunk("post/add", async (data) => {
   return await postFormAPI('/main/postadd', data);
 });
@@ -40,6 +46,7 @@ const postSlice = createSlice({
   name: "post",
   initialState: {
     postList: [],
+    postDetail: [],
     category: "all"
   },
   reducers: {
@@ -54,6 +61,10 @@ const postSlice = createSlice({
     builder.addCase(getPostListDB.fulfilled, (state, action) => {
       state.postList = action.payload.data;
     });
+    builder.addCase(getPostDetailDB.fulfilled, (state, action) => {
+      state.postDetail = action.payload;
+      
+    })
   },
 });
 
@@ -63,6 +74,7 @@ export default postSlice.reducer;
 const actionCreator = {
   getPostListDB,
   addPostDB,
+  getPostDetailDB,
   ...postSlice.actions,
 };
 
