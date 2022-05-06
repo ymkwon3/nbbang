@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getPostList } from "../../components/Data";
 import {
   getAPI,
   postAPI,
@@ -7,27 +8,32 @@ import {
   putAPI,
 } from "../../shared/api";
 import { getToken, setToken, removeToken } from "../../shared/localStorage";
-import UserCardInfo from "../../components/Data";
+// import UserCardInfo from "../../components/Data";
 
-const setCardDB = createAsyncThunk("card/add", async ({ data }) => {
-  
-  return await data;
-});
+// console.log(UserCardInfo)
+const setCardDB = createAsyncThunk(
+    "/card/add", // 액션 이름을 정의
+    async () => { //비동기 호출 함수를 정의
+        
+        return await getPostList();
+        
+    }
+);
 
 // reducer
 const cardSlice = createSlice({
-  name: "card",
-  initialState: {
-    value: UserCardInfo,
-  },
-  reducers: {},
-  extraReducers: builder => {
-    builder.addCase(setCardDB.fulfilled, (state, action) => {
-      console.log(action.meta.arg);
-      state.cardlist.push(action.meta.arg);
-    });
-  },
-});
+    name: "card",
+    initialState: {
+        postList: []
+    },
+    reducers: {
+    },
+    extraReducers: builder => {
+      builder.addCase(setCardDB.fulfilled, (state, action) => {
+        state.postList = action.payload;
+      });
+    },
+  });
 
 export default cardSlice.reducer;
 

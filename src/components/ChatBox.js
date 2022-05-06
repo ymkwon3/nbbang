@@ -18,7 +18,7 @@ import moment from "moment";
 import "moment/locale/ko";
 
 import io from "socket.io-client";
-import Header from "./Header";
+
 let socket, selectedChatCompare;
 
 const ChatBox = () => {
@@ -163,8 +163,6 @@ const ChatBox = () => {
   return (
     <>
       <Flex styles={{ flexDirection: "column" }}>
-        <Button _onClick={test}>라면</Button>
-        <Header />
         <Button styles={{ border: "1px solid black" }} _onClick={goToChat}>
           채팅하러가기
         </Button>

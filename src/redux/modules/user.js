@@ -16,34 +16,27 @@ const signUpDB = createAsyncThunk("user/signUp", async (data) => {
 
 const loginDB = createAsyncThunk("user/login", async ({ data, history }) => {
   // 실패 시 고려해야함
-  return postAPI("/user/login", data).then((res) => {
-    setToken(res.token);
-    history.replace("/");
-    return res.userInfo;
+  return postAPI("/user/login", data).then(res => {
+    if (res.msg === "fail") {
+      alert("아이디 비밀번호를 확인해주세요");
+      return null;
+    } else {
+      setToken(res.token);
+      history.replace("/");
+      return res.userInfo;
+    }
   });
 });
 
 const isLoginDB = createAsyncThunk(
-  "user/isLogin",
-  async ({ data, history }) => {
+  "user/islogin",
+  async () => {
     // 실패 시 고려해야함
-    return postAPI("/user/login", data).then((res) => {
+    return getAPI("/user/islogin").then(res => {
       return res.userInfo;
     });
   }
 );
-
-// reducer
-// const initialState = {
-//   userInfo: {
-//     userId: "",
-//     userEmail: "",
-//     userName: "",
-//     userImage: "",
-//     tradeCount: "",
-//   },
-//   isLogin: false,
-// }
 
 const initialState = {
   userInfo: {
@@ -53,40 +46,46 @@ const initialState = {
     userImage: "https://img.hankyung.com/photo/202106/ZA.26374128.1.jpg",
     tradeCount: "chatAdminTradeCount",
   },
-  isLogin: true,
+  isLogin: false,
 };
+
+// reducer
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     logout(state, action) {
-      state = initialState;
+      state.userInfo = initialState.userInfo;
+      state.isLogin = initialState.isLogin;
+      removeToken();
     },
   },
   extraReducers: (builder) => {
     builder.addCase(loginDB.fulfilled, (state, action) => {
-      state.userInfo = action.payload;
-      state.isLogin = true;
-    });
-    builder.addCase(loginDB.rejected, (state, action) => {
-      alert("아이디 혹은 비밀번호를 확인해주세요");
+      if (action.payload) {
+        state.userInfo = action.payload;
+        state.isLogin = true;
+      }
     });
     builder.addCase(isLoginDB.fulfilled, (state, action) => {
-      console.log(action.payload);
-      state.userInfo = action.payload;
-      state.isLogin = true;
+      if (action.payload) {
+        state.userInfo = action.payload;
+        state.isLogin = true;
+      }
     });
   },
 });
 
-const { actions, reducer } = userSlice;
 
-export default reducer;
+
+export default userSlice.reducer;
 
 // return Action Creators to export
 const actionCreator = {
   signUpDB,
   loginDB,
+  isLoginDB,
+  ...userSlice.actions,
 };
 
-export { actionCreator, actions };
+export { actionCreator };
