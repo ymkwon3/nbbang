@@ -43,7 +43,7 @@ const Main = () => {
           const addr = result[0].address;
           // 경남 진주, 서울 종로구 형식
           // addrRef.current.value = addr.address_name;
-          dispatch(postActions.getPostListDB({ address: addr.address_name }));
+          dispatch(postActions.getPostListDB({ address: addr.address_name, range: 3, userId: 7 }));
         });
         const userPosition = new kakao.maps.LatLng(userLat, userLng);
         const options = {

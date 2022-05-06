@@ -2,13 +2,16 @@ import React from "react";
 import moment from "moment";
 import "moment/locale/ko";
 
+import { useDispatch } from "react-redux";
+import { actionCreator as postActions } from "../redux/modules/post";
 import { Flex, Image, Text } from "../elements";
 import Permit from "../shared/Permit";
 
-const Post = props => {
-  const { image, title, writer, category, price, createdAt, endTime, address } =
-    props;
 
+const Post = props => {
+  const { image, title, writer, category, price, createdAt, endTime, address, postId } =
+    props;
+  const dispatch = useDispatch();
   //span tag에 text-overflow를 주기 위함
   const contentStyle = {
     display: "block",
@@ -53,7 +56,7 @@ const Post = props => {
         >
           <Text styles={{ fontSize: "18px", fontWeight: "700" }}>{title}</Text>
           <Permit>
-            <div>♡</div>
+            <div onClick={() => dispatch(postActions.postLikeDB({postId, isLike: false}))}>♡</div>
           </Permit>
         </Flex>
         <Flex styles={{ justifyContent: "start" }}>
