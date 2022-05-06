@@ -9,23 +9,23 @@ import {
 import { getToken, setToken, removeToken } from "../../shared/localStorage";
 import { getPostList } from "../../components/Data";
 
-const getPostListDB = createAsyncThunk(`post/getlist`, async (data) => {
-  return await postAPI('/main/postlist', data)
+const getPostListDB = createAsyncThunk(`post/getlist`, async data => {
+  return await postAPI("/main/postlist", data);
 });
 
-const addPostDB = createAsyncThunk("post/add", async (data) => {
-  return await postFormAPI('/main/postadd', data);
+const addPostDB = createAsyncThunk("post/add", async data => {
+  return await postFormAPI("/main/postadd", data);
 });
 
 // 서버쪽 좋아요 조회 완료되면 다시 해야함 -영민
-const postLikeDB = createAsyncThunk("post/like", async (data) => {
-  const { postId, isLike }= data;
-  if(isLike) {
-    // return await deleteAPI(`/main/like/${postId}`);
-  }else {
-    // return await getAPI(`/main/like/${postId}`);
+const postLikeDB = createAsyncThunk("post/like", async data => {
+  const { postId, isLike } = data;
+  if (isLike) {
+    return await deleteAPI(`/main/like/${postId}`);
+  } else {
+    return await getAPI(`/main/like/${postId}`);
   }
-})
+});
 
 /*postlist : {
   User_userId: "number",
@@ -43,14 +43,14 @@ const postLikeDB = createAsyncThunk("post/like", async (data) => {
   price: "number",
   title: "string",
   writer: "string",
-}*/ 
+}*/
 
 // reducer
 const postSlice = createSlice({
   name: "post",
   initialState: {
     postList: [],
-    category: "all"
+    category: "all",
   },
   reducers: {
     updateCategory(state, action) {
@@ -65,9 +65,14 @@ const postSlice = createSlice({
       state.postList = action.payload.data;
     });
     builder.addCase(postLikeDB.fulfilled, (state, action) => {
-      console.log(action);
-      // state.postList.map(v => {if(v.)})
-    })
+      const { postId, isLike } = action.meta.arg;
+      state.postList = state.postList.map(v => {
+        if (v.postId === postId) {
+          return {...v, isLike: isLike ? 0 : 1}
+        }
+        return v;
+      });
+    });
   },
 });
 

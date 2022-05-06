@@ -10,6 +10,7 @@ const IsLogin = ({ children }) => {
 
   if (getToken() && !isLogin) {
     dispatch(userActions.isLoginDB());
+    return null;
   }
 
   return <>{children}</>;

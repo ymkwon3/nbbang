@@ -26,6 +26,7 @@ const Post = props => {
 
   const clickLike = (e) => {
     e.stopPropagation();
+    console.log(isLike)
     dispatch(postActions.postLikeDB({postId: postId, isLike: isLike}))
   }
 

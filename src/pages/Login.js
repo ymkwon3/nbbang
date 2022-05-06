@@ -67,13 +67,14 @@ const Login = props => {
     }
     dispatch(
       userActions.loginDB({
-        data: {
-          userEmail: email,
-          userPassword: pwd,
-        },
-        history: history,
+        userEmail: email,
+        userPassword: pwd,
       })
-    );
+    ).then(res => {
+      if (res.type === "user/login/fulfilled") {
+        history.replace("/");
+      }
+    });
   };
 
   // 회원가입
@@ -152,8 +153,8 @@ const Login = props => {
   const requestAuthCode = () => {
     const email = signUpRef.current.userEmail.value;
     postAPI("/user/mail", { userEmail: email }).then(res => {
-      if(res.msg === "success") {
-        alert("해당 이메일로 인증 메일이 발송되었습니다!")
+      if (res.msg === "success") {
+        alert("해당 이메일로 인증 메일이 발송되었습니다!");
       }
     });
   };
@@ -164,12 +165,12 @@ const Login = props => {
     const authCode = signUpRef.current.userAuth.value;
     postAPI("/user/mailauth", { userEmail: email, authNum: authCode }).then(
       res => {
-        if(res.msg === "success") {
-          setEmailAuth(true)
-          alert("인증이 완료되었습니다!")
-        }else {
-          setEmailAuth(false)
-          alert("인증 번호가 올바르지 않습니다!")
+        if (res.msg === "success") {
+          setEmailAuth(true);
+          alert("인증이 완료되었습니다!");
+        } else {
+          setEmailAuth(false);
+          alert("인증 번호가 올바르지 않습니다!");
         }
       }
     );
