@@ -58,11 +58,15 @@ const postSlice = createSlice({
   initialState: {
     postList: [],
     postDetail: [],
+    cityRange: 3,
     category: "all"
   },
   reducers: {
     updateCategory(state, action) {
       state.category = action.payload;
+    },
+    updateCityRange(state, action) {
+      state.cityRange = action.payload;
     },
   },
   extraReducers: builder => {

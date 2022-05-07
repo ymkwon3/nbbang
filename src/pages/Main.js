@@ -7,9 +7,14 @@ import { Flex } from "../elements";
 import PostDetail from "../components/PostDetail";
 
 import { actionCreator as postActions } from "../redux/modules/post";
+import RadioInput from "../components/RadioInput";
+
+//style
+import eatMarker from "../image/eat.svg";
+import buyMarker from "../image/buy.svg";
+import myMarker from "../image/myPosition.svg";
 
 const Main = () => {
-  
   const dispatch = useDispatch();
   const geocoder = new kakao.maps.services.Geocoder();
 
@@ -24,10 +29,14 @@ const Main = () => {
   const sideNavRef = React.useRef(null);
   const [rightContainer, setRightContainer] = React.useState("writer");
 
-  // 해당 지역의 전체 게시물과, 현재 선택된 카테고리, 카테고리로 분류된 게시물리스트
+  /*
+  해당 지역의 전체 게시물, 현재 선택된 카테고리, 
+  카테고리로 분류된 게시물리스트, 게시물 지역 범위, 현재 위치 구분*/
   const postList = useSelector(state => state.post.postList);
   const category = useSelector(state => state.post.category);
   const userInfo = useSelector(state => state.user.userInfo);
+  const [cityRange, setCityRange] = React.useState(3);
+  const [city, setCity] = React.useState(3);
 
   const cateList = postList.filter(
     v => v.category === category || category === "all"
@@ -36,46 +45,67 @@ const Main = () => {
   /*
   todo: 현재 로그인 상태일 때, 게시물 데이터를 두 번 불러옴.
   userInfo를 updateMount에 지정해주지 않으면 무조건 비회원일 때의 데이터를 불러옴
+  --IsLogin 컴포넌트에서 재로그인요청 시 자식 컴포넌트를 없애줌으로써 문제 해결
   */
-  
-  React.useEffect(() => {
-      // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
-          // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
-          geocoder.coord2Address(userLng, userLat, (result, status) => {
-            // 지번 주소
-            const addr = result[0].address;
-            // 경남 진주, 서울 종로구 형식
-            // addrRef.current.value = addr.address_name;
-            dispatch(
-              postActions.getPostListDB({
-                address: addr.address_name,
-                range: 3,
-                userId: userInfo?.userId,
-              })
-            );
-          });
-          const userPosition = new kakao.maps.LatLng(userLat, userLng);
-          const options = {
-            center: userPosition,
-            level: 3,
-          };
-          mapRef.current = new kakao.maps.Map(containerRef.current, options);
-          setRerender(true);
 
-          const markerPosition = userPosition;
-          const marker = new kakao.maps.Marker({
-            position: markerPosition,
-          });
-          marker.setMap(mapRef.current);
-        },
-        () => {},
-        { enableHighAccuracy: true }
-      );
-  }, []);
+  React.useEffect(() => {
+    // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
+        geocoder.coord2Address(userLng, userLat, (result, status) => {
+          // 지번 주소
+          const addr = result[0].address;
+          // 경남 진주, 서울 종로구 형식
+          // addrRef.current.value = addr.address_name;
+          dispatch(
+            postActions.getPostListDB({
+              address: addr.address_name,
+              range: cityRange,
+              userId: userInfo?.userId,
+            })
+          );
+          const locale = [
+            "서울",
+            "인천",
+            "대전",
+            "광주",
+            "부산",
+            "울산",
+            "대구",
+            "제주특별자치도",
+          ];
+          locale.find(v => v === addr.region_1depth_name)
+            ? setCity(3)
+            : setCity(2);
+        });
+        const userPosition = new kakao.maps.LatLng(userLat, userLng);
+        const options = {
+          center: userPosition,
+          level: 4
+        };
+        mapRef.current = new kakao.maps.Map(containerRef.current, options);
+        
+        mapRef.current.panTo(userPosition)
+        setRerender(true);
+
+        const markerPosition = userPosition;
+        const markerImage = new kakao.maps.MarkerImage(
+          myMarker,
+          new kakao.maps.Size(40, 50),
+        );
+        const marker = new kakao.maps.Marker({
+          position: markerPosition,
+          image: markerImage,
+        });
+        marker.setMap(mapRef.current);
+      },
+      () => {},
+      { enableHighAccuracy: true }
+    );
+  }, [cityRange]);
 
   React.useEffect(() => {
     // DB에서 받아오는 게시글들을 마커로 표시 후 띄워줌
@@ -85,11 +115,18 @@ const Main = () => {
     });
     markerListRef.current = [];
     cateList.map(v => {
+      // 마커크기 45 x 60
+      const markerImage = new kakao.maps.MarkerImage(
+        v.category === "eat" ? eatMarker : buyMarker,
+        new kakao.maps.Size(45, 60)
+      );
       const m = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(v.lat, v.lng),
+        image: markerImage,
       });
       markerListRef.current.push(m);
       m.setMap(mapRef.current);
+
       // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
       let iwContent = `<div class="info-window flex-column-center">
       <img src=${v.image}></img>
@@ -122,9 +159,8 @@ const Main = () => {
     setRightContainer("write");
   };
 
-  const clickDetail = (id) => {
+  const clickDetail = id => {
     sideNavRef.current.style.width = "430px";
-
     dispatch(postActions.getPostDetailDB(id));
     setRightContainer("detail");
   };
@@ -132,7 +168,7 @@ const Main = () => {
   const clickClose = () => {
     sideNavRef.current.style.width = "0";
   };
-  
+
   return (
     <KaKaoMap ref={containerRef}>
       <Flex
@@ -185,6 +221,9 @@ const Main = () => {
           </Flex>
         </div>
       </Flex>
+      <ButtonContainer>
+        <RadioInput city setCityRange={setCityRange}></RadioInput>
+      </ButtonContainer>
     </KaKaoMap>
   );
 };
@@ -210,6 +249,14 @@ const FoldBtn = styled.div`
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
+`;
+
+const ButtonContainer = styled.div`
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  border: 1px solid red;
+  z-index: 10;
 `;
 
 export default Main;

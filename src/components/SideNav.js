@@ -12,21 +12,15 @@ import Permit from "../shared/Permit";
 
 const SideNav = props => {
   const { _onClickWrite, _onClickDetail, postList } = props;
-  const dispatch = useDispatch();
   // const cardList = useSelector(state => state.card.postList);
   // console.log(cardList);
   // postList는 이니셜스테이트값으로 현재 mock data 값을 배열로 가지고 있는중
 
   //useState 함수를 이용해서 페이지 당 게시물 수 (limit), 현재 페이지 번호(page)를 상태로 추가.
   //그리고 첫 게지물의 위치 (offset) 계산필요
-  const [posts, setPosts] = useState([]); // 총 카드의 개수
-  const [limit, setLimit] = useState(10); // 한 페이지에 들어갈 카드의 개수
+  const limit = 10 // 한 페이지에 들어갈 카드의 개수
   const [page, setPage] = useState(1); // 현재 페이지 번호
-  const offset = (page - 1) * 10; // 첫 게시물의 위치
-
-  // useEffect(() => {
-  //   dispatch(itemActions.setCardDB()).then(data => setPosts(data));
-  // }, []);
+  const offset = (page - 1) * limit; // 첫 게시물의 위치
 
   //오버플로우 스크롤 추가
 
@@ -64,18 +58,18 @@ const SideNav = props => {
             return <CardList key={`card_${i}`} {...v} />
           })} */}
 
-        {postList.map((v, i) => (
-          <StyledPost onClick={() => _onClickDetail(v.postId)} key={`card_${i}`}>
+        {/* {postList.map((v, i) => (
+          <StyledPost onClick={() => _onClickDetail(v.postId)} key={`post_${i}`}>
             <Post {...v} />
           </StyledPost>
-        ))}
+        ))} */}
 
         {/* pagination 적용 후  */}
-        {/* {postList.slice(offset, offset + limit).map((v, i) => (
-          <div onClick={_onClickDetail} key={`card_${i}`}>
-            <CardList {...v} _onClick={_onClickDetail} />
-          </div>
-        ))} */}
+        {postList.slice(offset, offset + limit).map((v, i) => (
+          <StyledPost onClick={() => _onClickDetail(v.postId)} key={`post_${i}`}>
+          <Post {...v} />
+        </StyledPost>
+        ))}
       </Flex>
       <Flex>
         <Pagination

@@ -7,10 +7,23 @@ import { actionCreator as postActions } from "../redux/modules/post";
 import { Flex, Image, Text } from "../elements";
 import Permit from "../shared/Permit";
 
+//style
+import filledHeart from "../image/filledHeart.svg";
+import emptyHeart from "../image/emptyHeart.svg";
 
 const Post = props => {
-  const { image, title, writer, category, price, createdAt, endTime, address, postId, isLike } =
-    props;
+  const {
+    image,
+    title,
+    writer,
+    category,
+    price,
+    createdAt,
+    endTime,
+    address,
+    postId,
+    isLike,
+  } = props;
   const dispatch = useDispatch();
   //span tag에 text-overflow를 주기 위함
   const contentStyle = {
@@ -24,14 +37,12 @@ const Post = props => {
 
   // number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") 3자리마다 콤마찍어주는 정규표현식
 
-  const clickLike = (e) => {
+  const clickLike = e => {
     e.stopPropagation();
-    console.log(isLike)
-    dispatch(postActions.postLikeDB({postId: postId, isLike: isLike}))
-  }
+    dispatch(postActions.postLikeDB({ postId: postId, isLike: isLike }));
+  };
 
   return (
-    
     <Flex
       styles={{
         boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
@@ -61,9 +72,21 @@ const Post = props => {
         <Flex
           styles={{ justifyContent: "space-between", marginBottom: "13px" }}
         >
-          <Text styles={{ fontSize: "18px", fontWeight: "700" }}>{title}</Text>
+          <Text className={"line-break"} styles={{ fontSize: "18px", fontWeight: "700"}}>{title}</Text>
           <Permit>
-            {isLike ? <div onClick={clickLike}>♥</div> : <div onClick={clickLike}>♡</div>}
+            {isLike ? (
+              <img
+                alt="filledHeart"
+                src={filledHeart}
+                onClick={clickLike}
+              ></img>
+            ) : (
+              <img
+                alt="filledHeart"
+                src={emptyHeart}
+                onClick={clickLike}
+              ></img>
+            )}
           </Permit>
         </Flex>
         <Flex styles={{ justifyContent: "start" }}>

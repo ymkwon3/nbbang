@@ -1,3 +1,12 @@
+@font-face {
+  font-family: 'pretendard';
+  src: url('../font/PretendardVariable.ttf');
+}
+
+* {
+  font-family: 'pretendard';
+}
+
 .border-left-radius {
   border-bottom-left-radius: 10px !important;
   border-top-left-radius: 10px !important;
@@ -48,4 +57,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.line-break {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
