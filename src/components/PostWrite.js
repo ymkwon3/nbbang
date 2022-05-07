@@ -41,6 +41,7 @@ const PostWrite = props => {
     geocoder.coord2Address(lng, lat, (result, status) => {
       // 지번 주소
       const addr = result[0].address;
+      console.log(addr)
       submitRef.current.addressRef.value = addr.address_name;
       positionRef.current = { lat, lng };
       markerRef.current = new kakao.maps.Marker({

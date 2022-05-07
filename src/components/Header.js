@@ -40,7 +40,7 @@ const Header = props => {
     width: "145px",
     height: "40px",
     borderRadius: "30px",
-    fontSize: "16px",
+    fontSize: "18px",
     fontWeight: "500",
   };
 
@@ -50,7 +50,7 @@ const Header = props => {
     width: "145px",
     height: "40px",
     borderRadius: "30px",
-    fontSize: "16px",
+    fontSize: "18px",
     fontWeight: "500",
   };
 
