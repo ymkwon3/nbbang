@@ -26,14 +26,14 @@ const ChatBox = () => {
 
   const selectedChat = useSelector((state) => state.chat);
   // console.log(selectedChat);
-  const chatAdmin = selectedChat.room.chatAdmin;
+  // const chatAdmin = selectedChat.room.chatAdmin;
   // console.log(chatAdmin);
-  const chatRoomUsers = selectedChat.room.users;
+  // const chatRoomUsers = selectedChat.room.users;
   // console.log(selectedChatUsers);
-  const selectedChatmessages = selectedChat.messages;
+  // const selectedChatmessages = selectedChat.messages;
   // console.log(selectedChatmessages);
 
-  const loggedUser = useSelector((state) => state.user.userInfo);
+  // const loggedUser = useSelector((state) => state.user.userInfo);
   // console.log(loggedUser);
 
   const [goToChatRoom, setGoToChatRoom] = React.useState(false);
@@ -57,7 +57,7 @@ const ChatBox = () => {
 
     // later replace 1 with "real" selected roomId
     // fetchMessages();
-    setChatUsers(chatRoomUsers);
+    // setChatUsers(chatRoomUsers);
     if (selectedChat.room.roomId !== "") {
       socket.emit("join chat", selectedChat.room.roomId);
     }
@@ -66,7 +66,7 @@ const ChatBox = () => {
   const fetchMessages = () => {
     if (!selectedChat) return;
     setLoading(true);
-    // dispatch(chatActions.startChatDB(1));
+    dispatch(chatActions.startChatDB(1));
     setLoading(false);
   };
 
@@ -85,16 +85,17 @@ const ChatBox = () => {
       newMessage.content
     ) {
       socket.emit("stop typing", selectedChat.room.roomId);
-      let chatRoomUserList = [...chatRoomUsers, chatAdmin];
-      await socket.emit("send_message", newMessage, chatRoomUserList);
+      // let chatRoomUserList = [...chatRoomUsers, chatAdmin];
+      // await socket.emit("send_message", newMessage, chatRoomUserList);
+      // await socket.emit("sendmessage", loggedUser);
       setNewlyAddedMessages((messageList) => [...messageList, newMessage]);
       setNewmessage({ ...newMessage, content: "" });
     }
   };
 
   React.useEffect(() => {
-    socket = io.connect("https://redpingpong.shop");
-    socket.emit("setup", loggedUser);
+    socket = io.connect("http://52.78.211.107");
+    // socket.emit("setup", loggedUser);
     socket.on("connected", () => setSocketConnected(true));
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
@@ -103,7 +104,7 @@ const ChatBox = () => {
   React.useEffect(() => {
     fetchMessages();
     selectedChatCompare = selectedChat;
-  }, [selectedChat]);
+  }, []);
 
   React.useEffect(() => {
     socket.on("receive_message", (newMessageReceived) => {
@@ -128,8 +129,8 @@ const ChatBox = () => {
   const typingHandler = (e) => {
     setNewmessage({
       ...newMessage,
-      roomId: selectedChatmessages[0].roomId,
-      sender: { ...loggedUser },
+      // roomId: selectedChatmessages[0].roomId,
+      // sender: { ...loggedUser },
       content: e.target.value,
       createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
     });
@@ -157,12 +158,13 @@ const ChatBox = () => {
   };
 
   const test = () => {
-    socket.emit("sendmessage", "연결 킹!!");
+    socket.emit("sendmessage", "문희님 바보 멍충이!!");
   };
 
   return (
     <>
       <Flex styles={{ flexDirection: "column" }}>
+        <Button _onClick={test}>실험</Button>
         <Button styles={{ border: "1px solid black" }} _onClick={goToChat}>
           채팅하러가기
         </Button>
@@ -178,11 +180,11 @@ const ChatBox = () => {
             }}
           >
             <ChatBoxLeft
-              messages={[...selectedChatmessages, ...newlyAddedMessages]}
+              // messages={[...selectedChatmessages, ...newlyAddedMessages]}
               typingHandler={typingHandler}
               newMessage={newMessage}
               sendNewMessage={sendNewMessage}
-              loggedUser={loggedUser}
+              // loggedUser={loggedUser}
               isTyping={isTyping}
             />
             <ChatBoxRight chatUsers={chatUsers} socket={socket} />

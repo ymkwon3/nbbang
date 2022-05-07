@@ -40,11 +40,11 @@ const isLoginDB = createAsyncThunk(
 
 const initialState = {
   userInfo: {
-    userId: "chatAdminUserId",
-    userEmail: "chatAdminUserEmail",
-    userName: "chatAdminUserName",
-    userImage: "https://img.hankyung.com/photo/202106/ZA.26374128.1.jpg",
-    tradeCount: "chatAdminTradeCount",
+    userId: "",
+    userEmail: "",
+    userName: "",
+    userImage: "",
+    tradeCount: "",
   },
   isLogin: false,
 };
