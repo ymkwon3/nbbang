@@ -33,6 +33,7 @@ const ChatBox = () => {
   const chatRoomUsers = selectedChat.userInfo;
   const selectedRoomMessages = selectedChat.chatInfo;
   const participantList = selectedChat.headList;
+  const awaiterList = chatRoomUsers.filter((user) => user.isPick === 0);
 
   const loggedUser = useSelector((state) => state.user.userInfo);
 
@@ -46,15 +47,25 @@ const ChatBox = () => {
   const [typing, setTyping] = React.useState(false);
   const [isTyping, setIsTyping] = React.useState(false);
   const [socketConnected, setSocketConnected] = React.useState(false); // socket 연결 상태 체크
+  const [awaiters, setAwaiters] = React.useState([]);
+  const [participants, setParticipants] = React.useState([]);
 
   const goToChat = () => {
     setGoToChatRoom(!goToChatRoom);
     // later replace 1 with "real" selected roomId
-    fetchMessages();
+
     // setChatUsers(chatRoomUsers);
     // if (!postid) {
     // 1은 postid로 대체
     // p+postid 집어 넣기
+    fetchMessages().then((res) => {
+      console.log(awaiterList);
+      console.log(participantList);
+    });
+
+    setAwaiters(awaiterList);
+    setParticipants(participantList);
+
     if (postid !== undefined) {
       socket.emit("startchat", { postid: postid, loggedUser });
     }
@@ -63,12 +74,12 @@ const ChatBox = () => {
 
   const fetchMessages = () => {
     if (!selectedChat) return;
-    setLoading(true);
-    dispatch(chatActions.startChatDB(1));
-    setLoading(false);
+    // setLoading(true);
+    // setLoading(false);
+    return dispatch(chatActions.startChatDB(1));
   };
 
-  const sendNewMessage = async (e) => {
+  const sendNewMessage = (e) => {
     if (
       !newMessage &&
       ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
@@ -116,8 +127,10 @@ const ChatBox = () => {
   }, []);
 
   React.useEffect(() => {
-    fetchMessages();
+    // fetchMessages();
     // selectedChatCompare = selectedChat;
+    // console.log(participantList);
+    // setAwaiters(awaiterList);
   }, []);
 
   React.useEffect(() => {
@@ -142,6 +155,24 @@ const ChatBox = () => {
       //     newMessageReceived,
       //   ]);
       // }
+    );
+
+    socket.on(
+      "receive_participant_list_after_added",
+      (updatedParticipantList, updatedAwaiterList) => {
+        console.log("갓영민");
+        setParticipants(updatedParticipantList);
+        setAwaiters(updatedAwaiterList);
+      }
+    );
+
+    socket.on(
+      "receive_participant_list_after_canceled",
+      (updatedParticipantList, updatedAwaiterList) => {
+        console.log("빛영민");
+        setParticipants(updatedParticipantList);
+        setAwaiters(updatedAwaiterList);
+      }
     );
   }, []);
 
@@ -171,6 +202,9 @@ const ChatBox = () => {
     }, timerLength);
   };
 
+  // if (awaiters === null && participants === null) {
+  //   return null;
+  // }
   return (
     <>
       <Flex styles={{ flexDirection: "column" }}>
@@ -178,9 +212,10 @@ const ChatBox = () => {
           채팅하러가기
         </Button>
         {/* position for laoding */}
-        {!goToChatRoom ? (
-          <>{/* loading lottie */}</>
-        ) : (
+        {/* {awaiters === null && participants === null ? ( */}
+        <>{/* loading lottie */}</>
+        {/* ) : goToChatRoom ? ( */}
+        {goToChatRoom ? (
           <Flex
             styles={{
               width: "600px",
@@ -201,8 +236,14 @@ const ChatBox = () => {
               chatRoomUsers={chatRoomUsers}
               participantList={participantList}
               socket={socket}
+              awaiters={awaiters}
+              setAwaiters={setAwaiters}
+              participants={participants}
+              setParticipants={setParticipants}
             />
           </Flex>
+        ) : (
+          <></>
         )}
       </Flex>
     </>
@@ -273,22 +314,25 @@ export const ChatBoxLeft = ({
 
 export const ChatBoxRight = ({
   postid,
-  chatRoomUsers,
-  participantList,
+  // chatRoomUsers,
+  // participantList,
   socket,
+  // awaiterList,
+  awaiters,
+  setAwaiters,
+  participants,
+  setParticipants,
 }) => {
-  const awaiterList = chatRoomUsers.filter((user) => user.isPick === 0);
-
-  const [awaiters, setAwaiters] = React.useState([]);
-  const [participants, setParticipants] = React.useState([]);
+  console.log("awaiters: " + awaiters);
+  console.log("participants: " + participants);
   const [loadingAddParticipant, setLoadingAddParticipant] =
     React.useState(false);
   const [loadingDeleteParticipant, setLoadingDeleteParticipant] =
     React.useState(false);
 
-  const addNewParticipant = async (selectedUser) => {
+  const addNewParticipant = (selectedUser) => {
     setLoadingAddParticipant(true);
-    await socket.emit("add_new_participant", { postid, selectedUser });
+    socket.emit("add_new_participant", { postid, selectedUser });
 
     setParticipants((existingParticipantList) => [
       ...existingParticipantList,
@@ -302,9 +346,9 @@ export const ChatBoxRight = ({
     setLoadingAddParticipant(false);
   };
 
-  const deleteParticipant = async (selectedUser) => {
+  const deleteParticipant = (selectedUser) => {
     setLoadingDeleteParticipant(true);
-    await socket.emit("cancel_new_participant", { postid, selectedUser });
+    socket.emit("cancel_new_participant", { postid, selectedUser });
 
     let updatedParticipantList = participants.filter(
       (participant) => participant.User_userId !== selectedUser.User_userId
@@ -314,31 +358,9 @@ export const ChatBoxRight = ({
       ...existingAwaiterList,
       selectedUser,
     ]);
+
     setLoadingDeleteParticipant(false);
   };
-
-  React.useEffect(() => {
-    setAwaiters(awaiterList);
-    setParticipants(participantList);
-  }, []);
-
-  React.useEffect(() => {
-    socket.on(
-      "receive_participant_list_after_added",
-      (updatedParticipantList, updatedAwaiterList) => {
-        setParticipants(updatedParticipantList);
-        setAwaiters(updatedAwaiterList);
-      }
-    );
-
-    socket.on(
-      "receive_participant_list_after_canceled",
-      (updatedParticipantList, updatedAwaiterList) => {
-        setParticipants(updatedParticipantList);
-        setAwaiters(updatedAwaiterList);
-      }
-    );
-  }, []);
 
   return (
     <>
@@ -353,7 +375,7 @@ export const ChatBoxRight = ({
         }}
       >
         <Flex>
-          <Text>{participants.length} / 5</Text>
+          <Text>{participants.length + 1} / 5</Text>
         </Flex>
         <Flex
           className="removeScroll"
