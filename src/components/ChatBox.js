@@ -28,14 +28,13 @@ let postid = "p1";
 const ChatBox = () => {
   const dispatch = useDispatch();
 
-  const selectedChat = useSelector((state) => state.chat);
+  const selectedChat = useSelector(state => state.chat);
   const chatAdmin = selectedChat.chatAdmin;
   const chatRoomUsers = selectedChat.userInfo;
   const selectedRoomMessages = selectedChat.chatInfo;
   const participantList = selectedChat.headList;
-  const awaiterList = chatRoomUsers.filter((user) => user.isPick === 0);
-
-  const loggedUser = useSelector((state) => state.user.userInfo);
+  const awaiterList = chatRoomUsers.filter(user => user.isPick === 0);
+  const loggedUser = useSelector(state => state.user.userInfo);
 
   const [goToChatRoom, setGoToChatRoom] = React.useState(false);
   const [newMessage, setNewMessage] = React.useState("");
@@ -47,8 +46,8 @@ const ChatBox = () => {
   const [typing, setTyping] = React.useState(false);
   const [isTyping, setIsTyping] = React.useState(false);
   const [socketConnected, setSocketConnected] = React.useState(false); // socket 연결 상태 체크
-  const [awaiters, setAwaiters] = React.useState([]);
-  const [participants, setParticipants] = React.useState([]);
+  const [awaiters, setAwaiters] = React.useState(null);
+  const [participants, setParticipants] = React.useState(null);
 
   const goToChat = () => {
     setGoToChatRoom(!goToChatRoom);
@@ -58,13 +57,7 @@ const ChatBox = () => {
     // if (!postid) {
     // 1은 postid로 대체
     // p+postid 집어 넣기
-    fetchMessages().then((res) => {
-      console.log(awaiterList);
-      console.log(participantList);
-    });
-
-    setAwaiters(awaiterList);
-    setParticipants(participantList);
+    fetchMessages();
 
     if (postid !== undefined) {
       socket.emit("startchat", { postid: postid, loggedUser });
@@ -79,7 +72,7 @@ const ChatBox = () => {
     return dispatch(chatActions.startChatDB(1));
   };
 
-  const sendNewMessage = (e) => {
+  const sendNewMessage = e => {
     if (
       !newMessage &&
       ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
@@ -111,13 +104,13 @@ const ChatBox = () => {
         // chatRoomUserList,
       });
 
-      setNewlyAddedMessages((messageList) => [...messageList, newChat]);
+      setNewlyAddedMessages(messageList => [...messageList, newChat]);
       setNewMessage("");
     }
   };
 
   React.useEffect(() => {
-    socket.on("connected", (enteredUser) => {
+    socket.on("connected", enteredUser => {
       console.log("연결성공!");
       console.log(`${enteredUser}`);
       setSocketConnected(true);
@@ -126,18 +119,18 @@ const ChatBox = () => {
     socket.on("stop typing", () => setIsTyping(false));
   }, []);
 
-  React.useEffect(() => {
-    // fetchMessages();
-    // selectedChatCompare = selectedChat;
-    // console.log(participantList);
-    // setAwaiters(awaiterList);
-  }, []);
+  // React.useEffect(() => {
+  //   // fetchMessages();
+  //   // selectedChatCompare = selectedChat;
+  //   // console.log(participantList);
+  //   // setAwaiters(awaiterList);
+  // }, [awaiterList]);
 
   React.useEffect(() => {
     socket.on(
       "receive message",
-      (newMessageReceived) => {
-        setNewlyAddedMessages((messageList) => [
+      newMessageReceived => {
+        setNewlyAddedMessages(messageList => [
           ...messageList,
           newMessageReceived,
         ]);
@@ -160,7 +153,6 @@ const ChatBox = () => {
     socket.on(
       "receive_participant_list_after_added",
       (updatedParticipantList, updatedAwaiterList) => {
-        console.log("갓영민");
         setParticipants(updatedParticipantList);
         setAwaiters(updatedAwaiterList);
       }
@@ -169,14 +161,13 @@ const ChatBox = () => {
     socket.on(
       "receive_participant_list_after_canceled",
       (updatedParticipantList, updatedAwaiterList) => {
-        console.log("빛영민");
         setParticipants(updatedParticipantList);
         setAwaiters(updatedAwaiterList);
       }
     );
   }, []);
 
-  const typingHandler = (e) => {
+  const typingHandler = e => {
     setNewMessage(e.target.value);
 
     // Typing Indicator Logic
@@ -201,10 +192,7 @@ const ChatBox = () => {
       }
     }, timerLength);
   };
-
-  // if (awaiters === null && participants === null) {
-  //   return null;
-  // }
+  
   return (
     <>
       <Flex styles={{ flexDirection: "column" }}>
@@ -236,9 +224,9 @@ const ChatBox = () => {
               chatRoomUsers={chatRoomUsers}
               participantList={participantList}
               socket={socket}
-              awaiters={awaiters}
+              awaiters={awaiters ? awaiters : awaiterList}
               setAwaiters={setAwaiters}
-              participants={participants}
+              participants={participants ? participants : participantList}
               setParticipants={setParticipants}
             />
           </Flex>
@@ -323,41 +311,41 @@ export const ChatBoxRight = ({
   participants,
   setParticipants,
 }) => {
-  console.log("awaiters: " + awaiters);
-  console.log("participants: " + participants);
   const [loadingAddParticipant, setLoadingAddParticipant] =
     React.useState(false);
   const [loadingDeleteParticipant, setLoadingDeleteParticipant] =
     React.useState(false);
 
-  const addNewParticipant = (selectedUser) => {
+  const addNewParticipant = selectedUser => {
     setLoadingAddParticipant(true);
     socket.emit("add_new_participant", { postid, selectedUser });
 
-    setParticipants((existingParticipantList) => [
-      ...existingParticipantList,
-      selectedUser,
-    ]);
+    setParticipants(existingParticipantList => {
+      return existingParticipantList
+        ? [...existingParticipantList, selectedUser]
+        : [selectedUser];
+    });
     let updatedAwaiterList = awaiters.filter(
-      (awaiter) => awaiter.User_userId !== selectedUser.User_userId
+      awaiter => awaiter.User_userId !== selectedUser.User_userId
     );
     setAwaiters(updatedAwaiterList);
 
     setLoadingAddParticipant(false);
   };
 
-  const deleteParticipant = (selectedUser) => {
+  const deleteParticipant = selectedUser => {
     setLoadingDeleteParticipant(true);
     socket.emit("cancel_new_participant", { postid, selectedUser });
 
     let updatedParticipantList = participants.filter(
-      (participant) => participant.User_userId !== selectedUser.User_userId
+      participant => participant.User_userId !== selectedUser.User_userId
     );
     setParticipants(updatedParticipantList);
-    setAwaiters((existingAwaiterList) => [
-      ...existingAwaiterList,
-      selectedUser,
-    ]);
+    setAwaiters(existingAwaiterList => {
+      return existingAwaiterList
+        ? [...existingAwaiterList, selectedUser]
+        : [selectedUser];
+    });
 
     setLoadingDeleteParticipant(false);
   };
