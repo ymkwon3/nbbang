@@ -31,12 +31,14 @@ const Main = () => {
 
   /*
   해당 지역의 전체 게시물, 현재 선택된 카테고리, 
-  카테고리로 분류된 게시물리스트, 게시물 지역 범위, 현재 위치 구분*/
+  게시물 지역 범위, 현재 위치 구분*/
   const postList = useSelector(state => state.post.postList);
   const category = useSelector(state => state.post.category);
-  const userInfo = useSelector(state => state.user.userInfo);
   const [cityRange, setCityRange] = React.useState(3);
   const [city, setCity] = React.useState(3);
+
+  // 로그인된 유저 정보
+  const userInfo = useSelector(state => state.user.userInfo);
 
   const cateList = postList.filter(
     v => v.category === category || category === "all"
@@ -212,6 +214,7 @@ const Main = () => {
               <PostWrite
                 rerender={rerender}
                 map={mapRef.current}
+                userInfo={userInfo}
                 _onClickClose={clickClose}
                 _setRightContainer={setRightContainer}
               ></PostWrite>
@@ -222,6 +225,7 @@ const Main = () => {
         </div>
       </Flex>
       <ButtonContainer>
+        {/* 진호님 여기다가 내 위치 이동 만드시면 됩니다 */}
         <RadioInput city setCityRange={setCityRange}></RadioInput>
       </ButtonContainer>
     </KaKaoMap>
@@ -255,7 +259,6 @@ const ButtonContainer = styled.div`
   position: fixed;
   right: 20px;
   bottom: 20px;
-  border: 1px solid red;
   z-index: 10;
 `;
 

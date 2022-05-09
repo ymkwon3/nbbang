@@ -3,6 +3,7 @@ import User from "./modules/user";
 import Post from "./modules/post";
 import Card from "./modules/card";
 import Chat from "./modules/chat";
+import UserPage from "./modules/userpage";
 
 const middlewares = [];
 
@@ -19,6 +20,7 @@ export default configureStore({
     post: Post,
     card: Card,
     chat: Chat,
+    userpage: UserPage,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(...middlewares),

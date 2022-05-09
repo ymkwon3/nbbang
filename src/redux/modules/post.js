@@ -15,7 +15,6 @@ const getPostListDB = createAsyncThunk(`post/getlist`, async data => {
 
 const getPostDetailDB = createAsyncThunk(`post/detail`, async (postId) => {
   return await getAPI(`/main/${postId}`).then(res => {
-    console.log(res)
     return res.data[0];
   });
 })
@@ -24,7 +23,6 @@ const addPostDB = createAsyncThunk("post/add", async (data) => {
   return await postFormAPI('/main/postadd', data);
 });
 
-// 서버쪽 좋아요 조회 완료되면 다시 해야함 -영민
 const postLikeDB = createAsyncThunk("post/like", async data => {
   const { postId, isLike } = data;
   if (isLike) {
@@ -58,7 +56,6 @@ const postSlice = createSlice({
   initialState: {
     postList: [],
     postDetail: [],
-    cityRange: 3,
     category: "all"
   },
   reducers: {

@@ -1,11 +1,11 @@
 /* global kakao */
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Button, Flex, Image, Input, Select } from "../elements";
+import { Button, Flex, Image, Input, Select, Text } from "../elements";
 import { actionCreator as postActions } from "../redux/modules/post";
 
 const PostWrite = props => {
-  const { map, _onClickClose, _setRightContainer } = props;
+  const { map, userInfo, _onClickClose, _setRightContainer } = props;
   const geocoder = new kakao.maps.services.Geocoder();
   const markerRef = React.useRef(null);
   const positionRef = React.useRef(null);
@@ -41,7 +41,7 @@ const PostWrite = props => {
     geocoder.coord2Address(lng, lat, (result, status) => {
       // 지번 주소
       const addr = result[0].address;
-      console.log(addr)
+      console.log(addr);
       submitRef.current.addressRef.value = addr.address_name;
       positionRef.current = { lat, lng };
       markerRef.current = new kakao.maps.Marker({
@@ -118,7 +118,22 @@ const PostWrite = props => {
         gap: "16px",
       }}
     >
-      <Input label="제목" ref={e => (submitRef.current.titleRef = e)} />
+      <Flex styles={{ justifyContent: "start" }}>
+        <Image
+          shape="circle"
+          src={userInfo.userImage}
+          styles={{
+            width: "34px",
+            height: "34px",
+            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+          }}
+        ></Image>
+        <Text
+          styles={{ fontSize: "20px", fontWeight: "700", marginLeft: "12px" }}
+        >
+          {userInfo.userName}
+        </Text>
+      </Flex>
       <Select
         ref={e => (submitRef.current.categoryRef = e)}
         options={[
@@ -126,34 +141,87 @@ const PostWrite = props => {
           { key: "같이 먹자", value: "eat" },
         ]}
       />
-      <Input label="가격" ref={e => (submitRef.current.priceRef = e)} />
-      <Input label="인원" ref={e => (submitRef.current.headCountRef = e)} />
-      <Input label="기간" ref={e => (submitRef.current.endTimeRef = e)} />
-      <Flex styles={{ justifyContent: "space-between" }}>
+      <Flex
+        styles={{
+          borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
+        }}
+      >
+        <Input label="제목" ref={e => (submitRef.current.titleRef = e)} />
+      </Flex>
+      <Flex
+        styles={{
+          borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
+        }}
+      >
+        <Input label="가격" ref={e => (submitRef.current.priceRef = e)} />
+      </Flex>
+      <Flex
+        styles={{
+          borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
+        }}
+      >
+        <Input
+          label="기간"
+          ref={e => (submitRef.current.endTimeRef = e)}
+          styles={{ width: "calc(50% - 19px)" }}
+        />
+        <Flex
+          styles={{
+            width: "1px",
+            height: "100%",
+            backgroundColor: "#808080",
+            margin: "0 16px 16px",
+          }}
+        />
+        <Input
+          label="인원"
+          ref={e => (submitRef.current.headCountRef = e)}
+          styles={{ width: "calc(50% - 19px)" }}
+        />
+      </Flex>
+
+      <Flex
+        styles={{
+          justifyContent: "space-between",
+          borderBottom: "1px solid rgba(0, 0, 0, 0.5)",
+        }}
+      >
         <Input
           label="주소"
           ref={e => (submitRef.current.addressRef = e)}
           readOnly
-          styles={{ width: "80%" }}
-        />
-        <Button
-          styles={{
-            width: "110px",
-            height: "30px",
-            borderRadius: "30px",
-            backgroundColor: "#E6E5F0",
-            fontSize: "12px",
-          }}
-          _onClick={() => setFindState(true)}
         >
-          주소가져오기
-        </Button>
+          <Button
+            styles={{
+              width: "70px",
+              height: "20px",
+              borderRadius: "30px",
+              backgroundColor: "#E6E5F0",
+              fontSize: "10px",
+            }}
+            _onClick={() => setFindState(true)}
+          >
+            주소가져오기
+          </Button>
+        </Input>
       </Flex>
-      <Input
-        label="상세위치"
-        ref={e => (submitRef.current.addressDetailRef = e)}
-      />
-      <Input label="내용" ref={e => (submitRef.current.contentRef = e)} />
+      <Flex
+        styles={{
+          borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
+        }}
+      >
+        <Input
+          label="상세위치"
+          ref={e => (submitRef.current.addressDetailRef = e)}
+        />
+      </Flex>
+      <Flex
+        styles={{
+          borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
+        }}
+      >
+        <Input label="내용" ref={e => (submitRef.current.contentRef = e)} />
+      </Flex>
       <Flex maxWidth="290px">
         <label htmlFor="profile">
           <Image src={preview} styles={{ width: "100%" }} shape="rectangle" />
@@ -165,7 +233,20 @@ const PostWrite = props => {
           style={{ visibility: "hidden", width: "0" }}
         ></input>
       </Flex>
-      <button onClick={clickSubmit}>전송하기</button>
+      <Button
+        styles={{
+          width: "150px",
+          height: "40px",
+          backgroundColor: "#19253D",
+          color: "#fff",
+          borderRadius: "30px",
+          fontSize: "18px",
+          fontWeight: "700",
+        }}
+        _onClick={clickSubmit}
+      >
+        전송하기
+      </Button>
     </Flex>
   );
 };

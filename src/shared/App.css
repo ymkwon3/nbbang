@@ -25,6 +25,11 @@
   display: none;
 }
 
+.hover-event {
+  cursor: pointer;
+  user-select: none;
+}
+
 .flex-column-center {
   display: flex;
   flex-direction: column;

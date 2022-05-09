@@ -23,7 +23,9 @@ Grid.defaultProps = {
 
 const GridDiv = styled.div`
   display: grid;
+  justify-items: center;
   width: ${props => props.width};
+  gap: 30px;
   grid-template-columns: repeat(3, minmax(200px, 1fr));
 `;
 

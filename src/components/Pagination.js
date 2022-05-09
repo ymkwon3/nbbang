@@ -43,7 +43,7 @@ const PaginationBtn = styled.button`
     font-size: 1rem;
 
     &[aria-current] {
-    background: #E8D9FF;
+    background: #FFA877;
     font-weight: bold;
     cursor: revert;
     transform: revert;
