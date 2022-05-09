@@ -10,41 +10,42 @@ import { getToken, setToken, removeToken } from "../../shared/localStorage";
 import { chatMockData } from "../chatMockData";
 import moment from "moment";
 
-const startChatDB = createAsyncThunk("chat/startChat", async (postId) => {
-  return getAPI(`/main/getchat/${postId}`).then((res) => {
-    console.log(res);
-    return res;
+const startChatDB = createAsyncThunk("chat/startChat", async (postid) => {
+  return getAPI(`/main/getchat/${postid}`).then((res) => {
+    console.log(res.data);
+    return res.data;
   });
 });
 
 const getParticipantsDB = createAsyncThunk(
   "chat/addDealParticipant",
-  async (postId) => {
+  async (postid) => {
     // in data, {postId} must be put in.
-    return getAPI(`/main/deal/getparticipantlist/${postId}`).then((res) => {
+    return getAPI(`/main/deal/getparticipantlist/${postid}`).then((res) => {
       console.log(res);
-      return res;
+      // return res;
     });
   }
 );
 
 // initialState
 const initialState = {
-  room: {
-    postId: "",
-    roomId: "",
-    chatAdmin: "",
-    users: [],
-  },
-  messages: [],
+  chatAdmin: "",
+  userInfo: [],
+  chatInfo: [],
+  headList: [],
 };
 
 const initialUserFrom = {
-  userId: "",
-  userEmail: "",
-  userName: "",
+  Post_postId: "",
+  Room_roomId: "",
+  User_userEmail: "",
+  User_userId: "",
+  User_userName: "",
+  chat: "",
+  chatId: "",
+  createdAt: "",
   userImage: "",
-  tradeCount: "",
 };
 
 const initialMessageForm = {
@@ -69,9 +70,13 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(startChatDB.fulfilled, (state, action) => {
-      console.log(state);
-      console.log(action.payload);
-      // add something when testing.
+      // console.log(state);
+      // console.log(action.payload);
+      // console.log(action.payload.chatAdmin[0].User_userId);
+      state.chatAdmin = action.payload.chatAdmin[0].User_userId;
+      state.userInfo = action.payload.userInfo;
+      state.chatInfo = action.payload.chatInfo;
+      state.headList = action.payload.headList;
     });
 
     builder.addCase(getParticipantsDB.fulfilled, (state, action) => {

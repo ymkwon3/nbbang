@@ -18,62 +18,71 @@ import moment from "moment";
 import "moment/locale/ko";
 
 import io from "socket.io-client";
+import { isFulfilled } from "@reduxjs/toolkit";
 
-let socket, selectedChatCompare;
+let socket = io.connect("https://redpingpong.shop"),
+  // let socket = io.connect("https://localhost:3443"),
+  selectedChatCompare;
+let postid = "p1";
 
 const ChatBox = () => {
   const dispatch = useDispatch();
 
   const selectedChat = useSelector((state) => state.chat);
-  // console.log(selectedChat);
-  const chatAdmin = selectedChat.room.chatAdmin;
-  // console.log(chatAdmin);
-  const chatRoomUsers = selectedChat.room.users;
-  // console.log(selectedChatUsers);
-  const selectedChatmessages = selectedChat.messages;
-  // console.log(selectedChatmessages);
+  const chatAdmin = selectedChat.chatAdmin;
+  const chatRoomUsers = selectedChat.userInfo;
+  const selectedRoomMessages = selectedChat.chatInfo;
+  const participantList = selectedChat.headList;
+  const awaiterList = chatRoomUsers.filter((user) => user.isPick === 0);
 
   const loggedUser = useSelector((state) => state.user.userInfo);
-  // console.log(loggedUser);
 
   const [goToChatRoom, setGoToChatRoom] = React.useState(false);
-  const [newMessage, setNewmessage] = React.useState({
-    roomId: "",
-    sender: {},
-    content: "",
-    createdAt: "",
-  });
+  const [newMessage, setNewMessage] = React.useState("");
   const [newlyAddedMessages, setNewlyAddedMessages] = React.useState([]);
-  const [chatUsers, setChatUsers] = React.useState([]);
+  // const [chatUsers, setChatUsers] = React.useState([]);
   const [notification, setNotification] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   React.useState(false);
   const [typing, setTyping] = React.useState(false);
   const [isTyping, setIsTyping] = React.useState(false);
   const [socketConnected, setSocketConnected] = React.useState(false); // socket 연결 상태 체크
+  const [awaiters, setAwaiters] = React.useState([]);
+  const [participants, setParticipants] = React.useState([]);
 
   const goToChat = () => {
     setGoToChatRoom(!goToChatRoom);
-
     // later replace 1 with "real" selected roomId
-    // fetchMessages();
-    setChatUsers(chatRoomUsers);
-    if (selectedChat.room.roomId !== "") {
-      socket.emit("join chat", selectedChat.room.roomId);
+
+    // setChatUsers(chatRoomUsers);
+    // if (!postid) {
+    // 1은 postid로 대체
+    // p+postid 집어 넣기
+    fetchMessages().then((res) => {
+      console.log(awaiterList);
+      console.log(participantList);
+    });
+
+    setAwaiters(awaiterList);
+    setParticipants(participantList);
+
+    if (postid !== undefined) {
+      socket.emit("startchat", { postid: postid, loggedUser });
     }
+    // }
   };
 
   const fetchMessages = () => {
     if (!selectedChat) return;
-    setLoading(true);
-    // dispatch(chatActions.startChatDB(1));
-    setLoading(false);
+    // setLoading(true);
+    // setLoading(false);
+    return dispatch(chatActions.startChatDB(1));
   };
 
-  const sendNewMessage = async (e) => {
+  const sendNewMessage = (e) => {
     if (
-      ((e.type === "keyup" && e.key === "Enter") || e.type === "click") &&
-      !newMessage.content
+      !newMessage &&
+      ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
     ) {
       //  replace this alert with toast box later in this position.
       window.alert("칸이 비었음!! 채워주삼 ㅇㅇ");
@@ -81,65 +90,102 @@ const ChatBox = () => {
     }
 
     if (
-      ((e.type === "keyup" && e.key === "Enter") || e.type === "click") &&
-      newMessage.content
+      newMessage &&
+      ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
     ) {
-      socket.emit("stop typing", selectedChat.room.roomId);
-      let chatRoomUserList = [...chatRoomUsers, chatAdmin];
-      await socket.emit("send_message", newMessage, chatRoomUserList);
-      setNewlyAddedMessages((messageList) => [...messageList, newMessage]);
-      setNewmessage({ ...newMessage, content: "" });
+      let newChat = {
+        Post_postId: postid,
+        User_userId: loggedUser.userId,
+        User_userEmail: loggedUser.userEmail,
+        User_userName: loggedUser.userName,
+        userImage: loggedUser.userImage,
+        chat: newMessage,
+        createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
+      };
+
+      socket.emit("stop typing", postid);
+      // let chatRoomUserList = [...chatRoomUsers, chatAdmin];
+      socket.emit("sendmessage", {
+        postid: postid,
+        newMessage: newChat,
+        // chatRoomUserList,
+      });
+
+      setNewlyAddedMessages((messageList) => [...messageList, newChat]);
+      setNewMessage("");
     }
   };
 
   React.useEffect(() => {
-    socket = io.connect("http://localhost:5000");
-    socket.emit("setup", loggedUser);
-    socket.on("connected", () => setSocketConnected(true));
+    socket.on("connected", (enteredUser) => {
+      console.log("연결성공!");
+      console.log(`${enteredUser}`);
+      setSocketConnected(true);
+    });
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
   }, []);
 
   React.useEffect(() => {
-    fetchMessages();
-    selectedChatCompare = selectedChat;
-  }, [selectedChat]);
+    // fetchMessages();
+    // selectedChatCompare = selectedChat;
+    // console.log(participantList);
+    // setAwaiters(awaiterList);
+  }, []);
 
   React.useEffect(() => {
-    socket.on("receive_message", (newMessageReceived) => {
-      console.log("라면 먹자");
-      console.log(selectedChatCompare);
-      if (
-        !selectedChatCompare ||
-        selectedChatCompare.chat.roomId !== selectedChat.chat.roomId
-      ) {
-        console.log("실행");
-        // setNotification([newMessageReceived, ...notification]);
-      } else {
-        console.log(newMessageReceived);
+    socket.on(
+      "receive message",
+      (newMessageReceived) => {
         setNewlyAddedMessages((messageList) => [
           ...messageList,
           newMessageReceived,
         ]);
       }
-    });
+      // if (
+      //   !selectedChatCompare ||
+      //   selectedChatCompare.chat.roomId !== selectedChat.chat.roomId
+      // ) {
+      //   console.log("실행");
+      //   // setNotification([newMessageReceived, ...notification]);
+      // } else {
+      //   console.log(newMessageReceived);
+      //   setNewlyAddedMessages((messageList) => [
+      //     ...messageList,
+      //     newMessageReceived,
+      //   ]);
+      // }
+    );
+
+    socket.on(
+      "receive_participant_list_after_added",
+      (updatedParticipantList, updatedAwaiterList) => {
+        console.log("갓영민");
+        setParticipants(updatedParticipantList);
+        setAwaiters(updatedAwaiterList);
+      }
+    );
+
+    socket.on(
+      "receive_participant_list_after_canceled",
+      (updatedParticipantList, updatedAwaiterList) => {
+        console.log("빛영민");
+        setParticipants(updatedParticipantList);
+        setAwaiters(updatedAwaiterList);
+      }
+    );
   }, []);
 
   const typingHandler = (e) => {
-    setNewmessage({
-      ...newMessage,
-      roomId: selectedChatmessages[0].roomId,
-      sender: { ...loggedUser },
-      content: e.target.value,
-      createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
-    });
+    setNewMessage(e.target.value);
 
     // Typing Indicator Logic
     if (!socketConnected) return;
 
     if (!typing) {
       setTyping(true);
-      socket.emit("typing", selectedChat.room.roomId);
+      // 나중에 진짜 포스트 번호로 바꾸기
+      socket.emit("typing", postid);
     }
 
     let lastTypingTime = new Date().getTime();
@@ -150,12 +196,15 @@ const ChatBox = () => {
       let timeDiff = timeNow - lastTypingTime;
 
       if (timeDiff >= timerLength && typing) {
-        socket.emit("stop typing", selectedChat.room.roomId);
+        socket.emit("stop typing", postid);
         setTyping(false);
       }
     }, timerLength);
   };
 
+  // if (awaiters === null && participants === null) {
+  //   return null;
+  // }
   return (
     <>
       <Flex styles={{ flexDirection: "column" }}>
@@ -163,9 +212,10 @@ const ChatBox = () => {
           채팅하러가기
         </Button>
         {/* position for laoding */}
-        {!goToChatRoom ? (
-          <>{/* loading lottie */}</>
-        ) : (
+        {/* {awaiters === null && participants === null ? ( */}
+        <>{/* loading lottie */}</>
+        {/* ) : goToChatRoom ? ( */}
+        {goToChatRoom ? (
           <Flex
             styles={{
               width: "600px",
@@ -174,15 +224,26 @@ const ChatBox = () => {
             }}
           >
             <ChatBoxLeft
-              messages={[...selectedChatmessages, ...newlyAddedMessages]}
+              messages={[...selectedRoomMessages, ...newlyAddedMessages]}
               typingHandler={typingHandler}
               newMessage={newMessage}
               sendNewMessage={sendNewMessage}
               loggedUser={loggedUser}
               isTyping={isTyping}
             />
-            <ChatBoxRight chatUsers={chatUsers} socket={socket} />
+            <ChatBoxRight
+              postid={postid}
+              chatRoomUsers={chatRoomUsers}
+              participantList={participantList}
+              socket={socket}
+              awaiters={awaiters}
+              setAwaiters={setAwaiters}
+              participants={participants}
+              setParticipants={setParticipants}
+            />
           </Flex>
+        ) : (
+          <></>
         )}
       </Flex>
     </>
@@ -197,7 +258,6 @@ export const ChatBoxLeft = ({
   newMessage,
   sendNewMessage,
   loggedUser,
-  messageSendingLoading,
   isTyping,
 }) => {
   return (
@@ -234,7 +294,7 @@ export const ChatBoxLeft = ({
             style={{ height: "100%", width: "80%" }}
             onChange={typingHandler}
             onKeyUp={sendNewMessage}
-            value={newMessage.content}
+            value={newMessage}
           />
           <Button
             styles={{
@@ -252,67 +312,55 @@ export const ChatBoxLeft = ({
   );
 };
 
-export const ChatBoxRight = ({ chatUsers, socket }) => {
-  const dispatch = useDispatch();
-  const [selectedOnes, setSelectedOnes] = React.useState([]);
-  const [awaiters, setAwaiters] = React.useState([]);
+export const ChatBoxRight = ({
+  postid,
+  // chatRoomUsers,
+  // participantList,
+  socket,
+  // awaiterList,
+  awaiters,
+  setAwaiters,
+  participants,
+  setParticipants,
+}) => {
+  console.log("awaiters: " + awaiters);
+  console.log("participants: " + participants);
   const [loadingAddParticipant, setLoadingAddParticipant] =
     React.useState(false);
   const [loadingDeleteParticipant, setLoadingDeleteParticipant] =
     React.useState(false);
 
-  const addNewParticipant = async (selectedUser) => {
+  const addNewParticipant = (selectedUser) => {
     setLoadingAddParticipant(true);
-    setSelectedOnes((selectedUserList) => [...selectedUserList, selectedUser]);
-    const newAwaiterList = awaiters.filter(
-      (awaiter) => awaiter !== selectedUser
-    );
-    setAwaiters([...newAwaiterList]);
+    socket.emit("add_new_participant", { postid, selectedUser });
 
-    await socket.emit("add_new_participant", selectedUser);
+    setParticipants((existingParticipantList) => [
+      ...existingParticipantList,
+      selectedUser,
+    ]);
+    let updatedAwaiterList = awaiters.filter(
+      (awaiter) => awaiter.User_userId !== selectedUser.User_userId
+    );
+    setAwaiters(updatedAwaiterList);
+
+    setLoadingAddParticipant(false);
   };
 
-  const deleteParticipant = async (selectedUser) => {
+  const deleteParticipant = (selectedUser) => {
     setLoadingDeleteParticipant(true);
-    const newParticipantList = selectedOnes.filter(
-      (participant) => participant !== selectedUser
+    socket.emit("cancel_new_participant", { postid, selectedUser });
+
+    let updatedParticipantList = participants.filter(
+      (participant) => participant.User_userId !== selectedUser.User_userId
     );
-    console.log(newParticipantList);
-    setSelectedOnes([...newParticipantList]);
-    await socket.emit("delete_a_participant", selectedUser);
+    setParticipants(updatedParticipantList);
+    setAwaiters((existingAwaiterList) => [
+      ...existingAwaiterList,
+      selectedUser,
+    ]);
+
+    setLoadingDeleteParticipant(false);
   };
-
-  React.useEffect(() => {
-    setAwaiters([...chatUsers]);
-  }, []);
-
-  React.useEffect(async () => {
-    await socket.on(
-      "receive_newly_added_participant",
-      (newlyAddedParticipant) => {
-        setSelectedOnes((selectedUserList) => [
-          ...selectedUserList,
-          newlyAddedParticipant,
-        ]);
-        const newAwaiterList = awaiters.filter(
-          (awaiter) => awaiter !== newlyAddedParticipant
-        );
-        setAwaiters([...newAwaiterList]);
-        setLoadingAddParticipant(false);
-      }
-    );
-  }, []);
-
-  React.useEffect(async () => {
-    await socket.on(
-      "receive_deleted_participant",
-      (newlyDeletedParticipant) => {
-        console.log(newlyDeletedParticipant);
-        console.log(selectedOnes);
-        setLoadingDeleteParticipant(false);
-      }
-    );
-  }, []);
 
   return (
     <>
@@ -327,7 +375,7 @@ export const ChatBoxRight = ({ chatUsers, socket }) => {
         }}
       >
         <Flex>
-          <Text>{selectedOnes.length} / 5</Text>
+          <Text>{participants.length + 1} / 5</Text>
         </Flex>
         <Flex
           className="removeScroll"
@@ -343,10 +391,10 @@ export const ChatBoxRight = ({ chatUsers, socket }) => {
             overflowY: "scroll",
           }}
         >
-          {awaiters.map((user, idx) => (
+          {awaiters.map((awaiter, idx) => (
             <Awaiter
-              key={user.userId}
-              user={user}
+              key={awaiter.User_userId}
+              awaiter={awaiter}
               addNewParticipant={addNewParticipant}
             />
           ))}
@@ -365,10 +413,10 @@ export const ChatBoxRight = ({ chatUsers, socket }) => {
             overflowY: "scroll",
           }}
         >
-          {selectedOnes.map((selecteduser, idx) => (
-            <Participents
-              key={selecteduser.id}
-              selecteduser={selecteduser}
+          {participants.map((participant, idx) => (
+            <Participants
+              key={participant.User_userId}
+              participant={participant}
               deleteParticipant={deleteParticipant}
             />
           ))}
@@ -378,7 +426,7 @@ export const ChatBoxRight = ({ chatUsers, socket }) => {
   );
 };
 
-export const Awaiter = ({ user, addNewParticipant }) => {
+export const Awaiter = ({ awaiter, addNewParticipant }) => {
   return (
     <Flex
       styles={{
@@ -391,14 +439,14 @@ export const Awaiter = ({ user, addNewParticipant }) => {
     >
       <BiPlus
         onClick={() => {
-          addNewParticipant(user);
+          addNewParticipant(awaiter);
         }}
       />
-      <Text>{user.userName}</Text>
+      <Text>{awaiter.User_userName}</Text>
       <Flex styles={{ height: "20px", width: "20px" }}>
         <Image
           shape="circle"
-          src={user.userImage}
+          src={awaiter.userImage}
           styles={{ width: "100%", height: "100%" }}
         />
       </Flex>
@@ -406,7 +454,7 @@ export const Awaiter = ({ user, addNewParticipant }) => {
   );
 };
 
-export const Participents = ({ selecteduser, deleteParticipant }) => {
+export const Participants = ({ participant, deleteParticipant }) => {
   return (
     <Flex
       styles={{
@@ -419,14 +467,14 @@ export const Participents = ({ selecteduser, deleteParticipant }) => {
     >
       <BiPlus
         onClick={() => {
-          deleteParticipant(selecteduser);
+          deleteParticipant(participant);
         }}
       />
-      <Text>{selecteduser.userName}</Text>
+      <Text>{participant.User_userName}</Text>
       <Flex styles={{ height: "20px", width: "20px" }}>
         <Image
           shape="circle"
-          src={selecteduser.userImage}
+          src={participant.userImage}
           styles={{ width: "100%", height: "100%" }}
         />
       </Flex>

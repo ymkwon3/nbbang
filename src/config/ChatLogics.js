@@ -1,9 +1,9 @@
 export const isFirstMessage = (message, idx, messages) => {
   return (
-    idx === 0 || messages[idx - 1].sender.userEmail !== message.sender.userEmail
+    idx === 0 || messages[idx - 1].User_userEmail !== message.User_userEmail
   );
 };
 
 export const isLoggedUser = (message, loggedUser) => {
-  return message.sender.userEmail === loggedUser.userEmail;
+  return message.User_userEmail === loggedUser.userEmail;
 };

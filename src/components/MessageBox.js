@@ -30,17 +30,17 @@ const MessageBox = ({ messages, loggedUser }) => {
                 <Image
                   shape="circle"
                   src={
-                    message.sender.userEmail !== loggedUser.userEmail &&
+                    message.User_userEmail !== loggedUser.userEmail &&
                     isFirstMessage(message, idx, messages)
-                      ? message.sender.userImage
+                      ? message.userImage
                       : ""
                   }
                   styles={{ height: "100%" }}
                 />
               </Flex>
               <div style={{ display: "flex", flexDirection: "column" }}>
-                <Text>{message.sender.userName}</Text>
-                <Text>{message.content}</Text>
+                <Text>{message.User_userName}</Text>
+                <Text>{message.chat}</Text>
               </div>
             </Flex>
           ))}
