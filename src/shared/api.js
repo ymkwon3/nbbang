@@ -21,17 +21,6 @@ const getAPI = async (api, params) => {
     });
 };
 
-const tempGetAPI = async (api, params) => {
-  return await axios
-    .get(`http://52.78.211.107${api}`, { headers: headers() })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
 // axios post api
 const postAPI = async (api, data = {}) => {
   return await axios
@@ -96,12 +85,4 @@ const putAPI = async (api, data = {}) => {
     });
 };
 
-export {
-  getAPI,
-  postAPI,
-  deleteAPI,
-  patchAPI,
-  postFormAPI,
-  putAPI,
-  tempGetAPI,
-};
+export { getAPI, postAPI, deleteAPI, patchAPI, postFormAPI, putAPI };

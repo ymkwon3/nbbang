@@ -19,30 +19,23 @@ import "moment/locale/ko";
 
 import io from "socket.io-client";
 
-let socket, selectedChatCompare;
+let socket = io.connect("https://redpingpong.shop"),
+  // let socket = io.connect("https://localhost:3443"),
+  selectedChatCompare;
+let postid = "p1";
 
 const ChatBox = () => {
   const dispatch = useDispatch();
 
   const selectedChat = useSelector((state) => state.chat);
-  // console.log(selectedChat);
-  // const chatAdmin = selectedChat.room.chatAdmin;
-  // console.log(chatAdmin);
-  // const chatRoomUsers = selectedChat.room.users;
-  // console.log(selectedChatUsers);
-  // const selectedChatmessages = selectedChat.messages;
-  // console.log(selectedChatmessages);
+  const chatAdmin = selectedChat.chatAdmin;
+  const chatRoomUsers = selectedChat.userInfo;
+  const selectedRoomMessages = selectedChat.chatInfo;
 
-  // const loggedUser = useSelector((state) => state.user.userInfo);
-  // console.log(loggedUser);
+  const loggedUser = useSelector((state) => state.user.userInfo);
 
   const [goToChatRoom, setGoToChatRoom] = React.useState(false);
-  const [newMessage, setNewmessage] = React.useState({
-    roomId: "",
-    sender: {},
-    content: "",
-    createdAt: "",
-  });
+  const [newMessage, setNewMessage] = React.useState("");
   const [newlyAddedMessages, setNewlyAddedMessages] = React.useState([]);
   const [chatUsers, setChatUsers] = React.useState([]);
   const [notification, setNotification] = React.useState([]);
@@ -54,13 +47,16 @@ const ChatBox = () => {
 
   const goToChat = () => {
     setGoToChatRoom(!goToChatRoom);
-
     // later replace 1 with "real" selected roomId
-    // fetchMessages();
+    fetchMessages();
     // setChatUsers(chatRoomUsers);
-    if (selectedChat.room.roomId !== "") {
-      socket.emit("join chat", selectedChat.room.roomId);
+    // if (!postid) {
+    // 1은 postid로 대체
+    // p+postid 집어 넣기
+    if (postid !== undefined) {
+      socket.emit("startchat", { postid: postid, loggedUser });
     }
+    // }
   };
 
   const fetchMessages = () => {
@@ -72,8 +68,8 @@ const ChatBox = () => {
 
   const sendNewMessage = async (e) => {
     if (
-      ((e.type === "keyup" && e.key === "Enter") || e.type === "click") &&
-      !newMessage.content
+      !newMessage &&
+      ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
     ) {
       //  replace this alert with toast box later in this position.
       window.alert("칸이 비었음!! 채워주삼 ㅇㅇ");
@@ -81,66 +77,88 @@ const ChatBox = () => {
     }
 
     if (
-      ((e.type === "keyup" && e.key === "Enter") || e.type === "click") &&
-      newMessage.content
+      newMessage &&
+      ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
     ) {
-      socket.emit("stop typing", selectedChat.room.roomId);
-      // let chatRoomUserList = [...chatRoomUsers, chatAdmin];
-      // await socket.emit("send_message", newMessage, chatRoomUserList);
-      // await socket.emit("sendmessage", loggedUser);
-      setNewlyAddedMessages((messageList) => [...messageList, newMessage]);
-      setNewmessage({ ...newMessage, content: "" });
+      let newChat = {
+        Post_postId: postid,
+        User_userId: loggedUser.userId,
+        User_userEmail: loggedUser.userEmail,
+        User_userName: loggedUser.userName,
+        userImage: loggedUser.userImage,
+        chat: newMessage,
+        createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
+      };
+
+      socket.emit("stop typing", postid);
+      let chatRoomUserList = [...chatRoomUsers, chatAdmin];
+      socket.emit("sendmessage", {
+        postid: postid,
+        newMessage: newChat,
+        chatRoomUserList,
+      });
+
+      setNewlyAddedMessages((messageList) => [...messageList, newChat]);
+      setNewMessage("");
     }
   };
 
   React.useEffect(() => {
-    socket = io.connect("http://52.78.211.107");
-    // socket.emit("setup", loggedUser);
-    socket.on("connected", () => setSocketConnected(true));
+    socket.on("connected", (enteredUser) => {
+      console.log("연결성공!");
+      console.log(`${enteredUser}`);
+      setSocketConnected(true);
+    });
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
+    socket.on("hello", (data) => {
+      console.log(data);
+    });
   }, []);
 
   React.useEffect(() => {
     fetchMessages();
-    selectedChatCompare = selectedChat;
+    // selectedChatCompare = selectedChat;
   }, []);
 
   React.useEffect(() => {
-    socket.on("receive_message", (newMessageReceived) => {
-      console.log("라면 먹자");
-      console.log(selectedChatCompare);
-      if (
-        !selectedChatCompare ||
-        selectedChatCompare.chat.roomId !== selectedChat.chat.roomId
-      ) {
-        console.log("실행");
-        // setNotification([newMessageReceived, ...notification]);
-      } else {
+    socket.on(
+      "receive message",
+      (newMessageReceived) => {
         console.log(newMessageReceived);
         setNewlyAddedMessages((messageList) => [
           ...messageList,
           newMessageReceived,
         ]);
       }
-    });
+      // if (
+      //   !selectedChatCompare ||
+      //   selectedChatCompare.chat.roomId !== selectedChat.chat.roomId
+      // ) {
+      //   console.log("실행");
+      //   // setNotification([newMessageReceived, ...notification]);
+      // } else {
+      //   console.log(newMessageReceived);
+      //   setNewlyAddedMessages((messageList) => [
+      //     ...messageList,
+      //     newMessageReceived,
+      //   ]);
+      // }
+    );
   }, []);
 
   const typingHandler = (e) => {
-    setNewmessage({
-      ...newMessage,
-      // roomId: selectedChatmessages[0].roomId,
-      // sender: { ...loggedUser },
-      content: e.target.value,
-      createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
-    });
+    // console.log(e.target.value);
+    console.log(socketConnected);
+    setNewMessage(e.target.value);
 
     // Typing Indicator Logic
     if (!socketConnected) return;
 
     if (!typing) {
       setTyping(true);
-      socket.emit("typing", selectedChat.room.roomId);
+      // 나중에 진짜 포스트 번호로 바꾸기
+      socket.emit("typing", postid);
     }
 
     let lastTypingTime = new Date().getTime();
@@ -151,20 +169,15 @@ const ChatBox = () => {
       let timeDiff = timeNow - lastTypingTime;
 
       if (timeDiff >= timerLength && typing) {
-        socket.emit("stop typing", selectedChat.room.roomId);
+        socket.emit("stop typing", postid);
         setTyping(false);
       }
     }, timerLength);
   };
 
-  const test = () => {
-    socket.emit("sendmessage", "문희님 바보 멍충이!!");
-  };
-
   return (
     <>
       <Flex styles={{ flexDirection: "column" }}>
-        <Button _onClick={test}>실험</Button>
         <Button styles={{ border: "1px solid black" }} _onClick={goToChat}>
           채팅하러가기
         </Button>
@@ -180,11 +193,11 @@ const ChatBox = () => {
             }}
           >
             <ChatBoxLeft
-              // messages={[...selectedChatmessages, ...newlyAddedMessages]}
+              messages={[...selectedRoomMessages, ...newlyAddedMessages]}
               typingHandler={typingHandler}
               newMessage={newMessage}
               sendNewMessage={sendNewMessage}
-              // loggedUser={loggedUser}
+              loggedUser={loggedUser}
               isTyping={isTyping}
             />
             <ChatBoxRight chatUsers={chatUsers} socket={socket} />
@@ -203,7 +216,6 @@ export const ChatBoxLeft = ({
   newMessage,
   sendNewMessage,
   loggedUser,
-  messageSendingLoading,
   isTyping,
 }) => {
   return (
@@ -240,7 +252,7 @@ export const ChatBoxLeft = ({
             style={{ height: "100%", width: "80%" }}
             onChange={typingHandler}
             onKeyUp={sendNewMessage}
-            value={newMessage.content}
+            value={newMessage}
           />
           <Button
             styles={{
@@ -268,56 +280,55 @@ export const ChatBoxRight = ({ chatUsers, socket }) => {
     React.useState(false);
 
   const addNewParticipant = async (selectedUser) => {
-    setLoadingAddParticipant(true);
-    setSelectedOnes((selectedUserList) => [...selectedUserList, selectedUser]);
-    const newAwaiterList = awaiters.filter(
-      (awaiter) => awaiter !== selectedUser
-    );
-    setAwaiters([...newAwaiterList]);
-
-    await socket.emit("add_new_participant", selectedUser);
+    // setLoadingAddParticipant(true);
+    // setSelectedOnes((selectedUserList) => [...selectedUserList, selectedUser]);
+    // const newAwaiterList = awaiters.filter(
+    //   (awaiter) => awaiter !== selectedUser
+    // );
+    // setAwaiters([...newAwaiterList]);
+    // await socket.emit("add_new_participant", selectedUser);
   };
 
-  const deleteParticipant = async (selectedUser) => {
+  const deleteParticipant = (selectedUser) => {
     setLoadingDeleteParticipant(true);
-    const newParticipantList = selectedOnes.filter(
-      (participant) => participant !== selectedUser
-    );
-    console.log(newParticipantList);
-    setSelectedOnes([...newParticipantList]);
-    await socket.emit("delete_a_participant", selectedUser);
+    // const newParticipantList = selectedOnes.filter(
+    //   (participant) => participant !== selectedUser
+    // );
+    // // console.log(newParticipantList);
+    // setSelectedOnes([...newParticipantList]);
+    // socket.emit("delete_a_participant", selectedUser);
   };
 
   React.useEffect(() => {
     setAwaiters([...chatUsers]);
   }, []);
 
-  React.useEffect(async () => {
-    await socket.on(
-      "receive_newly_added_participant",
-      (newlyAddedParticipant) => {
-        setSelectedOnes((selectedUserList) => [
-          ...selectedUserList,
-          newlyAddedParticipant,
-        ]);
-        const newAwaiterList = awaiters.filter(
-          (awaiter) => awaiter !== newlyAddedParticipant
-        );
-        setAwaiters([...newAwaiterList]);
-        setLoadingAddParticipant(false);
-      }
-    );
+  React.useEffect(() => {
+    // socket.on(
+    //   "receive_newly_added_participant",
+    //   (newlyAddedParticipant) => {
+    //     setSelectedOnes((selectedUserList) => [
+    //       ...selectedUserList,
+    //       newlyAddedParticipant,
+    //     ]);
+    //     const newAwaiterList = awaiters.filter(
+    //       (awaiter) => awaiter !== newlyAddedParticipant
+    //     );
+    //     setAwaiters([...newAwaiterList]);
+    //     setLoadingAddParticipant(false);
+    //   }
+    // );
   }, []);
 
-  React.useEffect(async () => {
-    await socket.on(
-      "receive_deleted_participant",
-      (newlyDeletedParticipant) => {
-        console.log(newlyDeletedParticipant);
-        console.log(selectedOnes);
-        setLoadingDeleteParticipant(false);
-      }
-    );
+  React.useEffect(() => {
+    // socket.on(
+    //   "receive_deleted_participant",
+    //   (newlyDeletedParticipant) => {
+    //     console.log(newlyDeletedParticipant);
+    //     console.log(selectedOnes);
+    //     setLoadingDeleteParticipant(false);
+    //   }
+    // );
   }, []);
 
   return (

@@ -5,15 +5,14 @@ import {
   deleteAPI,
   postFormAPI,
   putAPI,
-  tempGetAPI,
 } from "../../shared/api";
 import { getToken, setToken, removeToken } from "../../shared/localStorage";
 import { chatMockData } from "../chatMockData";
 import moment from "moment";
 
 const startChatDB = createAsyncThunk("chat/startChat", async (postid) => {
-  return tempGetAPI(`/main/getchat/${postid}`).then((res) => {
-    // console.log(res.data);
+  return getAPI(`/main/getchat/${postid}`).then((res) => {
+    console.log(res.data);
     return res.data;
   });
 });
@@ -71,9 +70,8 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(startChatDB.fulfilled, (state, action) => {
       // console.log(state);
-      console.log(action.payload);
-      console.log(action.payload.chatAdmin[0].User_userId);
-
+      // console.log(action.payload);
+      // console.log(action.payload.chatAdmin[0].User_userId);
       state.chatAdmin = action.payload.chatAdmin[0].User_userId;
       state.userInfo = action.payload.userInfo;
       state.chatInfo = action.payload.chatInfo;
