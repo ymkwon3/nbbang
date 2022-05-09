@@ -6,8 +6,12 @@ import { Flex, Button, Text, Image } from "../elements";
 const PostDetail = () => {
     
     const deatilInfo = useSelector(state => state.post.postDetail[0]);
-    const userInfo = useSelector(state => state.user.userInfo);
     
+    const userInfo = useSelector(state => state.user.userInfo);
+    if (!deatilInfo) {
+        return null;
+    }
+
     return (
         <Flex
             styles={{

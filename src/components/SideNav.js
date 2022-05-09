@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { actionCreator as itemActions } from "../redux/modules/card";
+import { actionCreator as itemActions } from "../redux/modules/post";
 
 import Post from "./Post";
 import { Flex, Text } from "../elements";
@@ -13,6 +13,7 @@ import PostDetail from "./PostDetail";
 const SideNav = props => {
   const { _onClickWrite, _onClickDetail, postList } = props;
   const dispatch = useDispatch();
+
   // const cardList = useSelector(state => state.card.postList);
   // console.log(cardList);
   // postList는 이니셜스테이트값으로 현재 mock data 값을 배열로 가지고 있는중
@@ -24,6 +25,9 @@ const SideNav = props => {
   const [page, setPage] = useState(1); // 현재 페이지 번호
   const offset = (page - 1) * 10; // 첫 게시물의 위치
 
+  const searchPost = useSelector(state => state.post.postSearch)
+  console.log(searchPost)
+  console.log(postList)
   // useEffect(() => {
   //   dispatch(itemActions.setCardDB()).then(data => setPosts(data));
   // }, []);
@@ -33,60 +37,87 @@ const SideNav = props => {
   // const dropdown = [
   //   "one", "two", "three"
   // ]
-//드롭다운 추가 해야함
+  //드롭다운 추가 해야함
 
-  return (
-    <Flex
-      styles={{
-        width: "430px",
-        height: "100%",
-        flexDirection: "column",
-        backgroundColor: "#fff",
-        top: 0,
-        left: 0,
-        zIndex: "10",
-        gap: "10px",
-        padding: "30px",
-        justifyContent: "start",
-        overflow: "scroll",
-      }}
-    >
-      <Flex styles={{ justifyContent: "space-between" }}>
-        <Text styles={{ fontSize: "32px", fontWeight: "800" }}>같이 사자</Text>
-        <button onClick={_onClickWrite}>글쓰기</button>
-      </Flex>
-      <Flex styles={{ flexDirection: "column" }}>
-        {/* 맵으로 카드 돌리기, key값은 unique하게, 배열풀어서 속성으로 넘겨주기 */}
+  const spreadList = {...postList}
 
-        {/* pagination 적용 전  */}
-        {/* {cardList && cardList.map((v, i) => {
-            return <CardList key={`card_${i}`} {...v} />
-          })} */}
-
-        {postList.map((v, i) => (
-          <StyledPost onClick={() => _onClickDetail(v.postId)} key={`card_${i}`}>
-            <Post {...v} />
-          </StyledPost>
-        ))}
-
-        {/* pagination 적용 후  */}
-        {/* {postList.slice(offset, offset + limit).map((v, i) => (
-          <div onClick={_onClickDetail} key={`card_${i}`}>
-            <CardList {...v} _onClick={_onClickDetail} />
-          </div>
-        ))} */}
-      </Flex>
-      <Flex>
-        <Pagination
-          total={postList.length}
-          limit={limit}
-          page={page}
-          setPage={setPage}
-        />
-      </Flex>
-    </Flex>
-    
+  const newPostList = postList.filter((v) => 
+    v.title.toString().toLowerCase().includes(searchPost.toString().toLowerCase())
   );
+  console.log()
+  console.log(newPostList)
+  // const searching  = postList.filter((postList) => {
+    
+  //     postList.title.toLowerCase().includes(searchPost.toLowerCase())}
+  //   );
+  
+
+    
+      return (
+        <Flex
+          styles={{
+            width: "430px",
+            height: "100%",
+            flexDirection: "column",
+            backgroundColor: "#fff",
+            top: 0,
+            left: 0,
+            zIndex: "10",
+            gap: "10px",
+            padding: "30px",
+            justifyContent: "start",
+            overflow: "scroll",
+          }}
+        >
+          <Flex styles={{ justifyContent: "space-between" }}>
+            <Text styles={{ fontSize: "32px", fontWeight: "800" }}>같이 사자</Text>
+            <button onClick={_onClickWrite}>글쓰기</button>
+          </Flex>
+          <Flex styles={{ flexDirection: "column" }}>
+            {/* 맵으로 카드 돌리기, key값은 unique하게, 배열풀어서 속성으로 넘겨주기 */}
+
+            {/* pagination 적용 전  */}
+            {/* {cardList && cardList.map((v, i) => {
+                return <CardList key={`card_${i}`} {...v} />
+              })} */}
+              
+            {/* {spreads.filter((v) => {
+                if(searchPost === "") {
+                  return postList.map((v, i) => (
+                    <StyledPost onClick={() => _onClickDetail(v.postId)} key={`card_${i}`}>
+                      <Post {...v} />
+                    </StyledPost>
+                  ))
+                } else if(v.title.toLowerCase().includes(searchPost.toLowerCase())) {
+                  return null;
+                }
+              })
+            } */}
+            
+            {newPostList.map((v, i) => (
+              <StyledPost onClick={() => _onClickDetail(v.postId)} key={`card_${i}`}>
+                <Post {...v} />
+              </StyledPost>
+            ))}
+
+            {/* pagination 적용 후  */}
+            {/* {postList.slice(offset, offset + limit).map((v, i) => (
+              <div onClick={_onClickDetail} key={`card_${i}`}>
+                <CardList {...v} _onClick={_onClickDetail} />
+              </div>
+            ))} */}
+          </Flex>
+          <Flex>
+            <Pagination
+              total={postList.length}
+              limit={limit}
+              page={page}
+              setPage={setPage}
+            />
+          </Flex>
+        </Flex>
+      );
+    
 };
 
 
