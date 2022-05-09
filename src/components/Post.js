@@ -66,7 +66,8 @@ const Post = props => {
           alignItems: "start",
           justifyContent: "start",
           marginLeft: "13px",
-          width: "calc(100% - 123px)",
+          height: "110px",
+          width: "calc(100% - 123px)"
         }}
       >
         <Flex
@@ -78,18 +79,31 @@ const Post = props => {
               <img
                 alt="filledHeart"
                 src={filledHeart}
+                className="hover-event"
                 onClick={clickLike}
               ></img>
             ) : (
               <img
                 alt="filledHeart"
                 src={emptyHeart}
+                className="hover-event"
                 onClick={clickLike}
               ></img>
             )}
           </Permit>
         </Flex>
-        <Flex styles={{ justifyContent: "start" }}>
+        <Text styles={contentStyle}>
+            <Text>가격:</Text>{" "}
+            {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+          </Text>
+          <Text styles={contentStyle}>
+            <Text>마감일:</Text>{" "}
+            {moment(endTime).format("MM-DD")}
+          </Text>
+          <Text styles={{ fontSize: "12px" }}>
+            <Text>위치:</Text> {address}
+          </Text>
+        {/* <Flex styles={{ justifyContent: "start" }}>
           <Text styles={contentStyle}>
             <Text styles={{ fontWeight: "600" }}>작성자:</Text> {writer}
           </Text>
@@ -97,8 +111,8 @@ const Post = props => {
             <Text styles={{ fontWeight: "600" }}>카테고리:</Text>{" "}
             {category === "eat" ? "먹자" : "사자"}
           </Text>
-        </Flex>
-        <Flex styles={{ justifyContent: "start" }}>
+        </Flex> */}
+        {/* <Flex styles={{ justifyContent: "start" }}>
           <Text styles={contentStyle}>
             <Text styles={{ fontWeight: "600" }}>가격:</Text>{" "}
             {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
@@ -107,12 +121,12 @@ const Post = props => {
             <Text styles={{ fontWeight: "600" }}>마감일:</Text>{" "}
             {moment(endTime).format("MM-DD")}
           </Text>
-        </Flex>
-        <Flex styles={{ justifyContent: "start" }}>
+        </Flex> */}
+        {/* <Flex styles={{ justifyContent: "start" }}>
           <Text styles={{ fontSize: "12px" }}>
             <Text styles={{ fontWeight: "600" }}>위치:</Text> {address}
           </Text>
-        </Flex>
+        </Flex> */}
       </Flex>
     </Flex>
   );

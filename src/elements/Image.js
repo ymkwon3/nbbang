@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Flex from "./Flex";
 import Text from "./Text";
 
-const Image = (props) => {
+const Image = props => {
   /*
     스타일 사용 가능한 요소들
     width, height, margin, position, display
@@ -48,9 +48,9 @@ const Image = (props) => {
   }
 
   // 이미지 안 텍스트 추가하기 위한 컨테이너
-  if (shape === "bak") {
+  if (shape === "post") {
     return (
-      <ImageContainer>
+      <ImageContainer style={{ width: styles.width, height: styles.height }}>
         <ImageRectangle
           style={{ ...styles }}
           src={src}
@@ -58,7 +58,7 @@ const Image = (props) => {
           className={className}
           {...defaultStyles}
         ></ImageRectangle>
-        <Flex styles={{ flexDirection: "column" }}>{children}</Flex>
+        <Flex styles={{ flexDirection: "column", width: styles.width, height: styles.height }}>{children}</Flex>
       </ImageContainer>
     );
   }
@@ -71,42 +71,42 @@ Image.defaultProps = {
 };
 
 const ImageRectangle = styled.img`
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
+  width: ${props => props.width};
+  height: ${props => props.height};
   /* object-fit: cover; */
 `;
 
 const ImageCircle = styled.div`
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
+  width: ${props => props.width};
+  height: ${props => props.height};
   border-radius: 50%;
-  background-image: url(${(props) => props.src});
+  background-image: url(${props => props.src});
   background-size: cover;
 `;
 
 const ImageContainer = styled.div`
   position: relative;
-
   & > div {
+    display: flex;
+    align-items: start;
     position: absolute;
     top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #000;
+    padding: 20px;
+    border-radius: 30px;
+    background: rgba(0, 0, 0, .5);
     opacity: 0;
     transition: 0.2s;
   }
 
   &:hover > div {
-    opacity: 0.6;
+    opacity: 1;
   }
 `;
 
 const ImageInput = styled.input`
   border: 1px solid #d5d5d5;
-  background-image: url(${(props) => props.src});
+  background-image: url(${props => props.src});
   background-size: cover;
-  // margin: 4px;
   &[type="file"]::file-selector-button {
     display: none;
   }
