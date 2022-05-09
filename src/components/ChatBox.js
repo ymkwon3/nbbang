@@ -18,6 +18,7 @@ import moment from "moment";
 import "moment/locale/ko";
 
 import io from "socket.io-client";
+import { isFulfilled } from "@reduxjs/toolkit";
 
 let socket = io.connect("https://redpingpong.shop"),
   // let socket = io.connect("https://localhost:3443"),
@@ -31,13 +32,14 @@ const ChatBox = () => {
   const chatAdmin = selectedChat.chatAdmin;
   const chatRoomUsers = selectedChat.userInfo;
   const selectedRoomMessages = selectedChat.chatInfo;
+  const participantList = selectedChat.headList;
 
   const loggedUser = useSelector((state) => state.user.userInfo);
 
   const [goToChatRoom, setGoToChatRoom] = React.useState(false);
   const [newMessage, setNewMessage] = React.useState("");
   const [newlyAddedMessages, setNewlyAddedMessages] = React.useState([]);
-  const [chatUsers, setChatUsers] = React.useState([]);
+  // const [chatUsers, setChatUsers] = React.useState([]);
   const [notification, setNotification] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   React.useState(false);
@@ -91,11 +93,11 @@ const ChatBox = () => {
       };
 
       socket.emit("stop typing", postid);
-      let chatRoomUserList = [...chatRoomUsers, chatAdmin];
+      // let chatRoomUserList = [...chatRoomUsers, chatAdmin];
       socket.emit("sendmessage", {
         postid: postid,
         newMessage: newChat,
-        chatRoomUserList,
+        // chatRoomUserList,
       });
 
       setNewlyAddedMessages((messageList) => [...messageList, newChat]);
@@ -111,9 +113,6 @@ const ChatBox = () => {
     });
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
-    socket.on("hello", (data) => {
-      console.log(data);
-    });
   }, []);
 
   React.useEffect(() => {
@@ -125,7 +124,6 @@ const ChatBox = () => {
     socket.on(
       "receive message",
       (newMessageReceived) => {
-        console.log(newMessageReceived);
         setNewlyAddedMessages((messageList) => [
           ...messageList,
           newMessageReceived,
@@ -148,8 +146,6 @@ const ChatBox = () => {
   }, []);
 
   const typingHandler = (e) => {
-    // console.log(e.target.value);
-    console.log(socketConnected);
     setNewMessage(e.target.value);
 
     // Typing Indicator Logic
@@ -200,7 +196,12 @@ const ChatBox = () => {
               loggedUser={loggedUser}
               isTyping={isTyping}
             />
-            <ChatBoxRight chatUsers={chatUsers} socket={socket} />
+            <ChatBoxRight
+              postid={postid}
+              chatRoomUsers={chatRoomUsers}
+              participantList={participantList}
+              socket={socket}
+            />
           </Flex>
         )}
       </Flex>
@@ -270,65 +271,73 @@ export const ChatBoxLeft = ({
   );
 };
 
-export const ChatBoxRight = ({ chatUsers, socket }) => {
-  const dispatch = useDispatch();
-  const [selectedOnes, setSelectedOnes] = React.useState([]);
+export const ChatBoxRight = ({
+  postid,
+  chatRoomUsers,
+  participantList,
+  socket,
+}) => {
+  const awaiterList = chatRoomUsers.filter((user) => user.isPick === 0);
+
   const [awaiters, setAwaiters] = React.useState([]);
+  const [participants, setParticipants] = React.useState([]);
   const [loadingAddParticipant, setLoadingAddParticipant] =
     React.useState(false);
   const [loadingDeleteParticipant, setLoadingDeleteParticipant] =
     React.useState(false);
 
   const addNewParticipant = async (selectedUser) => {
-    // setLoadingAddParticipant(true);
-    // setSelectedOnes((selectedUserList) => [...selectedUserList, selectedUser]);
-    // const newAwaiterList = awaiters.filter(
-    //   (awaiter) => awaiter !== selectedUser
-    // );
-    // setAwaiters([...newAwaiterList]);
-    // await socket.emit("add_new_participant", selectedUser);
+    setLoadingAddParticipant(true);
+    await socket.emit("add_new_participant", { postid, selectedUser });
+
+    setParticipants((existingParticipantList) => [
+      ...existingParticipantList,
+      selectedUser,
+    ]);
+    let updatedAwaiterList = awaiters.filter(
+      (awaiter) => awaiter.User_userId !== selectedUser.User_userId
+    );
+    setAwaiters(updatedAwaiterList);
+
+    setLoadingAddParticipant(false);
   };
 
-  const deleteParticipant = (selectedUser) => {
+  const deleteParticipant = async (selectedUser) => {
     setLoadingDeleteParticipant(true);
-    // const newParticipantList = selectedOnes.filter(
-    //   (participant) => participant !== selectedUser
-    // );
-    // // console.log(newParticipantList);
-    // setSelectedOnes([...newParticipantList]);
-    // socket.emit("delete_a_participant", selectedUser);
+    await socket.emit("cancel_new_participant", { postid, selectedUser });
+
+    let updatedParticipantList = participants.filter(
+      (participant) => participant.User_userId !== selectedUser.User_userId
+    );
+    setParticipants(updatedParticipantList);
+    setAwaiters((existingAwaiterList) => [
+      ...existingAwaiterList,
+      selectedUser,
+    ]);
+    setLoadingDeleteParticipant(false);
   };
 
   React.useEffect(() => {
-    setAwaiters([...chatUsers]);
+    setAwaiters(awaiterList);
+    setParticipants(participantList);
   }, []);
 
   React.useEffect(() => {
-    // socket.on(
-    //   "receive_newly_added_participant",
-    //   (newlyAddedParticipant) => {
-    //     setSelectedOnes((selectedUserList) => [
-    //       ...selectedUserList,
-    //       newlyAddedParticipant,
-    //     ]);
-    //     const newAwaiterList = awaiters.filter(
-    //       (awaiter) => awaiter !== newlyAddedParticipant
-    //     );
-    //     setAwaiters([...newAwaiterList]);
-    //     setLoadingAddParticipant(false);
-    //   }
-    // );
-  }, []);
+    socket.on(
+      "receive_participant_list_after_added",
+      (updatedParticipantList, updatedAwaiterList) => {
+        setParticipants(updatedParticipantList);
+        setAwaiters(updatedAwaiterList);
+      }
+    );
 
-  React.useEffect(() => {
-    // socket.on(
-    //   "receive_deleted_participant",
-    //   (newlyDeletedParticipant) => {
-    //     console.log(newlyDeletedParticipant);
-    //     console.log(selectedOnes);
-    //     setLoadingDeleteParticipant(false);
-    //   }
-    // );
+    socket.on(
+      "receive_participant_list_after_canceled",
+      (updatedParticipantList, updatedAwaiterList) => {
+        setParticipants(updatedParticipantList);
+        setAwaiters(updatedAwaiterList);
+      }
+    );
   }, []);
 
   return (
@@ -344,7 +353,7 @@ export const ChatBoxRight = ({ chatUsers, socket }) => {
         }}
       >
         <Flex>
-          <Text>{selectedOnes.length} / 5</Text>
+          <Text>{participants.length} / 5</Text>
         </Flex>
         <Flex
           className="removeScroll"
@@ -360,10 +369,10 @@ export const ChatBoxRight = ({ chatUsers, socket }) => {
             overflowY: "scroll",
           }}
         >
-          {awaiters.map((user, idx) => (
+          {awaiters.map((awaiter, idx) => (
             <Awaiter
-              key={user.userId}
-              user={user}
+              key={awaiter.User_userId}
+              awaiter={awaiter}
               addNewParticipant={addNewParticipant}
             />
           ))}
@@ -382,10 +391,10 @@ export const ChatBoxRight = ({ chatUsers, socket }) => {
             overflowY: "scroll",
           }}
         >
-          {selectedOnes.map((selecteduser, idx) => (
-            <Participents
-              key={selecteduser.id}
-              selecteduser={selecteduser}
+          {participants.map((participant, idx) => (
+            <Participants
+              key={participant.User_userId}
+              participant={participant}
               deleteParticipant={deleteParticipant}
             />
           ))}
@@ -395,7 +404,7 @@ export const ChatBoxRight = ({ chatUsers, socket }) => {
   );
 };
 
-export const Awaiter = ({ user, addNewParticipant }) => {
+export const Awaiter = ({ awaiter, addNewParticipant }) => {
   return (
     <Flex
       styles={{
@@ -408,14 +417,14 @@ export const Awaiter = ({ user, addNewParticipant }) => {
     >
       <BiPlus
         onClick={() => {
-          addNewParticipant(user);
+          addNewParticipant(awaiter);
         }}
       />
-      <Text>{user.userName}</Text>
+      <Text>{awaiter.User_userName}</Text>
       <Flex styles={{ height: "20px", width: "20px" }}>
         <Image
           shape="circle"
-          src={user.userImage}
+          src={awaiter.userImage}
           styles={{ width: "100%", height: "100%" }}
         />
       </Flex>
@@ -423,7 +432,7 @@ export const Awaiter = ({ user, addNewParticipant }) => {
   );
 };
 
-export const Participents = ({ selecteduser, deleteParticipant }) => {
+export const Participants = ({ participant, deleteParticipant }) => {
   return (
     <Flex
       styles={{
@@ -436,14 +445,14 @@ export const Participents = ({ selecteduser, deleteParticipant }) => {
     >
       <BiPlus
         onClick={() => {
-          deleteParticipant(selecteduser);
+          deleteParticipant(participant);
         }}
       />
-      <Text>{selecteduser.userName}</Text>
+      <Text>{participant.User_userName}</Text>
       <Flex styles={{ height: "20px", width: "20px" }}>
         <Image
           shape="circle"
-          src={selecteduser.userImage}
+          src={participant.userImage}
           styles={{ width: "100%", height: "100%" }}
         />
       </Flex>

@@ -19,11 +19,11 @@ const startChatDB = createAsyncThunk("chat/startChat", async (postid) => {
 
 const getParticipantsDB = createAsyncThunk(
   "chat/addDealParticipant",
-  async (postId) => {
+  async (postid) => {
     // in data, {postId} must be put in.
-    return getAPI(`/main/deal/getparticipantlist/${postId}`).then((res) => {
+    return getAPI(`/main/deal/getparticipantlist/${postid}`).then((res) => {
       console.log(res);
-      return res;
+      // return res;
     });
   }
 );
@@ -33,6 +33,7 @@ const initialState = {
   chatAdmin: "",
   userInfo: [],
   chatInfo: [],
+  headList: [],
 };
 
 const initialUserFrom = {
@@ -75,6 +76,7 @@ const userSlice = createSlice({
       state.chatAdmin = action.payload.chatAdmin[0].User_userId;
       state.userInfo = action.payload.userInfo;
       state.chatInfo = action.payload.chatInfo;
+      state.headList = action.payload.headList;
     });
 
     builder.addCase(getParticipantsDB.fulfilled, (state, action) => {
