@@ -47,8 +47,8 @@ const ChatBox = () => {
   const [typing, setTyping] = React.useState(false);
   const [isTyping, setIsTyping] = React.useState(false);
   const [socketConnected, setSocketConnected] = React.useState(false); // socket 연결 상태 체크
-  const [awaiters, setAwaiters] = React.useState([]);
-  const [participants, setParticipants] = React.useState([]);
+  const [awaiters, setAwaiters] = React.useState(null);
+  const [participants, setParticipants] = React.useState(null);
 
   const goToChat = () => {
     setGoToChatRoom(!goToChatRoom);
@@ -58,11 +58,10 @@ const ChatBox = () => {
     // if (!postid) {
     // 1은 postid로 대체
     // p+postid 집어 넣기
-    fetchMessages().then((res) => {
-      console.log(awaiterList);
-      console.log(participantList);
-    });
+    fetchMessages();
 
+    console.log(awaiterList);
+    console.log(participantList);
     setAwaiters(awaiterList);
     setParticipants(participantList);
 
@@ -202,19 +201,12 @@ const ChatBox = () => {
     }, timerLength);
   };
 
-  // if (awaiters === null && participants === null) {
-  //   return null;
-  // }
   return (
     <>
       <Flex styles={{ flexDirection: "column" }}>
         <Button styles={{ border: "1px solid black" }} _onClick={goToChat}>
           채팅하러가기
         </Button>
-        {/* position for laoding */}
-        {/* {awaiters === null && participants === null ? ( */}
-        <>{/* loading lottie */}</>
-        {/* ) : goToChatRoom ? ( */}
         {goToChatRoom ? (
           <Flex
             styles={{
@@ -236,9 +228,9 @@ const ChatBox = () => {
               chatRoomUsers={chatRoomUsers}
               participantList={participantList}
               socket={socket}
-              awaiters={awaiters}
+              awaiters={awaiters ? awaiters : awaiterList}
               setAwaiters={setAwaiters}
-              participants={participants}
+              participants={participants ? participants : participantList}
               setParticipants={setParticipants}
             />
           </Flex>
@@ -323,8 +315,8 @@ export const ChatBoxRight = ({
   participants,
   setParticipants,
 }) => {
-  console.log("awaiters: " + awaiters);
-  console.log("participants: " + participants);
+  // console.log("awaiters: " + awaiters);
+  // console.log("participants: " + participants);
   const [loadingAddParticipant, setLoadingAddParticipant] =
     React.useState(false);
   const [loadingDeleteParticipant, setLoadingDeleteParticipant] =
