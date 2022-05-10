@@ -17,7 +17,7 @@ const getPostDetailDB = createAsyncThunk(`post/detail`, async (postId) => {
   return await getAPI(`/main/${postId}`).then(res => {
     return res.data[0];
   });
-})
+});
 
 const addPostDB = createAsyncThunk("post/add", async (data) => {
   return await postFormAPI('/main/postadd', data);
@@ -56,6 +56,7 @@ const postSlice = createSlice({
   initialState: {
     postList: [],
     postDetail: [],
+    postSearch: "",
     category: "all"
   },
   reducers: {
@@ -65,7 +66,11 @@ const postSlice = createSlice({
     updateCityRange(state, action) {
       state.cityRange = action.payload;
     },
+    searchPost(state,action) {
+      state.postSearch = action.payload;
+    },
   },
+
   extraReducers: builder => {
     builder.addCase(addPostDB.fulfilled, (state, action) => {
       state.postList.unshift(action.payload.row[0]);

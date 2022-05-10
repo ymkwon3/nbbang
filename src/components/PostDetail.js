@@ -4,46 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Flex, Button, Text, Image } from "../elements";
 
 const PostDetail = () => {
-  const detailInfo = useSelector(state => state.post.postDetail);
-  console.log(detailInfo)
-  const userInfo = useSelector(state => state.user.userInfo);
+    
+    const deatilInfo = useSelector(state => state.post.postDetail[0]);
+    
+    const userInfo = useSelector(state => state.user.userInfo);
+    if (!deatilInfo) {
+        return null;
+    }
 
-  return (
-    <Flex>
-      <Flex
-        styles={{
-          margin: "0 0 14px 0",
-        }}
-      >
-        <Flex>
-          <Image
-            styles={{
-              with: "38px",
-              height: "38px",
-              margin: "0  120px 0 30px",
-            }}
-            src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA0MjVfMTg0%2FMDAxNjUwODIyMTI3MTAw.mzdywA3B_PwpeA6IfsI-c982D546Gp6h78fVqUt-y1sg.dIV0gb1HM7gMNe5dAEqkXP-_YMu6m3IfWUyALBHDsmcg.JPEG.adorable_woon%2FIMG_5647.jpg&type=a340"
-          />
-        </Flex>
-        <Flex>
-          <Text
-            styles={{
-              width: "54px",
-              height: "28px",
-              margin: "0 0 0 80px",
-              padding: "5px",
-              // backgroundColor:"black"
-              border: "1px solid",
-              borderRadius: "30px",
-              textAlign: "center",
-              alignItems: "center",
-            }}
-          >
-            1/5
-          </Text>
-        </Flex>
-      </Flex>
-      <Flex styles={{ flexDirection: "column" }}>
+    return (
         <Flex
           styles={{
             width: "432px",

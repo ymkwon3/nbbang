@@ -4,6 +4,7 @@ import { Button, Flex, Image } from "../elements";
 import styled from "styled-components";
 import { actionCreator as postActions } from "../redux/modules/post";
 import { actionCreator as userActions } from "../redux/modules/user";
+import SearchBox from "./SearchBox";
 
 import { RiSearchLine } from "react-icons/ri";
 import { AiOutlineHeart } from "react-icons/ai";
@@ -21,6 +22,12 @@ const Header = props => {
   const userInfo = useSelector(state => state.user.userInfo);
   const isLogin = useSelector(state => state.user.isLogin);
   const category = useSelector(state => state.post.category);
+
+
+
+  React.useEffect(() => {
+    console.log("location changed", location);
+  }, [location]);
 
   const [drop, setDrop] = React.useState(false);
 
@@ -79,8 +86,8 @@ const Header = props => {
           <Flex styles={{ justifyContent: "space-between" }}>
             <Flex styles={{ width: "fit-content", gap: "15px" }}>
               <SearchInput>
-                <input placeholder="검색어를 입력해주세요" />
-                <RiSearchLine size="27.22" color="#19253D" />
+                <SearchBox ></SearchBox>
+                {/* <Button _onClick={() => dispatch(postActions.searchPost(searchTerm))}><RiSearchLine size="27.22" color="#19253D" /></Button> */}
               </SearchInput>
               <Button
                 styles={category === "all" ? checkedStyle : categoryStyle}
