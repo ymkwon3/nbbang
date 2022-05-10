@@ -25,7 +25,7 @@ let socket = io.connect("https://redpingpong.shop"),
   selectedChatCompare;
 let postid = "p1";
 
-const ChatBox = React.forwardRef(({ setOpenChatroom }, ref) => {
+const ChatBox = React.forwardRef(({ openChatModal }, ref) => {
   const dispatch = useDispatch();
 
   const selectedChat = useSelector((state) => state.chat);
@@ -36,7 +36,6 @@ const ChatBox = React.forwardRef(({ setOpenChatroom }, ref) => {
   const awaiterList = chatRoomUsers.filter((user) => user.isPick === 0);
   const loggedUser = useSelector((state) => state.user.userInfo);
 
-  const [goToChatRoom, setGoToChatRoom] = React.useState(false);
   const [newMessage, setNewMessage] = React.useState("");
   const [newlyAddedMessages, setNewlyAddedMessages] = React.useState([]);
   // const [chatUsers, setChatUsers] = React.useState([]);
@@ -51,19 +50,19 @@ const ChatBox = React.forwardRef(({ setOpenChatroom }, ref) => {
   const [openUserList, setOpenUserList] = React.useState(false);
 
   const goToChat = () => {
-    setGoToChatRoom(!goToChatRoom);
     // later replace 1 with "real" selected roomId
 
     // setChatUsers(chatRoomUsers);
     // if (!postid) {
     // 1은 postid로 대체
     // p+postid 집어 넣기
-    fetchMessages();
+    if (openChatModal) {
+      fetchMessages();
 
-    if (postid !== undefined) {
-      socket.emit("startchat", { postid: postid, loggedUser });
+      if (postid !== undefined) {
+        socket.emit("startchat", { postid: postid, loggedUser });
+      }
     }
-    // }
   };
 
   const fetchMessages = () => {
@@ -109,6 +108,10 @@ const ChatBox = React.forwardRef(({ setOpenChatroom }, ref) => {
       setNewMessage("");
     }
   };
+
+  React.useEffect(() => {
+    goToChat();
+  }, []);
 
   React.useEffect(() => {
     socket.on("connected", (enteredUser) => {
@@ -200,46 +203,54 @@ const ChatBox = React.forwardRef(({ setOpenChatroom }, ref) => {
 
   return (
     <>
-      <ChatModal ref={ref}>
+      <ChatModal
+        ref={ref}
+        style={{
+          position: "fixed",
+          transition: "top 500ms cubic-bezier(0.86, 0, 0.07, 1)",
+          zIndex: "100",
+          width: "432px",
+          height: "88vh",
+          padding: "20px 23px 20px 23px",
+        }}
+      >
+        <Flex>
+          <Text
+            styles={{ fontSize: "16px", position: "relative" }}
+            _onClick={openChatModal}
+          >
+            X
+          </Text>
+        </Flex>
         <Flex
           styles={{
-            width: "432px",
-            height: "90vh",
-            padding: "40px 23px 0 23px",
-            backgroundColor: "rgba(231, 232, 244, 0.7)",
-            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-            flexDirection: "column",
+            position: "relative",
+            height: "100%",
           }}
         >
-          <Flex>
-            <Text>X</Text>
-          </Flex>
-          {/* <Flex> */}
-          <Flex>
-            <ChatBoxLeft
-              messages={[...selectedRoomMessages, ...newlyAddedMessages]}
-              typingHandler={typingHandler}
-              newMessage={newMessage}
-              sendNewMessage={sendNewMessage}
-              loggedUser={loggedUser}
-              isTyping={isTyping}
-              OpenChatRoomUserList={OpenChatRoomUserList}
+          <ChatBoxLeft
+            messages={[...selectedRoomMessages, ...newlyAddedMessages]}
+            typingHandler={typingHandler}
+            newMessage={newMessage}
+            sendNewMessage={sendNewMessage}
+            loggedUser={loggedUser}
+            isTyping={isTyping}
+            OpenChatRoomUserList={OpenChatRoomUserList}
+          />
+          {openUserList ? (
+            <ChatBoxRight
+              postid={postid}
+              chatRoomUsers={chatRoomUsers}
+              participantList={participantList}
+              socket={socket}
+              awaiters={awaiters ? awaiters : awaiterList}
+              setAwaiters={setAwaiters}
+              participants={participants ? participants : participantList}
+              setParticipants={setParticipants}
             />
-            {openUserList ? (
-              <ChatBoxRight
-                postid={postid}
-                chatRoomUsers={chatRoomUsers}
-                participantList={participantList}
-                socket={socket}
-                awaiters={awaiters ? awaiters : awaiterList}
-                setAwaiters={setAwaiters}
-                participants={participants ? participants : participantList}
-                setParticipants={setParticipants}
-              />
-            ) : (
-              <></>
-            )}
-          </Flex>
+          ) : (
+            <></>
+          )}
         </Flex>
       </ChatModal>
     </>
@@ -248,8 +259,8 @@ const ChatBox = React.forwardRef(({ setOpenChatroom }, ref) => {
 
 const ChatModal = styled.div`
   top: 100%;
-  position: fixed;
-  transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
+  backgroundcolor: rgba(231, 232, 244, 0.7);
+  boxshadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 `;
 export default ChatBox;
 
@@ -274,6 +285,7 @@ export const ChatBoxLeft = ({
           backgroundColor: "#FFFFFF",
           boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
           borderRadius: "22px",
+          position: "absolute",
         }}
       >
         <Flex
@@ -301,7 +313,7 @@ export const ChatBoxLeft = ({
             flexDirection: "column",
             justifyContent: "stretch",
             overflowX: "hidden",
-            overflowY: "scroll",
+            overflowY: "auto",
             height: "635px",
             backgroundColor: "#E8E8F2",
             borderRadius: "22px",
@@ -398,59 +410,96 @@ export const ChatBoxRight = ({
       {/* 오른쪽 */}
       <Flex
         styles={{
-          border: "1px solid black",
-          width: "40%",
-          height: "100%",
-          padding: "20px",
+          width: "217px",
+          height: "306px",
+          padding: "20px 5px",
           flexDirection: "column",
+          position: "absolute",
+          right: "-23px",
+          top: "-41px",
+          backgroundColor: "#FFFFFF",
+          boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+          borderRadius: "0px 0px 0px 20px",
+          justifyContent: "flex-start",
         }}
       >
         <Flex>
           <Text>{participants.length + 1} / 5</Text>
         </Flex>
+
         <Flex
-          className="removeScroll"
           styles={{
-            border: "1px solid black",
-            flexDirection: "column",
-            height: "100%",
-            width: "100%",
-            margin: "20px 0",
-            justifyContent: "start",
-            flexDirection: "column",
-            overflowX: "hidden",
-            overflowY: "scroll",
+            margin: "12px 0",
           }}
         >
-          {awaiters.map((awaiter, idx) => (
-            <Awaiter
-              key={awaiter.User_userId}
-              awaiter={awaiter}
-              addNewParticipant={addNewParticipant}
-            />
-          ))}
+          <Flex>
+            <Text>채팅 참여자</Text>
+          </Flex>
+          <Flex>
+            <Text>거래자</Text>
+          </Flex>
         </Flex>
+
         <Flex
-          className="removeScroll"
           styles={{
-            border: "1px solid black",
-            flexDirection: "column",
-            height: "100%",
-            width: "100%",
-            margin: "20px 0",
-            justifyContent: "start",
-            flexDirection: "column",
-            overflowX: "hidden",
-            overflowY: "scroll",
+            height: "80%",
           }}
         >
-          {participants.map((participant, idx) => (
-            <Participants
-              key={participant.User_userId}
-              participant={participant}
-              deleteParticipant={deleteParticipant}
-            />
-          ))}
+          <Flex
+            styles={{ overflow: "hidden", height: "100%", padding: "0 5px" }}
+          >
+            <Flex
+              className="removeScroll"
+              styles={{
+                flexDirection: "column",
+                height: "100%",
+                width: "100%",
+                // margin: "15px 0",
+                justifyContent: "start",
+                flexDirection: "column",
+                overflowX: "hidden",
+                overflowY: "scroll",
+              }}
+            >
+              {awaiters.map((awaiter, idx) => (
+                <Awaiter
+                  key={awaiter.User_userId}
+                  awaiter={awaiter}
+                  addNewParticipant={addNewParticipant}
+                />
+              ))}
+            </Flex>
+          </Flex>
+
+          <Flex
+            styles={{
+              overflow: "hidden",
+              height: "100%",
+              padding: "0 5px",
+            }}
+          >
+            <Flex
+              className="removeScroll"
+              styles={{
+                flexDirection: "column",
+                height: "100%",
+                width: "100%",
+                // margin: "15px 0",
+                justifyContent: "start",
+                flexDirection: "column",
+                overflowX: "hidden",
+                overflowY: "scroll",
+              }}
+            >
+              {participants.map((participant, idx) => (
+                <Participants
+                  key={participant.User_userId}
+                  participant={participant}
+                  deleteParticipant={deleteParticipant}
+                />
+              ))}
+            </Flex>
+          </Flex>
         </Flex>
       </Flex>
     </>
@@ -459,56 +508,78 @@ export const ChatBoxRight = ({
 
 export const Awaiter = ({ awaiter, addNewParticipant }) => {
   return (
-    <Flex
-      styles={{
-        border: "1px solid black",
-        height: "32px",
-        borderRadius: "20px",
-        justifyContent: "space-evenly",
-        margin: "5px 0",
-      }}
-    >
-      <BiPlus
-        onClick={() => {
-          addNewParticipant(awaiter);
+    <div style={{ width: "100%" }}>
+      <Flex
+        styles={{
+          border: "1px solid black",
+          height: "25px",
+          borderRadius: "20px",
+          justifyContent: "space-evenly",
+          margin: "5px 0px",
         }}
-      />
-      <Text>{awaiter.User_userName}</Text>
-      <Flex styles={{ height: "20px", width: "20px" }}>
-        <Image
-          shape="circle"
-          src={awaiter.userImage}
-          styles={{ width: "100%", height: "100%" }}
-        />
+      >
+        {/* <BiPlus
+          onClick={() => {
+            addNewParticipant(awaiter);
+          }}
+        /> */}
+        <Text
+          className="hover-event"
+          styles={{ fontSize: "16px", fontWeight: "700" }}
+          _onClick={() => {
+            addNewParticipant(awaiter);
+          }}
+        >
+          ＋
+        </Text>
+        <Text>{awaiter.User_userName.slice(0, 3) + ".."}</Text>
+        <Flex styles={{ height: "20px", width: "20px" }}>
+          <Image
+            shape="circle"
+            src={awaiter.userImage}
+            styles={{ width: "100%", height: "100%" }}
+          />
+        </Flex>
       </Flex>
-    </Flex>
+    </div>
   );
 };
 
 export const Participants = ({ participant, deleteParticipant }) => {
   return (
-    <Flex
-      styles={{
-        border: "1px solid black",
-        height: "32px",
-        borderRadius: "20px",
-        justifyContent: "space-evenly",
-        margin: "5px 0",
-      }}
-    >
-      <BiPlus
-        onClick={() => {
-          deleteParticipant(participant);
+    <div style={{ width: "100%" }}>
+      <Flex
+        styles={{
+          border: "1px solid black",
+          height: "25px",
+          borderRadius: "20px",
+          justifyContent: "space-evenly",
+          margin: "5px 0px",
         }}
-      />
-      <Text>{participant.User_userName}</Text>
-      <Flex styles={{ height: "20px", width: "20px" }}>
-        <Image
-          shape="circle"
-          src={participant.userImage}
-          styles={{ width: "100%", height: "100%" }}
-        />
+      >
+        {/* <BiPlus
+          onClick={() => {
+            deleteParticipant(participant);
+          }}
+        /> */}
+        <Text
+          className="hover-event"
+          styles={{ fontSize: "16px", fontWeight: "700" }}
+          _onClick={() => {
+            deleteParticipant(participant);
+          }}
+        >
+          －
+        </Text>
+        <Text>{participant.User_userName.slice(0, 3) + ".."}</Text>
+        <Flex styles={{ height: "20px", width: "20px" }}>
+          <Image
+            shape="circle"
+            src={participant.userImage}
+            styles={{ width: "100%", height: "100%" }}
+          />
+        </Flex>
       </Flex>
-    </Flex>
+    </div>
   );
 };

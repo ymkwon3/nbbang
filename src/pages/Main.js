@@ -34,6 +34,8 @@ const Main = () => {
   const [sideNav, setSideNav] = React.useState(false);
   const [rightContainer, setRightContainer] = React.useState("writer");
 
+  // 채팅방 오픈
+  const [openChatroom, setOpenChatroom] = React.useState(false);
   /*
   해당 지역의 전체 게시물, 현재 선택된 카테고리, 
   게시물 지역 범위, 현재 위치 구분*/
@@ -178,6 +180,7 @@ const Main = () => {
   const clickClose = () => {
     setSideNav(false);
     sideNavRef.current.style.width = "0";
+    setOpenChatroom(false);
   };
 
   return (
@@ -231,7 +234,10 @@ const Main = () => {
                 _setRightContainer={setRightContainer}
               ></PostWrite>
             ) : rightContainer === "detail" ? (
-              <PostDetail></PostDetail>
+              <PostDetail
+                openChatroom={openChatroom}
+                setOpenChatroom={setOpenChatroom}
+              ></PostDetail>
             ) : null}
           </Flex>
         </div>
