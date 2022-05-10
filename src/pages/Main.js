@@ -1,6 +1,7 @@
 /* global kakao */
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { PostWrite, SideNav } from "../components";
 import { Flex } from "../elements";
@@ -16,6 +17,7 @@ import myMarker from "../image/myPosition.svg";
 
 const Main = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const geocoder = new kakao.maps.services.Geocoder();
 
   // 카카오맵 컨트롤을 위한 ref
@@ -57,6 +59,7 @@ const Main = () => {
         const userLat = position.coords.latitude;
         const userLng = position.coords.longitude;
         // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
+         
         geocoder.coord2Address(userLng, userLat, (result, status) => {
           // 지번 주소
           const addr = result[0].address;
@@ -226,7 +229,8 @@ const Main = () => {
       </Flex>
       <ButtonContainer>
         {/* 진호님 여기다가 내 위치 이동 만드시면 됩니다 */}
-        <RadioInput city setCityRange={setCityRange}></RadioInput>
+        <button onClick={() => history.push("/chat")}>test chat btn</button>
+        <RadioInput city={city} setCityRange={setCityRange}></RadioInput>
       </ButtonContainer>
     </KaKaoMap>
   );
