@@ -14,6 +14,7 @@ import RadioInput from "../components/RadioInput";
 import eatMarker from "../image/eat.svg";
 import buyMarker from "../image/buy.svg";
 import myMarker from "../image/myPosition.svg";
+import ChatBox from "../components/ChatBox";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -34,16 +35,16 @@ const Main = () => {
   /*
   해당 지역의 전체 게시물, 현재 선택된 카테고리, 
   게시물 지역 범위, 현재 위치 구분*/
-  const postList = useSelector(state => state.post.postList);
-  const category = useSelector(state => state.post.category);
+  const postList = useSelector((state) => state.post.postList);
+  const category = useSelector((state) => state.post.category);
   const [cityRange, setCityRange] = React.useState(3);
   const [city, setCity] = React.useState(3);
 
   // 로그인된 유저 정보
-  const userInfo = useSelector(state => state.user.userInfo);
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   const cateList = postList.filter(
-    v => v.category === category || category === "all"
+    (v) => v.category === category || category === "all"
   );
 
   /*
@@ -55,7 +56,7 @@ const Main = () => {
   React.useEffect(() => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     navigator.geolocation.getCurrentPosition(
-      position => {
+      (position) => {
         const userLat = position.coords.latitude;
         const userLng = position.coords.longitude;
         // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
@@ -82,24 +83,24 @@ const Main = () => {
             "대구",
             "제주특별자치도",
           ];
-          locale.find(v => v === addr.region_1depth_name)
+          locale.find((v) => v === addr.region_1depth_name)
             ? setCity(3)
             : setCity(2);
         });
         const userPosition = new kakao.maps.LatLng(userLat, userLng);
         const options = {
           center: userPosition,
-          level: 4
+          level: 4,
         };
         mapRef.current = new kakao.maps.Map(containerRef.current, options);
-        
-        mapRef.current.panTo(userPosition)
+
+        mapRef.current.panTo(userPosition);
         setRerender(true);
 
         const markerPosition = userPosition;
         const markerImage = new kakao.maps.MarkerImage(
           myMarker,
-          new kakao.maps.Size(40, 50),
+          new kakao.maps.Size(40, 50)
         );
         const marker = new kakao.maps.Marker({
           position: markerPosition,
@@ -114,12 +115,12 @@ const Main = () => {
 
   React.useEffect(() => {
     // DB에서 받아오는 게시글들을 마커로 표시 후 띄워줌
-    markerListRef.current.map(m => {
+    markerListRef.current.map((m) => {
       m.setMap(null);
       return null;
     });
     markerListRef.current = [];
-    cateList.map(v => {
+    cateList.map((v) => {
       // 마커크기 45 x 60
       const markerImage = new kakao.maps.MarkerImage(
         v.category === "eat" ? eatMarker : buyMarker,
@@ -164,7 +165,7 @@ const Main = () => {
     setRightContainer("write");
   };
 
-  const clickDetail = id => {
+  const clickDetail = (id) => {
     sideNavRef.current.style.width = "430px";
     dispatch(postActions.getPostDetailDB(id));
     setRightContainer("detail");
