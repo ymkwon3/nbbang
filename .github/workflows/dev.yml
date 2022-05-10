@@ -10,15 +10,18 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
 
+    - name: Install dependencies
+      run: yarn
+
+    - name: Build
+      run: yarn build
+
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-southeast-2
-
-    - name: build
-      run: npm run build
 
     - name: Deploy static site to S3 bucket
       run: aws s3 sync ./build s3://${{ secrets.S3_BUCKET }} --delete
