@@ -92,7 +92,7 @@ const Header = props => {
                 styles={category === "all" ? checkedStyle : categoryStyle}
                 _onClick={() => dispatch(postActions.updateCategory("all"))}
               >
-                전체11
+                전체
               </Button>
               <Button
                 styles={category === "buy" ? checkedStyle : categoryStyle}
