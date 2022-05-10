@@ -5,10 +5,10 @@ import { Flex, Button, Text, Image } from "../elements";
 
 const PostDetail = () => {
     
-    const deatilInfo = useSelector(state => state.post.postDetail[0]);
+    const detailInfo = useSelector(state => state.post.postDetail[0]);
     
     const userInfo = useSelector(state => state.user.userInfo);
-    if (!deatilInfo) {
+    if (!detailInfo) {
         return null;
     }
 
@@ -117,39 +117,39 @@ const PostDetail = () => {
             </Button>
           </Flex>
         </Flex>
-      </Flex>
-      <Image
-        styles={{
-          width: "332px",
-          height: "225px",
-          borderRadius: "27px",
-          margin: "20px 0 20px",
-        }}
-        src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA0MTRfMTA4%2FMDAxNjQ5OTMzNDg0NDcx.SCiINEwEbTRYRjs0P3BTHKYW_uE8bl4_aSQDvliQnHEg.m1JIKebpiidFMwKOcmoND8ityw5ufbNgBvbuyYFznpMg.JPEG.grrbfl%2Foutput_2236897971.jpg&type=l340_165"
-        shape={"rectangle"}
-      />
-      <Button
-        styles={{
-          width: "155px",
-          height: "41px",
-          backgroundColor: "grey",
-          borderRadius: "30px",
-          margin: "0 0 12px 0",
-        }}
-      >
-        채팅 참여
-      </Button>
-      <Button
-        styles={{
-          width: "155px",
-          height: "41px",
-          backgroundColor: "grey",
-          borderRadius: "30px",
-        }}
-      >
-        거래 완료!
-      </Button>
-    </Flex>
+      // </Flex>
+    //   <Image
+    //     styles={{
+    //       width: "332px",
+    //       height: "225px",
+    //       borderRadius: "27px",
+    //       margin: "20px 0 20px",
+    //     }}
+    //     src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA0MTRfMTA4%2FMDAxNjQ5OTMzNDg0NDcx.SCiINEwEbTRYRjs0P3BTHKYW_uE8bl4_aSQDvliQnHEg.m1JIKebpiidFMwKOcmoND8ityw5ufbNgBvbuyYFznpMg.JPEG.grrbfl%2Foutput_2236897971.jpg&type=l340_165"
+    //     shape={"rectangle"}
+    //   />
+    //   <Button
+    //     styles={{
+    //       width: "155px",
+    //       height: "41px",
+    //       backgroundColor: "grey",
+    //       borderRadius: "30px",
+    //       margin: "0 0 12px 0",
+    //     }}
+    //   >
+    //     채팅 참여
+    //   </Button>
+    //   <Button
+    //     styles={{
+    //       width: "155px",
+    //       height: "41px",
+    //       backgroundColor: "grey",
+    //       borderRadius: "30px",
+    //     }}
+    //   >
+    //     거래 완료!
+    //   </Button>
+    // </Flex>
   );
 };
 
