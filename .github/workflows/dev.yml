@@ -1,4 +1,4 @@
-name: dev-deploy-actions
+name: dev
 on: 
   push: 
     branches: 
@@ -12,7 +12,8 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_DEFAULT_REGION: 'ap-southeast-2'
     steps:
-        - uses: actions/checkout@v1
+        - name: Checkout source code.
+        - uses: actions/checkout@dev
 
         - name: Install dependencies
           run: yarn
