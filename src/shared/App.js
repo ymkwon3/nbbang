@@ -10,8 +10,6 @@ import MyPage from "../pages/MyPage";
 import ChatBox from "../components/ChatBox";
 import IsLogin from "./IsLogin";
 
-
-
 const App = () => {
   return (
     <Flex
