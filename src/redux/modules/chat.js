@@ -7,7 +7,6 @@ import {
   putAPI,
 } from "../../shared/api";
 import { getToken, setToken, removeToken } from "../../shared/localStorage";
-import { chatMockData } from "../chatMockData";
 import moment from "moment";
 
 const startChatDB = createAsyncThunk("chat/startChat", async (postid) => {
@@ -16,17 +15,6 @@ const startChatDB = createAsyncThunk("chat/startChat", async (postid) => {
     return res.data;
   });
 });
-
-const getParticipantsDB = createAsyncThunk(
-  "chat/addDealParticipant",
-  async (postid) => {
-    // in data, {postId} must be put in.
-    return getAPI(`/main/deal/getparticipantlist/${postid}`).then((res) => {
-      console.log(res);
-      // return res;
-    });
-  }
-);
 
 // initialState
 const initialState = {
@@ -63,24 +51,13 @@ const initialMessageForm = {
 const userSlice = createSlice({
   name: "chat",
   initialState,
-  reducers: {
-    // logout(state, action) {
-    //   state = initialState;
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(startChatDB.fulfilled, (state, action) => {
-      // console.log(state);
-      // console.log(action.payload);
-      // console.log(action.payload.chatAdmin[0].User_userId);
       state.chatAdmin = action.payload.chatAdmin[0].User_userId;
       state.userInfo = action.payload.userInfo;
       state.chatInfo = action.payload.chatInfo;
       state.headList = action.payload.headList;
-    });
-
-    builder.addCase(getParticipantsDB.fulfilled, (state, action) => {
-      // add something when testing.
     });
   },
 });

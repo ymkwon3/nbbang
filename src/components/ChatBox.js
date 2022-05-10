@@ -9,16 +9,16 @@ import styled from "styled-components";
 import { BiPlus } from "react-icons/bi";
 import MessageBox from "./MessageBox";
 
-import { chatMockData } from "../redux/chatMockData";
-
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreator as chatActions } from "../redux/modules/chat";
+
+import { BsChatText } from "react-icons/bs";
+import { FaRegPaperPlane } from "react-icons/fa";
 
 import moment from "moment";
 import "moment/locale/ko";
 
 import io from "socket.io-client";
-import { isFulfilled } from "@reduxjs/toolkit";
 
 let socket = io.connect("https://redpingpong.shop"),
   // let socket = io.connect("https://localhost:3443"),
@@ -28,13 +28,13 @@ let postid = "p1";
 const ChatBox = () => {
   const dispatch = useDispatch();
 
-  const selectedChat = useSelector(state => state.chat);
+  const selectedChat = useSelector((state) => state.chat);
   const chatAdmin = selectedChat.chatAdmin;
   const chatRoomUsers = selectedChat.userInfo;
   const selectedRoomMessages = selectedChat.chatInfo;
   const participantList = selectedChat.headList;
-  const awaiterList = chatRoomUsers.filter(user => user.isPick === 0);
-  const loggedUser = useSelector(state => state.user.userInfo);
+  const awaiterList = chatRoomUsers.filter((user) => user.isPick === 0);
+  const loggedUser = useSelector((state) => state.user.userInfo);
 
   const [goToChatRoom, setGoToChatRoom] = React.useState(false);
   const [newMessage, setNewMessage] = React.useState("");
@@ -48,6 +48,7 @@ const ChatBox = () => {
   const [socketConnected, setSocketConnected] = React.useState(false); // socket 연결 상태 체크
   const [awaiters, setAwaiters] = React.useState(null);
   const [participants, setParticipants] = React.useState(null);
+  const [openUserList, setOpenUserList] = React.useState(false);
 
   const goToChat = () => {
     setGoToChatRoom(!goToChatRoom);
@@ -72,7 +73,7 @@ const ChatBox = () => {
     return dispatch(chatActions.startChatDB(1));
   };
 
-  const sendNewMessage = e => {
+  const sendNewMessage = (e) => {
     if (
       !newMessage &&
       ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
@@ -104,13 +105,13 @@ const ChatBox = () => {
         // chatRoomUserList,
       });
 
-      setNewlyAddedMessages(messageList => [...messageList, newChat]);
+      setNewlyAddedMessages((messageList) => [...messageList, newChat]);
       setNewMessage("");
     }
   };
 
   React.useEffect(() => {
-    socket.on("connected", enteredUser => {
+    socket.on("connected", (enteredUser) => {
       console.log("연결성공!");
       console.log(`${enteredUser}`);
       setSocketConnected(true);
@@ -129,8 +130,8 @@ const ChatBox = () => {
   React.useEffect(() => {
     socket.on(
       "receive message",
-      newMessageReceived => {
-        setNewlyAddedMessages(messageList => [
+      (newMessageReceived) => {
+        setNewlyAddedMessages((messageList) => [
           ...messageList,
           newMessageReceived,
         ]);
@@ -167,7 +168,7 @@ const ChatBox = () => {
     );
   }, []);
 
-  const typingHandler = e => {
+  const typingHandler = (e) => {
     setNewMessage(e.target.value);
 
     // Typing Indicator Logic
@@ -192,22 +193,22 @@ const ChatBox = () => {
       }
     }, timerLength);
   };
-  
+
+  const OpenChatRoomUserList = () => {
+    setOpenUserList(!openUserList);
+  };
+
   return (
     <>
       <Flex styles={{ flexDirection: "column" }}>
         <Button styles={{ border: "1px solid black" }} _onClick={goToChat}>
           채팅하러가기
         </Button>
-        {/* position for laoding */}
-        {/* {awaiters === null && participants === null ? ( */}
-        <>{/* loading lottie */}</>
-        {/* ) : goToChatRoom ? ( */}
         {goToChatRoom ? (
           <Flex
             styles={{
-              width: "600px",
-              height: "600px",
+              width: "800px",
+              height: "80vh",
               border: "1px solid black",
             }}
           >
@@ -218,17 +219,22 @@ const ChatBox = () => {
               sendNewMessage={sendNewMessage}
               loggedUser={loggedUser}
               isTyping={isTyping}
+              OpenChatRoomUserList={OpenChatRoomUserList}
             />
-            <ChatBoxRight
-              postid={postid}
-              chatRoomUsers={chatRoomUsers}
-              participantList={participantList}
-              socket={socket}
-              awaiters={awaiters ? awaiters : awaiterList}
-              setAwaiters={setAwaiters}
-              participants={participants ? participants : participantList}
-              setParticipants={setParticipants}
-            />
+            {openUserList ? (
+              <ChatBoxRight
+                postid={postid}
+                chatRoomUsers={chatRoomUsers}
+                participantList={participantList}
+                socket={socket}
+                awaiters={awaiters ? awaiters : awaiterList}
+                setAwaiters={setAwaiters}
+                participants={participants ? participants : participantList}
+                setParticipants={setParticipants}
+              />
+            ) : (
+              <></>
+            )}
           </Flex>
         ) : (
           <></>
@@ -247,53 +253,96 @@ export const ChatBoxLeft = ({
   sendNewMessage,
   loggedUser,
   isTyping,
+  OpenChatRoomUserList,
 }) => {
   return (
     <>
       {/* 왼쪽 */}
       <Flex
         styles={{
-          border: "1px solid black",
-          width: "60%",
-          height: "100%",
-          padding: "20px",
-          flexDirection: "column",
+          width: "432px",
+          height: "90vh",
+          padding: "40px 23px",
+          backgroundColor: "rgba(231, 232, 244, 0.7)",
+          boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
         }}
       >
         <Flex
-          className="removeScroll"
           styles={{
-            height: "85%",
-            border: "1px solid black",
+            width: "100%",
+            height: "100%",
+            padding: "20px",
             flexDirection: "column",
-            justifyContent: "stretch",
-            overflowX: "hidden",
-            overflowY: "scroll",
+            backgroundColor: "#FFFFFF",
+            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+            borderRadius: "22px",
           }}
         >
-          {/* 메시지가 보이는 곳 */}
-          <MessageBox messages={messages} loggedUser={loggedUser} />
-        </Flex>
-        {isTyping ? <div>loading...</div> : <></>}
-        {/* 메시지 보내는 곳 */}
-        <Flex styles={{ height: "7%", marginTop: "8%" }}>
-          <input
-            type="text"
-            style={{ height: "100%", width: "80%" }}
-            onChange={typingHandler}
-            onKeyUp={sendNewMessage}
-            value={newMessage}
-          />
-          <Button
-            styles={{
-              border: "1px solid black",
-              width: "20%",
-              height: "100%",
-            }}
-            _onClick={sendNewMessage}
+          <Flex
+            styles={{ justifyContent: "flex-start", margin: "36px 0 22px 0" }}
           >
-            send
-          </Button>
+            <BsChatText
+              className="hover-event"
+              style={{ fontSize: "28px", marginRight: "8px" }}
+              onClick={OpenChatRoomUserList}
+            />
+            <Text
+              styles={{
+                fontWeight: "700",
+                fontSize: "18px",
+                lineHeight: "22px",
+                color: "#000000",
+              }}
+            >
+              채팅 참여자
+            </Text>
+          </Flex>
+          <Flex
+            className="removeScroll"
+            styles={{
+              flexDirection: "column",
+              justifyContent: "stretch",
+              overflowX: "hidden",
+              overflowY: "scroll",
+              height: "635px",
+              backgroundColor: "#E8E8F2",
+              borderRadius: "22px",
+              padding: "0px 14px",
+            }}
+          >
+            {/* 메시지가 보이는 곳 */}
+            <MessageBox messages={messages} loggedUser={loggedUser} />
+          </Flex>
+          {isTyping ? <div>loading...</div> : <></>}
+          {/* 메시지 보내는 곳 */}
+          <Flex
+            styles={{
+              height: "47px",
+              marginTop: "29px",
+              borderRadius: "20px",
+              backgroundColor: "#E8E8F2",
+            }}
+          >
+            <input
+              type="text"
+              style={{
+                height: "100%",
+                width: "85%",
+                outline: "none",
+                border: "none",
+                boxShadow: "none",
+                backgroundColor: "#E8E8F2",
+              }}
+              onChange={typingHandler}
+              onKeyUp={sendNewMessage}
+              value={newMessage}
+            />
+            <FaRegPaperPlane
+              className="hover-event"
+              onClick={sendNewMessage}
+              style={{ fontSize: "1.2rem", marginLeft: "6px" }}
+            />
+          </Flex>
         </Flex>
       </Flex>
     </>
@@ -316,32 +365,32 @@ export const ChatBoxRight = ({
   const [loadingDeleteParticipant, setLoadingDeleteParticipant] =
     React.useState(false);
 
-  const addNewParticipant = selectedUser => {
+  const addNewParticipant = (selectedUser) => {
     setLoadingAddParticipant(true);
     socket.emit("add_new_participant", { postid, selectedUser });
 
-    setParticipants(existingParticipantList => {
+    setParticipants((existingParticipantList) => {
       return existingParticipantList
         ? [...existingParticipantList, selectedUser]
         : [selectedUser];
     });
     let updatedAwaiterList = awaiters.filter(
-      awaiter => awaiter.User_userId !== selectedUser.User_userId
+      (awaiter) => awaiter.User_userId !== selectedUser.User_userId
     );
     setAwaiters(updatedAwaiterList);
 
     setLoadingAddParticipant(false);
   };
 
-  const deleteParticipant = selectedUser => {
+  const deleteParticipant = (selectedUser) => {
     setLoadingDeleteParticipant(true);
     socket.emit("cancel_new_participant", { postid, selectedUser });
 
     let updatedParticipantList = participants.filter(
-      participant => participant.User_userId !== selectedUser.User_userId
+      (participant) => participant.User_userId !== selectedUser.User_userId
     );
     setParticipants(updatedParticipantList);
-    setAwaiters(existingAwaiterList => {
+    setAwaiters((existingAwaiterList) => {
       return existingAwaiterList
         ? [...existingAwaiterList, selectedUser]
         : [selectedUser];
