@@ -32,6 +32,8 @@ const Main = () => {
   const sideNavRef = React.useRef(null);
   const [rightContainer, setRightContainer] = React.useState("writer");
 
+  // 채팅방 오픈
+  const [openChatroom, setOpenChatroom] = React.useState(false);
   /*
   해당 지역의 전체 게시물, 현재 선택된 카테고리, 
   게시물 지역 범위, 현재 위치 구분*/
@@ -60,7 +62,7 @@ const Main = () => {
         const userLat = position.coords.latitude;
         const userLng = position.coords.longitude;
         // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
-         
+
         geocoder.coord2Address(userLng, userLat, (result, status) => {
           // 지번 주소
           const addr = result[0].address;
@@ -173,6 +175,7 @@ const Main = () => {
   // sidenav의 오른쪽의 접어두기 버튼 이벤트
   const clickClose = () => {
     sideNavRef.current.style.width = "0";
+    setOpenChatroom(false);
   };
 
   return (
@@ -223,7 +226,10 @@ const Main = () => {
                 _setRightContainer={setRightContainer}
               ></PostWrite>
             ) : rightContainer === "detail" ? (
-              <PostDetail></PostDetail>
+              <PostDetail
+                openChatroom={openChatroom}
+                setOpenChatroom={setOpenChatroom}
+              ></PostDetail>
             ) : null}
           </Flex>
         </div>

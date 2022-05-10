@@ -72,7 +72,7 @@ const MessageBox = ({ messages, loggedUser }) => {
                   <Bubble
                     className="bubble-right"
                     style={{
-                      maxWidth: "50%",
+                      // maxWidth: "50%",
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "flex-end",
