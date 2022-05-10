@@ -5,13 +5,10 @@ import { actionCreator as postActions } from "../redux/modules/post";
 import { actionCreator as userActions } from "../redux/modules/user";
 import SearchBox from "./SearchBox";
 
-import { RiSearchLine } from "react-icons/ri";
-import { AiOutlineHeart } from "react-icons/ai";
-import { IoMdNotifications } from "react-icons/io";
-
 import { useHistory, useLocation } from "react-router-dom";
 
-import logo from "../image/logo.svg";
+import {logo, whiteHeart, notification} from "../image";
+
 
 const Header = props => {
   const dispatch = useDispatch();
@@ -21,12 +18,6 @@ const Header = props => {
   const userInfo = useSelector(state => state.user.userInfo);
   const isLogin = useSelector(state => state.user.isLogin);
   const category = useSelector(state => state.post.category);
-
-
-
-  React.useEffect(() => {
-    console.log("location changed", location);
-  }, [location]);
 
   const [drop, setDrop] = React.useState(false);
 
@@ -78,16 +69,15 @@ const Header = props => {
         <img
           src={logo}
           alt="logo"
-          style={{ width: "50px", height: "40px", cursor: "pointer" }}
+          style={{ width: "50px", height: "50px", cursor: "pointer" }}
           onClick={clickLogo}
         ></img>
         {location.pathname === "/" ? (
           <Flex styles={{ justifyContent: "space-between" }}>
             <Flex styles={{ width: "fit-content", gap: "15px" }}>
-           
-                <SearchBox ></SearchBox>
-                {/* <Button _onClick={() => dispatch(postActions.searchPost(searchTerm))}><RiSearchLine size="27.22" color="#19253D" /></Button> */}
-    
+              <SearchBox></SearchBox>
+              {/* <Button _onClick={() => dispatch(postActions.searchPost(searchTerm))}><RiSearchLine size="27.22" color="#19253D" /></Button> */}
+
               <Button
                 styles={category === "all" ? checkedStyle : categoryStyle}
                 _onClick={() => dispatch(postActions.updateCategory("all"))}
@@ -110,8 +100,8 @@ const Header = props => {
 
             {isLogin ? (
               <Flex styles={{ gap: "15px", width: "fit-content" }}>
-                <AiOutlineHeart color="#fff" size="25" />
-                <IoMdNotifications color="#fff" size="25" />
+                <img src={whiteHeart} alt="filledHeart" />
+                <img src={notification} alt="notification" />
                 <Image
                   styles={{ width: "38px", height: "38px" }}
                   src={userInfo.userImage}
@@ -136,14 +126,16 @@ const Header = props => {
                       styles={{
                         fontSize: "14px",
                       }}
-                      _onClick={() => {history.push(`/mypage/${userInfo?.userId}`)}}
+                      _onClick={() => {
+                        history.push(`/mypage/${userInfo?.userId}`);
+                      }}
                     >
                       마이페이지
                     </Button>
                     <Button
                       styles={{
                         fontSize: "14px",
-                        color: "#FF5C00"
+                        color: "#FF5C00",
                       }}
                       _onClick={clickLogout}
                     >
@@ -155,7 +147,11 @@ const Header = props => {
             ) : (
               <Flex styles={{ width: "fit-content" }}>
                 <Button
-                  styles={{ width: "90px", height: "40px", borderRadius: "27px" }}
+                  styles={{
+                    width: "90px",
+                    height: "40px",
+                    borderRadius: "27px",
+                  }}
                   _onClick={clickLogin}
                 >
                   로그인

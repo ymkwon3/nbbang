@@ -3,65 +3,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { Button } from "../elements/index";
 import styled from "styled-components";
 
-import { RiSearchLine } from "react-icons/ri";
 import { actionCreator as searchAction } from '../redux/modules/post';
 
-// const SearchBox = (props) => {
-
-//     class Handler_class extends Component {
-//         state = {
-//             inputValue: ""
-//         }
-//     };
-
-//     handleChange = (e) => {     // input값으로 inputValue 변경 함수
-//         const {taeget: value} = e
-//         this.setState({
-//             inputValue: e.target.value,
-//         })
-//     }
-
-//     const handleClick = (e) => {
-//         this.setState({
-//         inputValue:""
-//         })
-//     };
-
-    
-//     return (
-//         <div>
-//             <input type="text" placeholder="검색어를 입력해주세요" onChange={(e) => this.handleChange(e)} />
-//             <Button _onClick={() => this.handleClick()}><RiSearchLine size="27.22" color="#19253D" /></Button>
-//         </div>
-//     );
-    
-// }
-
-// export default SearchBox;
-
-
+import {search} from "../image"
 
 export default function SearchBox() {
-    // const [searchTerm, setSearchTerm] = React.useState("");
     const dispatch = useDispatch();
-    // const { searchTerm, setSearchTerm } = props;
-
 
     const [searchTerm, setSearchTerm] = React.useState("");
-    console.log(searchTerm)
-
-
-    // const handleClick = (e) => {
-    //     this.setState({
-    //         inputValue:""
-    //     })
-
-    // }
 
     return (
         <SearchInput>
             <input type="text" placeholder="검색어를 입력해주세요" value={searchTerm} onChange={(e) => {setSearchTerm(e.target.value)}} />
-            <Button _onClick={() => dispatch(searchAction.searchPost(searchTerm))}><RiSearchLine size="27.22" color="#19253D" /></Button>
+            <Button _onClick={() => dispatch(searchAction.searchPost(searchTerm))}><img src={search} alt="search" /></Button>
         </SearchInput>
     )
 };

@@ -41,7 +41,7 @@ const PaginationBtn = styled.button`
     background: white;
     color: black;
     font-size: 1rem;
-
+    cursor: pointer;
     &[aria-current] {
     background: #FFA877;
     font-weight: bold;

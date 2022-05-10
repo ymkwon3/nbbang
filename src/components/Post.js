@@ -8,8 +8,8 @@ import { Flex, Image, Text } from "../elements";
 import Permit from "../shared/Permit";
 
 //style
-import filledHeart from "../image/filledHeart.svg";
-import emptyHeart from "../image/emptyHeart.svg";
+import styled from "styled-components";
+import { filledHeart, emptyHeart, eatCategory, buyCategory } from "../image";
 
 const Post = props => {
   const {
@@ -29,10 +29,12 @@ const Post = props => {
   const contentStyle = {
     display: "block",
     fontSize: "12px",
-    width: "50%",
+    width: "100%",
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
+    marginBottom: "3px",
+    letterSpacing: "0.5px",
   };
 
   // number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") 3자리마다 콤마찍어주는 정규표현식
@@ -45,6 +47,7 @@ const Post = props => {
   return (
     <Flex
       styles={{
+        height: "140px",
         boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
         borderRadius: "30px",
         padding: "15px",
@@ -67,69 +70,77 @@ const Post = props => {
           justifyContent: "start",
           marginLeft: "13px",
           height: "110px",
-          width: "calc(100% - 123px)"
+          width: "calc(100% - 123px)",
         }}
       >
-        <Flex
-          styles={{ justifyContent: "space-between", marginBottom: "13px" }}
+        <Text
+          className={"line-break"}
+          styles={{
+            ...contentStyle,
+            fontSize: "18px",
+            fontWeight: "700",
+            marginBottom: "10px",
+          }}
         >
-          <Text className={"line-break"} styles={{ fontSize: "18px", fontWeight: "700"}}>{title}</Text>
-          <Permit>
-            {isLike ? (
-              <img
-                alt="filledHeart"
-                src={filledHeart}
-                className="hover-event"
-                onClick={clickLike}
-              ></img>
-            ) : (
-              <img
-                alt="filledHeart"
-                src={emptyHeart}
-                className="hover-event"
-                onClick={clickLike}
-              ></img>
-            )}
-          </Permit>
-        </Flex>
+          {title}
+        </Text>
+
         <Text styles={contentStyle}>
-            <Text>가격:</Text>{" "}
-            {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
-          </Text>
-          <Text styles={contentStyle}>
-            <Text>마감일:</Text>{" "}
-            {moment(endTime).format("MM-DD")}
-          </Text>
-          <Text styles={{ fontSize: "12px" }}>
-            <Text>위치:</Text> {address}
-          </Text>
-        {/* <Flex styles={{ justifyContent: "start" }}>
-          <Text styles={contentStyle}>
-            <Text styles={{ fontWeight: "600" }}>작성자:</Text> {writer}
-          </Text>
-          <Text styles={contentStyle}>
-            <Text styles={{ fontWeight: "600" }}>카테고리:</Text>{" "}
-            {category === "eat" ? "먹자" : "사자"}
-          </Text>
-        </Flex> */}
-        {/* <Flex styles={{ justifyContent: "start" }}>
-          <Text styles={contentStyle}>
-            <Text styles={{ fontWeight: "600" }}>가격:</Text>{" "}
-            {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
-          </Text>
-          <Text styles={contentStyle}>
-            <Text styles={{ fontWeight: "600" }}>마감일:</Text>{" "}
-            {moment(endTime).format("MM-DD")}
-          </Text>
-        </Flex> */}
-        {/* <Flex styles={{ justifyContent: "start" }}>
-          <Text styles={{ fontSize: "12px" }}>
-            <Text styles={{ fontWeight: "600" }}>위치:</Text> {address}
-          </Text>
-        </Flex> */}
+          <Text>가격:</Text>{" "}
+          {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+        </Text>
+        <Text styles={contentStyle}>
+          <Text>마감일:</Text> {moment(endTime).format("MM-DD")}
+        </Text>
+        <StyledClamp>
+          <Text>위치:</Text> {address}
+          {address}
+          {address}
+        </StyledClamp>
+      </Flex>
+      <Flex
+        styles={{
+          flexDirection: "column",
+          justifyContent: "start",
+          width: "30px",
+          height: "100%",
+          gap: "5px"
+        }}
+      >
+        <Permit>
+          {isLike ? (
+            <img
+              alt="filledHeart"
+              src={filledHeart}
+              className="hover-event"
+              onClick={clickLike}
+            ></img>
+          ) : (
+            <img
+              alt="filledHeart"
+              src={emptyHeart}
+              className="hover-event"
+              onClick={clickLike}
+            ></img>
+          )}
+        </Permit>
+        {category === "eat" ? (
+          <img src={eatCategory} alt="eat" />
+        ) : (
+          <img src={buyCategory} alt="buy" />
+        )}
       </Flex>
     </Flex>
   );
 };
+
+const StyledClamp = styled.p`
+  width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  font-size: 12px;
+`;
 
 export default Post;
