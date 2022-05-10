@@ -94,8 +94,6 @@ const Post = props => {
         </Text>
         <StyledClamp>
           <Text>위치:</Text> {address}
-          {address}
-          {address}
         </StyledClamp>
       </Flex>
       <Flex
