@@ -34,7 +34,6 @@ const ChatBox = () => {
   const selectedRoomMessages = selectedChat.chatInfo;
   const participantList = selectedChat.headList;
   const awaiterList = chatRoomUsers.filter((user) => user.isPick === 0);
-
   const loggedUser = useSelector((state) => state.user.userInfo);
 
   const [goToChatRoom, setGoToChatRoom] = React.useState(false);
@@ -59,11 +58,6 @@ const ChatBox = () => {
     // 1은 postid로 대체
     // p+postid 집어 넣기
     fetchMessages();
-
-    console.log(awaiterList);
-    console.log(participantList);
-    setAwaiters(awaiterList);
-    setParticipants(participantList);
 
     if (postid !== undefined) {
       socket.emit("startchat", { postid: postid, loggedUser });
@@ -125,12 +119,12 @@ const ChatBox = () => {
     socket.on("stop typing", () => setIsTyping(false));
   }, []);
 
-  React.useEffect(() => {
-    // fetchMessages();
-    // selectedChatCompare = selectedChat;
-    // console.log(participantList);
-    // setAwaiters(awaiterList);
-  }, []);
+  // React.useEffect(() => {
+  //   // fetchMessages();
+  //   // selectedChatCompare = selectedChat;
+  //   // console.log(participantList);
+  //   // setAwaiters(awaiterList);
+  // }, [awaiterList]);
 
   React.useEffect(() => {
     socket.on(
@@ -159,7 +153,6 @@ const ChatBox = () => {
     socket.on(
       "receive_participant_list_after_added",
       (updatedParticipantList, updatedAwaiterList) => {
-        console.log("갓영민");
         setParticipants(updatedParticipantList);
         setAwaiters(updatedAwaiterList);
       }
@@ -168,7 +161,6 @@ const ChatBox = () => {
     socket.on(
       "receive_participant_list_after_canceled",
       (updatedParticipantList, updatedAwaiterList) => {
-        console.log("빛영민");
         setParticipants(updatedParticipantList);
         setAwaiters(updatedAwaiterList);
       }
@@ -315,8 +307,6 @@ export const ChatBoxRight = ({
   participants,
   setParticipants,
 }) => {
-  // console.log("awaiters: " + awaiters);
-  // console.log("participants: " + participants);
   const [loadingAddParticipant, setLoadingAddParticipant] =
     React.useState(false);
   const [loadingDeleteParticipant, setLoadingDeleteParticipant] =
@@ -326,10 +316,11 @@ export const ChatBoxRight = ({
     setLoadingAddParticipant(true);
     socket.emit("add_new_participant", { postid, selectedUser });
 
-    setParticipants((existingParticipantList) => [
-      ...existingParticipantList,
-      selectedUser,
-    ]);
+    setParticipants((existingParticipantList) => {
+      return existingParticipantList
+        ? [...existingParticipantList, selectedUser]
+        : [selectedUser];
+    });
     let updatedAwaiterList = awaiters.filter(
       (awaiter) => awaiter.User_userId !== selectedUser.User_userId
     );
@@ -346,10 +337,11 @@ export const ChatBoxRight = ({
       (participant) => participant.User_userId !== selectedUser.User_userId
     );
     setParticipants(updatedParticipantList);
-    setAwaiters((existingAwaiterList) => [
-      ...existingAwaiterList,
-      selectedUser,
-    ]);
+    setAwaiters((existingAwaiterList) => {
+      return existingAwaiterList
+        ? [...existingAwaiterList, selectedUser]
+        : [selectedUser];
+    });
 
     setLoadingDeleteParticipant(false);
   };

@@ -1,3 +1,4 @@
+/* global kakao */
 import React from "react";
 import "./App.css";
 import { Flex } from "../elements";
@@ -9,6 +10,8 @@ import MyPage from "../pages/MyPage";
 import ChatBox from "../components/ChatBox";
 import IsLogin from "./IsLogin";
 
+
+
 const App = () => {
   return (
     <Flex
@@ -17,12 +20,13 @@ const App = () => {
       <Header></Header>
       <Flex
         styles={{
-          height: "calc(100% - 60px)",
+          height: "calc(100% - 70px)",
         }}
       >
+        {/* <Route path="/mypage" exact component={MyPage}></Route> */}
         <IsLogin>
           <Route path="/" exact component={Main}></Route>
-          <Route path="/mypage" exact component={MyPage}></Route>
+          <Route path="/mypage/:userId" exact component={MyPage}></Route>
         </IsLogin>
         <Route path="/login" exact component={Login}></Route>
         <Route path="/chat" exact component={ChatBox}></Route>

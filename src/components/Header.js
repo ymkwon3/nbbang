@@ -22,6 +22,8 @@ const Header = props => {
   const isLogin = useSelector(state => state.user.isLogin);
   const category = useSelector(state => state.post.category);
 
+  const [drop, setDrop] = React.useState(false);
+
   const clickLogout = () => {
     //temp
     dispatch(userActions.logout());
@@ -40,7 +42,7 @@ const Header = props => {
     width: "145px",
     height: "40px",
     borderRadius: "30px",
-    fontSize: "16px",
+    fontSize: "18px",
     fontWeight: "500",
   };
 
@@ -50,14 +52,14 @@ const Header = props => {
     width: "145px",
     height: "40px",
     borderRadius: "30px",
-    fontSize: "16px",
+    fontSize: "18px",
     fontWeight: "500",
   };
 
   return (
     <Flex
       styles={{
-        height: "60px",
+        height: "70px",
         backgroundColor: "#19253D",
         boxShadow: "0 8px 10px -4px rgba(0, 0, 0, 0.2)",
         zIndex: 11,
@@ -66,7 +68,7 @@ const Header = props => {
         padding: "0 50px",
       }}
     >
-      <Flex styles={{justifyContent: "start"}}>
+      <Flex styles={{ justifyContent: "start" }}>
         <img
           src={logo}
           alt="logo"
@@ -101,21 +103,53 @@ const Header = props => {
             </Flex>
 
             {isLogin ? (
-              <Flex
-                styles={{ gap: "15px", width: "fit-content" }}
-                _onClick={clickLogout}
-              >
+              <Flex styles={{ gap: "15px", width: "fit-content" }}>
                 <AiOutlineHeart color="#fff" size="25" />
                 <IoMdNotifications color="#fff" size="25" />
                 <Image
                   styles={{ width: "38px", height: "38px" }}
                   src={userInfo.userImage}
+                  className="hover-event"
+                  _onClick={() => setDrop(prev => !prev)}
                 ></Image>
+                {drop ? (
+                  <Flex
+                    styles={{
+                      flexDirection: "column",
+                      position: "absolute",
+                      backgroundColor: "#fff",
+                      boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+                      width: "200px",
+                      top: "60px",
+                      borderRadius: "20px",
+                      padding: "10px",
+                      gap: "10px",
+                    }}
+                  >
+                    <Button
+                      styles={{
+                        fontSize: "14px",
+                      }}
+                      _onClick={() => {history.push(`/mypage/${userInfo?.userId}`)}}
+                    >
+                      마이페이지
+                    </Button>
+                    <Button
+                      styles={{
+                        fontSize: "14px",
+                        color: "#FF5C00"
+                      }}
+                      _onClick={clickLogout}
+                    >
+                      로그아웃
+                    </Button>
+                  </Flex>
+                ) : null}
               </Flex>
             ) : (
               <Flex styles={{ width: "fit-content" }}>
                 <Button
-                  styles={{ width: "100px", height: "40px" }}
+                  styles={{ width: "90px", height: "40px", borderRadius: "27px" }}
                   _onClick={clickLogin}
                 >
                   로그인

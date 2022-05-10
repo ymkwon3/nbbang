@@ -9,12 +9,27 @@ import {
 import { getToken, setToken, removeToken } from "../../shared/localStorage";
 import { getPostList } from "../../components/Data";
 
-const getPostListDB = createAsyncThunk(`post/getlist`, async (data) => {
-  return await postAPI('/main/postlist', data)
+const getPostListDB = createAsyncThunk(`post/getlist`, async data => {
+  return await postAPI("/main/postlist", data);
 });
+
+const getPostDetailDB = createAsyncThunk(`post/detail`, async (postId) => {
+  return await getAPI(`/main/${postId}`).then(res => {
+    return res.data[0];
+  });
+})
 
 const addPostDB = createAsyncThunk("post/add", async (data) => {
   return await postFormAPI('/main/postadd', data);
+});
+
+const postLikeDB = createAsyncThunk("post/like", async data => {
+  const { postId, isLike } = data;
+  if (isLike) {
+    return await deleteAPI(`/main/like/${postId}`);
+  } else {
+    return await getAPI(`/main/like/${postId}`);
+  }
 });
 
 /*postlist : {
@@ -33,18 +48,22 @@ const addPostDB = createAsyncThunk("post/add", async (data) => {
   price: "number",
   title: "string",
   writer: "string",
-}*/ 
+}*/
 
 // reducer
 const postSlice = createSlice({
   name: "post",
   initialState: {
     postList: [],
+    postDetail: [],
     category: "all"
   },
   reducers: {
     updateCategory(state, action) {
       state.category = action.payload;
+    },
+    updateCityRange(state, action) {
+      state.cityRange = action.payload;
     },
   },
   extraReducers: builder => {
@@ -53,6 +72,18 @@ const postSlice = createSlice({
     });
     builder.addCase(getPostListDB.fulfilled, (state, action) => {
       state.postList = action.payload.data;
+    });
+    builder.addCase(getPostDetailDB.fulfilled, (state, action) => {
+      state.postDetail = action.payload;
+    })
+    builder.addCase(postLikeDB.fulfilled, (state, action) => {
+      const { postId, isLike } = action.meta.arg;
+      state.postList = state.postList.map(v => {
+        if (v.postId === postId) {
+          return {...v, isLike: isLike ? 0 : 1}
+        }
+        return v;
+      });
     });
   },
 });
@@ -63,6 +94,8 @@ export default postSlice.reducer;
 const actionCreator = {
   getPostListDB,
   addPostDB,
+  postLikeDB,
+  getPostDetailDB,
   ...postSlice.actions,
 };
 
