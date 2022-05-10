@@ -21,7 +21,7 @@ const PostDetail = () => {
       console.log(chatRef.current);
       chatRef.current.style.top = "80px";
     } else {
-      chatRef.current.style.top = "100%";
+      // chatRef.current.style.top = "100%";
     }
   }, [openChatroom]);
 
