@@ -25,7 +25,7 @@ let socket = io.connect("https://redpingpong.shop"),
   selectedChatCompare;
 let postid = "p1";
 
-const ChatBox = () => {
+const ChatBox = React.forwardRef(({ setOpenChatroom }, ref) => {
   const dispatch = useDispatch();
 
   const selectedChat = useSelector((state) => state.chat);
@@ -70,7 +70,7 @@ const ChatBox = () => {
     if (!selectedChat) return;
     // setLoading(true);
     // setLoading(false);
-    return dispatch(chatActions.startChatDB(1));
+    dispatch(chatActions.startChatDB(1));
   };
 
   const sendNewMessage = (e) => {
@@ -200,18 +200,22 @@ const ChatBox = () => {
 
   return (
     <>
-      <Flex styles={{ flexDirection: "column" }}>
-        <Button styles={{ border: "1px solid black" }} _onClick={goToChat}>
-          채팅하러가기
-        </Button>
-        {goToChatRoom ? (
-          <Flex
-            styles={{
-              width: "800px",
-              height: "80vh",
-              border: "1px solid black",
-            }}
-          >
+      <ChatModal ref={ref}>
+        <Flex
+          styles={{
+            width: "432px",
+            height: "90vh",
+            padding: "40px 23px 0 23px",
+            backgroundColor: "rgba(231, 232, 244, 0.7)",
+            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+            flexDirection: "column",
+          }}
+        >
+          <Flex>
+            <Text>X</Text>
+          </Flex>
+          {/* <Flex> */}
+          <Flex>
             <ChatBoxLeft
               messages={[...selectedRoomMessages, ...newlyAddedMessages]}
               typingHandler={typingHandler}
@@ -236,14 +240,17 @@ const ChatBox = () => {
               <></>
             )}
           </Flex>
-        ) : (
-          <></>
-        )}
-      </Flex>
+        </Flex>
+      </ChatModal>
     </>
   );
-};
+});
 
+const ChatModal = styled.div`
+  top: 100%;
+  position: fixed;
+  transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
+`;
 export default ChatBox;
 
 export const ChatBoxLeft = ({
@@ -260,89 +267,79 @@ export const ChatBoxLeft = ({
       {/* 왼쪽 */}
       <Flex
         styles={{
-          width: "432px",
-          height: "90vh",
-          padding: "40px 23px",
-          backgroundColor: "rgba(231, 232, 244, 0.7)",
+          width: "100%",
+          height: "100%",
+          padding: "20px",
+          flexDirection: "column",
+          backgroundColor: "#FFFFFF",
           boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+          borderRadius: "22px",
         }}
       >
         <Flex
+          styles={{ justifyContent: "flex-start", margin: "36px 0 22px 0" }}
+        >
+          <BsChatText
+            className="hover-event"
+            style={{ fontSize: "28px", marginRight: "8px" }}
+            onClick={OpenChatRoomUserList}
+          />
+          <Text
+            styles={{
+              fontWeight: "700",
+              fontSize: "18px",
+              lineHeight: "22px",
+              color: "#000000",
+            }}
+          >
+            채팅 참여자
+          </Text>
+        </Flex>
+        <Flex
+          className="removeScroll"
           styles={{
-            width: "100%",
-            height: "100%",
-            padding: "20px",
             flexDirection: "column",
-            backgroundColor: "#FFFFFF",
-            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+            justifyContent: "stretch",
+            overflowX: "hidden",
+            overflowY: "scroll",
+            height: "635px",
+            backgroundColor: "#E8E8F2",
             borderRadius: "22px",
+            padding: "0px 14px",
           }}
         >
-          <Flex
-            styles={{ justifyContent: "flex-start", margin: "36px 0 22px 0" }}
-          >
-            <BsChatText
-              className="hover-event"
-              style={{ fontSize: "28px", marginRight: "8px" }}
-              onClick={OpenChatRoomUserList}
-            />
-            <Text
-              styles={{
-                fontWeight: "700",
-                fontSize: "18px",
-                lineHeight: "22px",
-                color: "#000000",
-              }}
-            >
-              채팅 참여자
-            </Text>
-          </Flex>
-          <Flex
-            className="removeScroll"
-            styles={{
-              flexDirection: "column",
-              justifyContent: "stretch",
-              overflowX: "hidden",
-              overflowY: "scroll",
-              height: "635px",
-              backgroundColor: "#E8E8F2",
-              borderRadius: "22px",
-              padding: "0px 14px",
-            }}
-          >
-            {/* 메시지가 보이는 곳 */}
-            <MessageBox messages={messages} loggedUser={loggedUser} />
-          </Flex>
-          {isTyping ? <div>loading...</div> : <></>}
-          {/* 메시지 보내는 곳 */}
-          <Flex
-            styles={{
-              height: "47px",
-              marginTop: "29px",
-              borderRadius: "20px",
+          {/* 메시지가 보이는 곳 */}
+          <MessageBox messages={messages} loggedUser={loggedUser} />
+        </Flex>
+        {isTyping ? <div>loading...</div> : <></>}
+        {/* 메시지 보내는 곳 */}
+        <Flex
+          styles={{
+            height: "47px",
+            marginTop: "29px",
+            borderRadius: "20px",
+            backgroundColor: "#E8E8F2",
+          }}
+        >
+          <input
+            type="text"
+            style={{
+              height: "100%",
+              width: "85%",
+              outline: "none",
+              border: "none",
+              boxShadow: "none",
               backgroundColor: "#E8E8F2",
             }}
-          >
-            <input
-              type="text"
-              style={{
-                height: "100%",
-                width: "85%",
-                outline: "none",
-                border: "none",
-                boxShadow: "none",
-                backgroundColor: "#E8E8F2",
-              }}
-              onChange={typingHandler}
-              onKeyUp={sendNewMessage}
-              value={newMessage}
-            />
-            <FaRegPaperPlane
-              className="hover-event"
-              onClick={sendNewMessage}
-              style={{ fontSize: "1.2rem", marginLeft: "6px" }}
-            />
-          </Flex>
+            onChange={typingHandler}
+            onKeyUp={sendNewMessage}
+            value={newMessage}
+          />
+          <FaRegPaperPlane
+            className="hover-event"
+            onClick={sendNewMessage}
+            style={{ fontSize: "1.2rem", marginLeft: "6px" }}
+          />
         </Flex>
       </Flex>
     </>
@@ -351,10 +348,7 @@ export const ChatBoxLeft = ({
 
 export const ChatBoxRight = ({
   postid,
-  // chatRoomUsers,
-  // participantList,
   socket,
-  // awaiterList,
   awaiters,
   setAwaiters,
   participants,
