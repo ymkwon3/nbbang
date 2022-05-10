@@ -29,6 +29,7 @@ Input.defaultProps = {
 const InputStyled = styled.div`
   display: flex;
   position: relative;
+  height: 60px;
   font-size: ${props => props.fontSize};
   color: ${props => props.color};
   width: ${props => props.width};
@@ -44,9 +45,8 @@ const InputStyled = styled.div`
   }
 
   & > label {
-    position: absolute;
-    left: 0;
-    top: 0;
+    display: flex;
+    align-items: center;
     font-size: ${props => props.fontSize};
     font-weight: ${props => props.fontWeight};
   }

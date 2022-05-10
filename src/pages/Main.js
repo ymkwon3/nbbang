@@ -15,6 +15,7 @@ import eatMarker from "../image/eat.svg";
 import buyMarker from "../image/buy.svg";
 import myMarker from "../image/myPosition.svg";
 import ChatBox from "../components/ChatBox";
+import { right, left } from "../image";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -30,25 +31,26 @@ const Main = () => {
   const [rerender, setRerender] = React.useState(null);
   // 리스트 오른쪽 컨테이너 위치할 요소를 정하는 state, 해당 컨테이너를 컨트롤하기 위한 ref
   const sideNavRef = React.useRef(null);
+  const [sideNav, setSideNav] = React.useState(false);
   const [rightContainer, setRightContainer] = React.useState("writer");
 
   /*
   해당 지역의 전체 게시물, 현재 선택된 카테고리, 
   게시물 지역 범위, 현재 위치 구분*/
-  const postList = useSelector((state) => state.post.postList);
-  const category = useSelector((state) => state.post.category);
+  const postList = useSelector(state => state.post.postList);
+  const category = useSelector(state => state.post.category);
   const [cityRange, setCityRange] = React.useState(3);
   const [city, setCity] = React.useState(3);
 
   // 로그인된 유저 정보
-  const userInfo = useSelector((state) => state.user.userInfo);
+  const userInfo = useSelector(state => state.user.userInfo);
 
   const cateList = postList.filter(
-    (v) => v.category === category || category === "all"
+    v => v.category === category || category === "all"
   );
 
   /*
-  todo: 현재 로그인 상태일 때, 게시물 데이터를 두 번 불러옴.
+  현재 로그인 상태일 때, 게시물 데이터를 두 번 불러옴.
   userInfo를 updateMount에 지정해주지 않으면 무조건 비회원일 때의 데이터를 불러옴
   --IsLogin 컴포넌트에서 재로그인요청 시 자식 컴포넌트를 없애줌으로써 문제 해결
   */
@@ -56,16 +58,14 @@ const Main = () => {
   React.useEffect(() => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      position => {
         const userLat = position.coords.latitude;
         const userLng = position.coords.longitude;
         // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
-         
+
         geocoder.coord2Address(userLng, userLat, (result, status) => {
           // 지번 주소
           const addr = result[0].address;
-          // 경남 진주, 서울 종로구 형식
-          // addrRef.current.value = addr.address_name;
           dispatch(
             postActions.getPostListDB({
               address: addr.address_name,
@@ -73,6 +73,8 @@ const Main = () => {
               userId: userInfo?.userId,
             })
           );
+
+          // 해당 지역들은 특별시, 광역시, 자치시라 보여지는 범위를 3단계로 분류
           const locale = [
             "서울",
             "인천",
@@ -83,7 +85,7 @@ const Main = () => {
             "대구",
             "제주특별자치도",
           ];
-          locale.find((v) => v === addr.region_1depth_name)
+          locale.find(v => v === addr.region_1depth_name)
             ? setCity(3)
             : setCity(2);
         });
@@ -115,12 +117,12 @@ const Main = () => {
 
   React.useEffect(() => {
     // DB에서 받아오는 게시글들을 마커로 표시 후 띄워줌
-    markerListRef.current.map((m) => {
+    markerListRef.current.map(m => {
       m.setMap(null);
       return null;
     });
     markerListRef.current = [];
-    cateList.map((v) => {
+    cateList.map(v => {
       // 마커크기 45 x 60
       const markerImage = new kakao.maps.MarkerImage(
         v.category === "eat" ? eatMarker : buyMarker,
@@ -162,16 +164,19 @@ const Main = () => {
   // 글쓰기 버튼 이벤트
   const clickWrite = () => {
     sideNavRef.current.style.width = "430px";
+    setSideNav(true);
     setRightContainer("write");
   };
 
-  const clickDetail = (id) => {
+  const clickDetail = id => {
     sideNavRef.current.style.width = "430px";
     dispatch(postActions.getPostDetailDB(id));
+    setSideNav(true);
     setRightContainer("detail");
   };
   // sidenav의 오른쪽의 접어두기 버튼 이벤트
   const clickClose = () => {
+    setSideNav(false);
     sideNavRef.current.style.width = "0";
   };
 
@@ -189,7 +194,9 @@ const Main = () => {
           _onClickDetail={clickDetail}
           postList={cateList}
         ></SideNav>
-        <FoldBtn onClick={clickClose}>{"<"}</FoldBtn>
+        <FoldBtn className="hover-event" onClick={clickClose}>
+          <img src={sideNav ? left : right} alt="foldBtn" />
+        </FoldBtn>
         <div
           ref={sideNavRef}
           style={{
@@ -200,6 +207,7 @@ const Main = () => {
             transition: "0.2s",
             overflow: "hidden",
             zIndex: "8",
+            boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
           }}
         >
           <Flex
@@ -230,7 +238,6 @@ const Main = () => {
       </Flex>
       <ButtonContainer>
         {/* 진호님 여기다가 내 위치 이동 만드시면 됩니다 */}
-        <button onClick={() => history.push("/chat")}>test chat btn</button>
         <RadioInput city={city} setCityRange={setCityRange}></RadioInput>
       </ButtonContainer>
     </KaKaoMap>
@@ -244,20 +251,10 @@ const KaKaoMap = styled.div`
 `;
 
 const FoldBtn = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #000;
-  background-color: #fff;
-  height: 56px;
-  width: 30px;
   z-index: 9;
   position: absolute;
   top: calc(50% - 28px);
-  left: 430px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
-  border-top-right-radius: 15px;
-  border-bottom-right-radius: 15px;
+  left: 425px;
 `;
 
 const ButtonContainer = styled.div`

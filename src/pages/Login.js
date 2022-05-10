@@ -71,7 +71,7 @@ const Login = props => {
         userPassword: pwd,
       })
     ).then(res => {
-      if (res.type === "user/login/fulfilled") {
+      if (res.payload) {
         history.replace("/");
       }
     });

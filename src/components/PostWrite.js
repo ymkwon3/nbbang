@@ -41,7 +41,6 @@ const PostWrite = props => {
     geocoder.coord2Address(lng, lat, (result, status) => {
       // 지번 주소
       const addr = result[0].address;
-      console.log(addr);
       submitRef.current.addressRef.value = addr.address_name;
       positionRef.current = { lat, lng };
       markerRef.current = new kakao.maps.Marker({
@@ -115,10 +114,9 @@ const PostWrite = props => {
         height: "90%",
         padding: "25px",
         flexDirection: "column",
-        gap: "16px",
       }}
     >
-      <Flex styles={{ justifyContent: "start" }}>
+      <Flex styles={{ justifyContent: "start", marginBottom: "10px" }}>
         <Image
           shape="circle"
           src={userInfo.userImage}
@@ -134,13 +132,17 @@ const PostWrite = props => {
           {userInfo.userName}
         </Text>
       </Flex>
-      <Select
-        ref={e => (submitRef.current.categoryRef = e)}
-        options={[
-          { key: "같이 사자", value: "buy" },
-          { key: "같이 먹자", value: "eat" },
-        ]}
-      />
+      <Flex styles={{ justifyContent: "start", height: "60px" }}>
+        <Text styles={{ fontSize: "14px", fontWeight: "700" }}>카테고리</Text>
+        <Select
+          styles={{ width: "100px", height: "30px", marginLeft: "12px" }}
+          ref={e => (submitRef.current.categoryRef = e)}
+          options={[
+            { key: "같이 사자", value: "buy" },
+            { key: "같이 먹자", value: "eat" },
+          ]}
+        />
+      </Flex>
       <Flex
         styles={{
           borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
@@ -163,26 +165,27 @@ const PostWrite = props => {
         <Input
           label="기간"
           ref={e => (submitRef.current.endTimeRef = e)}
-          styles={{ width: "calc(50% - 19px)" }}
+          styles={{ width: "calc(50% - 16px)" }}
         />
         <Flex
           styles={{
             width: "1px",
-            height: "100%",
+            height: "80%",
             backgroundColor: "#808080",
-            margin: "0 16px 16px",
+            margin: "0 16px 0",
           }}
         />
         <Input
           label="인원"
           ref={e => (submitRef.current.headCountRef = e)}
-          styles={{ width: "calc(50% - 19px)" }}
+          styles={{ width: "calc(50% - 16px)" }}
         />
       </Flex>
 
       <Flex
         styles={{
           justifyContent: "space-between",
+          alignItems: "center",
           borderBottom: "1px solid rgba(0, 0, 0, 0.5)",
         }}
       >
@@ -190,20 +193,20 @@ const PostWrite = props => {
           label="주소"
           ref={e => (submitRef.current.addressRef = e)}
           readOnly
+        ></Input>
+        <Button
+          styles={{
+            width: "90px",
+            height: "30px",
+            borderRadius: "30px",
+            backgroundColor: "#E6E5F0",
+            fontSize: "10px",
+            fontWeight: "600",
+          }}
+          _onClick={() => setFindState(true)}
         >
-          <Button
-            styles={{
-              width: "70px",
-              height: "20px",
-              borderRadius: "30px",
-              backgroundColor: "#E6E5F0",
-              fontSize: "10px",
-            }}
-            _onClick={() => setFindState(true)}
-          >
-            주소가져오기
-          </Button>
-        </Input>
+          주소 가져오기
+        </Button>
       </Flex>
       <Flex
         styles={{
@@ -222,8 +225,19 @@ const PostWrite = props => {
       >
         <Input label="내용" ref={e => (submitRef.current.contentRef = e)} />
       </Flex>
+      <Flex
+        styles={{
+          alignItems: "center",
+          justifyContent: "start",
+          height: "60px",
+        }}
+      >
+        <Text styles={{ fontSize: "14px", fontWeight: "700" }}>
+          사진 첨부하기
+        </Text>
+      </Flex>
       <Flex maxWidth="290px">
-        <label htmlFor="profile">
+        <label htmlFor="profile" className="hover-event">
           <Image src={preview} styles={{ width: "100%" }} shape="rectangle" />
         </label>
         <input
@@ -242,6 +256,7 @@ const PostWrite = props => {
           borderRadius: "30px",
           fontSize: "18px",
           fontWeight: "700",
+          marginTop: "20px",
         }}
         _onClick={clickSubmit}
       >
