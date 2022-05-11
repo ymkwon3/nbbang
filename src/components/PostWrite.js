@@ -41,6 +41,7 @@ const PostWrite = props => {
     geocoder.coord2Address(lng, lat, (result, status) => {
       // 지번 주소
       const addr = result[0].address;
+      console.log(addr);
       submitRef.current.addressRef.value = addr.address_name;
       positionRef.current = { lat, lng };
       markerRef.current = new kakao.maps.Marker({
@@ -65,6 +66,12 @@ const PostWrite = props => {
   // todo: 빈 칸 확인 알림 메세지 출력
   // 이미지 빈 칸 확인
   const clickSubmit = () => {
+    const endTime = parseInt(submitRef.current.endTimeRef.value);
+    if ( endTime < 1 || endTime > 14)
+   {
+      alert("기간은 1부터 14까지입니다.")
+      return;
+    }
     for (let ref in submitRef.current) {
       if (submitRef.current[ref].value === "") {
         console.log("빈 칸을 확인해주세요");
@@ -76,6 +83,8 @@ const PostWrite = props => {
       return;
     }
 
+    
+
     const formData = new FormData();
     formData.append("image", image);
     formData.append("title", submitRef.current.titleRef.value);
@@ -83,7 +92,7 @@ const PostWrite = props => {
     formData.append("price", submitRef.current.priceRef.value);
     formData.append("headCount", submitRef.current.headCountRef.value);
     formData.append("category", submitRef.current.categoryRef.value);
-    formData.append("endTime", submitRef.current.endTimeRef.value);
+    formData.append("endTime", endTime);
     formData.append("lat", positionRef.current.lat);
     formData.append("lng", positionRef.current.lng);
     formData.append(
@@ -155,7 +164,12 @@ const PostWrite = props => {
           borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
         }}
       >
-        <Input label="가격" ref={e => (submitRef.current.priceRef = e)} />
+        <Input
+          label="가격"
+          type="number"
+          placehorder="ex) 50000"
+          ref={e => (submitRef.current.priceRef = e)}
+        />
       </Flex>
       <Flex
         styles={{
@@ -164,6 +178,8 @@ const PostWrite = props => {
       >
         <Input
           label="기간"
+          type="number"
+          placehorder="1 ~ 14"
           ref={e => (submitRef.current.endTimeRef = e)}
           styles={{ width: "calc(50% - 16px)" }}
         />
@@ -177,6 +193,8 @@ const PostWrite = props => {
         />
         <Input
           label="인원"
+          type="number"
+          placehorder="ex) 5"
           ref={e => (submitRef.current.headCountRef = e)}
           styles={{ width: "calc(50% - 16px)" }}
         />
