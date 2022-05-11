@@ -4,20 +4,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { Flex, Button, Text, Image } from "../elements";
 import ChatBox from "./ChatBox";
 
+import io from "socket.io-client";
+let socket = io.connect("https://redpingpong.shop");
+// let socket = io.connect("https://localhost:3443");
+
 const PostDetail = ({ openChatroom, setOpenChatroom }) => {
-  const detailInfo = useSelector(state => state.post.postDetail);
-  console.log(detailInfo);
-  const userInfo = useSelector(state => state.user.userInfo);
+  const detailInfo = useSelector((state) => state.post.postDetail);
+  // console.log(detailInfo);
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   const chatRef = React.useRef();
   const openChatModal = () => {
-    console.log(chatRef);
     setOpenChatroom(!openChatroom);
   };
+  // React.useEffect(() => {
+  //   socket.emit("socket is connected", userInfo);
+  // }, []);
 
   React.useEffect(() => {
     if (openChatroom) {
-      console.log(chatRef.current);
       chatRef.current.style.top = "80px";
     }
   }, [openChatroom]);
@@ -133,7 +138,12 @@ const PostDetail = ({ openChatroom, setOpenChatroom }) => {
         </Flex>
       </Flex>
       {openChatroom ? (
-        <ChatBox ref={chatRef} openChatModal={openChatModal} />
+        <ChatBox
+          ref={chatRef}
+          socket={socket}
+          openChatModal={openChatModal}
+          detailInfo={detailInfo}
+        />
       ) : (
         <></>
       )}

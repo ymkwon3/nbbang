@@ -18,244 +18,251 @@ import { FaRegPaperPlane } from "react-icons/fa";
 import moment from "moment";
 import "moment/locale/ko";
 
-import io from "socket.io-client";
+let selectedChatCompare;
 
-let socket = io.connect("https://redpingpong.shop"),
-  // let socket = io.connect("https://localhost:3443"),
-  selectedChatCompare;
-let postid = "p1";
+const ChatBox = React.forwardRef(
+  ({ socket, openChatModal, detailInfo }, ref) => {
+    const dispatch = useDispatch();
 
-const ChatBox = React.forwardRef(({ openChatModal }, ref) => {
-  const dispatch = useDispatch();
+    let postid = `p${detailInfo.postId}`;
+    // let postid = "p1";
 
-  const selectedChat = useSelector((state) => state.chat);
-  const chatAdmin = selectedChat.chatAdmin;
-  const chatRoomUsers = selectedChat.userInfo;
-  const selectedRoomMessages = selectedChat.chatInfo;
-  const participantList = selectedChat.headList;
-  const awaiterList = chatRoomUsers.filter((user) => user.isPick === 0);
-  const loggedUser = useSelector((state) => state.user.userInfo);
+    const selectedChat = useSelector((state) => state.chat);
+    const chatAdmin = selectedChat.chatAdmin;
+    const chatRoomUsers = selectedChat.userInfo;
+    const selectedRoomMessages = selectedChat.chatInfo;
+    const participantList = selectedChat.headList;
+    const awaiterList = chatRoomUsers.filter((user) => user.isPick === 0);
+    const loggedUser = useSelector((state) => state.user.userInfo);
 
-  const [newMessage, setNewMessage] = React.useState("");
-  const [newlyAddedMessages, setNewlyAddedMessages] = React.useState([]);
-  // const [chatUsers, setChatUsers] = React.useState([]);
-  const [notification, setNotification] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
-  React.useState(false);
-  const [typing, setTyping] = React.useState(false);
-  const [isTyping, setIsTyping] = React.useState(false);
-  const [socketConnected, setSocketConnected] = React.useState(false); // socket 연결 상태 체크
-  const [awaiters, setAwaiters] = React.useState(null);
-  const [participants, setParticipants] = React.useState(null);
-  const [openUserList, setOpenUserList] = React.useState(false);
+    const [newMessage, setNewMessage] = React.useState("");
+    const [newlyAddedMessages, setNewlyAddedMessages] = React.useState([]);
+    // const [chatUsers, setChatUsers] = React.useState([]);
+    const [notification, setNotification] = React.useState([]);
+    const [loading, setLoading] = React.useState(false);
+    React.useState(false);
+    const [typing, setTyping] = React.useState(false);
+    const [isTyping, setIsTyping] = React.useState(false);
+    const [socketConnected, setSocketConnected] = React.useState(false); // socket 연결 상태 체크
+    const [awaiters, setAwaiters] = React.useState(null);
+    const [participants, setParticipants] = React.useState(null);
+    const [openUserList, setOpenUserList] = React.useState(false);
 
-  const goToChat = () => {
-    // later replace 1 with "real" selected roomId
+    const goToChat = () => {
+      // later replace 1 with "real" selected roomId
 
-    // setChatUsers(chatRoomUsers);
-    // if (!postid) {
-    // 1은 postid로 대체
-    // p+postid 집어 넣기
-    if (openChatModal) {
-      fetchMessages();
-
-      if (postid !== undefined) {
-        socket.emit("startchat", { postid: postid, loggedUser });
+      // setChatUsers(chatRoomUsers);
+      // if (!postid) {
+      // 1은 postid로 대체
+      // p+postid 집어 넣기
+      if (openChatModal) {
+        fetchMessages();
+        if (postid !== undefined) {
+          socket.emit("startchat", { postid: postid, loggedUser });
+        }
       }
-    }
-  };
+    };
 
-  const fetchMessages = () => {
-    if (!selectedChat) return;
-    // setLoading(true);
-    // setLoading(false);
-    dispatch(chatActions.startChatDB(1));
-  };
+    const fetchMessages = () => {
+      if (!selectedChat) return;
+      // setLoading(true);
+      // setLoading(false);
+      dispatch(chatActions.startChatDB(detailInfo.postId));
+      // dispatch(chatActions.startChatDB(1));
+    };
 
-  const sendNewMessage = (e) => {
-    if (
-      !newMessage &&
-      ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
-    ) {
-      //  replace this alert with toast box later in this position.
-      window.alert("칸이 비었음!! 채워주삼 ㅇㅇ");
-      return;
-    }
+    const sendNewMessage = (e) => {
+      if (
+        !newMessage &&
+        ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
+      ) {
+        //  replace this alert with toast box later in this position.
+        window.alert("칸이 비었음!! 채워주삼 ㅇㅇ");
+        return;
+      }
 
-    if (
-      newMessage &&
-      ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
-    ) {
-      let newChat = {
-        Post_postId: postid,
-        User_userId: loggedUser.userId,
-        User_userEmail: loggedUser.userEmail,
-        User_userName: loggedUser.userName,
-        userImage: loggedUser.userImage,
-        chat: newMessage,
-        createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
-      };
+      if (
+        newMessage &&
+        ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
+      ) {
+        let newChat = {
+          Post_postId: postid,
+          User_userId: loggedUser.userId,
+          User_userEmail: loggedUser.userEmail,
+          User_userName: loggedUser.userName,
+          userImage: loggedUser.userImage,
+          chat: newMessage,
+          createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
+        };
 
-      socket.emit("stop typing", postid);
-      // let chatRoomUserList = [...chatRoomUsers, chatAdmin];
-      socket.emit("sendmessage", {
-        postid: postid,
-        newMessage: newChat,
-        // chatRoomUserList,
+        socket.emit("stop typing", postid);
+        let chatRoomUserList = [...chatRoomUsers, chatAdmin];
+        // socket.emit("pushalarm", {
+        //   postid: postid,
+        //   newMessage: newChat,
+        //   // chatRoomUserList,
+        // });
+        socket.emit("sendmessage", {
+          postid: postid,
+          newMessage: newChat,
+          // chatRoomUserList,
+        });
+
+        setNewlyAddedMessages((messageList) => [...messageList, newChat]);
+        setNewMessage("");
+      }
+    };
+
+    React.useEffect(() => {
+      goToChat();
+      console.log(selectedChatCompare);
+      selectedChatCompare = postid;
+    }, [postid]);
+
+    React.useEffect(() => {
+      socket.on("connected", (enteredUser) => {
+        console.log("연결성공!");
+        console.log(`${enteredUser}`);
+        setSocketConnected(true);
       });
+      socket.on("typing", () => setIsTyping(true));
+      socket.on("stop typing", () => setIsTyping(false));
+    }, []);
 
-      setNewlyAddedMessages((messageList) => [...messageList, newChat]);
-      setNewMessage("");
-    }
-  };
+    // React.useEffect(() => {
+    //   // fetchMessages();
+    //   // selectedChatCompare = selectedChat;
+    //   // console.log(participantList);
+    //   // setAwaiters(awaiterList);
+    // }, [awaiterList]);
 
-  React.useEffect(() => {
-    goToChat();
-  }, []);
-
-  React.useEffect(() => {
-    socket.on("connected", (enteredUser) => {
-      console.log("연결성공!");
-      console.log(`${enteredUser}`);
-      setSocketConnected(true);
-    });
-    socket.on("typing", () => setIsTyping(true));
-    socket.on("stop typing", () => setIsTyping(false));
-  }, []);
-
-  // React.useEffect(() => {
-  //   // fetchMessages();
-  //   // selectedChatCompare = selectedChat;
-  //   // console.log(participantList);
-  //   // setAwaiters(awaiterList);
-  // }, [awaiterList]);
-
-  React.useEffect(() => {
-    socket.on(
-      "receive message",
-      (newMessageReceived) => {
+    //receive message
+    React.useEffect(() => {
+      socket.on("receive message", (newMessageReceived) => {
+        //   console.log(newMessageReceived);
         setNewlyAddedMessages((messageList) => [
           ...messageList,
           newMessageReceived,
         ]);
+        // }
+        // if (
+        //   !selectedChatCompare ||
+        //   selectedChatCompare !== newMessageReceived.Post_postId
+        // ) {
+        //   console.log("실행");
+        //   // setNotification([newMessageReceived, ...notification]);
+        // } else {
+        //   console.log(newMessageReceived);
+        //   setNewlyAddedMessages((messageList) => [
+        //     ...messageList,
+        //     newMessageReceived,
+        //   ]);
+        // }
+      });
+
+      socket.on(
+        "receive_participant_list_after_added",
+        (updatedParticipantList, updatedAwaiterList) => {
+          setParticipants(updatedParticipantList);
+          setAwaiters(updatedAwaiterList);
+        }
+      );
+
+      socket.on(
+        "receive_participant_list_after_canceled",
+        (updatedParticipantList, updatedAwaiterList) => {
+          setParticipants(updatedParticipantList);
+          setAwaiters(updatedAwaiterList);
+        }
+      );
+    }, []);
+
+    const typingHandler = (e) => {
+      setNewMessage(e.target.value);
+
+      // Typing Indicator Logic
+      if (!socketConnected) return;
+
+      if (!typing) {
+        setTyping(true);
+        // 나중에 진짜 포스트 번호로 바꾸기
+        socket.emit("typing", postid);
       }
-      // if (
-      //   !selectedChatCompare ||
-      //   selectedChatCompare.chat.roomId !== selectedChat.chat.roomId
-      // ) {
-      //   console.log("실행");
-      //   // setNotification([newMessageReceived, ...notification]);
-      // } else {
-      //   console.log(newMessageReceived);
-      //   setNewlyAddedMessages((messageList) => [
-      //     ...messageList,
-      //     newMessageReceived,
-      //   ]);
-      // }
-    );
 
-    socket.on(
-      "receive_participant_list_after_added",
-      (updatedParticipantList, updatedAwaiterList) => {
-        setParticipants(updatedParticipantList);
-        setAwaiters(updatedAwaiterList);
-      }
-    );
+      let lastTypingTime = new Date().getTime();
+      let timerLength = 2000;
 
-    socket.on(
-      "receive_participant_list_after_canceled",
-      (updatedParticipantList, updatedAwaiterList) => {
-        setParticipants(updatedParticipantList);
-        setAwaiters(updatedAwaiterList);
-      }
-    );
-  }, []);
+      setTimeout(() => {
+        let timeNow = new Date().getTime();
+        let timeDiff = timeNow - lastTypingTime;
 
-  const typingHandler = (e) => {
-    setNewMessage(e.target.value);
+        if (timeDiff >= timerLength && typing) {
+          socket.emit("stop typing", postid);
+          setTyping(false);
+        }
+      }, timerLength);
+    };
 
-    // Typing Indicator Logic
-    if (!socketConnected) return;
+    const OpenChatRoomUserList = () => {
+      setOpenUserList(!openUserList);
+    };
 
-    if (!typing) {
-      setTyping(true);
-      // 나중에 진짜 포스트 번호로 바꾸기
-      socket.emit("typing", postid);
-    }
-
-    let lastTypingTime = new Date().getTime();
-    let timerLength = 2000;
-
-    setTimeout(() => {
-      let timeNow = new Date().getTime();
-      let timeDiff = timeNow - lastTypingTime;
-
-      if (timeDiff >= timerLength && typing) {
-        socket.emit("stop typing", postid);
-        setTyping(false);
-      }
-    }, timerLength);
-  };
-
-  const OpenChatRoomUserList = () => {
-    setOpenUserList(!openUserList);
-  };
-
-  return (
-    <>
-      <ChatModal
-        ref={ref}
-        style={{
-          position: "fixed",
-          transition: "top 500ms cubic-bezier(0.86, 0, 0.07, 1)",
-          zIndex: "100",
-          width: "432px",
-          height: "88vh",
-          padding: "20px 23px 20px 23px",
-        }}
-      >
-        <Flex>
-          <Text
-            styles={{ fontSize: "16px", position: "relative" }}
-            _onClick={openChatModal}
-          >
-            X
-          </Text>
-        </Flex>
-        <Flex
-          styles={{
-            position: "relative",
-            height: "100%",
+    return (
+      <>
+        <ChatModal
+          ref={ref}
+          style={{
+            position: "fixed",
+            transition: "top 500ms cubic-bezier(0.86, 0, 0.07, 1)",
+            zIndex: "100",
+            width: "432px",
+            height: "88vh",
+            padding: "20px 23px 20px 23px",
           }}
         >
-          <ChatBoxLeft
-            messages={[...selectedRoomMessages, ...newlyAddedMessages]}
-            typingHandler={typingHandler}
-            newMessage={newMessage}
-            sendNewMessage={sendNewMessage}
-            loggedUser={loggedUser}
-            isTyping={isTyping}
-            OpenChatRoomUserList={OpenChatRoomUserList}
-          />
-          {openUserList ? (
-            <ChatBoxRight
-              postid={postid}
-              chatRoomUsers={chatRoomUsers}
-              participantList={participantList}
-              socket={socket}
-              awaiters={awaiters ? awaiters : awaiterList}
-              setAwaiters={setAwaiters}
-              participants={participants ? participants : participantList}
-              setParticipants={setParticipants}
+          <Flex>
+            <Text
+              styles={{ fontSize: "16px", position: "relative" }}
+              _onClick={openChatModal}
+            >
+              X
+            </Text>
+          </Flex>
+          <Flex
+            styles={{
+              position: "relative",
+              height: "100%",
+            }}
+          >
+            <ChatBoxLeft
+              messages={[...selectedRoomMessages, ...newlyAddedMessages]}
+              typingHandler={typingHandler}
+              newMessage={newMessage}
+              sendNewMessage={sendNewMessage}
+              loggedUser={loggedUser}
+              isTyping={isTyping}
+              OpenChatRoomUserList={OpenChatRoomUserList}
             />
-          ) : (
-            <></>
-          )}
-        </Flex>
-      </ChatModal>
-    </>
-  );
-});
+            {openUserList ? (
+              <ChatBoxRight
+                postid={postid}
+                chatRoomUsers={chatRoomUsers}
+                participantList={participantList}
+                socket={socket}
+                awaiters={awaiters ? awaiters : awaiterList}
+                setAwaiters={setAwaiters}
+                participants={participants ? participants : participantList}
+                setParticipants={setParticipants}
+              />
+            ) : (
+              <></>
+            )}
+          </Flex>
+        </ChatModal>
+      </>
+    );
+  }
+);
 
 const ChatModal = styled.div`
   top: 100%;
