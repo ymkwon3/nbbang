@@ -75,9 +75,7 @@ const Header = props => {
         {location.pathname === "/" ? (
           <Flex styles={{ justifyContent: "space-between" }}>
             <Flex styles={{ width: "fit-content", gap: "15px" }}>
-              <SearchBox></SearchBox>
-              {/* <Button _onClick={() => dispatch(postActions.searchPost(searchTerm))}><RiSearchLine size="27.22" color="#19253D" /></Button> */}
-
+              <SearchBox ></SearchBox>
               <Button
                 styles={category === "all" ? checkedStyle : categoryStyle}
                 _onClick={() => dispatch(postActions.updateCategory("all"))}
