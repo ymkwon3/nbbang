@@ -61,7 +61,7 @@ const MyPage = props => {
         flexDirection: "column",
         height: "100%",
         justifyContent: "start",
-        paddingTop: "10vh",
+        paddingTop: "10vh"
       }}
     >
       <Flex styles={{ width: "80%", maxWidth: "800px" }}>
@@ -150,6 +150,8 @@ const MyPage = props => {
           </Image>
         ))}
       </Grid>
+      <Flex styles={{minHeight: "10vh"}}>
+      </Flex>
     </Flex>
   );
 };

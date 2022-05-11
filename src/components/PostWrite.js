@@ -65,6 +65,11 @@ const PostWrite = props => {
   // todo: 빈 칸 확인 알림 메세지 출력
   // 이미지 빈 칸 확인
   const clickSubmit = () => {
+    const endTime = parseInt(submitRef.current.endTimeRef.value);
+    if (endTime < 1 || endTime > 14) {
+      alert("기간은 1부터 14까지입니다.");
+      return;
+    }
     for (let ref in submitRef.current) {
       if (submitRef.current[ref].value === "") {
         console.log("빈 칸을 확인해주세요");
@@ -83,7 +88,7 @@ const PostWrite = props => {
     formData.append("price", submitRef.current.priceRef.value);
     formData.append("headCount", submitRef.current.headCountRef.value);
     formData.append("category", submitRef.current.categoryRef.value);
-    formData.append("endTime", submitRef.current.endTimeRef.value);
+    formData.append("endTime", endTime);
     formData.append("lat", positionRef.current.lat);
     formData.append("lng", positionRef.current.lng);
     formData.append(
@@ -114,6 +119,8 @@ const PostWrite = props => {
         height: "90%",
         padding: "25px",
         flexDirection: "column",
+        overflow: "scroll",
+        justifyContent: "start",
       }}
     >
       <Flex styles={{ justifyContent: "start", marginBottom: "10px" }}>
@@ -155,7 +162,12 @@ const PostWrite = props => {
           borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
         }}
       >
-        <Input label="가격" ref={e => (submitRef.current.priceRef = e)} />
+        <Input
+          label="가격"
+          type="number"
+          placehorder="ex) 50000"
+          ref={e => (submitRef.current.priceRef = e)}
+        />
       </Flex>
       <Flex
         styles={{
@@ -164,6 +176,8 @@ const PostWrite = props => {
       >
         <Input
           label="기간"
+          type="number"
+          placehorder="1 ~ 14"
           ref={e => (submitRef.current.endTimeRef = e)}
           styles={{ width: "calc(50% - 16px)" }}
         />
@@ -177,6 +191,8 @@ const PostWrite = props => {
         />
         <Input
           label="인원"
+          type="number"
+          placehorder="ex) 5"
           ref={e => (submitRef.current.headCountRef = e)}
           styles={{ width: "calc(50% - 16px)" }}
         />
@@ -227,30 +243,31 @@ const PostWrite = props => {
       </Flex>
       <Flex
         styles={{
-          alignItems: "center",
+          flexDirection: "column",
+          alignItems: "start",
           justifyContent: "start",
-          height: "60px",
         }}
       >
-        <Text styles={{ fontSize: "14px", fontWeight: "700" }}>
+        <Flex styles={{ fontSize: "14px", fontWeight: "700", height: "60px", width: "auto" }}>
           사진 첨부하기
-        </Text>
+        </Flex>
+        <Flex maxWidth="290px">
+          <label htmlFor="profile" className="hover-event">
+            <Image src={preview} styles={{ width: "100%" }} shape="rectangle" />
+          </label>
+          <input
+            onChange={e => setUserImage(e)}
+            id="profile"
+            type="file"
+            style={{ visibility: "hidden", width: "0" }}
+          ></input>
+        </Flex>
       </Flex>
-      <Flex maxWidth="290px">
-        <label htmlFor="profile" className="hover-event">
-          <Image src={preview} styles={{ width: "100%" }} shape="rectangle" />
-        </label>
-        <input
-          onChange={e => setUserImage(e)}
-          id="profile"
-          type="file"
-          style={{ visibility: "hidden", width: "0" }}
-        ></input>
-      </Flex>
+
       <Button
         styles={{
           width: "150px",
-          height: "40px",
+          minHeight: "40px",
           backgroundColor: "#19253D",
           color: "#fff",
           borderRadius: "30px",
