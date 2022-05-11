@@ -122,6 +122,11 @@ const PostWrite = props => {
         justifyContent: "start",
       }}
     >
+      <Flex styles={{justifyContent: "start"}}>
+        <Text _onClick={_onClickClose}>
+          {"<"}
+        </Text>
+      </Flex>
       <Flex styles={{ justifyContent: "space-between", marginBottom: "10px" }}>
         <Text styles={{ fontSize: "32px", fontWeight: "800" }}>모집하기</Text>
         <Flex styles={{ width: "auto" }}>

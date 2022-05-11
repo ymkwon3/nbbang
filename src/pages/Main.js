@@ -26,10 +26,13 @@ const Main = () => {
   const markerListRef = React.useRef([]);
   // mapRef에 카카오맵을 저장한 후 PostWrite에 넘겨주기 위한 강제 리렌더링
   const [rerender, setRerender] = React.useState(null);
-  // 리스트 오른쪽 컨테이너 위치할 요소를 정하는 state, 해당 컨테이너를 컨트롤하기 위한 ref
+
+  /* 왼쪽 사이드네비 전체를 관리하기 위한 ref, state
+  상세, 글쓰기 페이지를 관리하기 위한 ref, state */
   const sideNavRef = React.useRef(null);
   const [sideNav, setSideNav] = React.useState(false);
-  const [rightContainer, setRightContainer] = React.useState("writer");
+  const leftContianerRef = React.useRef(null);
+  const [leftContainer, setLeftContainer] = React.useState("writer");
 
   // 채팅방 오픈
   const [openChatroom, setOpenChatroom] = React.useState(false);
@@ -58,8 +61,11 @@ const Main = () => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     navigator.geolocation.getCurrentPosition(
       position => {
-        const userLat = position.coords.latitude;
-        const userLng = position.coords.longitude;
+        
+        const userLat = 37.51259282304522;
+        const userLng = 126.89031007937093;
+        // const userLat = position.coords.latitude;
+        // const userLng = position.coords.longitude;
         // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
 
         geocoder.coord2Address(userLng, userLat, (result, status) => {
@@ -116,6 +122,7 @@ const Main = () => {
 
   React.useEffect(() => {
     // DB에서 받아오는 게시글들을 마커로 표시 후 띄워줌
+    // 게시물이 바뀔 때마다, 마커들을 초기화 시킨 후 시작
     markerListRef.current.map(m => {
       m.setMap(null);
       return null;
@@ -160,45 +167,48 @@ const Main = () => {
     });
   }, [postList, category]);
 
-  // 글쓰기 버튼 이벤트
+  // 글쓰기 클릭 이벤트
   const clickWrite = () => {
-    sideNavRef.current.style.width = "430px";
-    setSideNav(true);
-    setRightContainer("write");
+    leftContianerRef.current.style.width = "430px";
+    setLeftContainer("write");
   };
-
+  // 상세보기 클릭 이벤트
   const clickDetail = id => {
-    sideNavRef.current.style.width = "430px";
+    leftContianerRef.current.style.width = "430px";
     dispatch(postActions.getPostDetailDB(id));
-    setSideNav(true);
-    setRightContainer("detail");
+    setLeftContainer("detail");
   };
-  // sidenav의 오른쪽의 접어두기 버튼 이벤트
+  // 글쓰기 상세보기 컨테이너 접어두기
   const clickClose = () => {
-    setSideNav(false);
-    sideNavRef.current.style.width = "0";
+    leftContianerRef.current.style.width = "0";
     setOpenChatroom(false);
+  };
+  // sidenav 전체 접어두기, 펼치기
+  const clickFold = () => {
+    if(sideNavRef.current.style.width === "0px"){
+      sideNavRef.current.style.width = "fit-content";
+      setSideNav(false);
+    }else {
+      sideNavRef.current.style.width = "0px";
+      setSideNav(true);
+    }
   };
 
   return (
     <KaKaoMap ref={containerRef}>
-      <Flex
-        styles={{
-          position: "relative",
-          justifyContent: "start",
-          height: "100%",
-        }}
+      <LeftContainer
+        ref={sideNavRef}
       >
         <SideNav
           _onClickWrite={clickWrite}
           _onClickDetail={clickDetail}
           postList={cateList}
         ></SideNav>
-        <FoldBtn className="hover-event" onClick={clickClose}>
-          <img src={sideNav ? left : right} alt="foldBtn" />
+        <FoldBtn className="hover-event" onClick={clickFold}>
+          <img src={sideNav ? right : left} alt="foldBtn" />
         </FoldBtn>
         <div
-          ref={sideNavRef}
+          ref={leftContianerRef}
           style={{
             width: "0",
             height: "100%",
@@ -221,15 +231,15 @@ const Main = () => {
               flexDirection: "column",
             }}
           >
-            {rightContainer === "write" ? (
+            {leftContainer === "write" ? (
               <PostWrite
                 rerender={rerender}
                 map={mapRef.current}
                 userInfo={userInfo}
                 _onClickClose={clickClose}
-                _setRightContainer={setRightContainer}
+                _setRightContainer={leftContainer}
               ></PostWrite>
-            ) : rightContainer === "detail" ? (
+            ) : leftContainer === "detail" ? (
               <PostDetail
                 openChatroom={openChatroom}
                 setOpenChatroom={setOpenChatroom}
@@ -237,7 +247,7 @@ const Main = () => {
             ) : null}
           </Flex>
         </div>
-      </Flex>
+      </LeftContainer>
       <ButtonContainer>
         {/* 진호님 여기다가 내 위치 이동 만드시면 됩니다 */}
         <RadioInput city={city} setCityRange={setCityRange}></RadioInput>
@@ -256,7 +266,15 @@ const FoldBtn = styled.div`
   z-index: 9;
   position: absolute;
   top: calc(50% - 28px);
-  left: 425px;
+  right: -30px;
+`;
+
+const LeftContainer = styled.div`
+  display: flex;
+  position: relative;
+  justify-content: start;
+  width: fit-content;
+  height: 100%;
 `;
 
 const ButtonContainer = styled.div`
