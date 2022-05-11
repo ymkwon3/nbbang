@@ -11,7 +11,6 @@ const PostDetail = () => {
     if (!deatilInfo) {
         return null;
     }
-
     return (
         <Flex
             styles={{
