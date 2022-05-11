@@ -3,6 +3,9 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Button, Flex, Image, Input, Select, Text } from "../elements";
 import { actionCreator as postActions } from "../redux/modules/post";
+import moment from "moment";
+
+import { addImage } from "../image";
 
 const PostWrite = props => {
   const { map, userInfo, _onClickClose, _setRightContainer } = props;
@@ -11,9 +14,7 @@ const PostWrite = props => {
   const positionRef = React.useRef(null);
   const dispatch = useDispatch();
 
-  const [preview, setPreview] = React.useState(
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAADCCAMAAAB6zFdcAAAAYFBMVEXDw8MAAABwcHDHx8eKioqkpKS8vLzGxsatra3KysqQkJCenp6AgIB3d3dra2u3t7dZWVlMTEyysrIsLCxTU1NDQ0OUlJQhISEyMjJlZWUMDAw9PT2Dg4N0dHQYGBhGRkaaAXj3AAACVklEQVR4nO3a63KiQBBAYbATxxYQbxtNdjd5/7dMIFwEGbaA1Fo05/tpNFVzZJgBCQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICFEdFJROTRQ5jKxbvVRLF79CCmkW043XbeEeTpBxo8zXs2ZA2i9RSRiQbPUw5l90wDUw2cqIyIYamBHpP9Lho+GEMNNM7P8IfB/8BOg2qbcNaB/8BQg2qt3ww8J5hpkA2kkAwcj50GUdVgN3AymGkQpPW+1zMXfFeHdhror7LBuvt9GsXHzpHaaVAdCC/dw9FddnnYNU0MNXDp4WuUp6j7bCAv3jXDUIPAabo5eia9K46SS9ffDDX44nxbA7kWM2V/f5gYa+CTnwyKVeMuwjIaSL15CMNj+72LaODWt7fNTotsUG8dcq+t2bCEBpq0bqC2dhA2G4ho/cLN1VT3TtJkA00u57R8xQVvdw2ujdlgsYGusnGWEfRwl6B1aWmwQbEQ/v4elf7pSBCGt7cdDTYoF8K/2XftNp0JGqcEew3qhTD7rt27p8FHPRvMNbhZCN/Wge49CcIwqSJYa9BYCD+07yfpxmcsNQgax/6qJ0H4Xn7EWAM99426pfwhwlYDz0LoU1xGm2rgXQh9vu+smWoQXAY2uJhr0LMQ+uR31gw1GPVs1lZMNUj/PeIOqaUGchrV4Cp2GujrqATZZbSVBr274n5bNdJANuOJjQY8ozl6GtRm3sD9yDPb824QuHjqo/ureOYJ8p8TZKJHDwEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOB/+wQBph2Iu8J1cQAAAABJRU5ErkJggg=="
-  );
+  const [preview, setPreview] = React.useState(addImage);
   const [image, setImage] = React.useState(null);
   const submitRef = React.useRef({
     titleRef: null,
@@ -65,11 +66,6 @@ const PostWrite = props => {
   // todo: 빈 칸 확인 알림 메세지 출력
   // 이미지 빈 칸 확인
   const clickSubmit = () => {
-    const endTime = parseInt(submitRef.current.endTimeRef.value);
-    if (endTime < 1 || endTime > 14) {
-      alert("기간은 1부터 14까지입니다.");
-      return;
-    }
     for (let ref in submitRef.current) {
       if (submitRef.current[ref].value === "") {
         console.log("빈 칸을 확인해주세요");
@@ -88,7 +84,7 @@ const PostWrite = props => {
     formData.append("price", submitRef.current.priceRef.value);
     formData.append("headCount", submitRef.current.headCountRef.value);
     formData.append("category", submitRef.current.categoryRef.value);
-    formData.append("endTime", endTime);
+    formData.append("endTime", submitRef.current.endTimeRef.value);
     formData.append("lat", positionRef.current.lat);
     formData.append("lng", positionRef.current.lng);
     formData.append(
@@ -105,8 +101,11 @@ const PostWrite = props => {
   };
 
   const setUserImage = e => {
-    setPreview(URL.createObjectURL(e.target.files[0]));
-    setImage(e.target.files[0]);
+    //사진이 변경되었으면 미리보기, 사진 데이터 저장
+    if (e.target.files[0]) {
+      setPreview(URL.createObjectURL(e.target.files[0]));
+      setImage(e.target.files[0]);
+    }
   };
 
   return (
@@ -123,31 +122,34 @@ const PostWrite = props => {
         justifyContent: "start",
       }}
     >
-      <Flex styles={{ justifyContent: "start", marginBottom: "10px" }}>
-        <Image
-          shape="circle"
-          src={userInfo.userImage}
-          styles={{
-            width: "34px",
-            height: "34px",
-            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-          }}
-        ></Image>
-        <Text
-          styles={{ fontSize: "20px", fontWeight: "700", marginLeft: "12px" }}
-        >
-          {userInfo.userName}
-        </Text>
+      <Flex styles={{ justifyContent: "space-between", marginBottom: "10px" }}>
+        <Text styles={{ fontSize: "32px", fontWeight: "800" }}>모집하기</Text>
+        <Flex styles={{ width: "auto" }}>
+          <Image
+            shape="circle"
+            src={userInfo.userImage}
+            styles={{
+              width: "34px",
+              height: "34px",
+              boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+            }}
+          ></Image>
+          <Text
+            styles={{ fontSize: "20px", fontWeight: "700", marginLeft: "12px" }}
+          >
+            {userInfo.userName}
+          </Text>
+        </Flex>
       </Flex>
-      <Flex styles={{ justifyContent: "start", height: "60px" }}>
-        <Text styles={{ fontSize: "14px", fontWeight: "700" }}>카테고리</Text>
-        <Select
-          styles={{ width: "100px", height: "30px", marginLeft: "12px" }}
-          ref={e => (submitRef.current.categoryRef = e)}
-          options={[
-            { key: "같이 사자", value: "buy" },
-            { key: "같이 먹자", value: "eat" },
-          ]}
+      <Flex
+        styles={{
+          borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
+        }}
+      >
+        <Input
+          label="제목"
+          ref={e => (submitRef.current.titleRef = e)}
+          styles={{ height: "60px" }}
         />
       </Flex>
       <Flex
@@ -155,7 +157,39 @@ const PostWrite = props => {
           borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
         }}
       >
-        <Input label="제목" ref={e => (submitRef.current.titleRef = e)} />
+        <Flex
+          styles={{ justifyContent: "start", width: "50%", padding: "10px" }}
+        >
+          <Text styles={{ fontSize: "14px", fontWeight: "700" }}>카테고리</Text>
+          <Select
+            styles={{ width: "84px", height: "30px", marginLeft: "6px" }}
+            ref={e => (submitRef.current.categoryRef = e)}
+            options={[
+              { key: "같이 사자", value: "buy" },
+              { key: "같이 먹자", value: "eat" },
+            ]}
+          />
+        </Flex>
+        <Flex
+          styles={{
+            width: "1px",
+            height: "80%",
+            backgroundColor: "#808080",
+            margin: "0 16px 0 0",
+          }}
+        />
+        <Input
+          label="마감일"
+          type="date"
+          min={moment().add(1, "days").format("YYYY-MM-DD")}
+          max={moment().add(14, "days").format("YYYY-MM-DD")}
+          ref={e => (submitRef.current.endTimeRef = e)}
+          styles={{
+            width: "calc(50% - 16px)",
+            height: "60px",
+            padding: "0 10px 0 0",
+          }}
+        />
       </Flex>
       <Flex
         styles={{
@@ -167,19 +201,7 @@ const PostWrite = props => {
           type="number"
           placehorder="ex) 50000"
           ref={e => (submitRef.current.priceRef = e)}
-        />
-      </Flex>
-      <Flex
-        styles={{
-          borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
-        }}
-      >
-        <Input
-          label="기간"
-          type="number"
-          placehorder="1 ~ 14"
-          ref={e => (submitRef.current.endTimeRef = e)}
-          styles={{ width: "calc(50% - 16px)" }}
+          styles={{ width: "calc(50% - 16px)", height: "60px" }}
         />
         <Flex
           styles={{
@@ -194,10 +216,13 @@ const PostWrite = props => {
           type="number"
           placehorder="ex) 5"
           ref={e => (submitRef.current.headCountRef = e)}
-          styles={{ width: "calc(50% - 16px)" }}
+          styles={{
+            width: "calc(50% - 16px)",
+            height: "60px",
+            padding: "0 10px 0 0",
+          }}
         />
       </Flex>
-
       <Flex
         styles={{
           justifyContent: "space-between",
@@ -209,6 +234,7 @@ const PostWrite = props => {
           label="주소"
           ref={e => (submitRef.current.addressRef = e)}
           readOnly
+          styles={{ height: "60px" }}
         ></Input>
         <Button
           styles={{
@@ -232,6 +258,7 @@ const PostWrite = props => {
         <Input
           label="상세위치"
           ref={e => (submitRef.current.addressDetailRef = e)}
+          styles={{ height: "60px" }}
         />
       </Flex>
       <Flex
@@ -239,7 +266,12 @@ const PostWrite = props => {
           borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
         }}
       >
-        <Input label="내용" ref={e => (submitRef.current.contentRef = e)} />
+        <Input
+          type="textarea"
+          label="내용"
+          ref={e => (submitRef.current.contentRef = e)}
+          styles={{ height: "60px" }}
+        />
       </Flex>
       <Flex
         styles={{
@@ -248,7 +280,15 @@ const PostWrite = props => {
           justifyContent: "start",
         }}
       >
-        <Flex styles={{ fontSize: "14px", fontWeight: "700", height: "60px", width: "auto" }}>
+        <Flex
+          styles={{
+            fontSize: "14px",
+            fontWeight: "700",
+            height: "60px",
+            width: "auto",
+            padding: "10px",
+          }}
+        >
           사진 첨부하기
         </Flex>
         <Flex maxWidth="290px">

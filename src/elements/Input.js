@@ -15,22 +15,43 @@ const Input = forwardRef((props, ref) => {
     readOnly,
     children,
     placehorder,
+    min,
+    max,
   } = props;
 
+  // 요청으로 인한 textarea 추가 type에 textarea주시면 됩니다
+  // type date형식 추가
   return (
     <InputStyled style={{ ...styles }} className={className} {...defaultStyles}>
       <label>{label}</label>
-      <input
-        placeholder={placehorder}
-        readOnly={readOnly}
-        ref={ref}
-        onKeyPress={(e) => {
-          // type이 number일 경우 숫자만 입력받게
-          if(type === "number") {
-            return !/[0-9]/.test(e.key) && e.preventDefault()
-          }
-        }}
-      ></input>
+      {type === "textarea" ? (
+        <textarea
+          style={{
+            resize: "none",
+            width: "85%",
+            boxShadow: "rgb(0 0 0 / 20%) 0px 0px 2px",
+            border: "none",
+            outline: "none",
+            padding: "5px",
+            marginLeft: "15px",
+            textDecoration: "none",
+          }}
+        ></textarea>
+      ) : type === "date" ? (
+        <input ref={ref} type={type} min={min} max={max}></input>
+      ) : (
+        <input
+          placeholder={placehorder}
+          readOnly={readOnly}
+          ref={ref}
+          onKeyPress={e => {
+            // type이 number일 경우 숫자만 입력받게
+            if (type === "number") {
+              return !/[0-9]/.test(e.key) && e.preventDefault();
+            }
+          }}
+        ></input>
+      )}
       {children}
     </InputStyled>
   );
@@ -48,7 +69,6 @@ Input.defaultProps = {
 const InputStyled = styled.div`
   display: flex;
   position: relative;
-  height: 60px;
   font-size: ${props => props.fontSize};
   color: ${props => props.color};
   width: ${props => props.width};

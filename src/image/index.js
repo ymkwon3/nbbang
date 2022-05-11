@@ -13,5 +13,8 @@ import myPosition from "./myPosition.svg";
 import position from "./position.svg";
 import search from "./search.svg";
 import write from "./write.svg";
+import addImage from "./addImage.svg";
+import markerBlue from "./markerBlue.svg";
+import markerOrange from "./markerOrange.svg"
 
-export {buy, eat, buyCategory, eatCategory, notification, emptyHeart, filledHeart, whiteHeart, left, right,logo, myPosition, position, search, write};
+export {markerOrange, markerBlue, addImage, buy, eat, buyCategory, eatCategory, notification, emptyHeart, filledHeart, whiteHeart, left, right,logo, myPosition, position, search, write};

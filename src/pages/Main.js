@@ -11,11 +11,8 @@ import { actionCreator as postActions } from "../redux/modules/post";
 import RadioInput from "../components/RadioInput";
 
 //style
-import eatMarker from "../image/eat.svg";
-import buyMarker from "../image/buy.svg";
-import myMarker from "../image/myPosition.svg";
 import ChatBox from "../components/ChatBox";
-import { right, left } from "../image";
+import { right, left, markerBlue, markerOrange, myPosition } from "../image";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -103,7 +100,7 @@ const Main = () => {
 
         const markerPosition = userPosition;
         const markerImage = new kakao.maps.MarkerImage(
-          myMarker,
+          myPosition,
           new kakao.maps.Size(40, 50)
         );
         const marker = new kakao.maps.Marker({
@@ -127,7 +124,7 @@ const Main = () => {
     cateList.map(v => {
       // 마커크기 45 x 60
       const markerImage = new kakao.maps.MarkerImage(
-        v.category === "eat" ? eatMarker : buyMarker,
+        v.category === "eat" ? markerOrange : markerBlue,
         new kakao.maps.Size(45, 60)
       );
       const m = new kakao.maps.Marker({
@@ -206,7 +203,6 @@ const Main = () => {
             width: "0",
             height: "100%",
             position: "relative",
-            opacity: "0.95",
             transition: "0.2s",
             overflow: "hidden",
             zIndex: "8",
@@ -217,7 +213,7 @@ const Main = () => {
             styles={{
               width: "430px",
               height: "100%",
-              backgroundColor: "#E7E8F4",
+              background: "rgba(231, 232, 244, 0.5)",
               position: "absolute",
               top: 0,
               left: 0,
