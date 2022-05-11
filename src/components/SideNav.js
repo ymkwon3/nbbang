@@ -26,8 +26,6 @@ const SideNav = props => {
   const offset = (page - 1) * 10; // 첫 게시물의 위치
 
   const searchPost = useSelector(state => state.post.postSearch)
-  console.log(searchPost)
-  console.log(postList)
   // useEffect(() => {
   //   dispatch(itemActions.setCardDB()).then(data => setPosts(data));
   // }, []);
@@ -39,13 +37,10 @@ const SideNav = props => {
   // ]
   //드롭다운 추가 해야함
 
-  const spreadList = {...postList}
 
   const newPostList = postList.filter((v) => 
     v.title.toString().toLowerCase().includes(searchPost.toString().toLowerCase())
   );
-  console.log()
-  console.log(newPostList)
   // const searching  = postList.filter((postList) => {
     
   //     postList.title.toLowerCase().includes(searchPost.toLowerCase())}
@@ -94,18 +89,19 @@ const SideNav = props => {
               })
             } */}
             
-            {newPostList.map((v, i) => (
+            {/* {newPostList.map((v, i) => (
               <StyledPost onClick={() => _onClickDetail(v.postId)} key={`card_${i}`}>
                 <Post {...v} />
               </StyledPost>
-            ))}
+            ))} */}
 
             {/* pagination 적용 후  */}
-            {/* {postList.slice(offset, offset + limit).map((v, i) => (
-              <div onClick={_onClickDetail} key={`card_${i}`}>
-                <CardList {...v} _onClick={_onClickDetail} />
-              </div>
-            ))} */}
+            {newPostList.slice(offset, offset + limit).map((v, i) => (
+              <StyledPost onClick={() => _onClickDetail(v.postId)} key={`card_${i}`}>
+                <Post {...v} _onClick={_onClickDetail} />
+              </StyledPost>
+            ))}
+
           </Flex>
           <Flex>
             <Pagination

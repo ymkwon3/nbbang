@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Flex, Image } from "../elements";
 import { removeToken } from "../shared/localStorage";
-import styled from "styled-components";
 import { actionCreator as postActions } from "../redux/modules/post";
 import SearchBox from "./SearchBox";
 
@@ -82,10 +81,7 @@ const Header = props => {
         {location.pathname === "/" ? (
           <Flex styles={{ justifyContent: "space-between" }}>
             <Flex styles={{ width: "fit-content", gap: "15px" }}>
-              <SearchInput>
-                <SearchBox ></SearchBox>
-                {/* <Button _onClick={() => dispatch(postActions.searchPost(searchTerm))}><RiSearchLine size="27.22" color="#19253D" /></Button> */}
-              </SearchInput>
+              <SearchBox ></SearchBox>
               <Button
                 styles={category === "all" ? checkedStyle : categoryStyle}
                 _onClick={() => dispatch(postActions.updateCategory("all"))}
@@ -134,24 +130,5 @@ const Header = props => {
     </Flex>
   );
 };
-
-const SearchInput = styled.div`
-  position: relative;
-  margin: 0 20px 0 40px;
-  & > input {
-    width: 380px;
-    height: 40px;
-    border-radius: 30px;
-    padding: 0 40px;
-    border: none;
-    outline: none;
-  }
-
-  & > *:nth-child(2) {
-    position: absolute;
-    right: 10px;
-    top: 6px;
-  }
-`;
 
 export default Header;
