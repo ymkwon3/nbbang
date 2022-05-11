@@ -20,11 +20,15 @@ const PostDetail = ({ openChatroom, setOpenChatroom }) => {
       console.log(chatRef.current);
       chatRef.current.style.top = "80px";
     }
+<<<<<<< HEAD
   }, [openChatroom]);
 
   return (
     <>
       <Flex>
+=======
+    return (
+>>>>>>> SearchBar
         <Flex
           styles={{
             margin: "0 0 14px 0",
