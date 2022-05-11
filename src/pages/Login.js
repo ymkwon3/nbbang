@@ -353,7 +353,7 @@ const Wrapper = styled.div`
   width: 90%;
   height: 100%;
   max-width: 430px;
-  max-height: 730px;
+  max-height: 600px;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -426,7 +426,7 @@ const FormContainer = styled.div`
   .form-inner {
     display: flex;
     width: 200%;
-    height: 680px;
+    height: calc(100% - 50px);
   }
 
   .form-inner > div {

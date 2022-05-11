@@ -93,7 +93,7 @@ const ImageContainer = styled.div`
     top: 0;
     padding: 20px;
     border-radius: 30px;
-    background: rgba(0, 0, 0, .5);
+    background: rgba(0, 0, 0, 0.5);
     opacity: 0;
     transition: 0.2s;
   }
