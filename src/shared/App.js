@@ -12,12 +12,12 @@ import IsLogin from "./IsLogin";
 const App = () => {
   return (
     <Flex
-      styles={{ height: "100vh", flexDirection: "column", alignItems: "end" }}
+      styles={{ height: "100vh", flexDirection: "column", justifyContent: "start" }}
     >
       <Header></Header>
       <Flex
         styles={{
-          height: "calc(100% - 70px)",
+          height: "calc(100% - 70px)"
         }}
       >
         {/* <Route path="/mypage" exact component={MyPage}></Route> */}

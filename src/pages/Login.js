@@ -15,6 +15,10 @@ const Login = props => {
   const [isLogin, setIsLogin] = React.useState("login");
   const refForm = React.useRef();
 
+  // 이메일 정규표현식
+  const regEmail =
+  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
+
   // 데이터 용도
   const loginRef = React.useRef({
     userEmail: null,
@@ -108,16 +112,16 @@ const Login = props => {
   // 이메일, 닉네임, 비밀번호 확인
   const emailCheck = debounce(() => {
     const email = signUpRef.current.userEmail.value;
-    const regEmail =
-      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
     if (!regEmail.test(email)) {
       setEmailText("이메일 형식이 올바르지 않습니다.");
       return;
     }
     postAPI("/user/emailcheck", { userEmail: email }).then(res => {
-      res.msg === "fail"
-        ? setEmailText("중복된 이메일입니다.")
-        : setEmailText(null);
+      if(res.msg === "fail") {
+        setEmailText("중복된 이메일입니다.")
+      }else {
+        setEmailText(null);
+      }
     });
   }, 500);
 
@@ -149,9 +153,14 @@ const Login = props => {
   }, 500);
 
   // todo: 이메일 보내는 속도가 느려서 중간 로딩창이 필요할지도
+  // 단순한 alert보다는 toastmessage형식이 조금 더 귀여울지도
   // 이메일 인증 번호 요청
   const requestAuthCode = () => {
     const email = signUpRef.current.userEmail.value;
+    if (!regEmail.test(email) || emailText) {
+      console.log("이메일 형식이 맞지 않음")
+      return;
+    }
     postAPI("/user/mail", { userEmail: email }).then(res => {
       if (res.msg === "success") {
         alert("해당 이메일로 인증 메일이 발송되었습니다!");
@@ -163,6 +172,10 @@ const Login = props => {
   const emailAuthCode = () => {
     const email = signUpRef.current.userEmail.value;
     const authCode = signUpRef.current.userAuth.value;
+    if(!email || !authCode) {
+      console.log("이메일 및 인증번호를 입력해주세요")
+      return;
+    }
     postAPI("/user/mailauth", { userEmail: email, authNum: authCode }).then(
       res => {
         if (res.msg === "success") {

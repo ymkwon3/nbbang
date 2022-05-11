@@ -25,6 +25,7 @@ const Header = props => {
     //temp
     dispatch(userActions.logout());
     history.push("/login");
+    setDrop(prev => !prev);
   };
 
   const clickLogin = () => {
@@ -60,8 +61,6 @@ const Header = props => {
         backgroundColor: "#19253D",
         boxShadow: "0 8px 10px -4px rgba(0, 0, 0, 0.2)",
         zIndex: 11,
-        position: "fix",
-        top: "0",
         padding: "0 50px",
       }}
     >
@@ -126,6 +125,7 @@ const Header = props => {
                       }}
                       _onClick={() => {
                         history.push(`/mypage/${userInfo?.userId}`);
+                        setDrop(prev => !prev);
                       }}
                     >
                       마이페이지
