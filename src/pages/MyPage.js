@@ -5,6 +5,8 @@ import { Button, Flex, Grid, Image, Text } from "../elements";
 import { actionCreator as userPageActions } from "../redux/modules/userpage";
 import { actionCreator as userActions } from "../redux/modules/user";
 
+import { notify } from "../components/ToastMessage";
+
 import moment from "moment";
 import "moment/locale/ko";
 
@@ -66,6 +68,7 @@ const MyPage = props => {
       const formData = new FormData();
       formData.append("userImage", e.target.files[0]);
       // 유저이미지 알림 필요할지도???
+      notify("success", "프로필 사진이 변경되었습니다", 2000, "top-right")
       dispatch(userActions.postUserImageDB(formData));
     }
   };
@@ -97,16 +100,6 @@ const MyPage = props => {
           type="file"
           style={{ visibility: "hidden", width: "0" }}
         ></input>
-
-        {/* <Image
-          styles={{
-            width: "200px",
-            height: "200px",
-            border: "6px solid #FF5C00",
-          }}
-          shape="circle"
-          src={userInfo?.userImage}
-        ></Image> */}
         <Flex styles={{ flexDirection: "column", flex: 1 }}>
           <Text styles={{ fontSize: "32px", fontWeight: "700" }}>
             <Text

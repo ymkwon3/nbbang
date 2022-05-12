@@ -5,9 +5,9 @@ import "react-toastify/dist/ReactToastify.css";
 const notify = (type, message, autoClose, position = "bottom-center") => {
   if (type === "default") return toast(message, { autoClose, position });
   else if (type === "info") return toast.info(message, { autoClose, position });
-  else if (type === "success") return toast.success(message, { autoClose });
-  else if (type === "warning") return toast.warning(message, { autoClose });
-  else if (type === "error") return toast.error(message, { autoClose });
+  else if (type === "success") return toast.success(message, { autoClose, position });
+  else if (type === "warning") return toast.warning(message, { autoClose, position });
+  else if (type === "error") return toast.error(message, { autoClose, position });
 };
 
 const ToastMessage = () => {
