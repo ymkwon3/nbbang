@@ -1,15 +1,18 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Button, Flex, InputLogin, Text } from "../elements";
+import { Button, Flex, InputLogin } from "../elements";
 import { actionCreator as userActions } from "../redux/modules/user";
 import { useHistory } from "react-router-dom";
 import { debounce } from "lodash";
 import { postAPI } from "../shared/api";
+import { ToastMessage, notify } from "../components/ToastMessage";
+
 
 const Login = props => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const autoClose = 2000; // toastmessage 매개변수
 
   // css용도
   const [isLogin, setIsLogin] = React.useState("login");
@@ -66,7 +69,7 @@ const Login = props => {
     const pwd = loginRef.current.userPassword.value;
 
     if (!email || !pwd) {
-      alert("빈칸을 확인해 주세요.");
+      notify("warning", "빈칸을 확인해 주세요.", autoClose);
       return;
     }
     dispatch(
@@ -89,12 +92,12 @@ const Login = props => {
     const pwdCheck = signUpRef.current.userPasswordCheck.value;
 
     if (!email || !name || !pwd || !pwdCheck) {
-      alert("빈칸을 확인해 주세요.");
+      notify("warning", "빈칸을 확인해 주세요.", autoClose);
       return;
     }
 
     if (emailText || nameText || pwdText) {
-      alert("입력형식을 확인해 주세요.");
+      notify("warning", "입력형식을 확인해 주세요.", autoClose);
       return;
     }
 
@@ -158,12 +161,12 @@ const Login = props => {
   const requestAuthCode = () => {
     const email = signUpRef.current.userEmail.value;
     if (!regEmail.test(email) || emailText) {
-      console.log("이메일 형식이 맞지 않음")
+      notify("warning", "이메일 형식이 올바르지 않습니다.", autoClose);
       return;
     }
     postAPI("/user/mail", { userEmail: email }).then(res => {
       if (res.msg === "success") {
-        alert("해당 이메일로 인증 메일이 발송되었습니다!");
+        notify("info", "해당 이메일로 인증 메일이 발송되었습니다!", autoClose);
       }
     });
   };
@@ -173,17 +176,17 @@ const Login = props => {
     const email = signUpRef.current.userEmail.value;
     const authCode = signUpRef.current.userAuth.value;
     if(!email || !authCode) {
-      console.log("이메일 및 인증번호를 입력해주세요")
+      notify("warning", "이메일 및 인증번호를 입력해주세요", autoClose);
       return;
     }
     postAPI("/user/mailauth", { userEmail: email, authNum: authCode }).then(
       res => {
         if (res.msg === "success") {
           setEmailAuth(true);
-          alert("인증이 완료되었습니다!");
+          notify("success", "인증이 완료되었습니다!", autoClose);
         } else {
           setEmailAuth(false);
-          alert("인증 번호가 올바르지 않습니다!");
+          notify("error", "인증 번호가 올바르지 않습니다!", autoClose);
         }
       }
     );

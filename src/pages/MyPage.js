@@ -160,13 +160,13 @@ const MyPage = props => {
           _onClick={() => changeType("join")}
           styles={postType === "join" ? checkedStyle : buttonStyle}
         >
-          참여완료된 공구
+          참여 공구
         </Button>
         <Button
           _onClick={() => changeType("like")}
           styles={postType === "like" ? checkedStyle : buttonStyle}
         >
-          좋아요한 공구
+          찜한 공구
         </Button>
         {/* 이 부분에서 불러온 게시물 맵을 돌려야함 */}
         {postList.map(v => (

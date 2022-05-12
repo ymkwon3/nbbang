@@ -57,7 +57,7 @@ const Main = () => {
   const clickContainer = (type, postId) => {
     const con = leftContianerRef.current.style.width;
     if (con === "0px") leftContianerRef.current.style.width = "430px";
-    else if (type === "detail") dispatch(postActions.getPostDetailDB(postId));
+    if (type === "detail") dispatch(postActions.getPostDetailDB(postId));
     else if (type === "close") leftContianerRef.current.style.width = "0px";
     setLeftContainer(type);
   };
@@ -246,6 +246,7 @@ const Main = () => {
               <PostDetail
                 openChatroom={openChatroom}
                 setOpenChatroom={setOpenChatroom}
+                _clickContainer={() => clickContainer("close")}
               ></PostDetail>
             ) : null}
           </Flex>

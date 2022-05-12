@@ -5,6 +5,7 @@ import { Button, Flex, Image, Input, Select, Text } from "../elements";
 import { actionCreator as postActions } from "../redux/modules/post";
 import moment from "moment";
 
+
 import { addImage } from "../image";
 
 const PostWrite = props => {
@@ -126,7 +127,7 @@ const PostWrite = props => {
       styles={{
         backgroundColor: "#FFFFFF",
         boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-        borderRadius: "30px",
+        borderRadius: "22px",
         width: "90%",
         height: "90%",
         padding: "25px",

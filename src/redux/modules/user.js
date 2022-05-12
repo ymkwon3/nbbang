@@ -2,15 +2,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getAPI,
   postAPI,
-  deleteAPI,
   postFormAPI,
-  putAPI,
 } from "../../shared/api";
-import { getToken, setToken, removeToken } from "../../shared/localStorage";
+import { setToken, removeToken } from "../../shared/localStorage";
+import { notify } from "../../components/ToastMessage";
 
 const signUpDB = createAsyncThunk("user/signUp", async (data) => {
   postAPI("/user/signUp", data).then((res) => {
-    alert("회원가입이 완료되었습니다.");
+    notify("success", "회원가입이 완료되었습니다.", 1500)
   });
 });
 
@@ -18,7 +17,7 @@ const loginDB = createAsyncThunk("user/login", async (data) => {
   // 실패 시 고려해야함
   return await postAPI("/user/login", data).then(res => {
     if (res.msg === "fail") {
-      alert("아이디 비밀번호를 확인해주세요");
+      notify("warning", "아이디 비밀번호를 확인해주세요", 1500)
       return null;
     } else {
       setToken(res.token);

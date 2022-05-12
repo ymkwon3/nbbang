@@ -4,10 +4,7 @@ import {
   postAPI,
   deleteAPI,
   postFormAPI,
-  putAPI,
 } from "../../shared/api";
-import { getToken, setToken, removeToken } from "../../shared/localStorage";
-import { getPostList } from "../../components/Data";
 
 const getPostListDB = createAsyncThunk(`post/getlist`, async data => {
   return await postAPI("/main/postlist", data);
@@ -55,7 +52,7 @@ const postSlice = createSlice({
   name: "post",
   initialState: {
     postList: [],
-    postDetail: [],
+    postDetail: {},
     postSearch: "",
     category: "all"
   },

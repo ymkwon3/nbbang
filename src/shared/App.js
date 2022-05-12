@@ -8,6 +8,7 @@ import Login from "../pages/Login";
 import MyPage from "../pages/MyPage";
 import ChatBox from "../components/ChatBox";
 import IsLogin from "./IsLogin";
+import { ToastMessage } from "../components/ToastMessage";
 
 const App = () => {
   
@@ -15,6 +16,7 @@ const App = () => {
     <Flex
       styles={{ height: "100vh", flexDirection: "column", justifyContent: "start" }}
     >
+      <ToastMessage/>
       <Header></Header>
       <Flex
         styles={{
