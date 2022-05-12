@@ -6,7 +6,7 @@ import { actionCreator as userActions } from "../redux/modules/user";
 import { useHistory } from "react-router-dom";
 import { debounce } from "lodash";
 import { postAPI } from "../shared/api";
-import { ToastMessage, notify } from "../components/ToastMessage";
+import { notify } from "../components/ToastMessage";
 
 
 const Login = props => {
