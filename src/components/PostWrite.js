@@ -60,6 +60,9 @@ const PostWrite = props => {
       // 지도 클릭 이벤트 추가
       kakao.maps.event.addListener(map, "click", handler);
     }
+    return () => {
+      if (markerRef.current) markerRef.current.setMap(null);
+    }
   }, [findState]);
 
   // 전송하기 버튼 이벤트
@@ -122,6 +125,11 @@ const PostWrite = props => {
         justifyContent: "start",
       }}
     >
+      <Flex styles={{justifyContent: "start"}}>
+        <Text _onClick={_onClickClose}>
+          {"<"}
+        </Text>
+      </Flex>
       <Flex styles={{ justifyContent: "space-between", marginBottom: "10px" }}>
         <Text styles={{ fontSize: "32px", fontWeight: "800" }}>모집하기</Text>
         <Flex styles={{ width: "auto" }}>

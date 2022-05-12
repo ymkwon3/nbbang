@@ -37,6 +37,12 @@ const isLoginDB = createAsyncThunk(
   }
 );
 
+const postUserImageDB = createAsyncThunk("user/me", async formData => {
+  return await postFormAPI(`/user/me`, formData).then(res => {
+    return res;
+  });
+});
+
 const initialState = {
   userInfo: {
     userId: "",
@@ -72,6 +78,9 @@ const userSlice = createSlice({
         state.isLogin = true;
       }
     });
+    builder.addCase(postUserImageDB.fulfilled, (state, action) => {
+      state.userInfo.userImage = action.payload.userImage;
+    });
   },
 });
 
@@ -84,6 +93,7 @@ const actionCreator = {
   signUpDB,
   loginDB,
   isLoginDB,
+  postUserImageDB,
   ...userSlice.actions,
 };
 
