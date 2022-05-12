@@ -62,10 +62,11 @@ const Main = () => {
     navigator.geolocation.getCurrentPosition(
       position => {
         
-        const userLat = 37.51259282304522;
-        const userLng = 126.89031007937093;
-        // const userLat = position.coords.latitude;
-        // const userLng = position.coords.longitude;
+        //서울
+        // const userLat = 37.51259282304522;
+        // const userLng = 126.89031007937093;
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
         // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
 
         geocoder.coord2Address(userLng, userLat, (result, status) => {

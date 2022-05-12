@@ -60,6 +60,9 @@ const PostWrite = props => {
       // 지도 클릭 이벤트 추가
       kakao.maps.event.addListener(map, "click", handler);
     }
+    return () => {
+      if (markerRef.current) markerRef.current.setMap(null);
+    }
   }, [findState]);
 
   // 전송하기 버튼 이벤트

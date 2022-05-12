@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Button, Flex, Grid, Image, Text } from "../elements";
 import { actionCreator as userPageActions } from "../redux/modules/userpage";
+import { actionCreator as userActions } from "../redux/modules/user";
 
 import moment from "moment";
 import "moment/locale/ko";
@@ -15,6 +16,9 @@ const MyPage = props => {
   const joinList = useSelector(state => state.userpage.joinList);
   const likeList = useSelector(state => state.userpage.likeList);
   const userId = useParams().userId;
+
+  const [preview, setPreview] = React.useState(null);
+
   const imageStyle = {
     borderRadius: "30px",
     border: "1px solid #dbdbdb",
@@ -55,25 +59,54 @@ const MyPage = props => {
     dispatch(userPageActions.getUserPageDB({ userId }));
   }, []);
 
+  const setUserImage = e => {
+    //사진이 변경되었으면 미리보기, 사진 데이터 저장
+    if (e.target.files[0]) {
+      setPreview(URL.createObjectURL(e.target.files[0]));
+      const formData = new FormData();
+      formData.append("userImage", e.target.files[0]);
+      // 유저이미지 알림 필요할지도???
+      dispatch(userActions.postUserImageDB(formData));
+    }
+  };
+
   return (
     <Flex
       styles={{
         flexDirection: "column",
         height: "100%",
         justifyContent: "start",
-        paddingTop: "10vh"
+        paddingTop: "10vh",
       }}
     >
       <Flex styles={{ width: "80%", maxWidth: "800px" }}>
-        <Image
+        <label htmlFor="profile" className="hover-event">
+          <Image
+            src={preview ? preview : userInfo?.userImage}
+            styles={{
+              width: "200px",
+              height: "200px",
+              border: "6px solid #FF5C00",
+            }}
+            shape="circle"
+          />
+        </label>
+        <input
+          onChange={e => setUserImage(e)}
+          id="profile"
+          type="file"
+          style={{ visibility: "hidden", width: "0" }}
+        ></input>
+
+        {/* <Image
           styles={{
             width: "200px",
             height: "200px",
             border: "6px solid #FF5C00",
           }}
           shape="circle"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPwLMX0OWBB0a0hBSjy_5dRv7P7gFWxlGnuQ&usqp=CAU"
-        ></Image>
+          src={userInfo?.userImage}
+        ></Image> */}
         <Flex styles={{ flexDirection: "column", flex: 1 }}>
           <Text styles={{ fontSize: "32px", fontWeight: "700" }}>
             <Text
@@ -137,21 +170,17 @@ const MyPage = props => {
         </Button>
         {/* 이 부분에서 불러온 게시물 맵을 돌려야함 */}
         {postList.map(v => (
-          <Image
-            key={v.postId}
-            styles={imageStyle}
-            shape="post"
-            src={v.image}
-          >
+          <Image key={v.postId} styles={imageStyle} shape="post" src={v.image}>
             <Text styles={{ color: "#fff" }}>제목: {v.title}</Text>
             <Text styles={{ color: "#fff" }}>내용: {v.content}</Text>
-            <Text styles={{ color: "#fff" }}>마감일: {moment(v.endTime).format("MM-DD")}</Text>
+            <Text styles={{ color: "#fff" }}>
+              마감일: {moment(v.endTime).format("MM-DD")}
+            </Text>
             <Text styles={{ color: "#fff" }}>위치: {v.address}</Text>
           </Image>
         ))}
       </Grid>
-      <Flex styles={{minHeight: "10vh"}}>
-      </Flex>
+      <Flex styles={{ minHeight: "10vh" }}></Flex>
     </Flex>
   );
 };

@@ -1,12 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getAPI,
-  postAPI,
-  deleteAPI,
-  postFormAPI,
-  putAPI,
 } from "../../shared/api";
-import { getToken, setToken, removeToken } from "../../shared/localStorage";
 
 const getUserPageDB = createAsyncThunk("user/userId", async data => {
   const { userId } = data;
