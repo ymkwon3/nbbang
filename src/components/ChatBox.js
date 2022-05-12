@@ -208,10 +208,12 @@ const ChatBox = React.forwardRef(
     };
 
     const OpenChatRoomUserList = () => {
-      setOpenUserList(!openUserList);
-      console.log(chatroomUserListRef.current);
-      if (chatroomUserListRef.current)
-        chatroomUserListRef.current.style.width = "0";
+      // setOpenUserList(!openUserList);
+      console.log(chatroomUserListRef.current.style.width);
+      if (chatroomUserListRef.current.style.width === "0px")
+        chatroomUserListRef.current.style.width = "60%";
+        else 
+        chatroomUserListRef.current.style.width = "0px";
     };
 
     return (
@@ -253,7 +255,18 @@ const ChatBox = React.forwardRef(
               openUserList={openUserList}
               OpenChatRoomUserList={OpenChatRoomUserList}
             />
-            {openUserList ? (
+            <ChatBoxRight
+                postid={postid}
+                chatRoomUsers={chatRoomUsers}
+                participantList={participantList}
+                socket={socket}
+                awaiters={awaiters ? awaiters : awaiterList}
+                setAwaiters={setAwaiters}
+                participants={participants ? participants : participantList}
+                setParticipants={setParticipants}
+                ref={chatroomUserListRef}
+              />
+            {/* {openUserList ? (
               <ChatBoxRight
                 postid={postid}
                 chatRoomUsers={chatRoomUsers}
@@ -267,7 +280,7 @@ const ChatBox = React.forwardRef(
               />
             ) : (
               <></>
-            )}
+            )} */}
           </Flex>
         </ChatModal>
       </>
@@ -277,8 +290,8 @@ const ChatBox = React.forwardRef(
 
 const ChatModal = styled.div`
   top: 100%;
-  backgroundcolor: rgba(231, 232, 244, 0.7);
-  boxshadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  background-color: rgba(231, 232, 244, 0.7);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 `;
 export default ChatBox;
 
@@ -426,6 +439,7 @@ export const ChatBoxRight = forwardRef(
 
         <UserListContainer
           ref={ref}
+          style={{width: "0px"}}
           // style={{
           //   width: "60%",
           //   height: "100vh",
@@ -518,7 +532,6 @@ export const ChatBoxRight = forwardRef(
                     height: "100%",
                     width: "100%",
                     justifyContent: "start",
-                    flexDirection: "column",
                     overflowX: "hidden",
                     overflowY: "scroll",
                   }}
@@ -552,9 +565,9 @@ export const ChatBoxRight = forwardRef(
 );
 
 const UserListContainer = styled.div`
-  width: 60%;
+  width: 0px;
   height: 100vh;
-  padding: 20px 5px;
+  overflow: hidden;
   flex-direction: column;
   position: absolute;
   right: -23px;
@@ -565,6 +578,10 @@ const UserListContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
   transition: all 0.5s ease-out;
+
+  & > * {
+    overflow: hidden;
+  }
 `;
 
 export const Awaiter = ({ awaiter, addNewParticipant }) => {
