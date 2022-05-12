@@ -8,7 +8,8 @@ import moment from "moment";
 import { addImage } from "../image";
 
 const PostWrite = props => {
-  const { map, userInfo, _onClickClose, _setRightContainer } = props;
+  const { map, userInfo, _clickContainer, _setRightContainer, _clickFold } =
+    props;
   const geocoder = new kakao.maps.services.Geocoder();
   const markerRef = React.useRef(null);
   const positionRef = React.useRef(null);
@@ -49,9 +50,10 @@ const PostWrite = props => {
       });
       markerRef.current.setMap(map);
     });
-
+    _clickFold();
     // 한 번만 클릭 한 후 클릭이벤트 제거
     kakao.maps.event.removeListener(map, "click", handler);
+
     setFindState(false);
   }
 
@@ -62,13 +64,21 @@ const PostWrite = props => {
     }
     return () => {
       if (markerRef.current) markerRef.current.setMap(null);
-    }
+    };
   }, [findState]);
 
   // 전송하기 버튼 이벤트
   // todo: 빈 칸 확인 알림 메세지 출력
   // 이미지 빈 칸 확인
   const clickSubmit = () => {
+    if (
+      isNaN(submitRef.current.priceRef.value) ||
+      isNaN(submitRef.current.headCountRef.value)
+    ) {
+      console.log("가격, 인원은 숫자만 입력해주세요");
+      return;
+    }
+
     for (let ref in submitRef.current) {
       if (submitRef.current[ref].value === "") {
         console.log("빈 칸을 확인해주세요");
@@ -98,7 +108,7 @@ const PostWrite = props => {
     // 게시물 작성이 완료되면 게시물 작성 창을 닫습니다.
     dispatch(postActions.addPostDB(formData)).then(res => {
       markerRef.current.setMap(null);
-      _onClickClose();
+      _clickContainer();
       _setRightContainer("none");
     });
   };
@@ -125,10 +135,8 @@ const PostWrite = props => {
         justifyContent: "start",
       }}
     >
-      <Flex styles={{justifyContent: "start"}}>
-        <Text _onClick={_onClickClose}>
-          {"<"}
-        </Text>
+      <Flex styles={{ justifyContent: "start" }}>
+        <Text _onClick={_clickContainer}>{"<"}</Text>
       </Flex>
       <Flex styles={{ justifyContent: "space-between", marginBottom: "10px" }}>
         <Text styles={{ fontSize: "32px", fontWeight: "800" }}>모집하기</Text>
@@ -209,8 +217,9 @@ const PostWrite = props => {
           type="number"
           placehorder="ex) 50000"
           ref={e => (submitRef.current.priceRef = e)}
-          styles={{ width: "calc(50% - 16px)", height: "60px" }}
+          styles={{ width: "calc(50% - 28px)", height: "60px" }}
         />
+        원
         <Flex
           styles={{
             width: "1px",
@@ -225,11 +234,12 @@ const PostWrite = props => {
           placehorder="ex) 5"
           ref={e => (submitRef.current.headCountRef = e)}
           styles={{
-            width: "calc(50% - 16px)",
+            width: "calc(50% - 28px)",
             height: "60px",
             padding: "0 10px 0 0",
           }}
         />
+        명
       </Flex>
       <Flex
         styles={{
@@ -253,9 +263,12 @@ const PostWrite = props => {
             fontSize: "10px",
             fontWeight: "600",
           }}
-          _onClick={() => setFindState(true)}
+          _onClick={() => {
+            setFindState(true);
+            _clickFold();
+          }}
         >
-          주소 가져오기
+          모집위치
         </Button>
       </Flex>
       <Flex
@@ -325,7 +338,7 @@ const PostWrite = props => {
         }}
         _onClick={clickSubmit}
       >
-        전송하기
+        등록하기
       </Button>
     </Flex>
   );
