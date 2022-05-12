@@ -22,8 +22,10 @@ const Main = () => {
   // 카카오맵 컨트롤을 위한 ref
   const containerRef = React.useRef(null);
   const mapRef = React.useRef(null);
+
   // 카테고리에 따라 마커를 띄워주기 위해 저장해두는 마커 리스트
   const markerListRef = React.useRef([]);
+
   // mapRef에 카카오맵을 저장한 후 PostWrite에 넘겨주기 위한 강제 리렌더링
   const [rerender, setRerender] = React.useState(null);
 
@@ -36,8 +38,8 @@ const Main = () => {
 
   // 채팅방 오픈
   const [openChatroom, setOpenChatroom] = React.useState(false);
-  /*
-  해당 지역의 전체 게시물, 현재 선택된 카테고리, 
+
+  /*해당 지역의 전체 게시물, 현재 선택된 카테고리, 
   게시물 지역 범위, 현재 위치 구분*/
   const postList = useSelector(state => state.post.postList);
   const category = useSelector(state => state.post.category);
@@ -51,21 +53,13 @@ const Main = () => {
     v => v.category === category || category === "all"
   );
 
-  // 글쓰기 클릭 이벤트
-  const clickWrite = () => {
-    leftContianerRef.current.style.width = "430px";
-    setLeftContainer("write");
-  };
-  // 상세보기 클릭 이벤트
-  const clickDetail = id => {
-    leftContianerRef.current.style.width = "430px";
-    dispatch(postActions.getPostDetailDB(id));
-    setLeftContainer("detail");
-  };
-  // 글쓰기 상세보기 컨테이너 접어두기
-  const clickClose = () => {
-    leftContianerRef.current.style.width = "0";
-    setOpenChatroom(false);
+  // 글쓰기 상세보기 컨테이너 펼치기 및 컴포넌트 변경
+  const clickContainer = (type, postId) => {
+    const con = leftContianerRef.current.style.width;
+    if (con === "0px") leftContianerRef.current.style.width = "430px";
+    else if (type === "detail") dispatch(postActions.getPostDetailDB(postId));
+    else if (type === "close") leftContianerRef.current.style.width = "0px";
+    setLeftContainer(type);
   };
   // sidenav 전체 접어두기, 펼치기
   const clickFold = markerClick => {
@@ -135,10 +129,6 @@ const Main = () => {
         mapRef.current.panTo(userPosition);
         setRerender(true);
 
-        kakao.maps.event.addListener(mapRef.current, "click", function () {
-          clickClose();
-        });
-
         const markerPosition = userPosition;
         const markerImage = new kakao.maps.MarkerImage(
           myPosition,
@@ -199,7 +189,7 @@ const Main = () => {
       });
       kakao.maps.event.addListener(m, "click", function () {
         // 마커 클릭 시 해당 게시물의 상세페이지를 불러옵니다.
-        clickDetail(v.postId);
+        clickContainer("detail", v.postId);
         clickFold(true);
       });
 
@@ -211,8 +201,8 @@ const Main = () => {
     <KaKaoMap ref={containerRef}>
       <LeftContainer ref={sideNavRef}>
         <SideNav
-          _onClickWrite={clickWrite}
-          _onClickDetail={clickDetail}
+          _onClickWrite={() => clickContainer("write")}
+          _onClickDetail={clickContainer}
           postList={cateList}
           _clickPost={clickPost}
         ></SideNav>
@@ -248,8 +238,9 @@ const Main = () => {
                 rerender={rerender}
                 map={mapRef.current}
                 userInfo={userInfo}
-                _onClickClose={clickClose}
-                _setRightContainer={leftContainer}
+                _clickContainer={() => clickContainer("close")}
+                _clickFold={clickFold}
+                _setRightContainer={setLeftContainer}
               ></PostWrite>
             ) : leftContainer === "detail" ? (
               <PostDetail

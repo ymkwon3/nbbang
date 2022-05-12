@@ -37,7 +37,7 @@ const SideNav = props => {
 
   const clickPost = (postId, lat, lng) => {
     _clickPost(lat, lng);
-    _onClickDetail(postId)
+    _onClickDetail("detail", postId)
   }
 
   return (
