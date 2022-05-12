@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { Button, Flex, Image, Input, Select, Text } from "../elements";
 import { actionCreator as postActions } from "../redux/modules/post";
 import moment from "moment";
+import { notify, toast } from "../components/ToastMessage";
 
 import { addImage } from "../image";
 
@@ -13,6 +14,8 @@ const PostWrite = props => {
   const geocoder = new kakao.maps.services.Geocoder();
   const markerRef = React.useRef(null);
   const positionRef = React.useRef(null);
+  const toastRef = React.useRef(null);
+  const autoClose = 2000;
   const dispatch = useDispatch();
 
   const [preview, setPreview] = React.useState(addImage);
@@ -36,6 +39,7 @@ const PostWrite = props => {
     const lng = coords.getLng();
     const lat = coords.getLat();
 
+
     // 주소 선택 시 생성되는 마커를 하나만 유지합니다.
     if (markerRef.current) markerRef.current.setMap(null);
 
@@ -52,6 +56,7 @@ const PostWrite = props => {
     });
     _clickFold();
     // 한 번만 클릭 한 후 클릭이벤트 제거
+    toast.dismiss(toastRef.current);
     kakao.maps.event.removeListener(map, "click", handler);
 
     setFindState(false);
@@ -75,18 +80,18 @@ const PostWrite = props => {
       isNaN(submitRef.current.priceRef.value) ||
       isNaN(submitRef.current.headCountRef.value)
     ) {
-      console.log("가격, 인원은 숫자만 입력해주세요");
+      notify("warning", "가격, 인원은 숫자만 입력해주세요", autoClose);
       return;
     }
 
     for (let ref in submitRef.current) {
       if (submitRef.current[ref].value === "") {
-        console.log("빈 칸을 확인해주세요");
+        notify("warning", "빈 칸을 확인해주세요", autoClose);
         return;
       }
     }
     if (!image) {
-      console.log("빈 칸을 확인해주세요");
+      notify("warning", "사진을 추가해주세요", autoClose);
       return;
     }
 
@@ -110,6 +115,7 @@ const PostWrite = props => {
       markerRef.current.setMap(null);
       _clickContainer();
       _setRightContainer("none");
+      notify("success", "게시글이 작성되었습니다", autoClose);
     });
   };
 
@@ -118,6 +124,7 @@ const PostWrite = props => {
     if (e.target.files[0]) {
       setPreview(URL.createObjectURL(e.target.files[0]));
       setImage(e.target.files[0]);
+      notify("success", "사진이 등록되었습니다", 1000);
     }
   };
 
@@ -135,8 +142,13 @@ const PostWrite = props => {
         justifyContent: "start",
       }}
     >
-      <Flex styles={{ justifyContent: "start" }}>
-        <Text _onClick={_clickContainer}>{"<"}</Text>
+      <Flex styles={{ justifyContent: "end" }}>
+        <Text
+          styles={{ fontSize: "32px", color: "#bbb", lineHeight: "32px", cursor: "pointer" }}
+          _onClick={_clickContainer}
+        >
+          {"×"}
+        </Text>
       </Flex>
       <Flex styles={{ justifyContent: "space-between", marginBottom: "10px" }}>
         <Text styles={{ fontSize: "32px", fontWeight: "800" }}>모집하기</Text>
@@ -266,6 +278,7 @@ const PostWrite = props => {
           _onClick={() => {
             setFindState(true);
             _clickFold();
+            toastRef.current = notify("info", "모임 장소를 지도에서 선택해주세요!", 9999999999)
           }}
         >
           모집위치

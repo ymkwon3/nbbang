@@ -270,7 +270,7 @@ const FoldBtn = styled.div`
   z-index: 9;
   position: absolute;
   top: calc(50% - 28px);
-  right: -30px;
+  right: -33px;
 `;
 
 const LeftContainer = styled.div`
