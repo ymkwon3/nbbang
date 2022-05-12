@@ -98,7 +98,7 @@ const MessageBox = ({ messages, loggedUser }) => {
                       <Text>{formatAMPM(message.createdAt)}</Text>
                     </div>
                     <Bubble
-                      className="bubble-right"
+                      // className="bubble-right"
                       style={{
                         maxWidth: "80%",
                         width: "auto",
@@ -106,6 +106,7 @@ const MessageBox = ({ messages, loggedUser }) => {
                         flexDirection: "column",
                         alignItems: "flex-end",
                         backgroundColor: "#FFEF82",
+                        boxShadow: "2px 2px 10px -1px rgba(0,0,0,0.37)",
                       }}
                     >
                       <Text>{message.chat}</Text>
@@ -120,13 +121,14 @@ const MessageBox = ({ messages, loggedUser }) => {
                     {!message.status ? (
                       <>
                         <Bubble
-                          className="bubble-left"
+                          // className="bubble-left"
                           style={{
                             maxWidth: "80%",
                             width: "auto",
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "flex-start",
+                            boxShadow: "2px 2px 10px -1px rgba(0,0,0,0.37)",
                           }}
                         >
                           <Text>{message.chat}</Text>

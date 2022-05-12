@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
 // import "../index.css";
 
@@ -6,7 +6,6 @@ import { Button, Flex, Grid, Image, Input, Text } from "../elements";
 
 import styled from "styled-components";
 
-import { BiPlus } from "react-icons/bi";
 import MessageBox from "./MessageBox";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +13,7 @@ import { actionCreator as chatActions } from "../redux/modules/chat";
 
 import { BsChatText } from "react-icons/bs";
 import { FaRegPaperPlane } from "react-icons/fa";
+import { GiExitDoor } from "react-icons/gi";
 
 import moment from "moment";
 import "moment/locale/ko";
@@ -23,7 +23,7 @@ let selectedChatCompare;
 const ChatBox = React.forwardRef(
   ({ socket, openChatModal, detailInfo, closeChatRoom }, ref) => {
     const dispatch = useDispatch();
-
+    const chatroomUserListRef = React.useRef(null);
     let postid = `p${detailInfo.postId}`;
     // let postid = "p1";
 
@@ -209,6 +209,9 @@ const ChatBox = React.forwardRef(
 
     const OpenChatRoomUserList = () => {
       setOpenUserList(!openUserList);
+      console.log(chatroomUserListRef.current);
+      if (chatroomUserListRef.current)
+        chatroomUserListRef.current.style.width = "0";
     };
 
     return (
@@ -247,6 +250,7 @@ const ChatBox = React.forwardRef(
               sendNewMessage={sendNewMessage}
               loggedUser={loggedUser}
               isTyping={isTyping}
+              openUserList={openUserList}
               OpenChatRoomUserList={OpenChatRoomUserList}
             />
             {openUserList ? (
@@ -259,6 +263,7 @@ const ChatBox = React.forwardRef(
                 setAwaiters={setAwaiters}
                 participants={participants ? participants : participantList}
                 setParticipants={setParticipants}
+                ref={chatroomUserListRef}
               />
             ) : (
               <></>
@@ -371,188 +376,240 @@ export const ChatBoxLeft = ({
   );
 };
 
-export const ChatBoxRight = ({
-  postid,
-  socket,
-  awaiters,
-  setAwaiters,
-  participants,
-  setParticipants,
-}) => {
-  const [loadingAddParticipant, setLoadingAddParticipant] =
-    React.useState(false);
-  const [loadingDeleteParticipant, setLoadingDeleteParticipant] =
-    React.useState(false);
+export const ChatBoxRight = forwardRef(
+  (
+    { postid, socket, awaiters, setAwaiters, participants, setParticipants },
+    ref
+  ) => {
+    const [loadingAddParticipant, setLoadingAddParticipant] =
+      React.useState(false);
+    const [loadingDeleteParticipant, setLoadingDeleteParticipant] =
+      React.useState(false);
 
-  const addNewParticipant = (selectedUser) => {
-    setLoadingAddParticipant(true);
-    socket.emit("add_new_participant", { postid, selectedUser });
+    const addNewParticipant = (selectedUser) => {
+      setLoadingAddParticipant(true);
+      socket.emit("add_new_participant", { postid, selectedUser });
 
-    setParticipants((existingParticipantList) => {
-      return existingParticipantList
-        ? [...existingParticipantList, selectedUser]
-        : [selectedUser];
-    });
-    let updatedAwaiterList = awaiters.filter(
-      (awaiter) => awaiter.User_userId !== selectedUser.User_userId
-    );
-    setAwaiters(updatedAwaiterList);
+      setParticipants((existingParticipantList) => {
+        return existingParticipantList
+          ? [...existingParticipantList, selectedUser]
+          : [selectedUser];
+      });
+      let updatedAwaiterList = awaiters.filter(
+        (awaiter) => awaiter.User_userId !== selectedUser.User_userId
+      );
+      setAwaiters(updatedAwaiterList);
 
-    setLoadingAddParticipant(false);
-  };
+      setLoadingAddParticipant(false);
+    };
 
-  const deleteParticipant = (selectedUser) => {
-    setLoadingDeleteParticipant(true);
-    socket.emit("cancel_new_participant", { postid, selectedUser });
+    const deleteParticipant = (selectedUser) => {
+      setLoadingDeleteParticipant(true);
+      socket.emit("cancel_new_participant", { postid, selectedUser });
 
-    let updatedParticipantList = participants.filter(
-      (participant) => participant.User_userId !== selectedUser.User_userId
-    );
-    setParticipants(updatedParticipantList);
-    setAwaiters((existingAwaiterList) => {
-      return existingAwaiterList
-        ? [...existingAwaiterList, selectedUser]
-        : [selectedUser];
-    });
+      let updatedParticipantList = participants.filter(
+        (participant) => participant.User_userId !== selectedUser.User_userId
+      );
+      setParticipants(updatedParticipantList);
+      setAwaiters((existingAwaiterList) => {
+        return existingAwaiterList
+          ? [...existingAwaiterList, selectedUser]
+          : [selectedUser];
+      });
 
-    setLoadingDeleteParticipant(false);
-  };
+      setLoadingDeleteParticipant(false);
+    };
 
-  return (
-    <>
-      {/* 오른쪽 */}
-      <Flex
-        styles={{
-          width: "217px",
-          height: "306px",
-          padding: "20px 5px",
-          flexDirection: "column",
-          position: "absolute",
-          right: "-23px",
-          top: "-41px",
-          backgroundColor: "#FFFFFF",
-          boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-          borderRadius: "0px 0px 0px 20px",
-          justifyContent: "flex-start",
-        }}
-      >
-        <Flex>
-          <Text>{participants.length + 1} / 5</Text>
-        </Flex>
+    return (
+      <>
+        {/* 오른쪽 */}
 
-        <Flex
-          styles={{
-            margin: "12px 0",
-          }}
+        <UserListContainer
+          ref={ref}
+          // style={{
+          //   width: "60%",
+          //   height: "100vh",
+          //   padding: "20px 5px",
+          //   flexDirection: "column",
+          //   position: "absolute",
+          //   right: "-23px",
+          //   top: "-41px",
+          //   backgroundColor: "#FFFFFF",
+          //   boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+          //   justifyContent: "flex-start",
+          //   display: "flex",
+          //   justifyContent: "flex-start",
+          //   alignItems: "center",
+          //   transition: "all 0.2s ease-out",
+          // }}
         >
-          <Flex>
-            <Text>채팅 참여자</Text>
-          </Flex>
-          <Flex>
-            <Text>거래자</Text>
-          </Flex>
-        </Flex>
+          <div style={{ width: "100%", height: "85%" }}>
+            <Flex>
+              <Text>{participants.length + 1} / 5</Text>
+            </Flex>
 
-        <Flex
-          styles={{
-            height: "80%",
-          }}
-        >
-          <Flex
-            styles={{ overflow: "hidden", height: "100%", padding: "0 5px" }}
-          >
             <Flex
-              className="removeScroll"
               styles={{
                 flexDirection: "column",
-                height: "100%",
-                width: "100%",
-                // margin: "15px 0",
-                justifyContent: "start",
-                flexDirection: "column",
-                overflowX: "hidden",
-                overflowY: "scroll",
+                padding: "0 22px",
               }}
             >
-              {awaiters.map((awaiter, idx) => (
-                <Awaiter
-                  key={awaiter.User_userId}
-                  awaiter={awaiter}
-                  addNewParticipant={addNewParticipant}
-                />
-              ))}
+              <Flex
+                styles={{
+                  justifyContent: "flex-start",
+                  marginBottom: "26px",
+                }}
+              >
+                <Text styles={{ fontWeight: "700", fontSize: "18px" }}>
+                  채팅 참여자
+                </Text>
+              </Flex>
+              <Flex styles={{ overflow: "hidden", height: "26vh" }}>
+                <Flex
+                  className="removeScroll"
+                  styles={{
+                    flexDirection: "column",
+                    height: "100%",
+                    width: "100%",
+                    justifyContent: "start",
+                    flexDirection: "column",
+                    overflowX: "hidden",
+                    overflowY: "scroll",
+                  }}
+                >
+                  {awaiters.map((awaiter, idx) => (
+                    <Awaiter
+                      key={awaiter.User_userId}
+                      awaiter={awaiter}
+                      addNewParticipant={addNewParticipant}
+                    />
+                  ))}
+                </Flex>
+              </Flex>
             </Flex>
-          </Flex>
 
+            <Flex
+              styles={{
+                flexDirection: "column",
+                padding: "0 22px",
+              }}
+            >
+              <Flex styles={{ justifyContent: "flex-start" }}>
+                <Text
+                  styles={{
+                    fontWeight: "700",
+                    fontSize: "18px",
+                    margin: "10px 0 26px 0",
+                  }}
+                >
+                  거래자
+                </Text>
+              </Flex>
+              <Flex
+                styles={{
+                  overflow: "hidden",
+                  height: "26vh",
+                }}
+              >
+                <Flex
+                  className="removeScroll"
+                  styles={{
+                    flexDirection: "column",
+                    height: "100%",
+                    width: "100%",
+                    justifyContent: "start",
+                    flexDirection: "column",
+                    overflowX: "hidden",
+                    overflowY: "scroll",
+                  }}
+                >
+                  {participants.map((participant, idx) => (
+                    <Participants
+                      key={participant.User_userId}
+                      participant={participant}
+                      deleteParticipant={deleteParticipant}
+                    />
+                  ))}
+                </Flex>
+              </Flex>
+            </Flex>
+          </div>
           <Flex
             styles={{
-              overflow: "hidden",
-              height: "100%",
-              padding: "0 5px",
+              justifyContent: "flex-end",
+              paddingRight: "18px",
             }}
           >
-            <Flex
-              className="removeScroll"
-              styles={{
-                flexDirection: "column",
-                height: "100%",
-                width: "100%",
-                // margin: "15px 0",
-                justifyContent: "start",
-                flexDirection: "column",
-                overflowX: "hidden",
-                overflowY: "scroll",
-              }}
-            >
-              {participants.map((participant, idx) => (
-                <Participants
-                  key={participant.User_userId}
-                  participant={participant}
-                  deleteParticipant={deleteParticipant}
-                />
-              ))}
-            </Flex>
+            <GiExitDoor
+              className="hover-event"
+              style={{ width: "31px", height: "28px" }}
+            />
           </Flex>
-        </Flex>
-      </Flex>
-    </>
-  );
-};
+        </UserListContainer>
+      </>
+    );
+  }
+);
+
+const UserListContainer = styled.div`
+  width: 60%;
+  height: 100vh;
+  padding: 20px 5px;
+  flex-direction: column;
+  position: absolute;
+  right: -23px;
+  top: -41px;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  transition: all 0.5s ease-out;
+`;
 
 export const Awaiter = ({ awaiter, addNewParticipant }) => {
   return (
     <div style={{ width: "100%" }}>
       <Flex
         styles={{
-          border: "1px solid black",
-          height: "25px",
-          borderRadius: "20px",
-          justifyContent: "space-evenly",
-          margin: "5px 0px",
+          borderBottom: "1px solid #000000",
+          height: "auto",
+          paddingBottom: "12px",
+          justifyContent: "space-between",
         }}
       >
-        {/* <BiPlus
-          onClick={() => {
-            addNewParticipant(awaiter);
+        <Flex
+          styles={{
+            width: "auto",
+            marginTop: "10px",
           }}
-        /> */}
+        >
+          <Flex styles={{ height: "34px", width: "34px", marginRight: "15px" }}>
+            <Image
+              shape="circle"
+              src={awaiter.userImage}
+              styles={{ width: "100%", height: "100%" }}
+            />
+          </Flex>
+          <Text
+            styles={{ fontWieght: "400", fontSize: "16px", lineHeight: "19px" }}
+          >
+            {awaiter.User_userName}
+          </Text>
+        </Flex>
         <Text
-          className="hover-event"
-          styles={{ fontSize: "16px", fontWeight: "700" }}
+          className="hover-event change-color-to-orange"
+          styles={{
+            fontSize: "30px",
+            fontWeight: "700",
+            transition: "color 0.3s ease-out",
+          }}
           _onClick={() => {
             addNewParticipant(awaiter);
           }}
         >
-          ＋
+          +
         </Text>
-        <Text>{awaiter.User_userName.slice(0, 3) + ".."}</Text>
-        <Flex styles={{ height: "20px", width: "20px" }}>
-          <Image
-            shape="circle"
-            src={awaiter.userImage}
-            styles={{ width: "100%", height: "100%" }}
-          />
-        </Flex>
       </Flex>
     </div>
   );
@@ -563,35 +620,51 @@ export const Participants = ({ participant, deleteParticipant }) => {
     <div style={{ width: "100%" }}>
       <Flex
         styles={{
-          border: "1px solid black",
-          height: "25px",
-          borderRadius: "20px",
-          justifyContent: "space-evenly",
-          margin: "5px 0px",
+          borderBottom: "1px solid #000000",
+          height: "auto",
+          paddingBottom: "12px",
+          justifyContent: "space-between",
         }}
       >
-        {/* <BiPlus
-          onClick={() => {
-            deleteParticipant(participant);
-          }}
-        /> */}
-        <Text
-          className="hover-event"
-          styles={{ fontSize: "16px", fontWeight: "700" }}
-          _onClick={() => {
-            deleteParticipant(participant);
+        <Flex
+          styles={{
+            width: "auto",
+            marginTop: "10px",
           }}
         >
-          －
-        </Text>
-        <Text>{participant.User_userName.slice(0, 3) + ".."}</Text>
-        <Flex styles={{ height: "20px", width: "20px" }}>
-          <Image
-            shape="circle"
-            src={participant.userImage}
-            styles={{ width: "100%", height: "100%" }}
-          />
+          <Flex styles={{ height: "34px", width: "34px", marginRight: "15px" }}>
+            <Image
+              shape="circle"
+              src={participant.userImage}
+              styles={{ width: "100%", height: "100%" }}
+            />
+          </Flex>
+          <Text
+            styles={{ fontWieght: "400", fontSize: "16px", lineHeight: "19px" }}
+          >
+            {participant.User_userName}
+          </Text>
         </Flex>
+        <div>
+          <Text
+            className="hover-event"
+            styles={{
+              fontSize: "30px",
+              fontWeight: "700",
+              color: "#FF5C00",
+            }}
+            _onClick={() => {
+              deleteParticipant(participant);
+            }}
+          >
+            <span
+              className="change-color-to-black"
+              style={{ transition: "color 0.3s ease-out" }}
+            >
+              +
+            </span>
+          </Text>
+        </div>
       </Flex>
     </div>
   );
