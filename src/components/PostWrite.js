@@ -5,7 +5,6 @@ import { Button, Flex, Image, Input, Select, Text } from "../elements";
 import { actionCreator as postActions } from "../redux/modules/post";
 import moment from "moment";
 
-
 import { addImage } from "../image";
 
 const PostWrite = props => {
