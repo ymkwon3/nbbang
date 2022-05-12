@@ -41,16 +41,16 @@ const Main = () => {
 
   /*해당 지역의 전체 게시물, 현재 선택된 카테고리, 
   게시물 지역 범위, 현재 위치 구분*/
-  const postList = useSelector(state => state.post.postList);
-  const category = useSelector(state => state.post.category);
+  const postList = useSelector((state) => state.post.postList);
+  const category = useSelector((state) => state.post.category);
   const [cityRange, setCityRange] = React.useState(3);
   const [city, setCity] = React.useState(3);
 
   // 로그인된 유저 정보
-  const userInfo = useSelector(state => state.user.userInfo);
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   const cateList = postList.filter(
-    v => v.category === category || category === "all"
+    (v) => v.category === category || category === "all"
   );
 
   // 글쓰기 상세보기 컨테이너 펼치기 및 컴포넌트 변경
@@ -115,7 +115,7 @@ const Main = () => {
             "대구",
             "제주특별자치도",
           ];
-          locale.find(v => v === addr.region_1depth_name)
+          locale.find((v) => v === addr.region_1depth_name)
             ? setCity(3)
             : setCity(2);
         });
@@ -153,7 +153,7 @@ const Main = () => {
       return null;
     });
     markerListRef.current = [];
-    cateList.map(v => {
+    cateList.map((v) => {
       // 마커크기 45 x 60
       const markerImage = new kakao.maps.MarkerImage(
         v.category === "eat" ? markerOrange : markerBlue,

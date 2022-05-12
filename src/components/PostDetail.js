@@ -8,8 +8,8 @@ import moment from "moment";
 import "moment/locale/ko";
 
 import io from "socket.io-client";
-let socket = io.connect("https://redpingpong.shop");
 // let socket = io.connect("https://localhost:3443");
+let socket = io.connect("https://redpingpong.shop");
 
 const PostDetail = ({ openChatroom, setOpenChatroom, _clickContainer }) => {
   const detailInfo = useSelector(state => state.post.postDetail);
@@ -29,11 +29,17 @@ const PostDetail = ({ openChatroom, setOpenChatroom, _clickContainer }) => {
   };
 
   const openChatModal = () => {
-    setOpenChatroom(!openChatroom);
+    setOpenChatroom(true);
   };
-  // React.useEffect(() => {
-  //   socket.emit("socket is connected", userInfo);
-  // }, []);
+
+  const closeChatRoom = (userWillLeave) => {
+    setOpenChatroom(false);
+    socket.emit("close chatroom", `p${detailInfo.postId}`, userWillLeave);
+  };
+
+  React.useEffect(() => {
+    socket.emit("socket is connected", userInfo);
+  }, []);
 
   React.useEffect(() => {
     if (openChatroom) {
@@ -187,6 +193,7 @@ const PostDetail = ({ openChatroom, setOpenChatroom, _clickContainer }) => {
           socket={socket}
           openChatModal={openChatModal}
           detailInfo={detailInfo}
+          closeChatRoom={closeChatRoom}
         />
       ) : (
         <></>

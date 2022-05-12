@@ -30,6 +30,19 @@
   user-select: none;
 }
 
+.change-color-to-black:hover {
+  color: #000000;
+}
+
+.change-color-to-orange:hover {
+  color: #FF5C00;
+}
+
+.click {
+  width: "60%",
+}
+
+
 .flex-column-center {
   display: flex;
   flex-direction: column;
