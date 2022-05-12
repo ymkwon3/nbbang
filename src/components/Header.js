@@ -146,9 +146,11 @@ const Header = props => {
               <Flex styles={{ width: "fit-content" }}>
                 <Button
                   styles={{
-                    width: "90px",
-                    height: "40px",
-                    borderRadius: "27px",
+                    width: "70px",
+                    height: "35px",
+                    borderRadius: "30px",
+                    fontSize: "16px",
+                    fontWeight: "500",
                   }}
                   _onClick={clickLogin}
                 >
