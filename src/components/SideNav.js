@@ -11,7 +11,7 @@ import Permit from "../shared/Permit";
 import { write } from "../image";
 
 const SideNav = props => {
-  const { _onClickWrite, _onClickDetail, postList } = props;
+  const { _onClickWrite, _onClickDetail, _clickPost, postList } = props;
   const dispatch = useDispatch();
 
   //useState 함수를 이용해서 페이지 당 게시물 수 (limit), 현재 페이지 번호(page)를 상태로 추가.
@@ -34,6 +34,12 @@ const SideNav = props => {
       .toLowerCase()
       .includes(searchPost.toString().toLowerCase())
   );
+
+  const clickPost = (postId, lat, lng) => {
+    _clickPost(lat, lng);
+    _onClickDetail(postId)
+  }
+
   return (
     <Flex
       styles={{
@@ -88,16 +94,16 @@ const SideNav = props => {
         {/* pagination 적용 후  */}
         {newPostList.slice(offset, offset + limit).map((v, i) => (
           <StyledPost
-            onClick={() => _onClickDetail(v.postId)}
+            onClick={() => clickPost(v.postId, v.lat, v.lng)}
             key={`post_${i}`}
           >
-            <Post {...v} />
+            <Post {...v}/>
           </StyledPost>
         ))}
       </Flex>
       <Flex>
         <Pagination
-          total={postList.length}
+          total={newPostList.length}
           limit={limit}
           page={page}
           setPage={setPage}

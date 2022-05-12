@@ -52,6 +52,7 @@ const Post = props => {
         borderRadius: "30px",
         padding: "15px",
       }}
+      className="post-card"
     >
       <Image
         styles={{
