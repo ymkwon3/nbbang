@@ -14,3 +14,21 @@ export const isLoggedUser = (message, loggedUser) => {
     message.User_userName === loggedUser.userName
   );
 };
+
+export const formatAMPM = (date) => {
+  return new Date(date).toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  });
+};
+
+export const isTheSameDate = (message, idx, messages) => {
+  return idx === 0 ||
+    (message.createdAt &&
+      messages[idx - 1].createdAt &&
+      messages[idx - 1].createdAt.split(" ")[0] !==
+        message.createdAt.split(" ")[0])
+    ? new Date(message.createdAt).toLocaleDateString()
+    : "";
+};

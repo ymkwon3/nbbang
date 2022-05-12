@@ -5,8 +5,8 @@ import { Flex, Button, Text, Image } from "../elements";
 import ChatBox from "./ChatBox";
 
 import io from "socket.io-client";
-let socket = io.connect("https://redpingpong.shop");
 // let socket = io.connect("https://localhost:3443");
+let socket = io.connect("https://redpingpong.shop");
 
 const PostDetail = ({ openChatroom, setOpenChatroom }) => {
   const detailInfo = useSelector((state) => state.post.postDetail);
@@ -15,11 +15,17 @@ const PostDetail = ({ openChatroom, setOpenChatroom }) => {
 
   const chatRef = React.useRef();
   const openChatModal = () => {
-    setOpenChatroom(!openChatroom);
+    setOpenChatroom(true);
   };
-  // React.useEffect(() => {
-  //   socket.emit("socket is connected", userInfo);
-  // }, []);
+
+  const closeChatRoom = (userWillLeave) => {
+    setOpenChatroom(false);
+    socket.emit("close chatroom", `p${detailInfo.postId}`, userWillLeave);
+  };
+
+  React.useEffect(() => {
+    socket.emit("socket is connected", userInfo);
+  }, []);
 
   React.useEffect(() => {
     if (openChatroom) {
@@ -143,6 +149,7 @@ const PostDetail = ({ openChatroom, setOpenChatroom }) => {
           socket={socket}
           openChatModal={openChatModal}
           detailInfo={detailInfo}
+          closeChatRoom={closeChatRoom}
         />
       ) : (
         <></>

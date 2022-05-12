@@ -21,7 +21,7 @@ import "moment/locale/ko";
 let selectedChatCompare;
 
 const ChatBox = React.forwardRef(
-  ({ socket, openChatModal, detailInfo }, ref) => {
+  ({ socket, openChatModal, detailInfo, closeChatRoom }, ref) => {
     const dispatch = useDispatch();
 
     let postid = `p${detailInfo.postId}`;
@@ -96,12 +96,7 @@ const ChatBox = React.forwardRef(
         };
 
         socket.emit("stop typing", postid);
-        let chatRoomUserList = [...chatRoomUsers, chatAdmin];
-        // socket.emit("pushalarm", {
-        //   postid: postid,
-        //   newMessage: newChat,
-        //   // chatRoomUserList,
-        // });
+        // let chatRoomUserList = [...chatRoomUsers, chatAdmin];
         socket.emit("sendmessage", {
           postid: postid,
           newMessage: newChat,
@@ -124,6 +119,12 @@ const ChatBox = React.forwardRef(
         console.log("연결성공!");
         console.log(`${enteredUser}`);
         setSocketConnected(true);
+        // 나중에 css 커스터마이징하기
+        let newChat = {
+          status: "messageAlarm",
+          chat: enteredUser,
+        };
+        setNewlyAddedMessages((messageList) => [...messageList, newChat]);
       });
       socket.on("typing", () => setIsTyping(true));
       socket.on("stop typing", () => setIsTyping(false));
@@ -138,8 +139,11 @@ const ChatBox = React.forwardRef(
 
     //receive message
     React.useEffect(() => {
+      socket.on("send alarm", (messageAlarmInfo) => {
+        console.log(messageAlarmInfo);
+      });
       socket.on("receive message", (newMessageReceived) => {
-        //   console.log(newMessageReceived);
+        console.log(newMessageReceived);
         setNewlyAddedMessages((messageList) => [
           ...messageList,
           newMessageReceived,
@@ -223,7 +227,9 @@ const ChatBox = React.forwardRef(
           <Flex>
             <Text
               styles={{ fontSize: "16px", position: "relative" }}
-              _onClick={openChatModal}
+              _onClick={() => {
+                closeChatRoom(loggedUser);
+              }}
             >
               X
             </Text>
