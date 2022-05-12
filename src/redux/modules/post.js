@@ -70,6 +70,7 @@ const postSlice = createSlice({
 
   extraReducers: builder => {
     builder.addCase(addPostDB.fulfilled, (state, action) => {
+      console.log(action.payload)
       state.postList.unshift(action.payload.row[0]);
     });
     builder.addCase(getPostListDB.fulfilled, (state, action) => {

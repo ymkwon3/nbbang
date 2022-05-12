@@ -16,5 +16,6 @@ import write from "./write.svg";
 import addImage from "./addImage.svg";
 import markerBlue from "./markerBlue.svg";
 import markerOrange from "./markerOrange.svg"
+import exit from "./exit.svg"
 
-export {markerOrange, markerBlue, addImage, buy, eat, buyCategory, eatCategory, notification, emptyHeart, filledHeart, whiteHeart, left, right,logo, myPosition, position, search, write};
+export {exit, markerOrange, markerBlue, addImage, buy, eat, buyCategory, eatCategory, notification, emptyHeart, filledHeart, whiteHeart, left, right,logo, myPosition, position, search, write};

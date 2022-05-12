@@ -59,9 +59,19 @@ const PostDetail = ({ openChatroom, setOpenChatroom, _clickContainer }) => {
           justifyContent: "start",
         }}
       >
-        <Flex styles={{ justifyContent: "start" }}>
-        <Text _onClick={_clickContainer}>{"<"}</Text>
-      </Flex>
+        <Flex styles={{ justifyContent: "end" }}>
+          <Text
+            styles={{
+              fontSize: "32px",
+              color: "#bbb",
+              lineHeight: "32px",
+              cursor: "pointer",
+            }}
+            _onClick={_clickContainer}
+          >
+            {"×"}
+          </Text>
+        </Flex>
         <Flex styles={{ justifyContent: "space-between", margin: "10px 0" }}>
           <Image
             styles={{
@@ -105,7 +115,9 @@ const PostDetail = ({ openChatroom, setOpenChatroom, _clickContainer }) => {
                 <Text styles={valueStyles}>{detailInfo.category}</Text>
               </Text>
             </Flex>
-            <Flex styles={{ justifyContent: "space-between", margin: "10px 0" }}>
+            <Flex
+              styles={{ justifyContent: "space-between", margin: "10px 0" }}
+            >
               <Text styles={keyStyles}>
                 가격: <Text styles={valueStyles}>{detailInfo.price}</Text>
               </Text>

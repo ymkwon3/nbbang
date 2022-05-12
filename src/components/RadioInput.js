@@ -4,11 +4,11 @@ const RadioInput = props => {
   const { city, setCityRange } = props;
 
   const buttonStyles = {
-    width: "50px",
-    height: "50px",
+    width: "40px",
+    height: "40px",
     backgroundColor: "transparent",
     borderRadius: "0",
-    fontSize: "20px",
+    fontSize: "18px",
     fontWeight: "600",
   };
 

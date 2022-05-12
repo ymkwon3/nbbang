@@ -35,7 +35,9 @@ const Input = forwardRef((props, ref) => {
             padding: "5px",
             marginLeft: "15px",
             textDecoration: "none",
+            
           }}
+          ref={ref}
         ></textarea>
       ) : type === "date" ? (
         <input ref={ref} type={type} min={min} max={max}></input>

@@ -20,7 +20,7 @@ const App = () => {
       <Header></Header>
       <Flex
         styles={{
-          height: "calc(100% - 70px)"
+          height: "calc(100% - 50px)"
         }}
       >
         {/* <Route path="/mypage" exact component={MyPage}></Route> */}

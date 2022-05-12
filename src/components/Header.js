@@ -37,27 +37,27 @@ const Header = props => {
   };
 
   const categoryStyle = {
-    width: "145px",
-    height: "40px",
+    width: "120px",
+    height: "35px",
     borderRadius: "30px",
-    fontSize: "18px",
+    fontSize: "16px",
     fontWeight: "500",
   };
 
   const checkedStyle = {
     color: "#fff",
     backgroundColor: "#FF5C00",
-    width: "145px",
-    height: "40px",
+    width: "120px",
+    height: "35px",
     borderRadius: "30px",
-    fontSize: "18px",
+    fontSize: "16px",
     fontWeight: "500",
   };
 
   return (
     <Flex
       styles={{
-        height: "70px",
+        height: "50px",
         backgroundColor: "#19253D",
         boxShadow: "0 8px 10px -4px rgba(0, 0, 0, 0.2)",
         zIndex: 11,
@@ -68,7 +68,7 @@ const Header = props => {
         <img
           src={logo}
           alt="logo"
-          style={{ width: "50px", height: "50px", cursor: "pointer" }}
+          style={{ width: "40px", height: "40px", cursor: "pointer" }}
           onClick={clickLogo}
         ></img>
         {location.pathname === "/" ? (
