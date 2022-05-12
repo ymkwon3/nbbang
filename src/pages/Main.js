@@ -51,17 +51,47 @@ const Main = () => {
     v => v.category === category || category === "all"
   );
 
+  // 글쓰기 클릭 이벤트
+  const clickWrite = () => {
+    leftContianerRef.current.style.width = "430px";
+    setLeftContainer("write");
+  };
+  // 상세보기 클릭 이벤트
+  const clickDetail = id => {
+    leftContianerRef.current.style.width = "430px";
+    dispatch(postActions.getPostDetailDB(id));
+    setLeftContainer("detail");
+  };
+  // 글쓰기 상세보기 컨테이너 접어두기
+  const clickClose = () => {
+    leftContianerRef.current.style.width = "0";
+    setOpenChatroom(false);
+  };
+  // sidenav 전체 접어두기, 펼치기
+  const clickFold = markerClick => {
+    if (sideNavRef.current.style.width === "0px" || markerClick) {
+      sideNavRef.current.style.width = "fit-content";
+      setSideNav(false);
+    } else {
+      sideNavRef.current.style.width = "0px";
+      setSideNav(true);
+    }
+  };
+  // 게시물 선택 시 위치 이동
+  const clickPost = (lat, lng) => {
+    const userPosition = new kakao.maps.LatLng(lat, lng);
+    mapRef.current.panTo(userPosition);
+  };
+
   /*
   현재 로그인 상태일 때, 게시물 데이터를 두 번 불러옴.
   userInfo를 updateMount에 지정해주지 않으면 무조건 비회원일 때의 데이터를 불러옴
   --IsLogin 컴포넌트에서 재로그인요청 시 자식 컴포넌트를 없애줌으로써 문제 해결
   */
-
   React.useEffect(() => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     navigator.geolocation.getCurrentPosition(
       position => {
-        
         //서울
         // const userLat = 37.51259282304522;
         // const userLng = 126.89031007937093;
@@ -104,6 +134,10 @@ const Main = () => {
 
         mapRef.current.panTo(userPosition);
         setRerender(true);
+
+        kakao.maps.event.addListener(mapRef.current, "click", function () {
+          clickClose();
+        });
 
         const markerPosition = userPosition;
         const markerImage = new kakao.maps.MarkerImage(
@@ -163,49 +197,26 @@ const Main = () => {
         // 마커 위에 인포윈도우를 제거합니다
         infowindow.close();
       });
+      kakao.maps.event.addListener(m, "click", function () {
+        // 마커 클릭 시 해당 게시물의 상세페이지를 불러옵니다.
+        clickDetail(v.postId);
+        clickFold(true);
+      });
 
       return null;
     });
   }, [postList, category]);
 
-  // 글쓰기 클릭 이벤트
-  const clickWrite = () => {
-    leftContianerRef.current.style.width = "430px";
-    setLeftContainer("write");
-  };
-  // 상세보기 클릭 이벤트
-  const clickDetail = id => {
-    leftContianerRef.current.style.width = "430px";
-    dispatch(postActions.getPostDetailDB(id));
-    setLeftContainer("detail");
-  };
-  // 글쓰기 상세보기 컨테이너 접어두기
-  const clickClose = () => {
-    leftContianerRef.current.style.width = "0";
-    setOpenChatroom(false);
-  };
-  // sidenav 전체 접어두기, 펼치기
-  const clickFold = () => {
-    if(sideNavRef.current.style.width === "0px"){
-      sideNavRef.current.style.width = "fit-content";
-      setSideNav(false);
-    }else {
-      sideNavRef.current.style.width = "0px";
-      setSideNav(true);
-    }
-  };
-
   return (
     <KaKaoMap ref={containerRef}>
-      <LeftContainer
-        ref={sideNavRef}
-      >
+      <LeftContainer ref={sideNavRef}>
         <SideNav
           _onClickWrite={clickWrite}
           _onClickDetail={clickDetail}
           postList={cateList}
+          _clickPost={clickPost}
         ></SideNav>
-        <FoldBtn className="hover-event" onClick={clickFold}>
+        <FoldBtn className="hover-event" onClick={() => clickFold(false)}>
           <img src={sideNav ? right : left} alt="foldBtn" />
         </FoldBtn>
         <div
