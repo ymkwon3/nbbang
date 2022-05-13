@@ -9,6 +9,7 @@ import PostDetail from "../components/PostDetail";
 
 import { actionCreator as postActions } from "../redux/modules/post";
 import RadioInput from "../components/RadioInput";
+import MyLocation from "../components/MyLocation";
 
 //style
 import ChatBox from "../components/ChatBox";
@@ -86,11 +87,11 @@ const Main = () => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     navigator.geolocation.getCurrentPosition(
       position => {
-        //서울
-        const userLat = 37.512634390346236;
+        console.log(position)
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
         const userLng = 126.89156781562811;
-        // const userLat = position.coords.latitude;
-        // const userLng = position.coords.longitude;
+        const userLat = 37.512634390346236;
         // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
 
         geocoder.coord2Address(userLng, userLat, (result, status) => {
@@ -255,7 +256,7 @@ const Main = () => {
         </div>
       </LeftContainer>
       <ButtonContainer>
-        {/* 진호님 여기다가 내 위치 이동 만드시면 됩니다 */}
+        {/* <MyLocation map={mapRef}></MyLocation> */}
         <RadioInput city={city} setCityRange={setCityRange}></RadioInput>
       </ButtonContainer>
     </KaKaoMap>
