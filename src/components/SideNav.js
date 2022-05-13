@@ -10,7 +10,7 @@ import Permit from "../shared/Permit";
 import { write } from "../image";
 
 const SideNav = props => {
-  const { _onClickWrite, _onClickDetail, _clickPost, postList } = props;
+  const { _onClickWrite, _onClickDetail, _clickPost, postList, category } = props;
 
   //useState 함수를 이용해서 페이지 당 게시물 수 (limit), 현재 페이지 번호(page)를 상태로 추가.
   //그리고 첫 게지물의 위치 (offset) 계산필요
@@ -64,7 +64,7 @@ const SideNav = props => {
           padding: "40px 20px 10px",
         }}
       >
-        <Text styles={{ fontSize: "32px", fontWeight: "800", userSelect: "none" }}>같이 사자</Text>
+        <Text styles={{ fontSize: "32px", fontWeight: "800", userSelect: "none" }}>{category === "buy" ? "같이 사자" : category === "eat" ? "같이 먹자" : "전체"}</Text>
         <Permit>
           <Button
             styles={{

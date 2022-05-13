@@ -13,9 +13,8 @@ let socket = io.connect("https://redpingpong.shop");
 
 const PostDetail = ({ openChatroom, setOpenChatroom, _clickContainer }) => {
   const detailInfo = useSelector(state => state.post.postDetail);
-
   const userInfo = useSelector(state => state.user.userInfo);
-
+  const isLogin = useSelector(state => state.user.isLogin);
   const chatRef = React.useRef();
 
   const keyStyles = {
@@ -79,13 +78,16 @@ const PostDetail = ({ openChatroom, setOpenChatroom, _clickContainer }) => {
           </Text>
         </Flex>
         <Flex styles={{ justifyContent: "space-between", margin: "10px 0" }}>
+          <Flex styles={{width: "fit-content"}}>
           <Image
             styles={{
               width: "38px",
               height: "38px",
             }}
-            src={userInfo.userImage}
+            src={detailInfo.userImage}
           />
+          <Text styles={{marginLeft: "10px", fontWeight: "600"}}>{detailInfo.writer}</Text>
+          </Flex>
 
           <Flex
             styles={{
@@ -156,7 +158,10 @@ const PostDetail = ({ openChatroom, setOpenChatroom, _clickContainer }) => {
             src={detailInfo.image}
             shape={"rectangle"}
           />
-          <Button
+          
+          {
+            //로그인일 경우에만 보임
+          isLogin ? <Button
             styles={{
               width: "150px",
               minHeight: "40px",
@@ -170,8 +175,11 @@ const PostDetail = ({ openChatroom, setOpenChatroom, _clickContainer }) => {
             _onClick={openChatModal}
           >
             채팅 참여
-          </Button>
-          <Button
+          </Button> : null}
+          
+          {
+            //본인이 작성한 글만 보임
+          userInfo?.userId === detailInfo?.User_userId ? <Button
             styles={{
               width: "150px",
               minHeight: "40px",
@@ -182,9 +190,11 @@ const PostDetail = ({ openChatroom, setOpenChatroom, _clickContainer }) => {
               fontWeight: "700",
               marginTop: "20px",
             }}
+            //todo: 임시 비활성화
+            _disabled
           >
             거래 완료
-          </Button>
+          </Button> : null}
         </Flex>
       </Flex>
       {openChatroom ? (

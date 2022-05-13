@@ -17,7 +17,6 @@ const PostWrite = props => {
   const toastRef = React.useRef(null);
   const autoClose = 2000;
   const dispatch = useDispatch();
-
   const [preview, setPreview] = React.useState(addImage);
   const [image, setImage] = React.useState(null);
   const submitRef = React.useRef({
@@ -38,7 +37,6 @@ const PostWrite = props => {
     const coords = e.latLng;
     const lng = coords.getLng();
     const lat = coords.getLat();
-
 
     // 주소 선택 시 생성되는 마커를 하나만 유지합니다.
     if (markerRef.current) markerRef.current.setMap(null);
@@ -73,9 +71,8 @@ const PostWrite = props => {
   }, [findState]);
 
   // 전송하기 버튼 이벤트
-  // todo: 빈 칸 확인 알림 메세지 출력
-  // 이미지 빈 칸 확인
   const clickSubmit = () => {
+    // 가격, 인원 숫자형식 확인
     if (
       isNaN(submitRef.current.priceRef.value) ||
       isNaN(submitRef.current.headCountRef.value)
@@ -83,7 +80,12 @@ const PostWrite = props => {
       notify("warning", "가격, 인원은 숫자만 입력해주세요", autoClose);
       return;
     }
-
+    // 인원 2명이상 확인
+    if (parseInt(submitRef.current.headCountRef.value) < 2) {
+      notify("warning", "인원은 2명 이상 설정해주세요", autoClose);
+      return;
+    }
+    // 입력칸 빈칸확인
     for (let ref in submitRef.current) {
       if (submitRef.current[ref].value === "") {
         notify("warning", "빈 칸을 확인해주세요", autoClose);
@@ -144,7 +146,12 @@ const PostWrite = props => {
     >
       <Flex styles={{ justifyContent: "end" }}>
         <Text
-          styles={{ fontSize: "32px", color: "#bbb", lineHeight: "32px", cursor: "pointer" }}
+          styles={{
+            fontSize: "32px",
+            color: "#bbb",
+            lineHeight: "32px",
+            cursor: "pointer",
+          }}
           _onClick={_clickContainer}
         >
           {"×"}
@@ -155,7 +162,7 @@ const PostWrite = props => {
         <Flex styles={{ width: "auto" }}>
           <Image
             shape="circle"
-            src={userInfo.userImage}
+            src={userInfo?.userImage}
             styles={{
               width: "34px",
               height: "34px",
@@ -165,7 +172,7 @@ const PostWrite = props => {
           <Text
             styles={{ fontSize: "20px", fontWeight: "700", marginLeft: "12px" }}
           >
-            {userInfo.userName}
+            {userInfo?.userName}
           </Text>
         </Flex>
       </Flex>
@@ -278,7 +285,11 @@ const PostWrite = props => {
           _onClick={() => {
             setFindState(true);
             _clickFold();
-            toastRef.current = notify("info", "모임 장소를 지도에서 선택해주세요!", 9999999999)
+            toastRef.current = notify(
+              "info",
+              "모임 장소를 지도에서 선택해주세요!",
+              9999999999
+            );
           }}
         >
           모집위치
