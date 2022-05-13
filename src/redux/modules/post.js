@@ -69,8 +69,25 @@ const postSlice = createSlice({
     searchPost(state,action) {
       state.postSearch = action.payload;
     },
+    updateLastPostList(state, action) {
+      state.postList = state.postList.sort(function(a,b) {
+        return a.createdAt.substr(0,19).replace(/-/gi, "").replace('T', "").replace(/:/gi, "") < b.createdAt.substr(0,19).replace(/-/gi, "").replace('T', "").replace(/:/gi, "") 
+        ? 1 : a.createdAt.substr(0,19).replace(/-/gi, "").replace('T', "").replace(/:/gi, "") > b.createdAt.substr(0,19).replace(/-/gi, "").replace('T', "").replace(/:/gi, "")
+        ? -1 : 0;
+      })
+    },
+    updateLikePostList(state, action) {
+      state.postList = state.postList.sort((a,b) => (a.isLike===0) - (b.isLike===0) || a-b)
+    },
+    updateEndPostList(state, action) {
+      state.postList = state.postList.sort(function(a,b) {
+        return a.endTime.substr(0,19).replace(/-/gi, "").replace('T', "").replace(/:/gi, "") < b.endTime.substr(0,19).replace(/-/gi, "").replace('T', "").replace(/:/gi, "") 
+        ? -1 : a.endTime.substr(0,19).replace(/-/gi, "").replace('T', "").replace(/:/gi, "") > b.endTime.substr(0,19).replace(/-/gi, "").replace('T', "").replace(/:/gi, "")
+        ? 1 : 0;
+      })
+      // console.log(state.postList.map(v => v.endTime.substr(0,19).replace(/-/gi, "").replace('T', "").replace(/:/gi, "")))
+    }
   },
-
   extraReducers: builder => {
     builder.addCase(addPostDB.fulfilled, (state, action) => {
       state.postList.unshift(action.payload.row[0]);
@@ -81,6 +98,7 @@ const postSlice = createSlice({
     builder.addCase(getPostDetailDB.fulfilled, (state, action) => {
       state.postDetail = action.payload;
     })
+  
     builder.addCase(postLikeDB.fulfilled, (state, action) => {
       const { postId, isLike } = action.meta.arg;
       state.postList = state.postList.map(v => {

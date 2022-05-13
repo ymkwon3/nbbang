@@ -40,6 +40,7 @@ const ButtonStyle = styled.button`
   width: ${props => props.width};
   height: ${props => props.height};
   border: ${props => props.border};
+  padding: ${props => props.padding};
   border-radius: ${props => props.borderRadius};
   cursor: pointer;
   transition: 0.2s;

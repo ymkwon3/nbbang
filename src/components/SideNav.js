@@ -5,6 +5,7 @@ import { actionCreator as itemActions } from "../redux/modules/post";
 import Post from "./Post";
 import { Button, Flex, Text } from "../elements";
 import Pagination from "./Pagination";
+import Dropdown from "./Dropdown";
 //style
 import styled from "styled-components";
 import Permit from "../shared/Permit";
@@ -50,9 +51,10 @@ const SideNav = props => {
         boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
       }}
     >
+      
       <Flex
         styles={{
-          justifyContent: "space-between",
+          flexDirection: "column",
           boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
           backgroundColor: "#fff",
           position: "sticky",
@@ -60,20 +62,31 @@ const SideNav = props => {
           padding: "40px 20px 10px",
         }}
       >
-        <Text styles={{ fontSize: "32px", fontWeight: "800", userSelect: "none" }}>같이 사자</Text>
-        <Permit>
-          <Button
-            styles={{
-              boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
-              borderRadius: "50%",
-              width: "38px",
-              height: "38px",
-            }}
-            _onClick={_onClickWrite}
-          >
-            <img src={write} alt="write" />
-          </Button>
-        </Permit>
+        <Flex
+          styles={{
+            margin:"-17px 0 25px 300px"
+          }}
+        >
+          <Dropdown
+            allList={newPostList}
+          />
+        </Flex>
+        <Flex styles={{ justifyContent: "space-between" }}>
+          <Text styles={{ fontSize: "32px", fontWeight: "800", userSelect: "none" }}>같이 사자</Text>
+          <Permit>
+            <Button
+              styles={{
+                boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
+                borderRadius: "50%",
+                width: "38px",
+                height: "38px",
+              }}
+              _onClick={_onClickWrite}
+            >
+              <img src={write} alt="write" />
+            </Button>
+          </Permit>
+        </Flex>
       </Flex>
       <Flex
         styles={{
@@ -97,7 +110,7 @@ const SideNav = props => {
       </Flex>
       <Flex>
         <Pagination
-          total={postList.length}
+          total={newPostList.length}
           limit={limit}
           page={page}
           setPage={setPage}
