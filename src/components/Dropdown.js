@@ -64,7 +64,7 @@ const Dropdown = (props) => {
             
 
 const Icon = styled.div`
-    margin:3px 0 0 3px
+    margin:3px 0 0 3px;
 `;
 
 export default Dropdown;
