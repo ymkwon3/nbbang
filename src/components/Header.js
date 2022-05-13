@@ -113,7 +113,7 @@ const Header = props => {
                       backgroundColor: "#fff",
                       boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
                       width: "200px",
-                      top: "60px",
+                      top: "40px",
                       borderRadius: "20px",
                       padding: "10px",
                       gap: "10px",
