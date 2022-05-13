@@ -39,6 +39,9 @@ const Main = () => {
   // 채팅방 오픈
   const [openChatroom, setOpenChatroom] = React.useState(false);
 
+  // 채팅창 오픈 상태 여부  체크
+  const [isChatButtonClicked, setIsChatButtonClicked] = React.useState(false);
+
   /*해당 지역의 전체 게시물, 현재 선택된 카테고리, 
   게시물 지역 범위, 현재 위치 구분*/
   const postList = useSelector((state) => state.post.postList);
@@ -57,18 +60,23 @@ const Main = () => {
   const clickContainer = (type, postId) => {
     const con = leftContianerRef.current.style.width;
     if (con === "0px") leftContianerRef.current.style.width = "430px";
-    if (type === "detail") dispatch(postActions.getPostDetailDB(postId));
-    else if (type === "close") leftContianerRef.current.style.width = "0px";
+    if (type === "detail") {
+      // 다른 게시물이 선택되면 채팅방 닫기
+      setOpenChatroom(false);
+      dispatch(postActions.getPostDetailDB(postId));
+    } else if (type === "close") leftContianerRef.current.style.width = "0px";
     setLeftContainer(type);
   };
   // sidenav 전체 접어두기, 펼치기
-  const clickFold = markerClick => {
+  const clickFold = (markerClick) => {
     if (sideNavRef.current.style.width === "0px" || markerClick) {
       sideNavRef.current.style.width = "fit-content";
       setSideNav(false);
+      isChatButtonClicked ? setOpenChatroom(true) : setOpenChatroom(false);
     } else {
       sideNavRef.current.style.width = "0px";
       setSideNav(true);
+      setOpenChatroom(false);
     }
   };
   // 게시물 선택 시 위치 이동
@@ -85,7 +93,7 @@ const Main = () => {
   React.useEffect(() => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     navigator.geolocation.getCurrentPosition(
-      position => {
+      (position) => {
         //서울
         // const userLat = 37.51259282304522;
         // const userLng = 126.89031007937093;
@@ -148,7 +156,7 @@ const Main = () => {
   React.useEffect(() => {
     // DB에서 받아오는 게시글들을 마커로 표시 후 띄워줌
     // 게시물이 바뀔 때마다, 마커들을 초기화 시킨 후 시작
-    markerListRef.current.map(m => {
+    markerListRef.current.map((m) => {
       m.setMap(null);
       return null;
     });
@@ -247,6 +255,7 @@ const Main = () => {
                 openChatroom={openChatroom}
                 setOpenChatroom={setOpenChatroom}
                 _clickContainer={() => clickContainer("close")}
+                setIsChatButtonClicked={setIsChatButtonClicked}
               ></PostDetail>
             ) : null}
           </Flex>

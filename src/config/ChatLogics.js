@@ -24,7 +24,7 @@ export const formatAMPM = (date) => {
 };
 
 export const isTheSameDate = (message, idx, messages) => {
-  return idx === 0 ||
+  return (idx === 0 && message.createdAt) ||
     (message.createdAt &&
       messages[idx - 1].createdAt &&
       messages[idx - 1].createdAt.split(" ")[0] !==

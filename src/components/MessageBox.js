@@ -6,7 +6,6 @@ import {
   isTheSameDate,
 } from "../config/ChatLogics";
 import { Flex, Image, Text } from "../elements";
-import "./messagebubble.css";
 
 import styled from "styled-components";
 
@@ -20,12 +19,13 @@ const MessageBox = ({ messages, loggedUser }) => {
     });
   };
   React.useEffect(scrollToBottom, [messages]);
+
   return (
-    <>
-      <Flex styles={{ flexDirection: "column" }}>
-        {messages &&
-          messages.map((message, idx) => (
-            <>
+    <Flex styles={{ flexDirection: "column" }}>
+      {messages &&
+        messages.map((message, idx) => (
+          <>
+            <div key={message.chatId}>
               {isTheSameDate(message, idx, messages) ? (
                 <Flex
                   styles={{
@@ -98,7 +98,6 @@ const MessageBox = ({ messages, loggedUser }) => {
                       <Text>{formatAMPM(message.createdAt)}</Text>
                     </div>
                     <Bubble
-                      // className="bubble-right"
                       style={{
                         maxWidth: "80%",
                         width: "auto",
@@ -121,7 +120,6 @@ const MessageBox = ({ messages, loggedUser }) => {
                     {!message.status ? (
                       <>
                         <Bubble
-                          // className="bubble-left"
                           style={{
                             maxWidth: "80%",
                             width: "auto",
@@ -166,11 +164,11 @@ const MessageBox = ({ messages, loggedUser }) => {
                   </Flex>
                 )}
               </Flex>
-            </>
-          ))}
-        <div ref={messagesEndRef} />
-      </Flex>
-    </>
+            </div>
+          </>
+        ))}
+      <div ref={messagesEndRef}></div>
+    </Flex>
   );
 };
 

@@ -25,10 +25,8 @@ const ChatBox = React.forwardRef(
     const dispatch = useDispatch();
     const chatroomUserListRef = React.useRef(null);
     let postid = `p${detailInfo.postId}`;
-    // let postid = "p1";
 
     const selectedChat = useSelector((state) => state.chat);
-    const chatAdmin = selectedChat.chatAdmin;
     const chatRoomUsers = selectedChat.userInfo;
     const selectedRoomMessages = selectedChat.chatInfo;
     const participantList = selectedChat.headList;
@@ -110,14 +108,14 @@ const ChatBox = React.forwardRef(
 
     React.useEffect(() => {
       goToChat();
-      console.log(selectedChatCompare);
+      // console.log(selectedChatCompare);
       selectedChatCompare = postid;
     }, [postid]);
 
     React.useEffect(() => {
       socket.on("connected", (enteredUser) => {
-        console.log("연결성공!");
-        console.log(`${enteredUser}`);
+        // console.log("연결성공!");
+        // console.log(`${enteredUser}`);
         setSocketConnected(true);
         // 나중에 css 커스터마이징하기
         let newChat = {
@@ -140,10 +138,10 @@ const ChatBox = React.forwardRef(
     //receive message
     React.useEffect(() => {
       socket.on("send alarm", (messageAlarmInfo) => {
-        console.log(messageAlarmInfo);
+        // console.log(messageAlarmInfo);
       });
       socket.on("receive message", (newMessageReceived) => {
-        console.log(newMessageReceived);
+        // console.log(newMessageReceived);
         setNewlyAddedMessages((messageList) => [
           ...messageList,
           newMessageReceived,
@@ -208,12 +206,9 @@ const ChatBox = React.forwardRef(
     };
 
     const OpenChatRoomUserList = () => {
-      // setOpenUserList(!openUserList);
-      console.log(chatroomUserListRef.current.style.width);
       if (chatroomUserListRef.current.style.width === "0px")
         chatroomUserListRef.current.style.width = "60%";
-        else 
-        chatroomUserListRef.current.style.width = "0px";
+      else chatroomUserListRef.current.style.width = "0px";
     };
 
     return (
@@ -225,20 +220,10 @@ const ChatBox = React.forwardRef(
             transition: "top 500ms cubic-bezier(0.86, 0, 0.07, 1)",
             zIndex: "100",
             width: "432px",
-            height: "88vh",
+            height: "90vh",
             padding: "20px 23px 20px 23px",
           }}
         >
-          <Flex>
-            <Text
-              styles={{ fontSize: "16px", position: "relative" }}
-              _onClick={() => {
-                closeChatRoom(loggedUser);
-              }}
-            >
-              X
-            </Text>
-          </Flex>
           <Flex
             styles={{
               position: "relative",
@@ -254,33 +239,21 @@ const ChatBox = React.forwardRef(
               isTyping={isTyping}
               openUserList={openUserList}
               OpenChatRoomUserList={OpenChatRoomUserList}
+              closeChatRoom={closeChatRoom}
+              title={detailInfo.title}
             />
             <ChatBoxRight
-                postid={postid}
-                chatRoomUsers={chatRoomUsers}
-                participantList={participantList}
-                socket={socket}
-                awaiters={awaiters ? awaiters : awaiterList}
-                setAwaiters={setAwaiters}
-                participants={participants ? participants : participantList}
-                setParticipants={setParticipants}
-                ref={chatroomUserListRef}
-              />
-            {/* {openUserList ? (
-              <ChatBoxRight
-                postid={postid}
-                chatRoomUsers={chatRoomUsers}
-                participantList={participantList}
-                socket={socket}
-                awaiters={awaiters ? awaiters : awaiterList}
-                setAwaiters={setAwaiters}
-                participants={participants ? participants : participantList}
-                setParticipants={setParticipants}
-                ref={chatroomUserListRef}
-              />
-            ) : (
-              <></>
-            )} */}
+              postid={postid}
+              chatRoomUsers={chatRoomUsers}
+              participantList={participantList}
+              socket={socket}
+              awaiters={awaiters ? awaiters : awaiterList}
+              setAwaiters={setAwaiters}
+              participants={participants ? participants : participantList}
+              setParticipants={setParticipants}
+              ref={chatroomUserListRef}
+              loggedUser={loggedUser}
+            />
           </Flex>
         </ChatModal>
       </>
@@ -303,6 +276,8 @@ export const ChatBoxLeft = ({
   loggedUser,
   isTyping,
   OpenChatRoomUserList,
+  closeChatRoom,
+  title,
 }) => {
   return (
     <>
@@ -319,11 +294,24 @@ export const ChatBoxLeft = ({
           position: "absolute",
         }}
       >
-        <Flex
-          styles={{ justifyContent: "flex-start", margin: "36px 0 22px 0" }}
-        >
-          <BsChatText
+        <Flex styles={{ justifyContent: "flex-end" }}>
+          <Text
             className="hover-event"
+            styles={{
+              fontSize: "32px",
+              position: "relative",
+              color: "rgb(187, 187, 187)",
+            }}
+            _onClick={() => {
+              closeChatRoom(loggedUser);
+            }}
+          >
+            {"×"}
+          </Text>
+        </Flex>
+        <Flex styles={{ justifyContent: "flex-start", margin: "5px 0 22px 0" }}>
+          <BsChatText
+            className="hover-event-to-blurr"
             style={{ fontSize: "28px", marginRight: "8px" }}
             onClick={OpenChatRoomUserList}
           />
@@ -335,7 +323,7 @@ export const ChatBoxLeft = ({
               color: "#000000",
             }}
           >
-            채팅 참여자
+            {title}
           </Text>
         </Flex>
         <Flex
@@ -391,9 +379,20 @@ export const ChatBoxLeft = ({
 
 export const ChatBoxRight = forwardRef(
   (
-    { postid, socket, awaiters, setAwaiters, participants, setParticipants },
+    {
+      postid,
+      socket,
+      awaiters,
+      setAwaiters,
+      participants,
+      setParticipants,
+      loggedUser,
+    },
     ref
   ) => {
+    const selectedChat = useSelector((state) => state.chat);
+    const chatAdminId = selectedChat.chatAdmin;
+
     const [loadingAddParticipant, setLoadingAddParticipant] =
       React.useState(false);
     const [loadingDeleteParticipant, setLoadingDeleteParticipant] =
@@ -436,32 +435,8 @@ export const ChatBoxRight = forwardRef(
     return (
       <>
         {/* 오른쪽 */}
-
-        <UserListContainer
-          ref={ref}
-          style={{width: "0px"}}
-          // style={{
-          //   width: "60%",
-          //   height: "100vh",
-          //   padding: "20px 5px",
-          //   flexDirection: "column",
-          //   position: "absolute",
-          //   right: "-23px",
-          //   top: "-41px",
-          //   backgroundColor: "#FFFFFF",
-          //   boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-          //   justifyContent: "flex-start",
-          //   display: "flex",
-          //   justifyContent: "flex-start",
-          //   alignItems: "center",
-          //   transition: "all 0.2s ease-out",
-          // }}
-        >
-          <div style={{ width: "100%", height: "85%" }}>
-            <Flex>
-              <Text>{participants.length + 1} / 5</Text>
-            </Flex>
-
+        <UserListContainer ref={ref} style={{ width: "0px" }}>
+          <div style={{ width: "100%", height: "81%", marginTop: "43px" }}>
             <Flex
               styles={{
                 flexDirection: "column",
@@ -470,12 +445,15 @@ export const ChatBoxRight = forwardRef(
             >
               <Flex
                 styles={{
-                  justifyContent: "flex-start",
+                  justifyContent: "space-between",
                   marginBottom: "26px",
                 }}
               >
                 <Text styles={{ fontWeight: "700", fontSize: "18px" }}>
                   채팅 참여자
+                </Text>
+                <Text styles={{ fontWeight: "700", fontSize: "18px" }}>
+                  {awaiters.length} 명
                 </Text>
               </Flex>
               <Flex styles={{ overflow: "hidden", height: "26vh" }}>
@@ -496,56 +474,74 @@ export const ChatBoxRight = forwardRef(
                       key={awaiter.User_userId}
                       awaiter={awaiter}
                       addNewParticipant={addNewParticipant}
+                      chatAdminId={chatAdminId}
+                      loggedUser={loggedUser}
                     />
                   ))}
                 </Flex>
               </Flex>
             </Flex>
 
-            <Flex
-              styles={{
-                flexDirection: "column",
-                padding: "0 22px",
-              }}
-            >
-              <Flex styles={{ justifyContent: "flex-start" }}>
-                <Text
-                  styles={{
-                    fontWeight: "700",
-                    fontSize: "18px",
-                    margin: "10px 0 26px 0",
-                  }}
-                >
-                  거래자
-                </Text>
-              </Flex>
+            <div>
               <Flex
                 styles={{
-                  overflow: "hidden",
-                  height: "26vh",
+                  flexDirection: "column",
+                  padding: "0 22px",
                 }}
               >
                 <Flex
-                  className="removeScroll"
                   styles={{
-                    flexDirection: "column",
-                    height: "100%",
-                    width: "100%",
-                    justifyContent: "start",
-                    overflowX: "hidden",
-                    overflowY: "scroll",
+                    justifyContent: "space-between",
+                    margin: "10px 0 26px 0",
                   }}
                 >
-                  {participants.map((participant, idx) => (
-                    <Participants
-                      key={participant.User_userId}
-                      participant={participant}
-                      deleteParticipant={deleteParticipant}
-                    />
-                  ))}
+                  <Text
+                    styles={{
+                      fontWeight: "700",
+                      fontSize: "18px",
+                    }}
+                  >
+                    거래자
+                  </Text>
+                  <Text
+                    styles={{
+                      fontWeight: "700",
+                      fontSize: "18px",
+                    }}
+                  >
+                    {participants.length} 명
+                  </Text>
+                </Flex>
+                <Flex
+                  styles={{
+                    overflow: "hidden",
+                    height: "26vh",
+                  }}
+                >
+                  <Flex
+                    className="removeScroll"
+                    styles={{
+                      flexDirection: "column",
+                      height: "100%",
+                      width: "100%",
+                      justifyContent: "start",
+                      overflowX: "hidden",
+                      overflowY: "scroll",
+                    }}
+                  >
+                    {participants.map((participant, idx) => (
+                      <Participants
+                        key={participant.User_userId}
+                        participant={participant}
+                        deleteParticipant={deleteParticipant}
+                        chatAdminId={chatAdminId}
+                        loggedUser={loggedUser}
+                      />
+                    ))}
+                  </Flex>
                 </Flex>
               </Flex>
-            </Flex>
+            </div>
           </div>
           <Flex
             styles={{
@@ -554,7 +550,7 @@ export const ChatBoxRight = forwardRef(
             }}
           >
             <GiExitDoor
-              className="hover-event"
+              className="hover-event-to-blurr"
               style={{ width: "31px", height: "28px" }}
             />
           </Flex>
@@ -577,19 +573,24 @@ const UserListContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  transition: all 0.5s ease-out;
+  transition: all 0.12s ease-in-out;
 
   & > * {
     overflow: hidden;
   }
 `;
 
-export const Awaiter = ({ awaiter, addNewParticipant }) => {
+export const Awaiter = ({
+  awaiter,
+  addNewParticipant,
+  chatAdminId,
+  loggedUser,
+}) => {
   return (
     <div style={{ width: "100%" }}>
       <Flex
         styles={{
-          borderBottom: "1px solid #000000",
+          borderBottom: "2px solid rgba(0, 0, 0, .2)",
           height: "auto",
           paddingBottom: "12px",
           justifyContent: "space-between",
@@ -614,25 +615,36 @@ export const Awaiter = ({ awaiter, addNewParticipant }) => {
             {awaiter.User_userName}
           </Text>
         </Flex>
-        <Text
-          className="hover-event change-color-to-orange"
-          styles={{
-            fontSize: "30px",
-            fontWeight: "700",
-            transition: "color 0.3s ease-out",
-          }}
-          _onClick={() => {
-            addNewParticipant(awaiter);
-          }}
-        >
-          +
-        </Text>
+        {loggedUser.userId === chatAdminId ? (
+          <>
+            <Text
+              className="hover-event change-color-to-orange"
+              styles={{
+                fontSize: "30px",
+                fontWeight: "700",
+                transition: "color 0.3s ease-out",
+              }}
+              _onClick={() => {
+                addNewParticipant(awaiter);
+              }}
+            >
+              +
+            </Text>
+          </>
+        ) : (
+          <></>
+        )}
       </Flex>
     </div>
   );
 };
 
-export const Participants = ({ participant, deleteParticipant }) => {
+export const Participants = ({
+  participant,
+  deleteParticipant,
+  chatAdminId,
+  loggedUser,
+}) => {
   return (
     <div style={{ width: "100%" }}>
       <Flex
@@ -662,26 +674,32 @@ export const Participants = ({ participant, deleteParticipant }) => {
             {participant.User_userName}
           </Text>
         </Flex>
-        <div>
-          <Text
-            className="hover-event"
-            styles={{
-              fontSize: "30px",
-              fontWeight: "700",
-              color: "#FF5C00",
-            }}
-            _onClick={() => {
-              deleteParticipant(participant);
-            }}
-          >
-            <span
-              className="change-color-to-black"
-              style={{ transition: "color 0.3s ease-out" }}
-            >
-              +
-            </span>
-          </Text>
-        </div>
+        {loggedUser.userId === chatAdminId ? (
+          <>
+            <div>
+              <Text
+                className="hover-event"
+                styles={{
+                  fontSize: "30px",
+                  fontWeight: "700",
+                  color: "#FF5C00",
+                }}
+                _onClick={() => {
+                  deleteParticipant(participant);
+                }}
+              >
+                <span
+                  className="change-color-to-black"
+                  style={{ transition: "color 0.3s ease-out" }}
+                >
+                  +
+                </span>
+              </Text>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </Flex>
     </div>
   );
