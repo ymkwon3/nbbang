@@ -6,24 +6,11 @@ import {AiFillCaretDown} from "react-icons/ai";
 import "moment/locale/ko";
 
 import { actionCreator as dropdownAction } from '../redux/modules/post';
-// import { set } from "immer/dist/internal";
 
 const Dropdown = (props) => {
-
-    const { postList, allList } = props;
+    const { postList } = props;
     const dispatch = useDispatch();
     const [drop, setDrop] = React.useState(false);
-
-    // const myLike = useSelector(state => state.post.postList)
-    // const [like, setLike] = React.useState();
-
-    
-    // console.log(like)
-    console.log(allList)
-    // console.log(myLike)
-    // allList.sort((a,b) => a.endTime - b.endTime)
-    // console.log(...allList.map(v => moment(endTime).format('L')))
-
 
     return (
         <Flex>
