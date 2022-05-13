@@ -1,5 +1,5 @@
 /* global kakao */
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -19,15 +19,15 @@ const Main = () => {
   const history = useHistory();
   const geocoder = new kakao.maps.services.Geocoder();
 
+  // 유저위치를 처음 지정할 때 한번만 실행
+  const firstRef = React.useRef(true);
+
   // 카카오맵 컨트롤을 위한 ref
   const containerRef = React.useRef(null);
   const mapRef = React.useRef(null);
 
   // 카테고리에 따라 마커를 띄워주기 위해 저장해두는 마커 리스트
   const markerListRef = React.useRef([]);
-
-  // mapRef에 카카오맵을 저장한 후 PostWrite에 넘겨주기 위한 강제 리렌더링
-  const [rerender, setRerender] = React.useState(null);
 
   /* 왼쪽 사이드네비 전체를 관리하기 위한 ref, state
   상세, 글쓰기 페이지를 관리하기 위한 ref, state */
@@ -41,16 +41,16 @@ const Main = () => {
 
   /*해당 지역의 전체 게시물, 현재 선택된 카테고리, 
   게시물 지역 범위, 현재 위치 구분*/
-  const postList = useSelector((state) => state.post.postList);
-  const category = useSelector((state) => state.post.category);
+  const postList = useSelector(state => state.post.postList);
+  const category = useSelector(state => state.post.category);
   const [cityRange, setCityRange] = React.useState(3);
   const [city, setCity] = React.useState(3);
 
   // 로그인된 유저 정보
-  const userInfo = useSelector((state) => state.user.userInfo);
+  const userInfo = useSelector(state => state.user.userInfo);
 
   const cateList = postList.filter(
-    (v) => v.category === category || category === "all"
+    v => v.category === category || category === "all"
   );
 
   // 글쓰기 상세보기 컨테이너 펼치기 및 컴포넌트 변경
@@ -87,10 +87,10 @@ const Main = () => {
     navigator.geolocation.getCurrentPosition(
       position => {
         //서울
-        // const userLat = 37.51259282304522;
-        // const userLng = 126.89031007937093;
-        const userLat = position.coords.latitude;
-        const userLng = position.coords.longitude;
+        const userLat = 37.512634390346236;
+        const userLng = 126.89156781562811;
+        // const userLat = position.coords.latitude;
+        // const userLng = position.coords.longitude;
         // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
 
         geocoder.coord2Address(userLng, userLat, (result, status) => {
@@ -115,30 +115,32 @@ const Main = () => {
             "대구",
             "제주특별자치도",
           ];
-          locale.find((v) => v === addr.region_1depth_name)
+          locale.find(v => v === addr.region_1depth_name)
             ? setCity(3)
             : setCity(2);
         });
-        const userPosition = new kakao.maps.LatLng(userLat, userLng);
-        const options = {
-          center: userPosition,
-          level: 4,
-        };
-        mapRef.current = new kakao.maps.Map(containerRef.current, options);
+        if (firstRef.current) {
+          const userPosition = new kakao.maps.LatLng(userLat, userLng);
+          const options = {
+            center: userPosition,
+            level: 4,
+          };
+          mapRef.current = new kakao.maps.Map(containerRef.current, options);
 
-        mapRef.current.panTo(userPosition);
-        setRerender(true);
+          mapRef.current.panTo(userPosition);
 
-        const markerPosition = userPosition;
-        const markerImage = new kakao.maps.MarkerImage(
-          myPosition,
-          new kakao.maps.Size(40, 50)
-        );
-        const marker = new kakao.maps.Marker({
-          position: markerPosition,
-          image: markerImage,
-        });
-        marker.setMap(mapRef.current);
+          const markerPosition = userPosition;
+          const markerImage = new kakao.maps.MarkerImage(
+            myPosition,
+            new kakao.maps.Size(40, 50)
+          );
+          const marker = new kakao.maps.Marker({
+            position: markerPosition,
+            image: markerImage,
+          });
+          marker.setMap(mapRef.current);
+          firstRef.current = false;
+        }
       },
       () => {},
       { enableHighAccuracy: true }
@@ -153,7 +155,7 @@ const Main = () => {
       return null;
     });
     markerListRef.current = [];
-    cateList.map((v) => {
+    cateList.map(v => {
       // 마커크기 45 x 60
       const markerImage = new kakao.maps.MarkerImage(
         v.category === "eat" ? markerOrange : markerBlue,
@@ -201,9 +203,10 @@ const Main = () => {
     <KaKaoMap ref={containerRef}>
       <LeftContainer ref={sideNavRef}>
         <SideNav
+          category={category}
+          postList={cateList}
           _onClickWrite={() => clickContainer("write")}
           _onClickDetail={clickContainer}
-          postList={cateList}
           _clickPost={clickPost}
         ></SideNav>
         <FoldBtn className="hover-event" onClick={() => clickFold(false)}>
@@ -235,7 +238,6 @@ const Main = () => {
           >
             {leftContainer === "write" ? (
               <PostWrite
-                rerender={rerender}
                 map={mapRef.current}
                 userInfo={userInfo}
                 _clickContainer={() => clickContainer("close")}

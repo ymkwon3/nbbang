@@ -40,7 +40,7 @@ const Post = props => {
   // number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") 3자리마다 콤마찍어주는 정규표현식
 
   const clickLike = e => {
-    e.stopPropagation();
+    e.preventDefault();
     dispatch(postActions.postLikeDB({ postId: postId, isLike: isLike }));
   };
 
@@ -71,7 +71,7 @@ const Post = props => {
           justifyContent: "start",
           marginLeft: "13px",
           height: "110px",
-          width: "calc(100% - 123px)",
+          width: "190px",
         }}
       >
         <Text
