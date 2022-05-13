@@ -30,6 +30,12 @@
   user-select: none;
 }
 
+.hover-event-to-blurr:hover {
+  cursor: pointer;
+  user-select: none;
+  opacity: 0.3;
+}
+
 .change-color-to-black:hover {
   color: #000000;
 }

@@ -11,9 +11,16 @@ import io from "socket.io-client";
 // let socket = io.connect("https://localhost:3443");
 let socket = io.connect("https://redpingpong.shop");
 
-const PostDetail = ({ openChatroom, setOpenChatroom, _clickContainer }) => {
-  const detailInfo = useSelector(state => state.post.postDetail);
-  const userInfo = useSelector(state => state.user.userInfo);
+const PostDetail = ({
+  openChatroom,
+  setOpenChatroom,
+  _clickContainer,
+  setIsChatButtonClicked,
+}) => {
+  const detailInfo = useSelector((state) => state.post.postDetail);
+
+  const userInfo = useSelector((state) => state.user.userInfo);
+
   const isLogin = useSelector(state => state.user.isLogin);
   const chatRef = React.useRef();
 
@@ -29,10 +36,12 @@ const PostDetail = ({ openChatroom, setOpenChatroom, _clickContainer }) => {
 
   const openChatModal = () => {
     setOpenChatroom(true);
+    setIsChatButtonClicked(true);
   };
 
   const closeChatRoom = (userWillLeave) => {
     setOpenChatroom(false);
+    setIsChatButtonClicked(false);
     socket.emit("close chatroom", `p${detailInfo.postId}`, userWillLeave);
   };
 
