@@ -12,6 +12,9 @@ const Dropdown = (props) => {
     const dispatch = useDispatch();
     const [drop, setDrop] = React.useState(false);
 
+    // 임시로 로그인 체크 여기서 했습니다. 나중에 부모 컴포넌트에서 받아올 수 있으면 해야함
+    const isLogin = useSelector(state => state.user.isLogin);
+
     return (
         <Flex>
             <Button 
@@ -49,9 +52,10 @@ const Dropdown = (props) => {
                     <Button
                         _onClick={() => dispatch(dropdownAction.updateEndPostList())}
                     >임박순</Button>
-                    <Button
+                    {isLogin ? <Button
                         _onClick={() => dispatch(dropdownAction.updateLikePostList())}
-                    >찜</Button>
+                    >찜</Button> : null}
+                    
                 </Flex>
             ) : null}
         </Flex>
