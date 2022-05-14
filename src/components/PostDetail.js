@@ -129,7 +129,7 @@ const PostDetail = ({
             <Flex styles={{ justifyContent: "start", margin: "10px 0" }}>
               <Text styles={keyStyles}>
                 카테고리:{" "}
-                <Text styles={valueStyles}>{detailInfo.category}</Text>
+                <Text styles={valueStyles}>{detailInfo.category === "eat" ? "같이 먹자" : "같이 사자"}</Text>
               </Text>
             </Flex>
             <Flex
