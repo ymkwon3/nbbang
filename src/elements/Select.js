@@ -30,7 +30,7 @@ Select.defaultProps = {
     fontWeight: "400",
     color: "#000",
     width: "100%",
-    borderBottom: "1px solid #333",
+    height: "30px",
   },
 };
 
@@ -39,7 +39,12 @@ const SelectStyled = styled.select`
   font-weight: ${props => props.fontWeight};
   color: ${props => props.color};
   width: ${props => props.width};
-  border-bottom: ${props => props.borderBottom};
+  height: ${props => props.height};
+  padding: 5px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 `;
 
 export default Select;

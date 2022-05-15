@@ -10,13 +10,13 @@ axios.defaults.baseURL = "https://redpingpong.shop";
 // http://3.34.129.39
 
 // axios get api
-const getAPI = async api => {
+const getAPI = async (api, params) => {
   return await axios
     .get(`${api}`, { headers: headers() })
-    .then(res => {
+    .then((res) => {
       return res.data;
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 };
@@ -25,11 +25,10 @@ const getAPI = async api => {
 const postAPI = async (api, data = {}) => {
   return await axios
     .post(`${api}`, { ...data }, { headers: headers() })
-    .then(res => {
-      console.log(res)
+    .then((res) => {
       return res.data;
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 };
@@ -42,10 +41,10 @@ const postFormAPI = async (api, formData) => {
         "Content-Type": `multipart/form-data`,
       }),
     })
-    .then(res => {
+    .then((res) => {
       return res.data;
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 };
@@ -54,10 +53,10 @@ const postFormAPI = async (api, formData) => {
 const deleteAPI = async (api, data = {}) => {
   return await axios
     .delete(`${api}`, { headers: headers(), data })
-    .then(res => {
+    .then((res) => {
       return res.data;
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 };
@@ -66,10 +65,10 @@ const deleteAPI = async (api, data = {}) => {
 const patchAPI = async (api, data = {}) => {
   return await axios
     .patch(`${api}`, { headers: headers(), data })
-    .then(res => {
+    .then((res) => {
       return res.data;
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 };
@@ -78,10 +77,10 @@ const patchAPI = async (api, data = {}) => {
 const putAPI = async (api, data = {}) => {
   return await axios
     .put(`${api}`, { ...data }, { headers: headers() })
-    .then(res => {
+    .then((res) => {
       return res.data;
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 };

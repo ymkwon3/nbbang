@@ -1,0 +1,96 @@
+@font-face {
+  font-family: 'pretendard';
+  src: url('../font/PretendardVariable.ttf');
+}
+
+* {
+  font-family: 'pretendard';
+}
+
+.border-left-radius {
+  border-bottom-left-radius: 10px !important;
+  border-top-left-radius: 10px !important;
+  border-bottom-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+.border-right-radius {
+  border-bottom-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-right-radius: 10px !important;
+  border-top-right-radius: 10px !important;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+.hover-event {
+  cursor: pointer;
+  user-select: none;
+}
+
+.hover-event-to-blurr:hover {
+  cursor: pointer;
+  user-select: none;
+  opacity: 0.3;
+}
+
+.change-color-to-black:hover {
+  color: #000000;
+}
+
+.change-color-to-orange:hover {
+  color: #FF5C00;
+}
+
+.click {
+  width: "60%",
+}
+
+
+.flex-column-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.info-window {
+  background-color: #fff;
+  border: none;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+  width: 160px;
+  height: 200px;
+}
+
+.info-window > img {
+  border: 1px solid #dbdbdb;
+  width: 160px;
+  height: 160px;
+}
+
+.info-window > div {
+  background-color: #19253d;
+  color: #fff;
+  height: 40px;
+  padding: 10px;
+  width: 100%;
+
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line-break {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-card:hover {
+  cursor: pointer;
+    transform: scale(1.02);
+}
