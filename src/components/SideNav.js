@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import Post from "./Post";
-import { Button, Flex, Text } from "../elements";
+import { Button, Flex, Select, Text } from "../elements";
 import Pagination from "./Pagination";
 import Dropdown from "./Dropdown";
 //style
@@ -14,7 +14,6 @@ import { primaryColor, secondaryColor } from "../shared/color";
 const SideNav = props => {
   const { _onClickWrite, _onClickDetail, _clickPost, postList, category } =
     props;
-
   //useState 함수를 이용해서 페이지 당 게시물 수 (limit), 현재 페이지 번호(page)를 상태로 추가.
   //그리고 첫 게지물의 위치 (offset) 계산필요
   const limit = 8; // 한 페이지에 들어갈 카드의 개수
@@ -68,7 +67,6 @@ const SideNav = props => {
             margin: "-17px 0 25px 300px",
           }}
         >
-          <Dropdown allList={newPostList} />
         </Flex>
         <Flex styles={{ justifyContent: "space-between" }}>
           {category === "buy" ? (
