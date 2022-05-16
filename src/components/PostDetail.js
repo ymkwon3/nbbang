@@ -47,6 +47,13 @@ const PostDetail = ({
 
   React.useEffect(() => {
     socket.emit("socket is connected", userInfo);
+    // socket.emit("disconnecting", userInfo.userId);
+    socket.on("send message alarm", (messageAlarm) => {
+      console.log(messageAlarm);
+    });
+    // socket.on("message", (messageAlarm) => {
+    //   console.log(messageAlarm);
+    // });
   }, []);
 
   React.useEffect(() => {
@@ -108,7 +115,10 @@ const PostDetail = ({
               borderRadius: "20px",
             }}
           >
-            {detailInfo.headList.length + 1}/{detailInfo.headCount}
+            {detailInfo.headList.length === 1 && detailInfo.headList[0] === 0
+              ? 1
+              : detailInfo.headList.length + 1}
+            /{detailInfo.headCount}
           </Flex>
         </Flex>
         <Flex styles={{ flexDirection: "column" }}>
