@@ -58,6 +58,7 @@ const SideNav = props => {
           backgroundColor: "#fff",
           position: "sticky",
           top: "0",
+          zIndex: "11",
           padding: "40px 20px 10px",
         }}
       >

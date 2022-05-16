@@ -13,7 +13,8 @@ import {Desktop, Mobile} from "../shared/Responsive"
 import FooterNavi from "../components/FooterNavi";
 
 const App = () => {
-  
+  const isDesktop = Desktop(0);
+  console.log(isDesktop)
   return (
     <Flex
       styles={{ height: "100vh", flexDirection: "column", justifyContent: "start", position: "relative" }}
@@ -22,7 +23,7 @@ const App = () => {
       <Header/>
       <Flex
         styles={{
-          flex: "1"
+          height: isDesktop === undefined ? "calc(100% - 50px)" : "calc(100% - 100px)"
         }}
       >
         {/* <Route path="/mypage" exact component={MyPage}></Route> */}
