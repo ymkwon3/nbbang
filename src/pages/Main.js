@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { PostWrite, SideNav } from "../components";
-import { Flex } from "../elements";
+import { Flex, Button } from "../elements";
 import PostDetail from "../components/PostDetail";
 
 import { actionCreator as postActions } from "../redux/modules/post";
@@ -14,6 +14,7 @@ import MyLocation from "../components/MyLocation";
 //style
 import ChatBox from "../components/ChatBox";
 import { right, left, markerBlue, markerOrange, myPosition } from "../image";
+import {BiCurrentLocation} from "react-icons/bi";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -85,6 +86,18 @@ const Main = () => {
     const userPosition = new kakao.maps.LatLng(lat, lng);
     mapRef.current.panTo(userPosition);
   };
+
+  const clickMyLocation = (lat, lon) => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude; 
+      
+      const moveLatLng = new kakao.maps.LatLng(lat, lon);   
+      mapRef.current.setCenter(moveLatLng);
+    })
+  };
+  
 
   /*
   현재 로그인 상태일 때, 게시물 데이터를 두 번 불러옴.
@@ -264,7 +277,16 @@ const Main = () => {
         </div>
       </LeftContainer>
       <ButtonContainer>
-        {/* <MyLocation map={mapRef}></MyLocation> */}
+        <Button 
+          styles={{
+            width:"52px",
+            height:"52px",
+            boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.25)",
+            margin:"0 0 10px",
+            borderRadius:"15px"
+          }} 
+          _onClick={() => clickMyLocation()}
+        ><BiCurrentLocation/></Button>
         <RadioInput city={city} setCityRange={setCityRange}></RadioInput>
       </ButtonContainer>
     </KaKaoMap>

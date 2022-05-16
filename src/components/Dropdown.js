@@ -7,8 +7,7 @@ import "moment/locale/ko";
 
 import { actionCreator as dropdownAction } from '../redux/modules/post';
 
-const Dropdown = (props) => {
-    const { postList } = props;
+const Dropdown = () => {
     const dispatch = useDispatch();
     const [drop, setDrop] = React.useState(false);
 
@@ -55,7 +54,6 @@ const Dropdown = (props) => {
                     {isLogin ? <Button
                         _onClick={() => dispatch(dropdownAction.updateLikePostList())}
                     >찜</Button> : null}
-                    
                 </Flex>
             ) : null}
         </Flex>
