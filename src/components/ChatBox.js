@@ -62,7 +62,7 @@ const ChatBox = React.forwardRef(
     };
 
     const fetchMessages = () => {
-      if (!selectedChat) return;
+      if (!postid) return;
       // setLoading(true);
       // setLoading(false);
       dispatch(chatActions.startChatDB(detailInfo.postId));

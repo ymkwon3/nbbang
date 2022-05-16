@@ -24,13 +24,12 @@ const MessageBox = ({ messages, loggedUser }) => {
     <Flex styles={{ flexDirection: "column" }}>
       {messages &&
         messages.map((message, idx) => (
-          <>
-            {/* <div key={message.chatId}> */}
+          <div key={2 * idx} style={{ width: "100%" }}>
             {isTheSameDate(message, idx, messages) ? (
               <Flex
                 styles={{
-                  width: "auto",
-                  margin: "12px 0",
+                  width: "fit-content",
+                  margin: "12px auto",
                   padding: "5px 10px",
                   backgroundColor: "#c3c7cc",
                   borderRadius: "20px",
@@ -43,7 +42,6 @@ const MessageBox = ({ messages, loggedUser }) => {
             ) : (
               <></>
             )}
-
             <Flex
               styles={{
                 flexDirection: "column",
@@ -164,8 +162,7 @@ const MessageBox = ({ messages, loggedUser }) => {
                 </Flex>
               )}
             </Flex>
-            {/* </div> */}
-          </>
+          </div>
         ))}
       <div ref={messagesEndRef}></div>
     </Flex>
