@@ -9,6 +9,7 @@ import Dropdown from "./Dropdown";
 import styled from "styled-components";
 import Permit from "../shared/Permit";
 import { write } from "../image";
+import { primaryColor, secondaryColor } from "../shared/color";
 
 const SideNav = props => {
   const { _onClickWrite, _onClickDetail, _clickPost, postList, category } =
@@ -70,15 +71,54 @@ const SideNav = props => {
           <Dropdown allList={newPostList} />
         </Flex>
         <Flex styles={{ justifyContent: "space-between" }}>
-          <Text
-            styles={{ fontSize: "32px", fontWeight: "800", userSelect: "none" }}
-          >
-            {category === "buy"
-              ? "같이 사자"
-              : category === "eat"
-              ? "같이 먹자"
-              : "전체"}
-          </Text>
+          {category === "buy" ? (
+            <Text
+              styles={{
+                fontSize: "32px",
+                fontWeight: "800",
+                userSelect: "none",
+              }}
+            >
+              같이{" "}
+              <Text
+                styles={{
+                  fontSize: "32px",
+                  fontWeight: "800",
+                  userSelect: "none",
+                  color: secondaryColor,
+                }}
+              >사자</Text>
+            </Text>
+          ) : category === "eat" ? (
+            <Text
+              styles={{
+                fontSize: "32px",
+                fontWeight: "800",
+                userSelect: "none",
+              }}
+            >
+              같이{" "}
+              <Text
+                styles={{
+                  fontSize: "32px",
+                  fontWeight: "800",
+                  userSelect: "none",
+                  color: secondaryColor,
+                }}
+              >먹자</Text>
+            </Text>
+          ) : (
+            <Text
+              styles={{
+                fontSize: "32px",
+                fontWeight: "800",
+                userSelect: "none",
+              }}
+            >
+              전체
+            </Text>
+          )}
+
           <Permit>
             <Button
               styles={{

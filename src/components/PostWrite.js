@@ -7,6 +7,7 @@ import moment from "moment";
 import { notify, toast } from "../components/ToastMessage";
 
 import { addImage } from "../image";
+import { primaryColor, secondaryColor } from "../shared/color";
 
 const PostWrite = props => {
   const { map, userInfo, _clickContainer, _setRightContainer, _clickFold } =
@@ -278,7 +279,7 @@ const PostWrite = props => {
             width: "90px",
             height: "30px",
             borderRadius: "30px",
-            backgroundColor: "#E6E5F0",
+            backgroundColor: primaryColor,
             fontSize: "10px",
             fontWeight: "600",
           }}
@@ -353,7 +354,7 @@ const PostWrite = props => {
         styles={{
           width: "150px",
           minHeight: "40px",
-          backgroundColor: "#19253D",
+          backgroundColor: secondaryColor,
           color: "#fff",
           borderRadius: "30px",
           fontSize: "18px",

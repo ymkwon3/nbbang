@@ -13,8 +13,14 @@ import MyLocation from "../components/MyLocation";
 
 //style
 import ChatBox from "../components/ChatBox";
-import { right, left, markerBlue, markerOrange, myPosition } from "../image";
-import {BiCurrentLocation} from "react-icons/bi";
+import {
+  right,
+  left,
+  markerBlue,
+  markerOrange,
+  myPosition,
+  position,
+} from "../image";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -22,7 +28,7 @@ const Main = () => {
   const geocoder = new kakao.maps.services.Geocoder();
 
   // 유저위치를 처음 지정할 때 한번만 실행
-  const firstRef = React.useRef(true);
+  const userPositionRef = React.useRef(null);
 
   // 카카오맵 컨트롤을 위한 ref
   const containerRef = React.useRef(null);
@@ -48,7 +54,7 @@ const Main = () => {
   게시물 지역 범위, 현재 위치 구분*/
   const postList = useSelector(state => state.post.postList);
   const category = useSelector(state => state.post.category);
-  const [cityRange, setCityRange] = React.useState(3);
+  const [cityRange, setCityRange] = React.useState(2);
   const [city, setCity] = React.useState(3);
 
   // 로그인된 유저 정보
@@ -70,7 +76,7 @@ const Main = () => {
     setLeftContainer(type);
   };
   // sidenav 전체 접어두기, 펼치기
-  const clickFold = (markerClick) => {
+  const clickFold = markerClick => {
     if (sideNavRef.current.style.maxWidth === "0px" || markerClick) {
       sideNavRef.current.style.maxWidth = "fit-content";
       setSideNav(false);
@@ -88,16 +94,8 @@ const Main = () => {
   };
 
   const clickMyLocation = (lat, lon) => {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude; 
-      
-      const moveLatLng = new kakao.maps.LatLng(lat, lon);   
-      mapRef.current.setCenter(moveLatLng);
-    })
+    mapRef.current.panTo(userPositionRef.current)
   };
-  
 
   /*
   현재 로그인 상태일 때, 게시물 데이터를 두 번 불러옴.
@@ -140,12 +138,15 @@ const Main = () => {
             ? setCity(3)
             : setCity(2);
         });
-        if (firstRef.current) {
+
+        //제일 처음 한 번만 실행
+        if (!userPositionRef.current) {
           const userPosition = new kakao.maps.LatLng(userLat, userLng);
           const options = {
             center: userPosition,
-            level: 4,
+            level: 5,
           };
+          userPositionRef.current = userPosition;
           mapRef.current = new kakao.maps.Map(containerRef.current, options);
 
           mapRef.current.panTo(userPosition);
@@ -160,7 +161,6 @@ const Main = () => {
             image: markerImage,
           });
           marker.setMap(mapRef.current);
-          firstRef.current = false;
         }
       },
       () => {},
@@ -171,7 +171,7 @@ const Main = () => {
   React.useEffect(() => {
     // DB에서 받아오는 게시글들을 마커로 표시 후 띄워줌
     // 게시물이 바뀔 때마다, 마커들을 초기화 시킨 후 시작
-    markerListRef.current.map((m) => {
+    markerListRef.current.map(m => {
       m.setMap(null);
       return null;
     });
@@ -249,7 +249,7 @@ const Main = () => {
             styles={{
               width: "430px",
               height: "100%",
-              background: "rgba(231, 232, 244, 0.5)",
+              background: "rgba(245, 236, 229, 0.8)",
               position: "absolute",
               top: 0,
               left: 0,
@@ -277,17 +277,27 @@ const Main = () => {
         </div>
       </LeftContainer>
       <ButtonContainer>
-        <Button 
+        <Button
           styles={{
-            width:"52px",
-            height:"52px",
+            width: "50px",
+            height: "50px",
+            backgroundColor: "#fff",
             boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.25)",
-            margin:"0 0 10px",
-            borderRadius:"15px"
-          }} 
+            borderRadius: "10px",
+            margin: "0 0 10px",
+          }}
           _onClick={() => clickMyLocation()}
-        ><BiCurrentLocation/></Button>
-        <RadioInput city={city} setCityRange={setCityRange}></RadioInput>
+        >
+          <img
+            style={{
+              width: "35px",
+              height: "35px",
+            }}
+            alt="position"
+            src={position}
+          ></img>
+        </Button>
+        <RadioInput city={city} cityRange={cityRange} setCityRange={setCityRange}></RadioInput>
       </ButtonContainer>
     </KaKaoMap>
   );

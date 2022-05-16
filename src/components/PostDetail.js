@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { Flex, Button, Text, Image } from "../elements";
 import ChatBox from "./ChatBox";
 
+import { primaryColor, secondaryColor } from "../shared/color";
+
 import moment from "moment";
 import "moment/locale/ko";
 
@@ -189,7 +191,7 @@ const PostDetail = ({
                 styles={{
                   width: "150px",
                   minHeight: "40px",
-                  backgroundColor: "#19253D",
+                  backgroundColor: secondaryColor,
                   color: "#fff",
                   borderRadius: "30px",
                   fontSize: "18px",

@@ -14,7 +14,6 @@ import FooterNavi from "../components/FooterNavi";
 
 const App = () => {
   const isDesktop = Desktop(0);
-  console.log(isDesktop)
   return (
     <Flex
       styles={{ height: "100vh", flexDirection: "column", justifyContent: "start", position: "relative" }}

@@ -8,6 +8,7 @@ import { debounce } from "lodash";
 import { postAPI } from "../shared/api";
 import { notify } from "../components/ToastMessage";
 
+import { primaryColor, secondaryColor } from "../shared/color";
 
 const Login = props => {
   const history = useHistory();
@@ -265,8 +266,7 @@ const Login = props => {
                 styles={{
                   width: "100px",
                   height: "50px",
-                  backgroundColor: "#19253D",
-                  color: "#fff",
+                  backgroundColor: primaryColor,
                   boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
                 }}
                 _onClick={requestAuthCode}
@@ -287,8 +287,7 @@ const Login = props => {
                 styles={{
                   width: "100px",
                   height: "50px",
-                  backgroundColor: "#19253D",
-                  color: "#fff",
+                  backgroundColor: primaryColor,
                   boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
                 }}
                 _onClick={emailAuthCode}
@@ -319,12 +318,13 @@ const Login = props => {
             ></InputLogin>
             <Button
               styles={{
-                backgroundColor: "#FF5C00",
+                backgroundColor: secondaryColor,
                 color: "#fff",
                 width: "360px",
                 height: "50px",
                 fontSize: "16px",
                 fontWeight: "700",
+                borderRadius: "20px",
               }}
               _disabled={!emailAuth}
               _onClick={clickSignUp}
@@ -333,12 +333,13 @@ const Login = props => {
             </Button>
             <Button
               styles={{
-                backgroundColor: "#19253D",
+                backgroundColor: primaryColor,
                 color: "#fff",
                 width: "360px",
                 height: "50px",
                 fontSize: "16px",
                 fontWeight: "700",
+                borderRadius: "20px",
               }}
               _onClick={moveToLogin}
             >
@@ -380,7 +381,6 @@ const SlideControl = styled.div`
   & .slide {
     height: 100%;
     width: 100%;
-    color: #fff;
     font-size: 20px;
     font-weight: 900;
     text-align: center;
@@ -396,7 +396,7 @@ const SlideControl = styled.div`
     width: 50%;
     left: 0;
     z-index: 0;
-    background-color: #19253d;
+    background-color: ${primaryColor};
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
 
@@ -405,15 +405,15 @@ const SlideControl = styled.div`
     left: 50%;
   }
   #signup:checked ~ label.signup {
-    color: #fff;
+    color: #000;
     cursor: default;
     user-select: none;
   }
   #signup:checked ~ label.login {
-    color: #000;
+    color: #626262;
   }
   #login:checked ~ label.signup {
-    color: #000;
+    color: #626262;
   }
   #login:checked ~ label.login {
     cursor: default;

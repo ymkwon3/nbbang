@@ -9,6 +9,7 @@ import { useHistory, useLocation } from "react-router-dom";
 
 import { logo, whiteHeart, notification } from "../image";
 import { Desktop, Mobile } from "../shared/Responsive";
+import { primaryColor, secondaryColor } from "../shared/color";
 
 const Header = props => {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ const Header = props => {
 
   const checkedStyle = {
     color: "#fff",
-    backgroundColor: "#FF5C00",
+    backgroundColor: secondaryColor,
     width: "120px",
     height: "35px",
     borderRadius: "30px",
@@ -60,8 +61,8 @@ const Header = props => {
         position: "sticky",
         top: "0",
         minHeight: "50px",
-        backgroundColor: "#19253D",
-        boxShadow: "0 8px 10px -4px rgba(0, 0, 0, 0.2)",
+        backgroundColor: primaryColor,
+        boxShadow: "0px 9px 10px -4px rgba(0, 0, 0, 0.2)",
         zIndex: 11,
         padding: "0 50px",
       }}

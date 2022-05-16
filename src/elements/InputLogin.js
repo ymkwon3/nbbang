@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Text from "./Text";
 
+import { primaryColor, secondaryColor } from "../shared/color";
+
 const InputLogin = React.forwardRef((props, ref) => {
   /*
     스타일 사용 가능한 요소들
@@ -72,14 +74,14 @@ const InputContainer = styled.div`
 
   & > input:focus,
   & > input:not(:placeholder-shown) {
-    border: 2px solid #19253D;
-    outline: 2px solid #19253D;
+    border: 2px solid ${primaryColor};
+    outline: 2px solid ${primaryColor};
   }
 
   & > input:focus + label,
   & > input:not(:placeholder-shown) + label {
     transform: translateY(-${props => props.padding}) translateY(-50%);
-    color: #19253D;
+    color: ${primaryColor};
     font-weight: bold;
   }
 
