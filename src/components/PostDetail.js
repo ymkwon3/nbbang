@@ -21,7 +21,7 @@ const PostDetail = ({
 
   const userInfo = useSelector((state) => state.user.userInfo);
 
-  const isLogin = useSelector(state => state.user.isLogin);
+  const isLogin = useSelector((state) => state.user.isLogin);
   const chatRef = React.useRef();
 
   const keyStyles = {
@@ -47,6 +47,13 @@ const PostDetail = ({
 
   React.useEffect(() => {
     socket.emit("socket is connected", userInfo);
+    // socket.emit("disconnecting", userInfo.userId);
+    socket.on("send message alarm", (messageAlarm) => {
+      console.log(messageAlarm);
+    });
+    // socket.on("message", (messageAlarm) => {
+    //   console.log(messageAlarm);
+    // });
   }, []);
 
   React.useEffect(() => {
@@ -87,15 +94,17 @@ const PostDetail = ({
           </Text>
         </Flex>
         <Flex styles={{ justifyContent: "space-between", margin: "10px 0" }}>
-          <Flex styles={{width: "fit-content"}}>
-          <Image
-            styles={{
-              width: "38px",
-              height: "38px",
-            }}
-            src={detailInfo.userImage}
-          />
-          <Text styles={{marginLeft: "10px", fontWeight: "600"}}>{detailInfo.writer}</Text>
+          <Flex styles={{ width: "fit-content" }}>
+            <Image
+              styles={{
+                width: "38px",
+                height: "38px",
+              }}
+              src={detailInfo.userImage}
+            />
+            <Text styles={{ marginLeft: "10px", fontWeight: "600" }}>
+              {detailInfo.writer}
+            </Text>
           </Flex>
 
           <Flex
@@ -106,7 +115,10 @@ const PostDetail = ({
               borderRadius: "20px",
             }}
           >
-            {detailInfo.headList.length}/{detailInfo.headCount}
+            {detailInfo.headList.length === 1 && detailInfo.headList[0] === 0
+              ? 1
+              : detailInfo.headList.length + 1}
+            /{detailInfo.headCount}
           </Flex>
         </Flex>
         <Flex styles={{ flexDirection: "column" }}>
@@ -129,7 +141,9 @@ const PostDetail = ({
             <Flex styles={{ justifyContent: "start", margin: "10px 0" }}>
               <Text styles={keyStyles}>
                 카테고리:{" "}
-                <Text styles={valueStyles}>{detailInfo.category === "eat" ? "같이 먹자" : "같이 사자"}</Text>
+                <Text styles={valueStyles}>
+                  {detailInfo.category === "eat" ? "같이 먹자" : "같이 사자"}
+                </Text>
               </Text>
             </Flex>
             <Flex
@@ -167,43 +181,49 @@ const PostDetail = ({
             src={detailInfo.image}
             shape={"rectangle"}
           />
-          
+
           {
             //로그인일 경우에만 보임
-          isLogin ? <Button
-            styles={{
-              width: "150px",
-              minHeight: "40px",
-              backgroundColor: "#19253D",
-              color: "#fff",
-              borderRadius: "30px",
-              fontSize: "18px",
-              fontWeight: "700",
-              marginTop: "20px",
-            }}
-            _onClick={openChatModal}
-          >
-            채팅 참여
-          </Button> : null}
-          
+            isLogin ? (
+              <Button
+                styles={{
+                  width: "150px",
+                  minHeight: "40px",
+                  backgroundColor: "#19253D",
+                  color: "#fff",
+                  borderRadius: "30px",
+                  fontSize: "18px",
+                  fontWeight: "700",
+                  marginTop: "20px",
+                }}
+                _onClick={openChatModal}
+              >
+                채팅 참여
+              </Button>
+            ) : null
+          }
+
           {
             //본인이 작성한 글만 보임
-          userInfo?.userId === detailInfo?.User_userId ? <Button
-            styles={{
-              width: "150px",
-              minHeight: "40px",
-              backgroundColor: "#19253D",
-              color: "#fff",
-              borderRadius: "30px",
-              fontSize: "18px",
-              fontWeight: "700",
-              marginTop: "20px",
-            }}
-            //todo: 임시 비활성화
-            _disabled
-          >
-            거래 완료
-          </Button> : null}
+            userInfo?.userId === detailInfo?.User_userId ? (
+              <Button
+                styles={{
+                  width: "150px",
+                  minHeight: "40px",
+                  backgroundColor: "#19253D",
+                  color: "#fff",
+                  borderRadius: "30px",
+                  fontSize: "18px",
+                  fontWeight: "700",
+                  marginTop: "20px",
+                }}
+                //todo: 임시 비활성화
+                _disabled
+              >
+                거래 완료
+              </Button>
+            ) : null
+          }
         </Flex>
       </Flex>
       {openChatroom ? (
