@@ -70,12 +70,12 @@ const Main = () => {
   };
   // sidenav 전체 접어두기, 펼치기
   const clickFold = (markerClick) => {
-    if (sideNavRef.current.style.width === "0px" || markerClick) {
-      sideNavRef.current.style.width = "fit-content";
+    if (sideNavRef.current.style.maxWidth === "0px" || markerClick) {
+      sideNavRef.current.style.maxWidth = "fit-content";
       setSideNav(false);
       isChatButtonClicked ? setOpenChatroom(true) : setOpenChatroom(false);
     } else {
-      sideNavRef.current.style.width = "0px";
+      sideNavRef.current.style.maxWidth = "0px";
       setSideNav(true);
       setOpenChatroom(false);
     }
@@ -288,12 +288,13 @@ const LeftContainer = styled.div`
   display: flex;
   position: relative;
   justify-content: start;
-  width: fit-content;
+  max-width: fit-content;
+  width: 100%;
   height: 100%;
 `;
 
 const ButtonContainer = styled.div`
-  position: fixed;
+  position: absolute;
   right: 20px;
   bottom: 20px;
   z-index: 10;

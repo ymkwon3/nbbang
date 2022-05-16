@@ -21,12 +21,6 @@ const SideNav = props => {
   const offset = (page - 1) * limit; // 첫 게시물의 위치
 
   const searchPost = useSelector(state => state.post.postSearch);
-  //오버플로우 스크롤 추가
-
-  // const dropdown = [
-  //   "one", "two", "three"
-  // ]
-  //드롭다운 추가 해야함
 
   const newPostList = postList.filter(v =>
     v.title
@@ -43,7 +37,8 @@ const SideNav = props => {
   return (
     <Flex
       styles={{
-        width: "430px",
+        maxWidth: "430px",
+        width: "100%",
         height: "100%",
         flexDirection: "column",
         backgroundColor: "#fff",

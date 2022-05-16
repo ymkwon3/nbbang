@@ -17,16 +17,18 @@ const Grid = props => {
   );
 };
 
-Grid.defaultProps = {
-  defaultStyles: {width: "100%"},
-};
-
 const GridDiv = styled.div`
   display: grid;
   justify-items: center;
-  width: ${props => props.width};
-  gap: 30px;
-  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  gap: 15px;
+  grid-template-columns: repeat(3, minmax(30%, 1fr));
+
+  @media (max-width: 1022px)  {
+    grid-template-columns: repeat(2, minmax(40%, 1fr))!important;
+  }
+  @media (max-width: 500px)  {
+    grid-template-columns: repeat(1, minmax(90%, 1fr))!important;
+  }
 `;
 
 export default Grid;

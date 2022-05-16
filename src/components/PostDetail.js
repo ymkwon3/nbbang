@@ -136,7 +136,7 @@ const PostDetail = ({
               styles={{ justifyContent: "space-between", margin: "10px 0" }}
             >
               <Text styles={keyStyles}>
-                가격: <Text styles={valueStyles}>{detailInfo.price}</Text>
+                가격: <Text styles={valueStyles}>{detailInfo.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</Text>
               </Text>
 
               <Text styles={keyStyles}>

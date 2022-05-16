@@ -50,7 +50,14 @@ const Image = props => {
   // 이미지 안 텍스트 추가하기 위한 컨테이너
   if (shape === "post") {
     return (
-      <ImageContainer style={{ width: styles.width, height: styles.height }}>
+      <ImageContainer
+        style={{
+          width: styles.width,
+          height: styles.height,
+          maxWidth: styles.maxWidth,
+          maxHeight: styles.maxHeight,
+        }}
+      >
         <ImageRectangle
           style={{ ...styles }}
           src={src}
@@ -58,7 +65,17 @@ const Image = props => {
           className={className}
           {...defaultStyles}
         ></ImageRectangle>
-        <Flex styles={{ flexDirection: "column", width: styles.width, height: styles.height }}>{children}</Flex>
+        <Flex
+          styles={{
+            flexDirection: "column",
+            width: styles.width,
+            height: styles.height,
+            maxWidth: styles.maxWidth,
+            maxHeight: styles.maxHeight,
+          }}
+        >
+          {children}
+        </Flex>
       </ImageContainer>
     );
   }

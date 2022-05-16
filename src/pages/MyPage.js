@@ -6,6 +6,7 @@ import { actionCreator as userPageActions } from "../redux/modules/userpage";
 import { actionCreator as userActions } from "../redux/modules/user";
 
 import { notify } from "../components/ToastMessage";
+import { Desktop } from "../shared/Responsive";
 
 import moment from "moment";
 import "moment/locale/ko";
@@ -18,33 +19,44 @@ const MyPage = props => {
   const joinList = useSelector(state => state.userpage.joinList);
   const likeList = useSelector(state => state.userpage.likeList);
   const userId = useParams().userId;
+  const isDesktop = Desktop(0);
 
   const [preview, setPreview] = React.useState(null);
 
   const imageStyle = {
     borderRadius: "30px",
     border: "1px solid #dbdbdb",
-    width: "300px",
-    height: "300px",
+    maxWidth: "300px",
+    width: "100%",
+    maxHeight: "300px",
+    height: "100%",
   };
   const buttonStyle = {
-    width: "240px",
-    height: "60px",
+    maxWidth: "240px",
+    width: "20vw",
+    minWidth: "80px",
+    maxHeight: "60px",
+    height: "5vw",
+    minHeight: "30px",
     marginBottom: "20px",
     boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
     borderRadius: "30px",
-    fontSize: "24px",
+    fontSize: isDesktop === undefined ? "24px" : "16px",
     fontWeight: "700",
     color: "rgba(0, 0, 0, 0.5)",
   };
 
   const checkedStyle = {
-    width: "240px",
-    height: "60px",
+    maxWidth: "240px",
+    width: "20vw",
+    minWidth: "80px",
+    maxHeight: "60px",
+    height: "5vw",
+    minHeight: "30px",
     marginBottom: "20px",
     border: "2px solid #FF5C00",
     borderRadius: "30px",
-    fontSize: "24px",
+    fontSize: isDesktop === undefined ? "24px" : "16px",
     fontWeight: "700",
     color: "#FF5C00",
   };
@@ -68,7 +80,7 @@ const MyPage = props => {
       const formData = new FormData();
       formData.append("userImage", e.target.files[0]);
       // 유저이미지 알림 필요할지도???
-      notify("success", "프로필 사진이 변경되었습니다", 2000, "top-right")
+      notify("success", "프로필 사진이 변경되었습니다", 2000, "top-right");
       dispatch(userActions.postUserImageDB(formData));
     }
   };
@@ -78,6 +90,7 @@ const MyPage = props => {
       styles={{
         flexDirection: "column",
         height: "100%",
+        overflow: "scroll",
         justifyContent: "start",
         paddingTop: "10vh",
       }}
@@ -87,8 +100,8 @@ const MyPage = props => {
           <Image
             src={preview ? preview : userInfo?.userImage}
             styles={{
-              width: "200px",
-              height: "200px",
+              width: isDesktop === undefined ? "200px" : "120px",
+              height: isDesktop === undefined ? "200px" : "120px",
               border: "6px solid #FF5C00",
             }}
             shape="circle"
@@ -101,9 +114,18 @@ const MyPage = props => {
           style={{ visibility: "hidden", width: "0" }}
         ></input>
         <Flex styles={{ flexDirection: "column", flex: 1 }}>
-          <Text styles={{ fontSize: "32px", fontWeight: "700" }}>
+          <Text
+            styles={{
+              fontSize: isDesktop === undefined ? "32px" : "20px",
+              fontWeight: "700",
+            }}
+          >
             <Text
-              styles={{ fontSize: "32px", fontWeight: "700", color: "#FF5C00" }}
+              styles={{
+                fontSize: "inherit",
+                fontWeight: "700",
+                color: "#FF5C00",
+              }}
             >
               {userInfo?.userName}
             </Text>
@@ -111,7 +133,7 @@ const MyPage = props => {
           </Text>
           <Text
             styles={{
-              fontSize: "30px",
+              fontSize: isDesktop === undefined ? "30px" : "20px",
               fontWeight: "400",
               marginTop: "40px",
               marginBottom: "20px",
@@ -121,7 +143,7 @@ const MyPage = props => {
           </Text>
           <Text styles={{ fontSize: "30px", fontWeight: "700" }}>
             <Text
-              styles={{ fontSize: "30px", fontWeight: "700", color: "#FF5C00" }}
+              styles={{ fontSize: "inherit", fontWeight: "700", color: "#FF5C00" }}
             >
               {userInfo?.tradeCount ? userInfo.tradeCount : 0}
             </Text>
@@ -131,16 +153,18 @@ const MyPage = props => {
       </Flex>
       <Flex
         styles={{
-          width: "960px",
+          maxWidth: "960px",
+          width: "90%",
           height: "1px",
           border: "1px solid rgba(0, 0, 0, 0.5)",
           margin: "40px 0",
         }}
       ></Flex>
-      <Grid
+      <Flex
         styles={{
           width: "80%",
           maxWidth: "960px",
+          justifyContent: "space-around",
         }}
       >
         <Button
@@ -161,6 +185,13 @@ const MyPage = props => {
         >
           찜한 공구
         </Button>
+      </Flex>
+      <Grid
+        styles={{
+          width: "80%",
+          maxWidth: "960px",
+        }}
+      >
         {/* 이 부분에서 불러온 게시물 맵을 돌려야함 */}
         {postList.map(v => (
           <Image key={v.postId} styles={imageStyle} shape="post" src={v.image}>
