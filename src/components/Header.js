@@ -9,7 +9,7 @@ import { useHistory, useLocation } from "react-router-dom";
 
 import { logo, whiteHeart, notification } from "../image";
 import { Desktop, Mobile } from "../shared/Responsive";
-import { primaryColor, secondaryColor } from "../shared/color";
+import { primaryColor, primaryDarked, secondaryColor } from "../shared/color";
 
 const Header = props => {
   const dispatch = useDispatch();
@@ -41,6 +41,7 @@ const Header = props => {
     width: "120px",
     height: "35px",
     borderRadius: "30px",
+    border: `1px solid ${primaryDarked}`,
     fontSize: "16px",
     fontWeight: "500",
   };
@@ -62,6 +63,7 @@ const Header = props => {
         top: "0",
         minHeight: "50px",
         backgroundColor: primaryColor,
+        border: `1px solid ${primaryDarked}`,
         boxShadow: "0px 9px 10px -4px rgba(0, 0, 0, 0.2)",
         zIndex: 11,
         padding: "0 50px",

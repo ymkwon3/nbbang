@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Text from "./Text";
 
-import { primaryColor, secondaryColor } from "../shared/color";
+import { primaryColor, primaryDarked, secondaryColor } from "../shared/color";
 
 const InputLogin = React.forwardRef((props, ref) => {
   /*
@@ -81,7 +81,7 @@ const InputContainer = styled.div`
   & > input:focus + label,
   & > input:not(:placeholder-shown) + label {
     transform: translateY(-${props => props.padding}) translateY(-50%);
-    color: ${primaryColor};
+    color: ${primaryDarked};
     font-weight: bold;
   }
 

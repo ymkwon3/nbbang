@@ -4,7 +4,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { Flex } from "../elements";
 
-import { primaryColor, secondaryColor } from "../shared/color";
+import { primaryColor, primaryDarked, secondaryColor } from "../shared/color";
 
 const FooterNavi = props => {
   const history = useHistory();
@@ -61,7 +61,8 @@ const FooterBtn = styled.button`
   border: none;
   outline: none;
   background-color: inherit;
-  color: ${primaryColor};
+  color: ${primaryDarked};
+  font-weight: 700;
 `;
 
 export default FooterNavi;
