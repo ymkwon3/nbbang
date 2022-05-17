@@ -46,6 +46,7 @@ const SelectStyled = styled.select`
   border: none;
   outline: none;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
 `;
 
 export default Select;
