@@ -8,7 +8,7 @@ import { debounce } from "lodash";
 import { postAPI } from "../shared/api";
 import { notify } from "../components/ToastMessage";
 
-import { primaryColor, secondaryColor } from "../shared/color";
+import { primaryColor, secondaryColor, primaryDarked } from "../shared/color";
 
 const Login = props => {
   const history = useHistory();
@@ -21,7 +21,7 @@ const Login = props => {
 
   // 이메일 정규표현식
   const regEmail =
-  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
 
   // 데이터 용도
   const loginRef = React.useRef({
@@ -121,9 +121,9 @@ const Login = props => {
       return;
     }
     postAPI("/user/emailcheck", { userEmail: email }).then(res => {
-      if(res.msg === "fail") {
-        setEmailText("중복된 이메일입니다.")
-      }else {
+      if (res.msg === "fail") {
+        setEmailText("중복된 이메일입니다.");
+      } else {
         setEmailText(null);
       }
     });
@@ -176,7 +176,7 @@ const Login = props => {
   const emailAuthCode = () => {
     const email = signUpRef.current.userEmail.value;
     const authCode = signUpRef.current.userAuth.value;
-    if(!email || !authCode) {
+    if (!email || !authCode) {
       notify("warning", "이메일 및 인증번호를 입력해주세요", autoClose);
       return;
     }
@@ -225,25 +225,30 @@ const Login = props => {
         </SlideControl>
         <div className="form-inner">
           <div className="login" ref={refForm}>
-            <Flex styles={{width :"200px", height: "200px", backgroundColor: "red"}}>
-
-            </Flex>
+            <Flex
+              styles={{
+                width: "200px",
+                height: "200px",
+                backgroundColor: "red",
+              }}
+            ></Flex>
             <InputLogin
               label="아이디"
               ref={e => (loginRef.current.userEmail = e)}
-              styles={{borderRadius: "20px"}}
+              styles={{ borderRadius: "20px" }}
             ></InputLogin>
             <InputLogin
               label="비밀번호"
               type="password"
               ref={e => (loginRef.current.userPassword = e)}
-              styles={{borderRadius: "20px"}}
+              styles={{ borderRadius: "20px" }}
             ></InputLogin>
             <Button
               styles={{
                 backgroundColor: "#FF5C00",
                 color: "#fff",
-                width: "360px",
+                maxWidth: "360px",
+                width: "80%",
                 minHeight: "50px",
                 fontSize: "16px",
                 fontWeight: "700",
@@ -253,13 +258,21 @@ const Login = props => {
             >
               로그인
             </Button>
-            <Flex styles={{ justifyContent: "end", width: "360px" }}>
+            <Flex
+              styles={{
+                justifyContent: "end",
+                maxWidth: "360px",
+                width: "80%",
+              }}
+            >
               <Button>아이디ㆍ</Button>
               <Button>비밀번호 찾기</Button>
             </Flex>
           </div>
           <div className="signup">
-            <Flex styles={{ maxWidth: "360px", alignItems: "start" }}>
+            <Flex
+              styles={{ maxWidth: "360px", width: "80%", alignItems: "start" }}
+            >
               <InputLogin
                 label="이메일"
                 ref={e => (signUpRef.current.userEmail = e)}
@@ -282,7 +295,9 @@ const Login = props => {
                 번호요청
               </Button>
             </Flex>
-            <Flex styles={{ maxWidth: "360px", alignItems: "start" }}>
+            <Flex
+              styles={{ maxWidth: "360px", width: "80%", alignItems: "start" }}
+            >
               <InputLogin
                 label="인증번호"
                 ref={e => (signUpRef.current.userAuth = e)}
@@ -326,7 +341,8 @@ const Login = props => {
               styles={{
                 backgroundColor: secondaryColor,
                 color: "#fff",
-                width: "360px",
+                maxWidth: "360px",
+                width: "80%",
                 minHeight: "50px",
                 fontSize: "16px",
                 fontWeight: "700",
@@ -339,9 +355,10 @@ const Login = props => {
             </Button>
             <Button
               styles={{
-                backgroundColor: primaryColor,
+                backgroundColor: primaryDarked,
                 color: "#fff",
-                width: "360px",
+                maxWidth: "360px",
+                width: "80%",
                 minHeight: "50px",
                 fontSize: "16px",
                 fontWeight: "700",
@@ -360,7 +377,7 @@ const Login = props => {
 
 const Wrapper = styled.div`
   overflow: hidden;
-  width: 90%;
+  width: 80vw;
   height: 100%;
   max-width: 430px;
   max-height: 600px;

@@ -47,7 +47,7 @@ const InputContainer = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: 100%;
+  width: 80%;
   max-width: 360px;
 
   & > input {
