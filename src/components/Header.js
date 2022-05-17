@@ -67,7 +67,7 @@ const Header = props => {
         border: `1px solid ${primaryDarked}`,
         boxShadow: "0px 9px 10px -4px rgba(0, 0, 0, 0.2)",
         zIndex: 11,
-        padding: isDesktop === undefined ?"0 50px" : "0 10px",
+        padding: isDesktop === undefined ? "0 50px" : "0 10px",
       }}
     >
       <Flex styles={{ justifyContent: "start" }}>
@@ -101,73 +101,81 @@ const Header = props => {
                   같이 먹자
                 </Button>
               </Flex>
-
-              {isLogin ? (
-                <Flex styles={{ gap: "15px", width: "fit-content" }}>
-                  {/* <img src={whiteHeart} alt="filledHeart" /> */}
-                  <img src={notification} alt="notification" />
-                  <Image
-                    styles={{ width: "38px", height: "38px" }}
-                    src={userInfo.userImage}
-                    className="hover-event"
-                    _onClick={() => setDrop(prev => !prev)}
-                  ></Image>
-                  {drop ? (
-                    <Flex
-                      styles={{
-                        flexDirection: "column",
-                        position: "absolute",
-                        backgroundColor: "#fff",
-                        boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-                        width: "200px",
-                        top: "40px",
-                        borderRadius: "20px",
-                        padding: "10px",
-                        gap: "10px",
-                      }}
-                    >
-                      <Button
-                        styles={{
-                          fontSize: "14px",
-                        }}
-                        _onClick={() => {
-                          history.push(`/mypage/${userInfo?.userId}`);
-                          setDrop(prev => !prev);
-                        }}
-                      >
-                        마이페이지
-                      </Button>
-                      <Button
-                        styles={{
-                          fontSize: "14px",
-                          color: "#FF5C00",
-                        }}
-                        _onClick={clickLogout}
-                      >
-                        로그아웃
-                      </Button>
-                    </Flex>
-                  ) : null}
-                </Flex>
-              ) : (
-                <Flex styles={{ width: "fit-content" }}>
-                  <Button
-                    styles={{
-                      width: "70px",
-                      height: "35px",
-                      borderRadius: "30px",
-                      fontSize: "16px",
-                      fontWeight: "500",
-                    }}
-                    _onClick={clickLogin}
-                  >
-                    로그인
-                  </Button>
-                </Flex>
-              )}
             </Flex>
           ) : null}
         </Desktop>
+        {isLogin ? (
+          <Flex styles={{ gap: "15px", justifyContent: "end" }}>
+            {/* <img src={whiteHeart} alt="filledHeart" /> */}
+
+            {location.pathname === "/" && (
+              <img src={notification} alt="notification" />
+            )}
+
+            <Image
+              styles={{ width: "38px", height: "38px" }}
+              src={userInfo.userImage}
+              className="hover-event"
+              _onClick={() => setDrop(prev => !prev)}
+            ></Image>
+            {drop ? (
+              <Flex
+                styles={{
+                  flexDirection: "column",
+                  position: "absolute",
+                  backgroundColor: "#fff",
+                  boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+                  width: "200px",
+                  top: "40px",
+                  borderRadius: "10px",
+                  padding: "10px",
+                  gap: "10px",
+                }}
+              >
+                <Button
+                  styles={{
+                    fontSize: "14px",
+                  }}
+                  _onClick={() => {
+                    if (location.pathname !== `/mypage/${userInfo?.userId}`) {
+                      history.push(`/mypage/${userInfo?.userId}`);
+                    }
+
+                    setDrop(prev => !prev);
+                  }}
+                >
+                  마이페이지
+                </Button>
+                <Button
+                  styles={{
+                    fontSize: "14px",
+                    color: "#FF5C00",
+                  }}
+                  _onClick={clickLogout}
+                >
+                  로그아웃
+                </Button>
+              </Flex>
+            ) : null}
+          </Flex>
+        ) : (
+          location.pathname === "/" && (
+            <Flex styles={{ justifyContent: "end" }}>
+              <Button
+                styles={{
+                  width: "70px",
+                  height: "35px",
+                  borderRadius: "30px",
+                  fontSize: "16px",
+                  fontWeight: "500",
+                }}
+                _onClick={clickLogin}
+              >
+                로그인
+              </Button>
+            </Flex>
+          )
+        )}
       </Flex>
     </Flex>
   );
