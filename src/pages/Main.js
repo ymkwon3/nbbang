@@ -79,14 +79,17 @@ const Main = () => {
     } else if (type === "close") leftContainerRef.current.style.width = "0px";
     setLeftContainer(type);
   };
+
   // sidenav 전체 접어두기, 펼치기
   const clickFold = markerClick => {
     if (sideNavRef.current.style.maxWidth === "0px" || markerClick) {
       sideNavRef.current.style.maxWidth = "fit-content";
+      leftContainerRef.current.style.display = "block";
       setSideNav(false);
       isChatButtonClicked ? setOpenChatroom(true) : setOpenChatroom(false);
     } else {
       sideNavRef.current.style.maxWidth = "0px";
+      leftContainerRef.current.style.display = "none";
       setSideNav(true);
       setOpenChatroom(false);
     }
@@ -243,20 +246,17 @@ const Main = () => {
             maxWidth: "360px",
             width: "0",
             height: "100%",
-            position: isDesktop === undefined ? "relative" : "absolute",
-            transition: "0.2s",
-            overflow: "hidden",
-            zIndex: "10",
-            boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
+            position: isDesktop === undefined ? "relative" : "absolute",    
           }}
         >
           <Flex
             styles={{
-              maxWidth: "360px",
               width: "100%",
               height: "100%",
               background: "rgba(245, 236, 229, 0.8)",
+              boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
               position: "absolute",
+              overflow: "hidden",
               top: 0,
               left: 0,
               zIndex: 10,
@@ -324,7 +324,7 @@ const FoldBtn = styled.div`
   z-index: 9;
   position: absolute;
   top: calc(50% - 28px);
-  right: -33px;
+  right: -32px;
 `;
 
 const LeftContainer = styled.div`
@@ -332,7 +332,7 @@ const LeftContainer = styled.div`
   position: relative;
   justify-content: start;
   max-width: fit-content;
-  width: 90%;
+  width: 90vw;
   height: 100%;
 `;
 
