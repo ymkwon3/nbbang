@@ -47,7 +47,6 @@ const Input = forwardRef((props, ref) => {
           max={max}
           style={{
             backgroundColor: "#fff",
-            overflowX: "scroll",
           }}
         ></input>
       ) : (

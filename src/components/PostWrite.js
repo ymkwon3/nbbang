@@ -230,6 +230,7 @@ const PostWrite = props => {
             width: "calc(50% - 16px)",
             height: "60px",
             padding: "0 5px 0 0",
+            overflowX: "scroll",
           }}
         />
       </Flex>
