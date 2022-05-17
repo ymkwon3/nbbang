@@ -6,7 +6,7 @@ const Select = forwardRef((props, ref) => {
     스타일 사용 가능한 요소들
     fontSize, fontWeight, color, margin, padding, lineHeight, overflow
   */
-  const { styles, options, className, defaultStyles } = props;
+  const { styles, options, _onChange, className, defaultStyles } = props;
 
   return (
     <SelectStyled
@@ -14,6 +14,7 @@ const Select = forwardRef((props, ref) => {
       className={className}
       {...defaultStyles}
       ref={ref}
+      onChange={_onChange}
     >
       {options.map(o => (
         <option key={o.key} value={o.value}>

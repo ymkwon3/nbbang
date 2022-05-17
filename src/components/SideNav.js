@@ -38,7 +38,7 @@ const SideNav = props => {
     <Flex
       styles={{
         maxWidth: "430px",
-        width: "430px",
+        width: "100%",
         height: "100%",
         flexDirection: "column",
         backgroundColor: "#fff",
@@ -59,7 +59,7 @@ const SideNav = props => {
           position: "sticky",
           top: "0",
           zIndex: "11",
-          padding: "40px 20px 10px",
+          padding: "40px 30px 10px",
         }}
       >
         <Flex
@@ -67,6 +67,8 @@ const SideNav = props => {
             margin: "-17px 0 25px 300px",
           }}
         >
+
+          <Dropdown></Dropdown>
         </Flex>
         <Flex styles={{ justifyContent: "space-between" }}>
           {category === "buy" ? (
@@ -85,7 +87,9 @@ const SideNav = props => {
                   userSelect: "none",
                   color: secondaryColor,
                 }}
-              >사자</Text>
+              >
+                사자
+              </Text>
             </Text>
           ) : category === "eat" ? (
             <Text
@@ -103,7 +107,9 @@ const SideNav = props => {
                   userSelect: "none",
                   color: secondaryColor,
                 }}
-              >먹자</Text>
+              >
+                먹자
+              </Text>
             </Text>
           ) : (
             <Text
@@ -140,26 +146,32 @@ const SideNav = props => {
           justifyContent: "start",
         }}
       >
-        {/* 맵으로 카드 돌리기, key값은 unique하게, 배열풀어서 속성으로 넘겨주기 */}
-
         {/* pagination 적용 후  */}
-        {newPostList.slice(offset, offset + limit).map((v, i) => (
-          <StyledPost
-            onClick={() => clickPost(v.postId, v.lat, v.lng)}
-            key={`post_${i}`}
-          >
-            <Post {...v} />
-          </StyledPost>
-        ))}
+        {newPostList.length !== 0 ? (
+          newPostList.slice(offset, offset + limit).map((v, i) => (
+            <StyledPost
+              onClick={() => clickPost(v.postId, v.lat, v.lng)}
+              key={`post_${i}`}
+            >
+              <Post {...v} />
+            </StyledPost>
+          ))
+        ) : (
+          <Flex styles={{ color: "#626262", width: "370px", fontSize: "18px" }}>
+            게시글이 없습니다
+          </Flex>
+        )}
       </Flex>
-      <Flex>
-        <Pagination
-          total={newPostList.length}
-          limit={limit}
-          page={page}
-          setPage={setPage}
-        />
-      </Flex>
+      {newPostList.length === 0 ? null : (
+        <Flex>
+          <Pagination
+            total={newPostList.length}
+            limit={limit}
+            page={page}
+            setPage={setPage}
+          />
+        </Flex>
+      )}
     </Flex>
   );
 };
