@@ -35,7 +35,7 @@ const Dropdown = () => {
       styles={{
         width: "90px",
         height: "30px",
-        paddingLeft: "15px",
+        padding: "0 15px",
         outline: "none",
         color: secondaryColor
       }}
