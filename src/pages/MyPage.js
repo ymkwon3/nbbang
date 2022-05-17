@@ -156,7 +156,7 @@ const MyPage = props => {
           maxWidth: "960px",
           width: "90%",
           height: "1px",
-          border: "1px solid rgba(0, 0, 0, 0.5)",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
           margin: "40px 0",
         }}
       ></Flex>

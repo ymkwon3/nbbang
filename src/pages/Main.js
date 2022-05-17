@@ -45,7 +45,7 @@ const Main = () => {
   상세, 글쓰기 페이지를 관리하기 위한 ref, state */
   const sideNavRef = React.useRef(null);
   const [sideNav, setSideNav] = React.useState(false);
-  const leftContianerRef = React.useRef(null);
+  const leftContainerRef = React.useRef(null);
   const [leftContainer, setLeftContainer] = React.useState("writer");
 
   // 채팅방 오픈
@@ -70,13 +70,13 @@ const Main = () => {
 
   // 글쓰기 상세보기 컨테이너 펼치기 및 컴포넌트 변경
   const clickContainer = (type, postId) => {
-    const con = leftContianerRef.current.style.maxWidth;
-    if (con === "0px") leftContianerRef.current.style.maxWidth = "360px";
+    const con = leftContainerRef.current.style.width;
+    if (con === "0px") leftContainerRef.current.style.width = "90vw";
     if (type === "detail") {
       // 다른 게시물이 선택되면 채팅방 닫기
       setOpenChatroom(false);
       dispatch(postActions.getPostDetailDB(postId));
-    } else if (type === "close") leftContianerRef.current.style.maxWidth = "0px";
+    } else if (type === "close") leftContainerRef.current.style.width = "0px";
     setLeftContainer(type);
   };
   // sidenav 전체 접어두기, 펼치기
@@ -238,10 +238,10 @@ const Main = () => {
           <img src={sideNav ? right : left} alt="foldBtn" />
         </FoldBtn>
         <div
-          ref={leftContianerRef}
+          ref={leftContainerRef}
           style={{
-            maxWidth: "0",
-            width: "100%",
+            maxWidth: "360px",
+            width: "0",
             height: "100%",
             position: isDesktop === undefined ? "relative" : "absolute",
             transition: "0.2s",
@@ -252,7 +252,7 @@ const Main = () => {
         >
           <Flex
             styles={{
-              maxWidth: "430px",
+              maxWidth: "360px",
               width: "100%",
               height: "100%",
               background: "rgba(245, 236, 229, 0.8)",
