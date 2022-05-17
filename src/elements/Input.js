@@ -40,7 +40,15 @@ const Input = forwardRef((props, ref) => {
           ref={ref}
         ></textarea>
       ) : type === "date" ? (
-        <input ref={ref} type={type} min={min} max={max}></input>
+        <input
+          ref={ref}
+          type={type}
+          min={min}
+          max={max}
+          style={{
+            backgroundColor: "#fff",
+          }}
+        ></input>
       ) : (
         <input
           placeholder={placehorder}

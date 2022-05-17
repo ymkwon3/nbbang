@@ -141,6 +141,8 @@ const Main = () => {
               address: addr.address_name,
               range: cityRange,
               userId: userInfo?.userId,
+              lat: userLat,
+              lng: userLng
             })
           );
 
