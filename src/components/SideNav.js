@@ -38,7 +38,7 @@ const SideNav = props => {
     <Flex
       styles={{
         maxWidth: "430px",
-        width: "100%",
+        width: "430px",
         height: "100%",
         flexDirection: "column",
         backgroundColor: "#fff",
