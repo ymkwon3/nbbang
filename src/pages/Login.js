@@ -168,6 +168,8 @@ const Login = props => {
     postAPI("/user/mail", { userEmail: email }).then(res => {
       if (res.msg === "success") {
         notify("info", "해당 이메일로 인증 메일이 발송되었습니다!", autoClose);
+      }else if (res.msg === "fail") {
+        notify("error", "5분안에 3번만 요청할 수 있습니다!", autoClose);
       }
     });
   };

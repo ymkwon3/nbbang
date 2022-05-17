@@ -59,26 +59,33 @@
 
 .info-window {
   background-color: #fff;
+  position: relative;
   border: none;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
-  width: 160px;
-  height: 200px;
+  width: 150px;
+  height: 190px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 .info-window > img {
-  border: 1px solid #dbdbdb;
-  width: 160px;
-  height: 160px;
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 151px;
+  height: 151px;
 }
 
 .info-window > div {
-  background-color: #19253d;
-  color: #fff;
+  background-color: #DFD3CA;
+  position: absolute;
+  bottom: 0;
+  left: -1px;
+  color: #000;
   height: 40px;
   padding: 10px;
-  width: 100%;
+  width: 151px;
 
   font-size: 14px;
+  font-weight: 500;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

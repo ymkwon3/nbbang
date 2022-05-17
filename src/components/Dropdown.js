@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import styled from "styled-components";
-import { Button, Flex, Select, Text } from "../elements";
+import { Select } from "../elements";
 import "moment/locale/ko";
 
 import { actionCreator as postActions } from "../redux/modules/post";
@@ -35,7 +34,7 @@ const Dropdown = () => {
       styles={{
         width: "90px",
         height: "30px",
-        paddingLeft: "15px",
+        padding: "0 15px",
         outline: "none",
         color: secondaryColor
       }}

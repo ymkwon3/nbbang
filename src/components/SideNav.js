@@ -65,10 +65,9 @@ const SideNav = props => {
         <Flex
           styles={{
             justifyContent: "end",
-            marginBottom: "20px"
+            marginBottom: "20px",
           }}
         >
-
           <Dropdown></Dropdown>
         </Flex>
         <Flex styles={{ justifyContent: "space-between" }}>
