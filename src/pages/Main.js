@@ -102,7 +102,7 @@ const Main = () => {
     mapRef.current.panTo(userPosition);
   };
 
-  const clickMyLocation = (lat, lon) => {
+  const clickMyLocation = () => {
     mapRef.current.panTo(userPositionRef.current);
   };
 
