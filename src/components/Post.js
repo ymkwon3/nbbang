@@ -15,10 +15,8 @@ const Post = props => {
   const {
     image,
     title,
-    writer,
     category,
     price,
-    createdAt,
     endTime,
     address,
     postId,

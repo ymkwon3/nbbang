@@ -225,23 +225,29 @@ const Login = props => {
         </SlideControl>
         <div className="form-inner">
           <div className="login" ref={refForm}>
+            <Flex styles={{width :"200px", height: "200px", backgroundColor: "red"}}>
+
+            </Flex>
             <InputLogin
               label="아이디"
               ref={e => (loginRef.current.userEmail = e)}
+              styles={{borderRadius: "20px"}}
             ></InputLogin>
             <InputLogin
               label="비밀번호"
               type="password"
               ref={e => (loginRef.current.userPassword = e)}
+              styles={{borderRadius: "20px"}}
             ></InputLogin>
             <Button
               styles={{
                 backgroundColor: "#FF5C00",
                 color: "#fff",
                 width: "360px",
-                height: "50px",
+                minHeight: "50px",
                 fontSize: "16px",
                 fontWeight: "700",
+                borderRadius: "20px",
               }}
               _onClick={clickLogin}
             >
@@ -321,7 +327,7 @@ const Login = props => {
                 backgroundColor: secondaryColor,
                 color: "#fff",
                 width: "360px",
-                height: "50px",
+                minHeight: "50px",
                 fontSize: "16px",
                 fontWeight: "700",
                 borderRadius: "20px",
@@ -336,7 +342,7 @@ const Login = props => {
                 backgroundColor: primaryColor,
                 color: "#fff",
                 width: "360px",
-                height: "50px",
+                minHeight: "50px",
                 fontSize: "16px",
                 fontWeight: "700",
                 borderRadius: "20px",
@@ -436,8 +442,9 @@ const FormContainer = styled.div`
     width: 50%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     flex-direction: column;
+    margin-top: 50px;
     gap: 10px;
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }

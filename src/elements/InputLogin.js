@@ -14,7 +14,7 @@ const InputLogin = React.forwardRef((props, ref) => {
   const { styles, padding, type, label, subText, value, readOnly, _onChange, defaultStyles, className } = props;
   
   return (
-    <InputContainer style={{...styles}} padding={padding} {...defaultStyles}>
+    <InputContainer padding={padding} {...defaultStyles} {...styles}>
       <input
         ref={ref}
         type={type}
@@ -38,6 +38,7 @@ InputLogin.defaultProps = {
     fontSize: "14px",
     border: "2px solid #eee",
     padding: "15px",
+    borderRadius: "10px",
   },
 };
 
@@ -55,7 +56,7 @@ const InputContainer = styled.div`
     padding: ${props => props.padding};
     outline: none;
     border: 1px solid #eee;
-    border-radius: 10px;
+    border-radius: ${props => props.borderRadius};
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
     background-color: transparent;
     height: 50px;

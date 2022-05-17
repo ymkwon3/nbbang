@@ -4,39 +4,35 @@ import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { Flex } from "../elements";
 
-import { primaryColor, primaryDarked, secondaryColor } from "../shared/color";
+import { primaryDarked } from "../shared/color";
 
 const FooterNavi = props => {
   const history = useHistory();
-  const location = useLocation();
+  const location = useLocation().pathname;
   const userInfo = useSelector(state => state.user.userInfo);
   const isLogin = useSelector(state => state.user.isLogin);
-  const [checked, setChecked] = React.useState("home");
   // Home버튼을 눌렀을 경우
   const clickHome = () => {
-    if (location.pathname !== "/") {
+    if (location !== "/") {
       history.push("/");
-      setChecked("home");
     }
   };
 
   // Mypage버튼을 눌렀을 경우
   const clickMypage = () => {
-    if (!location.pathname.includes("mypage")) {
+    if (!location.includes("mypage")) {
       history.push(`/mypage/${userInfo?.userId}`);
-      setChecked("mypage");
     }
   };
 
   // Login버튼을 눌렀을 경우
   const clickLogin = () => {
-    if (!location.pathname.includes("login")) {
+    if (!location.includes("login")) {
       history.push("/login");
-      setChecked("login");
     }
   };
 
-  const clickNoti = () => {};
+  // const clickInfo = () => {};
 
   const checkedStyle = {
     backgroundColor: primaryDarked,
@@ -55,22 +51,22 @@ const FooterNavi = props => {
         backgroundColor: "#fff",
       }}
     >
-      <FooterBtn style={checked === "home" ? checkedStyle : null} onClick={clickHome}>
+      <FooterBtn style={ location === "/" ? checkedStyle : null} onClick={clickHome}>
         Home
       </FooterBtn>
-      <FooterBtn style={checked === "notification" ? checkedStyle : null}>
-        Notification
+      <FooterBtn style={location === "/info" ? checkedStyle : null}>
+        Info
       </FooterBtn>
       {isLogin ? (
         <FooterBtn
-          style={checked === "mypage" ? checkedStyle : null}
+          style={location.includes("mypage") ? checkedStyle : null}
           onClick={clickMypage}
         >
           MyPage
         </FooterBtn>
       ) : (
         <FooterBtn
-          style={checked === "login" ? checkedStyle : null}
+          style={location === "/login" ? checkedStyle : null}
           onClick={clickLogin}
         >
           Login

@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import Post from "./Post";
-import { Button, Flex, Select, Text } from "../elements";
+import { Button, Flex, Text } from "../elements";
 import Pagination from "./Pagination";
 import Dropdown from "./Dropdown";
 //style
 import styled from "styled-components";
 import Permit from "../shared/Permit";
 import { write } from "../image";
-import { primaryColor, secondaryColor } from "../shared/color";
+import { secondaryColor } from "../shared/color";
 
 const SideNav = props => {
   const { _onClickWrite, _onClickDetail, _clickPost, postList, category } =
