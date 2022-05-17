@@ -22,6 +22,8 @@ import {
   myPosition,
   position,
 } from "../image";
+import io from "socket.io-client";
+let socket = io.connect("https://redpingpong.shop");
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -62,10 +64,10 @@ const Main = () => {
   const [city, setCity] = React.useState(3);
 
   // 로그인된 유저 정보
-  const userInfo = useSelector(state => state.user.userInfo);
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   const cateList = postList.filter(
-    v => v.category === category || category === "all"
+    (v) => v.category === category || category === "all"
   );
 
   // 글쓰기 상세보기 컨테이너 펼치기 및 컴포넌트 변경
@@ -104,6 +106,18 @@ const Main = () => {
     mapRef.current.panTo(userPositionRef.current);
   };
 
+  React.useEffect(() => {
+    socket.emit("socket is connected", userInfo);
+    socket.on("send message alarm", (messageNoti) => {
+      console.log(messageNoti);
+    });
+    socket.on("leaved chatroom", (leaveNoti) => {
+      console.log(leaveNoti);
+    });
+    socket.on("added_new_participant", (addedNewParticiparntNoti) => {
+      console.log(addedNewParticiparntNoti);
+    });
+  }, []);
   /*
   현재 로그인 상태일 때, 게시물 데이터를 두 번 불러옴.
   userInfo를 updateMount에 지정해주지 않으면 무조건 비회원일 때의 데이터를 불러옴
@@ -141,7 +155,7 @@ const Main = () => {
             "대구",
             "제주특별자치도",
           ];
-          locale.find(v => v === addr.region_1depth_name)
+          locale.find((v) => v === addr.region_1depth_name)
             ? setCity(3)
             : setCity(2);
         });
@@ -183,7 +197,7 @@ const Main = () => {
       return null;
     });
     markerListRef.current = [];
-    cateList.map(v => {
+    cateList.map((v) => {
       // 마커크기 45 x 60
       const markerImage = new kakao.maps.MarkerImage(
         v.category === "eat" ? markerOrange : markerBlue,
@@ -277,6 +291,7 @@ const Main = () => {
                 setOpenChatroom={setOpenChatroom}
                 _clickContainer={() => clickContainer("close")}
                 setIsChatButtonClicked={setIsChatButtonClicked}
+                socket={socket}
               ></PostDetail>
             ) : null}
           </Flex>

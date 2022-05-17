@@ -244,8 +244,6 @@ const ChatBox = React.forwardRef(
             />
             <ChatBoxRight
               postid={postid}
-              chatRoomUsers={chatRoomUsers}
-              participantList={participantList}
               socket={socket}
               awaiters={awaiters ? awaiters : awaiterList}
               setAwaiters={setAwaiters}
@@ -417,6 +415,7 @@ export const ChatBoxRight = forwardRef(
 
     const deleteParticipant = (selectedUser) => {
       setLoadingDeleteParticipant(true);
+
       socket.emit("cancel_new_participant", { postid, selectedUser });
 
       let updatedParticipantList = participants.filter(
@@ -430,6 +429,11 @@ export const ChatBoxRight = forwardRef(
       });
 
       setLoadingDeleteParticipant(false);
+    };
+
+    const selfLeavChatroom = () => {
+      console.log("실행");
+      socket.emit("leave chatroom", postid, loggedUser.userId);
     };
 
     return (
@@ -552,6 +556,7 @@ export const ChatBoxRight = forwardRef(
             <GiExitDoor
               className="hover-event-to-blurr"
               style={{ width: "31px", height: "28px" }}
+              onClick={selfLeavChatroom}
             />
           </Flex>
         </UserListContainer>
@@ -587,7 +592,7 @@ export const Awaiter = ({
   loggedUser,
 }) => {
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", marginTop: "10px" }}>
       <Flex
         styles={{
           borderBottom: "2px solid rgba(0, 0, 0, .2)",
@@ -599,7 +604,6 @@ export const Awaiter = ({
         <Flex
           styles={{
             width: "auto",
-            marginTop: "10px",
           }}
         >
           <Flex styles={{ height: "34px", width: "34px", marginRight: "15px" }}>
@@ -646,7 +650,7 @@ export const Participants = ({
   loggedUser,
 }) => {
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", marginTop: "10px" }}>
       <Flex
         styles={{
           borderBottom: "1px solid #000000",
@@ -658,7 +662,6 @@ export const Participants = ({
         <Flex
           styles={{
             width: "auto",
-            marginTop: "10px",
           }}
         >
           <Flex styles={{ height: "34px", width: "34px", marginRight: "15px" }}>
@@ -674,7 +677,8 @@ export const Participants = ({
             {participant.User_userName}
           </Text>
         </Flex>
-        {loggedUser.userId === chatAdminId ? (
+        {loggedUser.userId === chatAdminId ||
+        loggedUser.userId === participant.User_userId ? (
           <>
             <div>
               <Text
