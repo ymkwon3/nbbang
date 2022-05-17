@@ -47,6 +47,7 @@ const Input = forwardRef((props, ref) => {
           max={max}
           style={{
             backgroundColor: "#fff",
+            overflowX: "scroll",
           }}
         ></input>
       ) : (
@@ -56,6 +57,7 @@ const Input = forwardRef((props, ref) => {
           ref={ref}
           onKeyPress={e => {
             // type이 number일 경우 숫자만 입력받게 -- 한글은 onkeypress적용이 안돼서 전송할 때 따로 한번 확인해줘야할듯
+            // 모바일에서도 안먹히는 이슈가 있음
             if (type === "number") {
               return !/[0-9]/.test(e.key) && e.preventDefault();
             }

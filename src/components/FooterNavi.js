@@ -11,16 +11,36 @@ const FooterNavi = props => {
   const location = useLocation();
   const userInfo = useSelector(state => state.user.userInfo);
   const isLogin = useSelector(state => state.user.isLogin);
-
+  const [checked, setChecked] = React.useState("home");
   // Home버튼을 눌렀을 경우
   const clickHome = () => {
-    if (location.pathname !== "/") history.push("/");
+    if (location.pathname !== "/") {
+      history.push("/");
+      setChecked("home");
+    }
   };
 
   // Mypage버튼을 눌렀을 경우
   const clickMypage = () => {
-    if (!location.pathname.includes("mypage"))
+    if (!location.pathname.includes("mypage")) {
       history.push(`/mypage/${userInfo?.userId}`);
+      setChecked("mypage");
+    }
+  };
+
+  // Login버튼을 눌렀을 경우
+  const clickLogin = () => {
+    if (!location.pathname.includes("login")) {
+      history.push("/login");
+      setChecked("login");
+    }
+  };
+
+  const clickNoti = () => {};
+
+  const checkedStyle = {
+    backgroundColor: primaryDarked,
+    color: "#fff",
   };
 
   return (
@@ -30,25 +50,30 @@ const FooterNavi = props => {
         bottom: "0",
         minHeight: "50px",
         justifyContent: "space-around",
-        padding: "10px 0",
         zIndex: "100",
         boxShadow: "0 8px 10px 4px rgba(0, 0, 0, 0.5)",
         backgroundColor: "#fff",
       }}
     >
-      <FooterBtn onClick={clickHome}>홈으로</FooterBtn>
-      {/* <FooterBtn>게시물</FooterBtn> */}
-      
-      <FooterBtn>알림</FooterBtn>
+      <FooterBtn style={checked === "home" ? checkedStyle : null} onClick={clickHome}>
+        Home
+      </FooterBtn>
+      <FooterBtn style={checked === "notification" ? checkedStyle : null}>
+        Notification
+      </FooterBtn>
       {isLogin ? (
-        <FooterBtn onClick={clickMypage}>마이페이지</FooterBtn>
+        <FooterBtn
+          style={checked === "mypage" ? checkedStyle : null}
+          onClick={clickMypage}
+        >
+          MyPage
+        </FooterBtn>
       ) : (
         <FooterBtn
-          onClick={() => {
-            history.push("/login");
-          }}
+          style={checked === "login" ? checkedStyle : null}
+          onClick={clickLogin}
         >
-          로그인
+          Login
         </FooterBtn>
       )}
     </Flex>
@@ -56,7 +81,7 @@ const FooterNavi = props => {
 };
 
 const FooterBtn = styled.button`
-  width: 20%;
+  flex: 1;
   height: 100%;
   border: none;
   outline: none;
