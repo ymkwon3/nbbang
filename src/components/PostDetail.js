@@ -7,15 +7,16 @@ import ChatBox from "./ChatBox";
 import moment from "moment";
 import "moment/locale/ko";
 
-import io from "socket.io-client";
+// import io from "socket.io-client";
 // let socket = io.connect("https://localhost:3443");
-let socket = io.connect("https://redpingpong.shop");
+// let socket = io.connect("https://redpingpong.shop");
 
 const PostDetail = ({
   openChatroom,
   setOpenChatroom,
   _clickContainer,
   setIsChatButtonClicked,
+  socket,
 }) => {
   const detailInfo = useSelector((state) => state.post.postDetail);
 
@@ -46,11 +47,10 @@ const PostDetail = ({
   };
 
   React.useEffect(() => {
-    socket.emit("socket is connected", userInfo);
     // socket.emit("disconnecting", userInfo.userId);
-    socket.on("send message alarm", (messageAlarm) => {
-      console.log(messageAlarm);
-    });
+    // socket.on("send message alarm", (messageAlarm) => {
+    //   console.log(messageAlarm);
+    // });
     // socket.on("message", (messageAlarm) => {
     //   console.log(messageAlarm);
     // });
@@ -150,7 +150,13 @@ const PostDetail = ({
               styles={{ justifyContent: "space-between", margin: "10px 0" }}
             >
               <Text styles={keyStyles}>
-                가격: <Text styles={valueStyles}>{detailInfo.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</Text>
+                가격:{" "}
+                <Text styles={valueStyles}>
+                  {detailInfo.price
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  원
+                </Text>
               </Text>
 
               <Text styles={keyStyles}>

@@ -14,7 +14,9 @@ import MyLocation from "../components/MyLocation";
 //style
 import ChatBox from "../components/ChatBox";
 import { right, left, markerBlue, markerOrange, myPosition } from "../image";
-import {BiCurrentLocation} from "react-icons/bi";
+import { BiCurrentLocation } from "react-icons/bi";
+import io from "socket.io-client";
+let socket = io.connect("https://redpingpong.shop");
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -46,16 +48,16 @@ const Main = () => {
 
   /*해당 지역의 전체 게시물, 현재 선택된 카테고리, 
   게시물 지역 범위, 현재 위치 구분*/
-  const postList = useSelector(state => state.post.postList);
-  const category = useSelector(state => state.post.category);
+  const postList = useSelector((state) => state.post.postList);
+  const category = useSelector((state) => state.post.category);
   const [cityRange, setCityRange] = React.useState(3);
   const [city, setCity] = React.useState(3);
 
   // 로그인된 유저 정보
-  const userInfo = useSelector(state => state.user.userInfo);
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   const cateList = postList.filter(
-    v => v.category === category || category === "all"
+    (v) => v.category === category || category === "all"
   );
 
   // 글쓰기 상세보기 컨테이너 펼치기 및 컴포넌트 변경
@@ -88,17 +90,21 @@ const Main = () => {
   };
 
   const clickMyLocation = (lat, lon) => {
-    navigator.geolocation.getCurrentPosition(
-      position => {
+    navigator.geolocation.getCurrentPosition((position) => {
       const lat = position.coords.latitude;
-      const lon = position.coords.longitude; 
-      
-      const moveLatLng = new kakao.maps.LatLng(lat, lon);   
-      mapRef.current.setCenter(moveLatLng);
-    })
-  };
-  
+      const lon = position.coords.longitude;
 
+      const moveLatLng = new kakao.maps.LatLng(lat, lon);
+      mapRef.current.setCenter(moveLatLng);
+    });
+  };
+
+  React.useEffect(() => {
+    socket.emit("socket is connected", userInfo);
+    socket.on("send message alarm", (messageAlarm) => {
+      console.log(messageAlarm);
+    });
+  }, []);
   /*
   현재 로그인 상태일 때, 게시물 데이터를 두 번 불러옴.
   userInfo를 updateMount에 지정해주지 않으면 무조건 비회원일 때의 데이터를 불러옴
@@ -107,11 +113,11 @@ const Main = () => {
   React.useEffect(() => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     navigator.geolocation.getCurrentPosition(
-      position => {
-        // const userLat = position.coords.latitude;
-        // const userLng = position.coords.longitude;
-        const userLng = 126.89156781562811;
-        const userLat = 37.512634390346236;
+      (position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        // const userLng = 126.89156781562811;
+        // const userLat = 37.512634390346236;
         // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
 
         geocoder.coord2Address(userLng, userLat, (result, status) => {
@@ -136,7 +142,7 @@ const Main = () => {
             "대구",
             "제주특별자치도",
           ];
-          locale.find(v => v === addr.region_1depth_name)
+          locale.find((v) => v === addr.region_1depth_name)
             ? setCity(3)
             : setCity(2);
         });
@@ -176,7 +182,7 @@ const Main = () => {
       return null;
     });
     markerListRef.current = [];
-    cateList.map(v => {
+    cateList.map((v) => {
       // 마커크기 45 x 60
       const markerImage = new kakao.maps.MarkerImage(
         v.category === "eat" ? markerOrange : markerBlue,
@@ -271,22 +277,25 @@ const Main = () => {
                 setOpenChatroom={setOpenChatroom}
                 _clickContainer={() => clickContainer("close")}
                 setIsChatButtonClicked={setIsChatButtonClicked}
+                socket={socket}
               ></PostDetail>
             ) : null}
           </Flex>
         </div>
       </LeftContainer>
       <ButtonContainer>
-        <Button 
+        <Button
           styles={{
-            width:"52px",
-            height:"52px",
+            width: "52px",
+            height: "52px",
             boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.25)",
-            margin:"0 0 10px",
-            borderRadius:"15px"
-          }} 
+            margin: "0 0 10px",
+            borderRadius: "15px",
+          }}
           _onClick={() => clickMyLocation()}
-        ><BiCurrentLocation/></Button>
+        >
+          <BiCurrentLocation />
+        </Button>
         <RadioInput city={city} setCityRange={setCityRange}></RadioInput>
       </ButtonContainer>
     </KaKaoMap>
