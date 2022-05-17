@@ -98,7 +98,7 @@ const Main = () => {
   };
 
   const clickMyLocation = (lat, lon) => {
-    mapRef.current.panTo(userPositionRef.current)
+    mapRef.current.panTo(userPositionRef.current);
   };
 
   /*
@@ -283,7 +283,7 @@ const Main = () => {
         </div>
       </LeftContainer>
       <ButtonContainer>
-        <Button
+        <Flex
           styles={{
             width: "50px",
             height: "50px",
@@ -292,18 +292,23 @@ const Main = () => {
             borderRadius: "10px",
             margin: "0 0 10px",
           }}
-          _onClick={() => clickMyLocation()}
         >
-          <img
-            style={{
-              width: "35px",
-              height: "35px",
-            }}
-            alt="position"
-            src={position}
-          ></img>
-        </Button>
-        <RadioInput city={city} cityRange={cityRange} setCityRange={setCityRange}></RadioInput>
+          <Button _onClick={() => clickMyLocation()}>
+            <img
+              style={{
+                width: "35px",
+                height: "35px",
+              }}
+              alt="position"
+              src={position}
+            ></img>
+          </Button>
+        </Flex>
+        <RadioInput
+          city={city}
+          cityRange={cityRange}
+          setCityRange={setCityRange}
+        ></RadioInput>
       </ButtonContainer>
     </KaKaoMap>
   );

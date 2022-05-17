@@ -28,15 +28,15 @@ const Input = forwardRef((props, ref) => {
         <textarea
           style={{
             resize: "none",
-            width: "85%",
+            width: "80%",
             boxShadow: "rgb(0 0 0 / 20%) 0px 0px 2px",
             border: "none",
             outline: "none",
             padding: "5px",
             marginLeft: "15px",
             textDecoration: "none",
-            
           }}
+          placeholder={placehorder}
           ref={ref}
         ></textarea>
       ) : type === "date" ? (
@@ -74,7 +74,7 @@ const InputStyled = styled.div`
   font-size: ${props => props.fontSize};
   color: ${props => props.color};
   width: ${props => props.width};
-  padding: 10px;
+  padding: 5px;
   & > input {
     flex: 1;
     border: none;

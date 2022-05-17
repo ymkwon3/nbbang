@@ -11,7 +11,7 @@ const notify = (type, message, autoClose, position = "bottom-center") => {
 };
 
 const ToastMessage = () => {
-  return <ToastContainer position="bottom-center" pauseOnHover={false} />;
+  return <ToastContainer position="bottom-center" pauseOnHover={false} closeOnClick={false} />;
 };
 
 export { ToastMessage, notify, toast };

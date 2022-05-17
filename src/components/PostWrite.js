@@ -184,6 +184,7 @@ const PostWrite = props => {
       >
         <Input
           label="제목"
+          placehorder="제목을 입력해주세요"
           ref={e => (submitRef.current.titleRef = e)}
           styles={{ height: "60px" }}
         />
@@ -194,11 +195,16 @@ const PostWrite = props => {
         }}
       >
         <Flex
-          styles={{ justifyContent: "start", width: "50%", padding: "10px" }}
+          styles={{ justifyContent: "start", width: "50%", padding: "5px" }}
         >
           <Text styles={{ fontSize: "14px", fontWeight: "700" }}>카테고리</Text>
           <Select
-            styles={{ width: "84px", height: "30px", marginLeft: "6px" }}
+            styles={{
+              width: "70px",
+              height: "30px",
+              marginLeft: "6px",
+              fontSize: "8px",
+            }}
             ref={e => (submitRef.current.categoryRef = e)}
             options={[
               { key: "같이 사자", value: "buy" },
@@ -223,7 +229,7 @@ const PostWrite = props => {
           styles={{
             width: "calc(50% - 16px)",
             height: "60px",
-            padding: "0 10px 0 0",
+            padding: "0 5px 0 0",
           }}
         />
       </Flex>
@@ -235,7 +241,7 @@ const PostWrite = props => {
         <Input
           label="가격"
           type="number"
-          placehorder="ex) 50000"
+          placehorder="ex) 5000"
           ref={e => (submitRef.current.priceRef = e)}
           styles={{ width: "calc(50% - 28px)", height: "60px" }}
         />
@@ -293,7 +299,7 @@ const PostWrite = props => {
             );
           }}
         >
-          모집위치
+          모임위치
         </Button>
       </Flex>
       <Flex
@@ -303,6 +309,7 @@ const PostWrite = props => {
       >
         <Input
           label="상세위치"
+          placehorder="상세위치를 입력해주세요"
           ref={e => (submitRef.current.addressDetailRef = e)}
           styles={{ height: "60px" }}
         />
@@ -315,6 +322,7 @@ const PostWrite = props => {
         <Input
           type="textarea"
           label="내용"
+          placehorder="내용을 입력해주세요"
           ref={e => (submitRef.current.contentRef = e)}
           styles={{ height: "60px" }}
         />
