@@ -115,10 +115,7 @@ const PostDetail = ({
               borderRadius: "20px",
             }}
           >
-            {detailInfo.headList.length === 1 && detailInfo.headList[0] === 0
-              ? 1
-              : detailInfo.headList.length + 1}
-            /{detailInfo.headCount}
+            {detailInfo.headList.length + 1}/{detailInfo.headCount}
           </Flex>
         </Flex>
         <Flex styles={{ flexDirection: "column" }}>

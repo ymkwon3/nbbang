@@ -11,6 +11,7 @@ import moment from "moment";
 
 const startChatDB = createAsyncThunk("chat/startChat", async (postid) => {
   return getAPI(`/main/getchat/${postid}`).then((res) => {
+    console.log(res.data);
     return res.data;
   });
 });

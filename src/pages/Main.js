@@ -101,8 +101,14 @@ const Main = () => {
 
   React.useEffect(() => {
     socket.emit("socket is connected", userInfo);
-    socket.on("send message alarm", (messageAlarm) => {
-      console.log(messageAlarm);
+    socket.on("send message alarm", (messageNoti) => {
+      console.log(messageNoti);
+    });
+    socket.on("leaved chatroom", (leaveNoti) => {
+      console.log(leaveNoti);
+    });
+    socket.on("added_new_participant", (addedNewParticiparntNoti) => {
+      console.log(addedNewParticiparntNoti);
     });
   }, []);
   /*

@@ -244,8 +244,6 @@ const ChatBox = React.forwardRef(
             />
             <ChatBoxRight
               postid={postid}
-              chatRoomUsers={chatRoomUsers}
-              participantList={participantList}
               socket={socket}
               awaiters={awaiters ? awaiters : awaiterList}
               setAwaiters={setAwaiters}
@@ -416,11 +414,8 @@ export const ChatBoxRight = forwardRef(
     };
 
     const deleteParticipant = (selectedUser) => {
-      // if (loggedUser.userId === selectedUser.User_userId) {
-      //   socket.emit("leave chatroom", postid, selectedUser.User_userId);
-      //   return;
-      // }
       setLoadingDeleteParticipant(true);
+
       socket.emit("cancel_new_participant", { postid, selectedUser });
 
       let updatedParticipantList = participants.filter(
@@ -437,7 +432,8 @@ export const ChatBoxRight = forwardRef(
     };
 
     const selfLeavChatroom = () => {
-      socket.on("leave chatroom", postid, loggedUser.userId);
+      console.log("실행");
+      socket.emit("leave chatroom", postid, loggedUser.userId);
     };
 
     return (
@@ -560,7 +556,7 @@ export const ChatBoxRight = forwardRef(
             <GiExitDoor
               className="hover-event-to-blurr"
               style={{ width: "31px", height: "28px" }}
-              _onClick={selfLeavChatroom}
+              onClick={selfLeavChatroom}
             />
           </Flex>
         </UserListContainer>
