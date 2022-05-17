@@ -15,6 +15,7 @@ const Header = props => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
+  const isDesktop = Desktop(0);
 
   const userInfo = useSelector(state => state.user.userInfo);
   const isLogin = useSelector(state => state.user.isLogin);
@@ -66,7 +67,7 @@ const Header = props => {
         border: `1px solid ${primaryDarked}`,
         boxShadow: "0px 9px 10px -4px rgba(0, 0, 0, 0.2)",
         zIndex: 11,
-        padding: "0 50px",
+        padding: isDesktop === undefined ?"0 50px" : "0 10px",
       }}
     >
       <Flex styles={{ justifyContent: "start" }}>

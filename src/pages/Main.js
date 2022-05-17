@@ -13,6 +13,7 @@ import MyLocation from "../components/MyLocation";
 
 //style
 import ChatBox from "../components/ChatBox";
+import { Desktop } from "../shared/Responsive";
 import {
   right,
   left,
@@ -26,6 +27,9 @@ const Main = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const geocoder = new kakao.maps.services.Geocoder();
+
+  // 반응형을 위한
+  const isDesktop = Desktop(0);
 
   // 유저위치를 처음 지정할 때 한번만 실행
   const userPositionRef = React.useRef(null);
@@ -238,16 +242,17 @@ const Main = () => {
           style={{
             width: "0",
             height: "100%",
-            position: "relative",
+            position: isDesktop === undefined ? "relative" : "absolute",
             transition: "0.2s",
             overflow: "hidden",
-            zIndex: "8",
+            zIndex: "10",
             boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
           }}
         >
           <Flex
             styles={{
-              width: "430px",
+              maxWidth: "430px",
+              width: "100%",
               height: "100%",
               background: "rgba(245, 236, 229, 0.8)",
               position: "absolute",
@@ -329,7 +334,7 @@ const ButtonContainer = styled.div`
   position: absolute;
   right: 20px;
   bottom: 20px;
-  z-index: 10;
+  z-index: 7;
 `;
 
 export default Main;
