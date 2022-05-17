@@ -98,6 +98,7 @@ const InputStyled = styled.div`
     align-items: center;
     font-size: ${props => props.fontSize};
     font-weight: ${props => props.fontWeight};
+    white-space: nowrap;
   }
 `;
 

@@ -197,7 +197,7 @@ const PostWrite = props => {
         <Flex
           styles={{ justifyContent: "start", width: "50%", padding: "5px" }}
         >
-          <Text styles={{ fontSize: "14px", fontWeight: "700" }}>카테고리</Text>
+          <Text styles={{ fontSize: "14px", fontWeight: "700", whiteSpace: "nowrap" }}>카테고리</Text>
           <Select
             styles={{
               width: "70px",
