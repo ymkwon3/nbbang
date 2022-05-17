@@ -37,7 +37,7 @@ const FooterNavi = props => {
       }}
     >
       <FooterBtn onClick={clickHome}>홈으로</FooterBtn>
-      <FooterBtn>게시물</FooterBtn>
+      {/* <FooterBtn>게시물</FooterBtn> */}
       
       <FooterBtn>알림</FooterBtn>
       {isLogin ? (
