@@ -33,7 +33,7 @@ const Post = props => {
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    marginBottom: "3px",
+    marginBottom: "10px",
     letterSpacing: "0.5px",
   };
 
@@ -47,18 +47,18 @@ const Post = props => {
   return (
     <Flex
       styles={{
-        height: "140px",
         boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-        borderRadius: "30px",
-        padding: "15px",
+        borderRadius: "20px",
+        padding: "25px 15px",
+        height: "180px",
       }}
       className="post-card"
     >
       <Image
         styles={{
-          width: "110px",
-          height: "110px",
-          borderRadius: "30px",
+          width: "130px",
+          height: "130px",
+          borderRadius: "20px",
           border: "1px solid #dbdbdb",
         }}
         shape="rectangle"
@@ -101,6 +101,7 @@ const Post = props => {
         styles={{
           flexDirection: "column",
           justifyContent: "start",
+          alignItems: "start",
           width: "30px",
           height: "100%",
           gap: "5px"

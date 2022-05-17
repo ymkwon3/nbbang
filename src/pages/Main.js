@@ -70,13 +70,13 @@ const Main = () => {
 
   // 글쓰기 상세보기 컨테이너 펼치기 및 컴포넌트 변경
   const clickContainer = (type, postId) => {
-    const con = leftContianerRef.current.style.width;
-    if (con === "0px") leftContianerRef.current.style.width = "430px";
+    const con = leftContianerRef.current.style.maxWidth;
+    if (con === "0px") leftContianerRef.current.style.maxWidth = "360px";
     if (type === "detail") {
       // 다른 게시물이 선택되면 채팅방 닫기
       setOpenChatroom(false);
       dispatch(postActions.getPostDetailDB(postId));
-    } else if (type === "close") leftContianerRef.current.style.width = "0px";
+    } else if (type === "close") leftContianerRef.current.style.maxWidth = "0px";
     setLeftContainer(type);
   };
   // sidenav 전체 접어두기, 펼치기
@@ -240,7 +240,8 @@ const Main = () => {
         <div
           ref={leftContianerRef}
           style={{
-            width: "0",
+            maxWidth: "0",
+            width: "100%",
             height: "100%",
             position: isDesktop === undefined ? "relative" : "absolute",
             transition: "0.2s",
@@ -326,7 +327,7 @@ const LeftContainer = styled.div`
   position: relative;
   justify-content: start;
   max-width: fit-content;
-  width: 100%;
+  width: 90%;
   height: 100%;
 `;
 

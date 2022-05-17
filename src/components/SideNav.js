@@ -37,7 +37,7 @@ const SideNav = props => {
   return (
     <Flex
       styles={{
-        maxWidth: "430px",
+        maxWidth: "360px",
         width: "100%",
         height: "100%",
         flexDirection: "column",
@@ -59,12 +59,13 @@ const SideNav = props => {
           position: "sticky",
           top: "0",
           zIndex: "11",
-          padding: "40px 30px 10px",
+          padding: "30px 30px 10px",
         }}
       >
         <Flex
           styles={{
-            margin: "-17px 0 25px 300px",
+            justifyContent: "end",
+            marginBottom: "20px"
           }}
         >
 
@@ -141,7 +142,7 @@ const SideNav = props => {
       <Flex
         styles={{
           flexDirection: "column",
-          padding: "20px 30px",
+          padding: "10px 16px",
           flexGrow: "3",
           justifyContent: "start",
         }}
@@ -178,7 +179,7 @@ const SideNav = props => {
 
 const StyledPost = styled.div`
   width: 100%;
-  margin: 10px 0;
+  margin: 8px 0;
 `;
 
 export default SideNav;

@@ -5,6 +5,7 @@ import { Button, Flex, Select, Text } from "../elements";
 import "moment/locale/ko";
 
 import { actionCreator as postActions } from "../redux/modules/post";
+import { secondaryColor } from "../shared/color";
 
 const Dropdown = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const Dropdown = () => {
         height: "30px",
         paddingLeft: "15px",
         outline: "none",
+        color: secondaryColor
       }}
       ref={e => (selectRef.current = e)}
       _onChange={changeEvent}
