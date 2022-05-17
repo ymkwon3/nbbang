@@ -5,6 +5,7 @@
 
 * {
   font-family: 'pretendard';
+  -webkit-tap-highlight-color: transparent;
 }
 
 .border-left-radius {
