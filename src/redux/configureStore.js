@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import User from "./modules/user";
 import Post from "./modules/post";
 import Chat from "./modules/chat";
+import Notification from "./modules/notification";
 import UserPage from "./modules/userpage";
 
 const middlewares = [];
@@ -19,6 +20,7 @@ export default configureStore({
     post: Post,
     chat: Chat,
     userpage: UserPage,
+    notification: Notification,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(...middlewares),

@@ -11,15 +11,19 @@ import { logo, whiteHeart, notification } from "../image";
 import { Desktop, Mobile } from "../shared/Responsive";
 import { primaryColor, primaryDarked, secondaryColor } from "../shared/color";
 
-const Header = props => {
+import styled from "styled-components";
+
+const Header = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
   const isDesktop = Desktop(0);
 
-  const userInfo = useSelector(state => state.user.userInfo);
-  const isLogin = useSelector(state => state.user.isLogin);
-  const category = useSelector(state => state.post.category);
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const isLogin = useSelector((state) => state.user.isLogin);
+  const category = useSelector((state) => state.post.category);
+  const notificationList = useSelector((state) => state.notification?.list);
+  console.log(notificationList);
 
   const [drop, setDrop] = React.useState(false);
 
@@ -27,7 +31,7 @@ const Header = props => {
     //temp
     dispatch(userActions.logout());
     history.push("/login");
-    setDrop(prev => !prev);
+    setDrop((prev) => !prev);
   };
 
   const clickLogin = () => {
@@ -109,14 +113,48 @@ const Header = props => {
             {/* <img src={whiteHeart} alt="filledHeart" /> */}
 
             {location.pathname === "/" && (
-              <img src={notification} alt="notification" />
+              <>
+                <img
+                  className="hover-event"
+                  src={notification}
+                  alt="notification"
+                />
+                <Flex
+                  styles={{
+                    flexDirection: "column",
+                    position: "absolute",
+                    backgroundColor: "#fff",
+                    boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+                    width: "243px",
+                    top: "40px",
+                    borderRadius: "10px",
+                    padding: "10px",
+                    gap: "10px",
+                  }}
+                >
+                  {notificationList.map((noti, idx) => (
+                    <NotiBtn
+                      key={noti.alarmId}
+                      style={{
+                        bg: "#fff",
+                        width: "",
+                        height: "",
+                        border: "none",
+                        borderRadius: "4px",
+                      }}
+                    >
+                      {noti.status}
+                    </NotiBtn>
+                  ))}
+                </Flex>
+              </>
             )}
 
             <Image
               styles={{ width: "38px", height: "38px" }}
               src={userInfo.userImage}
               className="hover-event"
-              _onClick={() => setDrop(prev => !prev)}
+              _onClick={() => setDrop((prev) => !prev)}
             ></Image>
             {drop ? (
               <Flex
@@ -141,7 +179,7 @@ const Header = props => {
                       history.push(`/mypage/${userInfo?.userId}`);
                     }
 
-                    setDrop(prev => !prev);
+                    setDrop((prev) => !prev);
                   }}
                 >
                   마이페이지
@@ -181,4 +219,31 @@ const Header = props => {
   );
 };
 
+const NotiBtn = styled.button`
+  cursor: pointer;
+  transition: 0.2s;
+  &:active {
+    opacity: 1;
+  }
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    height: 100%;
+    background-color: yellow;
+  }
+
+  &:current {
+    background-color: #cdd5ec;
+  }
+`;
 export default Header;

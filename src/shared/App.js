@@ -9,20 +9,28 @@ import MyPage from "../pages/MyPage";
 import ChatBox from "../components/ChatBox";
 import IsLogin from "./IsLogin";
 import { ToastMessage } from "../components/ToastMessage";
-import {Desktop, Mobile} from "../shared/Responsive"
+import { Desktop, Mobile } from "../shared/Responsive";
 import FooterNavi from "../components/FooterNavi";
 
 const App = () => {
   const isDesktop = Desktop(0);
   return (
     <Flex
-      styles={{ height: "100vh", flexDirection: "column", justifyContent: "start", position: "relative" }}
+      styles={{
+        height: "100vh",
+        flexDirection: "column",
+        justifyContent: "start",
+        position: "relative",
+      }}
     >
-      <ToastMessage/>
-      <Header/>
+      <ToastMessage />
+      <Header />
       <Flex
         styles={{
-          height: isDesktop === undefined ? "calc(100% - 50px)" : "calc(100% - 100px)"
+          height:
+            isDesktop === undefined
+              ? "calc(100% - 50px)"
+              : "calc(100% - 100px)",
         }}
       >
         {/* <Route path="/mypage" exact component={MyPage}></Route> */}
@@ -31,9 +39,10 @@ const App = () => {
           <Route path="/mypage/:userId" exact component={MyPage}></Route>
         </IsLogin>
         <Route path="/login" exact component={Login}></Route>
-        <Route path="/chat" exact component={ChatBox}></Route>
       </Flex>
-      <Mobile><FooterNavi/></Mobile>
+      <Mobile>
+        <FooterNavi />
+      </Mobile>
     </Flex>
   );
 };

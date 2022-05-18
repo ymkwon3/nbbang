@@ -24,7 +24,7 @@ const MessageBox = ({ messages, loggedUser }) => {
     <Flex styles={{ flexDirection: "column" }}>
       {messages &&
         messages.map((message, idx) => (
-          <div key={2 * idx} style={{ width: "100%" }}>
+          <div key={2 + idx} style={{ width: "100%" }}>
             {isTheSameDate(message, idx, messages) ? (
               <Flex
                 styles={{
