@@ -8,6 +8,7 @@ import { Flex, Button } from "../elements";
 import PostDetail from "../components/PostDetail";
 
 import { actionCreator as postActions } from "../redux/modules/post";
+import { actions as notiActions } from "../redux/modules/notification";
 import RadioInput from "../components/RadioInput";
 import MyLocation from "../components/MyLocation";
 
@@ -58,8 +59,8 @@ const Main = () => {
 
   /*해당 지역의 전체 게시물, 현재 선택된 카테고리, 
   게시물 지역 범위, 현재 위치 구분*/
-  const postList = useSelector(state => state.post.postList);
-  const category = useSelector(state => state.post.category);
+  const postList = useSelector((state) => state.post.postList);
+  const category = useSelector((state) => state.post.category);
   const [cityRange, setCityRange] = React.useState(2);
   const [city, setCity] = React.useState(3);
 
@@ -83,7 +84,7 @@ const Main = () => {
   };
 
   // sidenav 전체 접어두기, 펼치기
-  const clickFold = markerClick => {
+  const clickFold = (markerClick) => {
     if (sideNavRef.current.style.maxWidth === "0px" || markerClick) {
       sideNavRef.current.style.maxWidth = "fit-content";
       leftContainerRef.current.style.display = "block";
@@ -106,16 +107,24 @@ const Main = () => {
     mapRef.current.panTo(userPositionRef.current);
   };
 
+  // 소켓으로부터 알림 받는 부분
   React.useEffect(() => {
     socket.emit("socket is connected", userInfo);
     socket.on("send message alarm", (messageNoti) => {
-      console.log(messageNoti);
+      console.log(messageNoti[0]);
+      dispatch(notiActions.getNotification(messageNoti[0]));
+    });
+    socket.on("block chatroom", (blockChatroomNoti) => {
+      console.log(blockChatroomNoti);
+      // dispatch(notiActions.getNotification(blockChatroomNoti));
     });
     socket.on("leaved chatroom", (leaveNoti) => {
-      console.log(leaveNoti);
+      console.log(leaveNoti[0]);
+      dispatch(notiActions.getNotification(leaveNoti[0]));
     });
     socket.on("added_new_participant", (addedNewParticiparntNoti) => {
-      console.log(addedNewParticiparntNoti);
+      console.log(addedNewParticiparntNoti[0]);
+      dispatch(notiActions.getNotification(addedNewParticiparntNoti[0]));
     });
   }, []);
   /*
@@ -126,7 +135,7 @@ const Main = () => {
   React.useEffect(() => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     navigator.geolocation.getCurrentPosition(
-      position => {
+      (position) => {
         const userLat = position.coords.latitude;
         const userLng = position.coords.longitude;
         // const userLng = 126.89156781562811;
@@ -192,7 +201,7 @@ const Main = () => {
   React.useEffect(() => {
     // DB에서 받아오는 게시글들을 마커로 표시 후 띄워줌
     // 게시물이 바뀔 때마다, 마커들을 초기화 시킨 후 시작
-    markerListRef.current.map(m => {
+    markerListRef.current.map((m) => {
       m.setMap(null);
       return null;
     });
@@ -260,7 +269,7 @@ const Main = () => {
             maxWidth: "360px",
             width: "0",
             height: "100%",
-            position: isDesktop === undefined ? "relative" : "absolute",    
+            position: isDesktop === undefined ? "relative" : "absolute",
           }}
         >
           <Flex

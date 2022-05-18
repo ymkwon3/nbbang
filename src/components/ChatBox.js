@@ -1,7 +1,5 @@
 import React, { forwardRef } from "react";
 
-// import "../index.css";
-
 import { Button, Flex, Grid, Image, Input, Text } from "../elements";
 
 import styled from "styled-components";
@@ -18,10 +16,17 @@ import { GiExitDoor } from "react-icons/gi";
 import moment from "moment";
 import "moment/locale/ko";
 
-let selectedChatCompare;
-
 const ChatBox = React.forwardRef(
-  ({ socket, openChatModal, detailInfo, closeChatRoom }, ref) => {
+  (
+    {
+      socket,
+      openChatroom,
+      detailInfo,
+      closeChatRoom,
+      stateShiftForClosingChatroom,
+    },
+    ref
+  ) => {
     const dispatch = useDispatch();
     const chatroomUserListRef = React.useRef(null);
     let postid = `p${detailInfo.postId}`;
@@ -47,13 +52,7 @@ const ChatBox = React.forwardRef(
     const [openUserList, setOpenUserList] = React.useState(false);
 
     const goToChat = () => {
-      // later replace 1 with "real" selected roomId
-
-      // setChatUsers(chatRoomUsers);
-      // if (!postid) {
-      // 1은 postid로 대체
-      // p+postid 집어 넣기
-      if (openChatModal) {
+      if (openChatroom) {
         fetchMessages();
         if (postid !== undefined) {
           socket.emit("startchat", { postid: postid, loggedUser });
@@ -108,14 +107,10 @@ const ChatBox = React.forwardRef(
 
     React.useEffect(() => {
       goToChat();
-      // console.log(selectedChatCompare);
-      selectedChatCompare = postid;
     }, [postid]);
 
     React.useEffect(() => {
       socket.on("connected", (enteredUser) => {
-        // console.log("연결성공!");
-        // console.log(`${enteredUser}`);
         setSocketConnected(true);
         // 나중에 css 커스터마이징하기
         let newChat = {
@@ -128,38 +123,15 @@ const ChatBox = React.forwardRef(
       socket.on("stop typing", () => setIsTyping(false));
     }, []);
 
-    // React.useEffect(() => {
-    //   // fetchMessages();
-    //   // selectedChatCompare = selectedChat;
-    //   // console.log(participantList);
-    //   // setAwaiters(awaiterList);
-    // }, [awaiterList]);
-
     //receive message
     React.useEffect(() => {
-      socket.on("send alarm", (messageAlarmInfo) => {
-        // console.log(messageAlarmInfo);
-      });
       socket.on("receive message", (newMessageReceived) => {
-        // console.log(newMessageReceived);
-        setNewlyAddedMessages((messageList) => [
-          ...messageList,
-          newMessageReceived,
-        ]);
-        // }
-        // if (
-        //   !selectedChatCompare ||
-        //   selectedChatCompare !== newMessageReceived.Post_postId
-        // ) {
-        //   console.log("실행");
-        //   // setNotification([newMessageReceived, ...notification]);
-        // } else {
-        //   console.log(newMessageReceived);
-        //   setNewlyAddedMessages((messageList) => [
-        //     ...messageList,
-        //     newMessageReceived,
-        //   ]);
-        // }
+        console.log("실행2");
+        console.log(newMessageReceived);
+        // setNewlyAddedMessages((messageList) => [
+        //   ...messageList,
+        //   newMessageReceived,
+        // ]);
       });
 
       socket.on(
@@ -216,12 +188,13 @@ const ChatBox = React.forwardRef(
         <ChatModal
           ref={ref}
           style={{
-            position: "fixed",
+            position: "absolute",
             transition: "top 500ms cubic-bezier(0.86, 0, 0.07, 1)",
             zIndex: "100",
-            width: "432px",
-            height: "90vh",
-            padding: "20px 23px 20px 23px",
+            maxWidth: "360px",
+            width: "100%",
+            height: "100%",
+            padding: "20px 23px",
           }}
         >
           <Flex
@@ -246,11 +219,14 @@ const ChatBox = React.forwardRef(
               postid={postid}
               socket={socket}
               awaiters={awaiters ? awaiters : awaiterList}
+              awaiterList={awaiterList}
               setAwaiters={setAwaiters}
               participants={participants ? participants : participantList}
+              participantList={participantList}
               setParticipants={setParticipants}
               ref={chatroomUserListRef}
               loggedUser={loggedUser}
+              stateShiftForClosingChatroom={stateShiftForClosingChatroom}
             />
           </Flex>
         </ChatModal>
@@ -348,6 +324,7 @@ export const ChatBoxLeft = ({
             marginTop: "29px",
             borderRadius: "20px",
             backgroundColor: "#E8E8F2",
+            padding: "0 5px",
           }}
         >
           <input
@@ -382,9 +359,12 @@ export const ChatBoxRight = forwardRef(
       socket,
       awaiters,
       setAwaiters,
+      awaiterList,
       participants,
       setParticipants,
+      participantList,
       loggedUser,
+      stateShiftForClosingChatroom,
     },
     ref
   ) => {
@@ -398,12 +378,13 @@ export const ChatBoxRight = forwardRef(
 
     const addNewParticipant = (selectedUser) => {
       setLoadingAddParticipant(true);
+
       socket.emit("add_new_participant", { postid, selectedUser });
 
       setParticipants((existingParticipantList) => {
         return existingParticipantList
-          ? [...existingParticipantList, selectedUser]
-          : [selectedUser];
+          ? [selectedUser, ...existingParticipantList]
+          : [selectedUser, ...participantList];
       });
       let updatedAwaiterList = awaiters.filter(
         (awaiter) => awaiter.User_userId !== selectedUser.User_userId
@@ -424,15 +405,22 @@ export const ChatBoxRight = forwardRef(
       setParticipants(updatedParticipantList);
       setAwaiters((existingAwaiterList) => {
         return existingAwaiterList
-          ? [...existingAwaiterList, selectedUser]
-          : [selectedUser];
+          ? [selectedUser, ...existingAwaiterList]
+          : [selectedUser, ...awaiterList];
       });
 
       setLoadingDeleteParticipant(false);
     };
 
     const selfLeavChatroom = () => {
-      console.log("실행");
+      // put the spinner later
+      stateShiftForClosingChatroom();
+      // let selectedUser = {
+      //   User_userEmail: loggedUser.userEmail,
+      //   User_userId: loggedUser.userId,
+      //   User_userName: loggedUser.userName,
+      // };
+      // deleteParticipant(selectedUser);
       socket.emit("leave chatroom", postid, loggedUser.userId);
     };
 
@@ -486,71 +474,70 @@ export const ChatBoxRight = forwardRef(
               </Flex>
             </Flex>
 
-            <div>
+            <Flex
+              styles={{
+                flexDirection: "column",
+                padding: "0 22px",
+              }}
+            >
               <Flex
                 styles={{
-                  flexDirection: "column",
-                  padding: "0 22px",
+                  justifyContent: "space-between",
+                  margin: "10px 0 26px 0",
+                }}
+              >
+                <Text
+                  styles={{
+                    fontWeight: "700",
+                    fontSize: "18px",
+                  }}
+                >
+                  거래자
+                </Text>
+                <Text
+                  styles={{
+                    fontWeight: "700",
+                    fontSize: "18px",
+                  }}
+                >
+                  {participants.length} 명
+                </Text>
+              </Flex>
+              <Flex
+                styles={{
+                  overflow: "hidden",
+                  height: "26vh",
                 }}
               >
                 <Flex
+                  className="removeScroll"
                   styles={{
-                    justifyContent: "space-between",
-                    margin: "10px 0 26px 0",
+                    flexDirection: "column",
+                    height: "100%",
+                    width: "100%",
+                    justifyContent: "start",
+                    overflowX: "hidden",
+                    overflowY: "scroll",
                   }}
                 >
-                  <Text
-                    styles={{
-                      fontWeight: "700",
-                      fontSize: "18px",
-                    }}
-                  >
-                    거래자
-                  </Text>
-                  <Text
-                    styles={{
-                      fontWeight: "700",
-                      fontSize: "18px",
-                    }}
-                  >
-                    {participants.length} 명
-                  </Text>
-                </Flex>
-                <Flex
-                  styles={{
-                    overflow: "hidden",
-                    height: "26vh",
-                  }}
-                >
-                  <Flex
-                    className="removeScroll"
-                    styles={{
-                      flexDirection: "column",
-                      height: "100%",
-                      width: "100%",
-                      justifyContent: "start",
-                      overflowX: "hidden",
-                      overflowY: "scroll",
-                    }}
-                  >
-                    {participants.map((participant, idx) => (
-                      <Participants
-                        key={participant.User_userId}
-                        participant={participant}
-                        deleteParticipant={deleteParticipant}
-                        chatAdminId={chatAdminId}
-                        loggedUser={loggedUser}
-                      />
-                    ))}
-                  </Flex>
+                  {participants.map((participant, idx) => (
+                    <Participants
+                      key={participant.User_userId}
+                      participant={participant}
+                      deleteParticipant={deleteParticipant}
+                      chatAdminId={chatAdminId}
+                      loggedUser={loggedUser}
+                    />
+                  ))}
                 </Flex>
               </Flex>
-            </div>
+            </Flex>
           </div>
           <Flex
             styles={{
               justifyContent: "flex-end",
               paddingRight: "18px",
+              marginBottom: "110px",
             }}
           >
             <GiExitDoor
@@ -572,7 +559,7 @@ const UserListContainer = styled.div`
   flex-direction: column;
   position: absolute;
   right: -23px;
-  top: -41px;
+  top: -23px;
   background-color: #ffffff;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -653,7 +640,7 @@ export const Participants = ({
     <div style={{ width: "100%", marginTop: "10px" }}>
       <Flex
         styles={{
-          borderBottom: "1px solid #000000",
+          borderBottom: "2px solid rgba(0, 0, 0, .2)",
           height: "auto",
           paddingBottom: "12px",
           justifyContent: "space-between",

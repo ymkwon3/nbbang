@@ -37,30 +37,24 @@ const PostDetail = ({
     fontWeight: "400",
   };
 
+  const stateShiftForClosingChatroom = () => {
+    setOpenChatroom(false);
+    setIsChatButtonClicked(false);
+  };
+
   const openChatModal = () => {
     setOpenChatroom(true);
     setIsChatButtonClicked(true);
   };
 
   const closeChatRoom = (userWillLeave) => {
-    setOpenChatroom(false);
-    setIsChatButtonClicked(false);
+    stateShiftForClosingChatroom();
     socket.emit("close chatroom", `p${detailInfo.postId}`, userWillLeave);
   };
 
   React.useEffect(() => {
-    // socket.emit("disconnecting", userInfo.userId);
-    // socket.on("send message alarm", (messageAlarm) => {
-    //   console.log(messageAlarm);
-    // });
-    // socket.on("message", (messageAlarm) => {
-    //   console.log(messageAlarm);
-    // });
-  }, []);
-
-  React.useEffect(() => {
     if (openChatroom) {
-      chatRef.current.style.top = "80px";
+      chatRef.current.style.top = "0px";
     }
   }, [openChatroom]);
 
@@ -80,6 +74,7 @@ const PostDetail = ({
           flexDirection: "column",
           overflow: "scroll",
           justifyContent: "start",
+          position: "relative",
         }}
       >
         <Flex styles={{ justifyContent: "end" }}>
@@ -235,9 +230,10 @@ const PostDetail = ({
         <ChatBox
           ref={chatRef}
           socket={socket}
-          openChatModal={openChatModal}
+          openChatroom={openChatroom}
           detailInfo={detailInfo}
           closeChatRoom={closeChatRoom}
+          stateShiftForClosingChatroom={stateShiftForClosingChatroom}
         />
       ) : (
         <></>
