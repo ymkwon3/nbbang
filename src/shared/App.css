@@ -1,5 +1,5 @@
 @font-face {
-  font-family: 'pretendard';
+  font-family: 'Pretendard';
   src: url('../font/PretendardVariable.ttf') format('woff');
   font-weight: normal;
   font-style: normal;
@@ -20,7 +20,7 @@
 }
 
 * {
-  font-family: 'pretendard';
+  font-family: 'Pretendard';
   -webkit-tap-highlight-color: transparent;
 }
 

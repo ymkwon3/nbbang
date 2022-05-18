@@ -7,6 +7,15 @@ import { Flex, Button, Text, Image } from "../elements";
 import ChatBox from "./ChatBox";
 
 import { primaryColor, secondaryColor } from "../shared/color";
+import {
+  trash,
+  eatCategory,
+  buyCategory,
+  price,
+  calendar,
+  address,
+  content,
+} from "../image";
 
 import moment from "moment";
 import "moment/locale/ko";
@@ -28,10 +37,9 @@ const PostDetail = ({
   const isLogin = useSelector(state => state.user.isLogin);
   const chatRef = React.useRef();
 
-  const keyStyles = {
-    fontSize: "16px",
-    fontWeight: "700",
-  };
+  const iconStyles = {
+     width: "24px", height: "24px", marginRight: "10px" 
+  }
 
   const valueStyles = {
     fontSize: "16px",
@@ -48,7 +56,7 @@ const PostDetail = ({
     setIsChatButtonClicked(true);
   };
 
-  const closeChatRoom = (userWillLeave) => {
+  const closeChatRoom = userWillLeave => {
     stateShiftForClosingChatroom();
     socket.emit("close chatroom", `p${detailInfo.postId}`, userWillLeave);
   };
@@ -62,12 +70,12 @@ const PostDetail = ({
   };
 
   // 게시물 모집 완료
-  const clickComplete = (postId) => {
+  const clickComplete = postId => {
     if (window.confirm("모집 완료 하시겠습니까?")) {
       dispatch(postActions.completePostDB(postId));
       _clickContainer();
     }
-  }
+  };
 
   React.useEffect(() => {
     if (openChatroom) {
@@ -87,70 +95,83 @@ const PostDetail = ({
           borderRadius: "22px",
           width: "90%",
           height: "90%",
-          padding: "25px",
           flexDirection: "column",
           overflow: "scroll",
           justifyContent: "start",
-          position: "relative"
+          position: "relative",
         }}
       >
-        <Flex styles={{ justifyContent: "end" }}>
-          <Text
-            styles={{
-              fontSize: "32px",
-              color: "#bbb",
-              lineHeight: "32px",
-              cursor: "pointer",
-            }}
-            _onClick={_clickContainer}
-          >
-            {"×"}
-          </Text>
-        </Flex>
-        <Flex styles={{ margin: "10px 0" }}>
-          <Flex
-            styles={{ width: "fit-content", flex: 3, justifyContent: "start" }}
-          >
-            <Image
+        <Flex styles={{ flexDirection: "column", padding: "25px" }}>
+          <Flex styles={{ justifyContent: "end" }}>
+            <Text
               styles={{
-                width: "38px",
-                height: "38px",
+                fontSize: "32px",
+                color: "#bbb",
+                lineHeight: "32px",
+                cursor: "pointer",
               }}
-              src={detailInfo.userImage}
-            />
-            <Text styles={{ marginLeft: "10px", fontWeight: "600" }}>
-              {detailInfo.writer}
+              _onClick={_clickContainer}
+            >
+              {"×"}
             </Text>
           </Flex>
-          {userInfo?.userId === detailInfo?.User_userId ? (
-            <Button
-              styles={{ backgroundColor: secondaryColor, color: "#fff" }}
-              _onClick={() => clickdelete(detailInfo.postId)}
+          <Flex styles={{ margin: "25px 0" }}>
+            <Flex
+              styles={{
+                width: "fit-content",
+                flex: 3,
+                justifyContent: "start",
+              }}
             >
-              임시삭제버튼
-            </Button>
-          ) : null}
+              <Image
+                styles={{
+                  width: "50px",
+                  height: "50px",
+                }}
+                src={detailInfo.userImage}
+              />
+              <Text
+                styles={{
+                  marginLeft: "10px",
+                  fontWeight: "700",
+                  fontSize: "20px",
+                  fontFamily: "Cafe24Ssurround",
+                }}
+              >
+                {detailInfo.writer}
+              </Text>
+            </Flex>
+            {userInfo?.userId === detailInfo?.User_userId ? (
+              <Button _onClick={() => clickdelete(detailInfo.postId)}>
+                <img alt="trash" src={trash}></img>
+              </Button>
+            ) : null}
 
-          <Flex
-            styles={{
-              width: "60px",
-              height: "30px",
-              border: "1px solid #19253D",
-              borderRadius: "20px",
-            }}
-          >
-            {detailInfo.headList.length + 1}/{detailInfo.headCount}
+            <Flex
+              styles={{
+                width: "60px",
+                height: "30px",
+                borderRadius: "20px",
+                boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
+              }}
+            >
+              {detailInfo.headList.length + 1}/{detailInfo.headCount}
+            </Flex>
           </Flex>
-        </Flex>
-        <Flex styles={{ flexDirection: "column" }}>
-          <Flex
-            styles={{
-              flexDirection: "column",
-              gap: "5px",
-              padding: "0 10px",
-              alignItems: "flex-start",
-            }}
-          >
+          <Flex styles={{ justifyContent: "start" }}>
+            {detailInfo.category === "eat" ? (
+              <img
+                alt="eat"
+                src={eatCategory}
+                style={iconStyles}
+              ></img>
+            ) : (
+              <img
+                alt="buy"
+                src={buyCategory}
+                style={iconStyles}
+              ></img>
+            )}
             <Text
               styles={{
                 fontSize: "28px",
@@ -159,55 +180,69 @@ const PostDetail = ({
             >
               {detailInfo.title}
             </Text>
-            <Flex styles={{ justifyContent: "start", margin: "10px 0" }}>
-              <Text styles={keyStyles}>
-                카테고리:{" "}
-                <Text styles={valueStyles}>
-                  {detailInfo.category === "eat" ? "같이 먹자" : "같이 사자"}
-                </Text>
-              </Text>
-            </Flex>
-            <Flex
-              styles={{ justifyContent: "space-between", margin: "10px 0" }}
-            >
-              <Text styles={keyStyles}>
-                가격:{" "}
+          </Flex>
+        </Flex>
+        <Image
+          styles={{
+            width: "100%",
+          }}
+          src={detailInfo.image}
+          shape={"rectangle"}
+        />
+        <Flex styles={{ flexDirection: "column", padding: "25px" }}>
+          <Flex
+            styles={{
+              flexDirection: "column",
+              gap: "25px",
+              alignItems: "flex-start",
+            }}
+          >
+            <Flex styles={{ justifyContent: "space-between" }}>
+              <Flex styles={{ flex: 1, justifyContent: "start" }}>
+                <img
+                  alt="price"
+                  src={price}
+                  style={iconStyles}
+                ></img>
                 <Text styles={valueStyles}>
                   {detailInfo.price
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                   원
                 </Text>
-              </Text>
-
-              <Text styles={keyStyles}>
-                마감일:{" "}
+              </Flex>
+              <Flex styles={{ flex: 1, justifyContent: "start" }}>
+                <img
+                  alt="calendar"
+                  src={calendar}
+                  style={iconStyles}
+                ></img>
                 <Text styles={valueStyles}>
-                  {moment(detailInfo.endTime).format("YYYY-MM-DD")}
+                  {moment(detailInfo.endTime).format("MM-DD")} 까지
                 </Text>
-              </Text>
+              </Flex>
             </Flex>
-            <Flex styles={{ justifyContent: "start", margin: "10px 0" }}>
-              <Text styles={keyStyles}>
-                장소: <Text styles={valueStyles}>{detailInfo.address}</Text>
-              </Text>
-            </Flex>
-            <Flex styles={{ justifyContent: "start", margin: "10px 0" }}>
-              <Text styles={keyStyles}>
-                내용: <Text styles={valueStyles}>{detailInfo.content}</Text>
-              </Text>
-            </Flex>
+            <Flex styles={{ justifyContent: "start" }}>
+                <img
+                  alt="address"
+                  src={address}
+                  style={iconStyles}
+                ></img>
+                <Text styles={valueStyles}>
+                {detailInfo.address}
+                </Text>
+              </Flex>
+              <Flex styles={{ justifyContent: "start" }}>
+                <img
+                  alt="content"
+                  src={content}
+                  style={iconStyles}
+                ></img>
+                <Text styles={valueStyles}>
+                {detailInfo.content}
+                </Text>
+              </Flex>
           </Flex>
-
-          <Image
-            styles={{
-              width: "100%",
-              border: "1px solid rgba(0, 0, 0, 0.1)",
-              margin: "10px 0",
-            }}
-            src={detailInfo.image}
-            shape={"rectangle"}
-          />
 
           {
             //로그인일 경우에만 보임
