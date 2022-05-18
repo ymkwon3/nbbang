@@ -1,5 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { actionCreator as postActions } from "../redux/modules/post";
 
 import { Flex, Button, Text, Image } from "../elements";
 import ChatBox from "./ChatBox";
@@ -20,11 +22,10 @@ const PostDetail = ({
   setIsChatButtonClicked,
   socket,
 }) => {
-  const detailInfo = useSelector((state) => state.post.postDetail);
-
-  const userInfo = useSelector((state) => state.user.userInfo);
-
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const dispatch = useDispatch();
+  const detailInfo = useSelector(state => state.post.postDetail);
+  const userInfo = useSelector(state => state.user.userInfo);
+  const isLogin = useSelector(state => state.user.isLogin);
   const chatRef = React.useRef();
 
   const keyStyles = {
@@ -42,10 +43,17 @@ const PostDetail = ({
     setIsChatButtonClicked(true);
   };
 
-  const closeChatRoom = (userWillLeave) => {
+  const closeChatRoom = userWillLeave => {
     setOpenChatroom(false);
     setIsChatButtonClicked(false);
     socket.emit("close chatroom", `p${detailInfo.postId}`, userWillLeave);
+  };
+
+  const clickdelete = postId => {
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      dispatch(postActions.deletePostDB(postId));
+      _clickContainer();
+    }
   };
 
   React.useEffect(() => {
@@ -95,8 +103,10 @@ const PostDetail = ({
             {"×"}
           </Text>
         </Flex>
-        <Flex styles={{ justifyContent: "space-between", margin: "10px 0" }}>
-          <Flex styles={{ width: "fit-content" }}>
+        <Flex styles={{ margin: "10px 0" }}>
+          <Flex
+            styles={{ width: "fit-content", flex: 3, justifyContent: "start" }}
+          >
             <Image
               styles={{
                 width: "38px",
@@ -108,6 +118,14 @@ const PostDetail = ({
               {detailInfo.writer}
             </Text>
           </Flex>
+          {userInfo?.userId === detailInfo?.User_userId ? (
+            <Button
+              styles={{ backgroundColor: secondaryColor, color: "#fff" }}
+              _onClick={() => clickdelete(detailInfo.postId)}
+            >
+              임시삭제버튼
+            </Button>
+          ) : null}
 
           <Flex
             styles={{

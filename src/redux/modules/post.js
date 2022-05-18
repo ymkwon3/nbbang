@@ -20,6 +20,12 @@ const addPostDB = createAsyncThunk("post/add", async (data) => {
   return await postFormAPI('/main/postadd', data);
 });
 
+const deletePostDB = createAsyncThunk("post/delete", async (postId) => {
+  return await deleteAPI(`/main/${postId}`).then(() => {
+    return postId
+  });
+});
+
 const postLikeDB = createAsyncThunk("post/like", async data => {
   const { postId, isLike } = data;
   if (isLike) {
@@ -87,7 +93,6 @@ const postSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(addPostDB.fulfilled, (state, action) => {
-      console.log(action.payload)
       state.postList.unshift(action.payload.row[0]);
     });
     builder.addCase(getPostListDB.fulfilled, (state, action) => {
@@ -95,8 +100,10 @@ const postSlice = createSlice({
     });
     builder.addCase(getPostDetailDB.fulfilled, (state, action) => {
       state.postDetail = action.payload;
-    })
-  
+    });
+    builder.addCase(deletePostDB.fulfilled, (state, action) => {
+      state.postList = state.postList.filter(v => v.postId !== action.payload )
+    });
     builder.addCase(postLikeDB.fulfilled, (state, action) => {
       const { postId, isLike } = action.meta.arg;
       state.postList = state.postList.map(v => {
@@ -117,6 +124,7 @@ const actionCreator = {
   addPostDB,
   postLikeDB,
   getPostDetailDB,
+  deletePostDB,
   ...postSlice.actions,
 };
 
