@@ -46,15 +46,15 @@ const Post = (props) => {
   return (
     <Flex
       styles={{
-        padding: "25px 9px",
+        padding: "25px 5px",
         height: "180px",
       }}
       className="post-card"
     >
       <Flex
         styles={{
-          width: "130px",
-          height: "130px",
+          width: "100px",
+          height: "100px",
           borderRadius: "20px",
         }}
       >
@@ -85,7 +85,7 @@ const Post = (props) => {
           flexDirection: "column",
           justifyContent: "space-between",
           marginLeft: "13px",
-          height: "100%",
+          height: "100px",
           width: "141px",
         }}
       >

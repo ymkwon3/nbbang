@@ -146,7 +146,7 @@ const SideNav = (props) => {
       <Flex
         styles={{
           flexDirection: "column",
-          padding: "0px 30px",
+          padding: "0px 15px",
           flexGrow: "3",
           justifyContent: "start",
         }}
