@@ -10,6 +10,7 @@ import { Desktop } from "../shared/Responsive";
 
 import moment from "moment";
 import "moment/locale/ko";
+import Modal from "../shared/Modal";
 
 const MyPage = props => {
   const dispatch = useDispatch();
@@ -21,7 +22,12 @@ const MyPage = props => {
   const userId = useParams().userId;
   const isDesktop = Desktop(0);
 
+  // 이미지 미리보기
   const [preview, setPreview] = React.useState(null);
+  // 모달상태관리
+  const [modal, setModal] = React.useState(false);
+  // 모달내용관리
+  const modalRef = React.useRef(null);
 
   const imageStyle = {
     borderRadius: "30px",
@@ -86,127 +92,160 @@ const MyPage = props => {
   };
 
   return (
-    <Flex
-      styles={{
-        flexDirection: "column",
-        height: "100%",
-        overflow: "scroll",
-        justifyContent: "start",
-        paddingTop: "10vh",
-      }}
-    >
-      <Flex styles={{ width: "80%", maxWidth: "800px" }}>
-        <label htmlFor="profile" className="hover-event">
-          <Image
-            src={preview ? preview : userInfo?.userImage}
-            styles={{
-              width: isDesktop === undefined ? "200px" : "120px",
-              height: isDesktop === undefined ? "200px" : "120px",
-              border: "6px solid #FF5C00",
-            }}
-            shape="circle"
-          />
-        </label>
-        <input
-          onChange={e => setUserImage(e)}
-          id="profile"
-          type="file"
-          style={{ visibility: "hidden", width: "0" }}
-        ></input>
-        <Flex styles={{ flexDirection: "column", flex: 1 }}>
-          <Text
-            styles={{
-              fontSize: isDesktop === undefined ? "32px" : "20px",
-              fontWeight: "700",
-            }}
-          >
+    <>
+      <Flex
+        styles={{
+          flexDirection: "column",
+          height: "100%",
+          overflow: "scroll",
+          justifyContent: "start",
+          paddingTop: "10vh",
+        }}
+      >
+        <Flex styles={{ width: "80%", maxWidth: "800px" }}>
+          <label htmlFor="profile" className="hover-event">
+            <Image
+              src={preview ? preview : userInfo?.userImage}
+              styles={{
+                width: isDesktop === undefined ? "200px" : "120px",
+                height: isDesktop === undefined ? "200px" : "120px",
+                border: "6px solid #FF5C00",
+              }}
+              shape="circle"
+            />
+          </label>
+          <input
+            onChange={e => setUserImage(e)}
+            id="profile"
+            type="file"
+            style={{ visibility: "hidden", width: "0" }}
+          ></input>
+          <Flex styles={{ flexDirection: "column", flex: 1 }}>
             <Text
               styles={{
-                fontSize: "inherit",
+                fontSize: isDesktop === undefined ? "32px" : "20px",
                 fontWeight: "700",
-                color: "#FF5C00",
               }}
             >
-              {userInfo?.userName}
+              <Text
+                styles={{
+                  fontSize: "inherit",
+                  fontWeight: "700",
+                  color: "#FF5C00",
+                }}
+              >
+                {userInfo?.userName}
+              </Text>
+              님 반갑습니다!
             </Text>
-            님 반갑습니다!
-          </Text>
-          <Text
-            styles={{
-              fontSize: isDesktop === undefined ? "30px" : "20px",
-              fontWeight: "400",
-              marginTop: "40px",
-              marginBottom: "20px",
-            }}
-          >
-            완료된 거래 수
-          </Text>
-          <Text styles={{ fontSize: "30px", fontWeight: "700" }}>
             <Text
-              styles={{ fontSize: "inherit", fontWeight: "700", color: "#FF5C00" }}
+              styles={{
+                fontSize: isDesktop === undefined ? "30px" : "20px",
+                fontWeight: "400",
+                marginTop: "40px",
+                marginBottom: "20px",
+              }}
             >
-              {userInfo?.tradeCount ? userInfo.tradeCount : 0}
+              완료된 거래 수
             </Text>
-            건
-          </Text>
+            <Text styles={{ fontSize: "30px", fontWeight: "700" }}>
+              <Text
+                styles={{
+                  fontSize: "inherit",
+                  fontWeight: "700",
+                  color: "#FF5C00",
+                }}
+              >
+                {userInfo?.tradeCount ? userInfo.tradeCount : 0}
+              </Text>
+              건
+            </Text>
+          </Flex>
         </Flex>
+        <Flex
+          styles={{
+            maxWidth: "960px",
+            width: "90%",
+            height: "1px",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            margin: "40px 0",
+          }}
+        ></Flex>
+        <Flex
+          styles={{
+            width: "80%",
+            maxWidth: "960px",
+            justifyContent: "space-around",
+          }}
+        >
+          <Button
+            _onClick={() => changeType("mine")}
+            styles={postType === "mine" ? checkedStyle : buttonStyle}
+          >
+            나의 공구
+          </Button>
+          <Button
+            _onClick={() => changeType("join")}
+            styles={postType === "join" ? checkedStyle : buttonStyle}
+          >
+            참여 공구
+          </Button>
+          <Button
+            _onClick={() => changeType("like")}
+            styles={postType === "like" ? checkedStyle : buttonStyle}
+          >
+            찜한 공구
+          </Button>
+        </Flex>
+        <Grid
+          styles={{
+            width: "80%",
+            maxWidth: "960px",
+          }}
+        >
+          {/* 이 부분에서 불러온 게시물 맵을 돌려야함 */}
+          {postList.map(v => (
+            <Image
+              key={v.postId}
+              styles={imageStyle}
+              shape="post"
+              src={v.image}
+              _onClick={() => {
+                setModal(true);
+                modalRef.current = v;
+              }}
+            >
+              <Text styles={{ color: "#fff" }}>제목: {v.title}</Text>
+              <Text styles={{ color: "#fff" }}>내용: {v.content}</Text>
+              <Text styles={{ color: "#fff" }}>
+                마감일: {moment(v.endTime).format("MM-DD")}
+              </Text>
+              <Text styles={{ color: "#fff" }}>위치: {v.address}</Text>
+            </Image>
+          ))}
+        </Grid>
+        <Flex styles={{ minHeight: "10vh" }}></Flex>
       </Flex>
-      <Flex
-        styles={{
-          maxWidth: "960px",
-          width: "90%",
-          height: "1px",
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          margin: "40px 0",
-        }}
-      ></Flex>
-      <Flex
-        styles={{
-          width: "80%",
-          maxWidth: "960px",
-          justifyContent: "space-around",
-        }}
-      >
-        <Button
-          _onClick={() => changeType("mine")}
-          styles={postType === "mine" ? checkedStyle : buttonStyle}
-        >
-          나의 공구
-        </Button>
-        <Button
-          _onClick={() => changeType("join")}
-          styles={postType === "join" ? checkedStyle : buttonStyle}
-        >
-          참여 공구
-        </Button>
-        <Button
-          _onClick={() => changeType("like")}
-          styles={postType === "like" ? checkedStyle : buttonStyle}
-        >
-          찜한 공구
-        </Button>
-      </Flex>
-      <Grid
-        styles={{
-          width: "80%",
-          maxWidth: "960px",
-        }}
-      >
-        {/* 이 부분에서 불러온 게시물 맵을 돌려야함 */}
-        {postList.map(v => (
-          <Image key={v.postId} styles={imageStyle} shape="post" src={v.image}>
-            <Text styles={{ color: "#fff" }}>제목: {v.title}</Text>
-            <Text styles={{ color: "#fff" }}>내용: {v.content}</Text>
-            <Text styles={{ color: "#fff" }}>
-              마감일: {moment(v.endTime).format("MM-DD")}
-            </Text>
-            <Text styles={{ color: "#fff" }}>위치: {v.address}</Text>
-          </Image>
-        ))}
-      </Grid>
-      <Flex styles={{ minHeight: "10vh" }}></Flex>
-    </Flex>
+      {modal && <Modal close={() => setModal(false)}><MyPagePost v={modalRef.current}/></Modal>}
+    </>
   );
 };
+
+const MyPagePost = ({v}) => {
+  console.log(v);
+  return (<Flex styles={{
+    maxWidth: "600px",
+    width: "80vw",
+    backgroundColor: "#fff",
+    flexDirection: "column",
+  }}
+  _onClick={(e) => e.stopPropagation()}>
+    <Image shape="rectangle" src={v.image}/>
+    <Flex>
+      
+    </Flex>
+  </Flex>)
+
+}
 
 export default MyPage;

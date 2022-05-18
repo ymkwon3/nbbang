@@ -61,7 +61,6 @@ const Image = props => {
         <ImageRectangle
           style={{ ...styles }}
           src={src}
-          onClick={_onClick}
           className={className}
           {...defaultStyles}
         ></ImageRectangle>
@@ -73,6 +72,7 @@ const Image = props => {
             maxWidth: styles.maxWidth,
             maxHeight: styles.maxHeight,
           }}
+          _onClick={_onClick}
         >
           {children}
         </Flex>

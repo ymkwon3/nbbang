@@ -216,11 +216,12 @@ const ChatBox = React.forwardRef(
         <ChatModal
           ref={ref}
           style={{
-            position: "fixed",
+            position: "absolute",
             transition: "top 500ms cubic-bezier(0.86, 0, 0.07, 1)",
             zIndex: "100",
-            width: "432px",
-            height: "90vh",
+            maxWidth: "360px",
+            width: "100%",
+            height: "100%",
             padding: "20px 23px 20px 23px",
           }}
         >
