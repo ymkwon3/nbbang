@@ -45,7 +45,7 @@ const Header = (props) => {
     width: "120px",
     height: "35px",
     borderRadius: "30px",
-    border: `1px solid ${primaryDarked}`,
+    // border: `1px solid ${primaryDarked}`,
     fontSize: "16px",
     fontWeight: "700",
     fontFamily: "Cafe24SsurroundAir"
