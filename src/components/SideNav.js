@@ -54,14 +54,14 @@ const SideNav = (props) => {
       <Flex
         styles={{
           flexDirection: "column",
-          // boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
+          boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
           backgroundColor: "#fff",
           position: "sticky",
           top: "0",
           zIndex: "11",
           padding: "30px 30px 10px",
           maxWidth: "360px",
-          width: "100vw"
+          width: "100vw",
         }}
       >
         <Flex
@@ -148,30 +148,26 @@ const SideNav = (props) => {
       <Flex
         styles={{
           flexDirection: "column",
-          padding: "0px 15px",
+          padding: "0px 20px",
           flexGrow: "3",
           justifyContent: "start",
         }}
       >
-        <div style={{ borderTop: "1px solid rgba(0, 0, 0, .1)" }}>
-          {/* pagination 적용 후  */}
-          {newPostList.length !== 0 ? (
-            newPostList.slice(offset, offset + limit).map((v, i) => (
-              <StyledPost
-                onClick={() => clickPost(v.postId, v.lat, v.lng)}
-                key={`post_${i}`}
-              >
-                <Post {...v} />
-              </StyledPost>
-            ))
-          ) : (
-            <Flex
-              styles={{ color: "#626262", width: "370px", fontSize: "18px" }}
+        {/* pagination 적용 후  */}
+        {newPostList.length !== 0 ? (
+          newPostList.slice(offset, offset + limit).map((v, i) => (
+            <StyledPost
+              onClick={() => clickPost(v.postId, v.lat, v.lng)}
+              key={`post_${i}`}
             >
-              게시글이 없습니다
-            </Flex>
-          )}
-        </div>
+              <Post {...v} />
+            </StyledPost>
+          ))
+        ) : (
+          <Flex styles={{ color: "#626262", width: "370px", fontSize: "18px" }}>
+            게시글이 없습니다
+          </Flex>
+        )}
       </Flex>
       {newPostList.length === 0 ? null : (
         <Flex>

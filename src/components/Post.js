@@ -32,7 +32,6 @@ const Post = (props) => {
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    // marginBottom: "10px",
     letterSpacing: "0.5px",
   };
 
@@ -46,15 +45,19 @@ const Post = (props) => {
   return (
     <Flex
       styles={{
-        padding: "25px 5px",
+        padding: "30px 0px",
         height: "180px",
       }}
-      className="post-card"
+      className="hover-event"
     >
       <Flex
         styles={{
-          width: "100px",
-          height: "100px",
+          maxWidth: "120px",
+          maxHeight: "120px",
+          minWidth: "100px",
+          minHeight: "100px",
+          width: "100%",
+          height: "100%",
           borderRadius: "20px",
         }}
       >
@@ -69,24 +72,16 @@ const Post = (props) => {
           src={image}
         />
       </Flex>
-      {/* <Image
-        styles={{
-          width: "130px",
-          height: "130px",
-          borderRadius: "20px",
-          border: "1px solid #dbdbdb",
-        }}
-        shape="rectangle"
-        src={image}
-      /> */}
 
       <Flex
         styles={{
           flexDirection: "column",
           justifyContent: "space-between",
           marginLeft: "13px",
-          height: "100px",
-          width: "141px",
+          maxHeight: "180px",
+          minheight: "100px",
+          height: "100%",
+          flex: "1",
         }}
       >
         <Flex>
@@ -96,7 +91,6 @@ const Post = (props) => {
               ...contentStyle,
               fontSize: "20px",
               fontWeight: "700",
-              // marginBottom: "10px",
             }}
           >
             {title}
@@ -119,10 +113,6 @@ const Post = (props) => {
             )}
           </Permit>
         </Flex>
-
-        {/* <StyledClamp>
-          <Text>위치:</Text> {address}
-        </StyledClamp> */}
         <Flex
           styles={{
             flexDirection: "column",
@@ -130,17 +120,25 @@ const Post = (props) => {
             justifyContent: "space-between",
           }}
         >
-          <Flex>
-            <Text styles={contentStyle}>작성자: {writer}</Text>
-            {category === "eat" ? (
-              <img src={eatCategory} alt="eat" />
-            ) : (
-              <img
-                style={{ width: "25px", height: "25px" }}
-                src={buyCategory}
-                alt="buy"
-              />
-            )}
+          <Flex styles={{ justifyContent: "space-between" }}>
+            <Text styles={{ ...contentStyle, width: "auto" }}>
+              작성자: {writer}
+            </Text>
+            <Flex styles={{ width: "25px", height: "25px" }}>
+              {category === "eat" ? (
+                <img
+                  style={{ width: "100%", height: "100%" }}
+                  src={eatCategory}
+                  alt="eat"
+                />
+              ) : (
+                <img
+                  style={{ width: "100%", height: "100%" }}
+                  src={buyCategory}
+                  alt="buy"
+                />
+              )}
+            </Flex>
           </Flex>
 
           <Text styles={contentStyle}>
@@ -155,40 +153,6 @@ const Post = (props) => {
           </StyledClamp>
         </Flex>
       </Flex>
-
-      {/* <Flex
-        styles={{
-          flexDirection: "column",
-          justifyContent: "start",
-          alignItems: "start",
-          width: "30px",
-          height: "100%",
-          gap: "5px",
-        }}
-      >
-        <Permit>
-          {isLike ? (
-            <img
-              alt="filledHeart"
-              src={filledHeart}
-              className="hover-event"
-              onClick={clickLike}
-            ></img>
-          ) : (
-            <img
-              alt="filledHeart"
-              src={emptyHeart}
-              className="hover-event"
-              onClick={clickLike}
-            ></img>
-          )}
-        </Permit>
-        {category === "eat" ? (
-          <img src={eatCategory} alt="eat" />
-        ) : (
-          <img src={buyCategory} alt="buy" />
-        )}
-      </Flex> */}
     </Flex>
   );
 };
