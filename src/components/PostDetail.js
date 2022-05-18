@@ -49,6 +49,7 @@ const PostDetail = ({
     socket.emit("close chatroom", `p${detailInfo.postId}`, userWillLeave);
   };
 
+  // 게시물 삭제
   const clickdelete = postId => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
       dispatch(postActions.deletePostDB(postId));
@@ -56,15 +57,13 @@ const PostDetail = ({
     }
   };
 
-  React.useEffect(() => {
-    // socket.emit("disconnecting", userInfo.userId);
-    // socket.on("send message alarm", (messageAlarm) => {
-    //   console.log(messageAlarm);
-    // });
-    // socket.on("message", (messageAlarm) => {
-    //   console.log(messageAlarm);
-    // });
-  }, []);
+  // 게시물 모집 완료
+  const clickComplete = (postId) => {
+    if (window.confirm("모집 완료 하시겠습니까?")) {
+      dispatch(postActions.completePostDB(postId));
+      _clickContainer();
+    }
+  }
 
   React.useEffect(() => {
     if (openChatroom) {
@@ -88,6 +87,7 @@ const PostDetail = ({
           flexDirection: "column",
           overflow: "scroll",
           justifyContent: "start",
+          position: "relative"
         }}
       >
         <Flex styles={{ justifyContent: "end" }}>
@@ -240,10 +240,9 @@ const PostDetail = ({
                   fontWeight: "700",
                   marginTop: "20px",
                 }}
-                //todo: 임시 비활성화
-                _disabled
+                _onClick={() => clickComplete(detailInfo.postId)}
               >
-                거래 완료
+                모집 완료
               </Button>
             ) : null
           }

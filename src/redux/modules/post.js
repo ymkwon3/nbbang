@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getAPI,
   postAPI,
+  putAPI,
   deleteAPI,
   postFormAPI,
 } from "../../shared/api";
@@ -22,6 +23,12 @@ const addPostDB = createAsyncThunk("post/add", async (data) => {
 
 const deletePostDB = createAsyncThunk("post/delete", async (postId) => {
   return await deleteAPI(`/main/${postId}`).then(() => {
+    return postId
+  });
+});
+
+const completePostDB = createAsyncThunk("post/complete", async (postId) => {
+  return await putAPI(`/main/${postId}`).then(() => {
     return postId
   });
 });
@@ -104,6 +111,9 @@ const postSlice = createSlice({
     builder.addCase(deletePostDB.fulfilled, (state, action) => {
       state.postList = state.postList.filter(v => v.postId !== action.payload )
     });
+    builder.addCase(completePostDB.fulfilled, (state, action) => {
+      state.postList = state.postList.filter(v => v.postId !== action.payload )
+    });
     builder.addCase(postLikeDB.fulfilled, (state, action) => {
       const { postId, isLike } = action.meta.arg;
       state.postList = state.postList.map(v => {
@@ -125,6 +135,7 @@ const actionCreator = {
   postLikeDB,
   getPostDetailDB,
   deletePostDB,
+  completePostDB,
   ...postSlice.actions,
 };
 
