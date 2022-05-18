@@ -11,7 +11,7 @@ import Permit from "../shared/Permit";
 import { write } from "../image";
 import { secondaryColor } from "../shared/color";
 
-const SideNav = props => {
+const SideNav = (props) => {
   const { _onClickWrite, _onClickDetail, _clickPost, postList, category } =
     props;
   //useState 함수를 이용해서 페이지 당 게시물 수 (limit), 현재 페이지 번호(page)를 상태로 추가.
@@ -20,9 +20,9 @@ const SideNav = props => {
   const [page, setPage] = useState(1); // 현재 페이지 번호
   const offset = (page - 1) * limit; // 첫 게시물의 위치
 
-  const searchPost = useSelector(state => state.post.postSearch);
+  const searchPost = useSelector((state) => state.post.postSearch);
 
-  const newPostList = postList.filter(v =>
+  const newPostList = postList.filter((v) =>
     v.title
       .toString()
       .toLowerCase()
@@ -54,7 +54,7 @@ const SideNav = props => {
       <Flex
         styles={{
           flexDirection: "column",
-          boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
+          // boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
           backgroundColor: "#fff",
           position: "sticky",
           top: "0",
@@ -77,7 +77,7 @@ const SideNav = props => {
                 fontSize: "36px",
                 fontWeight: "700",
                 userSelect: "none",
-                fontFamily: "Cafe24Ssurround"
+                fontFamily: "Cafe24Ssurround",
               }}
             >
               같이{" "}
@@ -87,7 +87,7 @@ const SideNav = props => {
                   fontWeight: "700",
                   userSelect: "none",
                   color: secondaryColor,
-                  fontFamily: "Cafe24Ssurround"
+                  fontFamily: "Cafe24Ssurround",
                 }}
               >
                 사자
@@ -99,7 +99,7 @@ const SideNav = props => {
                 fontSize: "36px",
                 fontWeight: "700",
                 userSelect: "none",
-                fontFamily: "Cafe24Ssurround"
+                fontFamily: "Cafe24Ssurround",
               }}
             >
               같이{" "}
@@ -109,7 +109,7 @@ const SideNav = props => {
                   fontWeight: "700",
                   userSelect: "none",
                   color: secondaryColor,
-                  fontFamily: "Cafe24Ssurround"
+                  fontFamily: "Cafe24Ssurround",
                 }}
               >
                 먹자
@@ -121,7 +121,7 @@ const SideNav = props => {
                 fontSize: "36px",
                 fontWeight: "700",
                 userSelect: "none",
-                fontFamily: "Cafe24Ssurround"
+                fontFamily: "Cafe24Ssurround",
               }}
             >
               전체
@@ -146,26 +146,30 @@ const SideNav = props => {
       <Flex
         styles={{
           flexDirection: "column",
-          padding: "10px 16px",
+          padding: "0px 30px",
           flexGrow: "3",
           justifyContent: "start",
         }}
       >
-        {/* pagination 적용 후  */}
-        {newPostList.length !== 0 ? (
-          newPostList.slice(offset, offset + limit).map((v, i) => (
-            <StyledPost
-              onClick={() => clickPost(v.postId, v.lat, v.lng)}
-              key={`post_${i}`}
+        <div style={{ borderTop: "1px solid rgba(0, 0, 0, .1)" }}>
+          {/* pagination 적용 후  */}
+          {newPostList.length !== 0 ? (
+            newPostList.slice(offset, offset + limit).map((v, i) => (
+              <StyledPost
+                onClick={() => clickPost(v.postId, v.lat, v.lng)}
+                key={`post_${i}`}
+              >
+                <Post {...v} />
+              </StyledPost>
+            ))
+          ) : (
+            <Flex
+              styles={{ color: "#626262", width: "370px", fontSize: "18px" }}
             >
-              <Post {...v} />
-            </StyledPost>
-          ))
-        ) : (
-          <Flex styles={{ color: "#626262", width: "370px", fontSize: "18px" }}>
-            게시글이 없습니다
-          </Flex>
-        )}
+              게시글이 없습니다
+            </Flex>
+          )}
+        </div>
       </Flex>
       {newPostList.length === 0 ? null : (
         <Flex>
@@ -183,7 +187,7 @@ const SideNav = props => {
 
 const StyledPost = styled.div`
   width: 100%;
-  margin: 8px 0;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 `;
 
 export default SideNav;
