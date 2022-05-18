@@ -84,6 +84,7 @@ const FooterBtn = styled.button`
   background-color: inherit;
   color: ${primaryDarked};
   font-weight: 700;
+  cursor: pointer;
 `;
 
 export default FooterNavi;

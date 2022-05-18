@@ -14,6 +14,10 @@ const Login = props => {
   const history = useHistory();
   const dispatch = useDispatch();
   const autoClose = 2000; // toastmessage 매개변수
+  const CLIENT_ID = process.env.REACT_APP_KAKAO_CLIENT_ID;
+  const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
+
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   // css용도
   const [isLogin, setIsLogin] = React.useState("login");
@@ -168,7 +172,7 @@ const Login = props => {
     postAPI("/user/mail", { userEmail: email }).then(res => {
       if (res.msg === "success") {
         notify("info", "해당 이메일로 인증 메일이 발송되었습니다!", autoClose);
-      }else if (res.msg === "fail") {
+      } else if (res.msg === "fail") {
         notify("error", "5분안에 3번만 요청할 수 있습니다!", autoClose);
       }
     });
@@ -193,6 +197,11 @@ const Login = props => {
         }
       }
     );
+  };
+
+  //카카오 소셜 로그인
+  const clickKaKao = () => {
+    window.location.href = KAKAO_AUTH_URL;
   };
 
   return (
@@ -269,6 +278,9 @@ const Login = props => {
             >
               <Button>아이디ㆍ</Button>
               <Button>비밀번호 찾기</Button>
+            </Flex>
+            <Flex>
+              <Button _onClick={clickKaKao}>카카오소셜로그인임시</Button>
             </Flex>
           </div>
           <div className="signup">
