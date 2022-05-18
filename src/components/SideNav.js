@@ -60,6 +60,8 @@ const SideNav = (props) => {
           top: "0",
           zIndex: "11",
           padding: "30px 30px 10px",
+          maxWidth: "360px",
+          width: "100vw"
         }}
       >
         <Flex
