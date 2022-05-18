@@ -8,6 +8,16 @@ import { actionCreator as userActions } from "../redux/modules/user";
 import { notify } from "../components/ToastMessage";
 import { Desktop } from "../shared/Responsive";
 
+import {
+  trash,
+  eatCategory,
+  buyCategory,
+  price,
+  calendar,
+  address,
+  content,
+} from "../image";
+
 import moment from "moment";
 import "moment/locale/ko";
 import Modal from "../shared/Modal";
@@ -226,26 +236,130 @@ const MyPage = props => {
         </Grid>
         <Flex styles={{ minHeight: "10vh" }}></Flex>
       </Flex>
-      {modal && <Modal close={() => setModal(false)}><MyPagePost v={modalRef.current}/></Modal>}
+      {modal && (
+        <Modal close={() => setModal(false)}>
+          <PostModal v={modalRef.current} />
+        </Modal>
+      )}
     </>
   );
 };
 
-const MyPagePost = ({v}) => {
+const PostModal = ({ v }) => {
+  const iconStyles = {
+    width: "24px",
+    height: "24px",
+    marginRight: "10px",
+  };
+  const valueStyles = {
+    fontSize: "16px",
+    fontWeight: "400",
+  };
   console.log(v);
-  return (<Flex styles={{
-    maxWidth: "600px",
-    width: "80vw",
-    backgroundColor: "#fff",
-    flexDirection: "column",
-  }}
-  _onClick={(e) => e.stopPropagation()}>
-    <Image shape="rectangle" src={v.image}/>
-    <Flex>
-      
-    </Flex>
-  </Flex>)
+  return (
+    <Flex
+      styles={{
+        maxWidth: "600px",
+        width: "80vw",
+        maxHeight: "90vh",
+        backgroundColor: "#fff",
+        flexDirection: "column",
+        justifyContent: "start",
+        borderRadius: "10px",
+        overflow: "scroll",
+      }}
+      _onClick={e => e.stopPropagation()}
+    >
+      <Flex styles={{ flexDirection: "column", padding: "25px" }}>
+        <Flex styles={{ marginBottom: "10px" }}>
+          <Flex
+            styles={{
+              width: "fit-content",
+              flex: 3,
+              justifyContent: "start",
+            }}
+          >
+            <Image
+              styles={{
+                width: "50px",
+                height: "50px",
+              }}
+              src={v.userImage}
+            />
+            <Text
+              styles={{
+                marginLeft: "10px",
+                fontWeight: "700",
+                fontSize: "20px",
+                fontFamily: "Cafe24Ssurround",
+              }}
+            >
+              {v.writer}
+            </Text>
+          </Flex>
 
-}
+          <Flex
+            styles={{
+              width: "60px",
+              height: "30px",
+              borderRadius: "20px",
+              boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            {v.headList.length + 1}/{v.headCount}
+          </Flex>
+        </Flex>
+        <Flex styles={{ justifyContent: "start" }}>
+          {v.category === "eat" ? (
+            <img alt="eat" src={eatCategory} style={iconStyles}></img>
+          ) : (
+            <img alt="buy" src={buyCategory} style={iconStyles}></img>
+          )}
+          <Text
+            styles={{
+              fontSize: "28px",
+              fontWeight: "800",
+            }}
+          >
+            {v.title}
+          </Text>
+        </Flex>
+      </Flex>
+      <Image shape="rectangle" src={v.image} />
+      <Flex styles={{ flexDirection: "column", padding: "25px" }}>
+        <Flex
+          styles={{
+            flexDirection: "column",
+            gap: "25px",
+            alignItems: "flex-start",
+          }}
+        >
+          <Flex styles={{ justifyContent: "space-between" }}>
+            <Flex styles={{ flex: 1, justifyContent: "start" }}>
+              <img alt="price" src={price} style={iconStyles}></img>
+              <Text styles={valueStyles}>
+                {v.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+              </Text>
+            </Flex>
+            <Flex styles={{ flex: 1, justifyContent: "start" }}>
+              <img alt="calendar" src={calendar} style={iconStyles}></img>
+              <Text styles={valueStyles}>
+                {moment(v.endTime).format("MM-DD")} 까지
+              </Text>
+            </Flex>
+          </Flex>
+          <Flex styles={{ justifyContent: "start" }}>
+            <img alt="address" src={address} style={iconStyles}></img>
+            <Text styles={valueStyles}>{v.address}</Text>
+          </Flex>
+          <Flex styles={{ justifyContent: "start" }}>
+            <img alt="content" src={content} style={iconStyles}></img>
+            <Text styles={valueStyles}>{v.content}</Text>
+          </Flex>
+        </Flex>
+      </Flex>
+    </Flex>
+  );
+};
 
 export default MyPage;
