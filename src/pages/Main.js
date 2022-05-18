@@ -18,11 +18,13 @@ import { Desktop } from "../shared/Responsive";
 import {
   right,
   left,
-  markerBlue,
-  markerOrange,
-  myPosition,
   position,
 } from "../image";
+import {
+  buyMarker,
+  eatMarker,
+  positionMarker,
+} from "../image/marker"
 import io from "socket.io-client";
 let socket = io.connect("https://redpingpong.shop");
 
@@ -136,10 +138,10 @@ const Main = () => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const userLat = position.coords.latitude;
-        const userLng = position.coords.longitude;
-        // const userLng = 126.89156781562811;
-        // const userLat = 37.512634390346236;
+        // const userLat = position.coords.latitude;
+        // const userLng = position.coords.longitude;
+        const userLng = 126.89156781562811;
+        const userLat = 37.512634390346236;
         // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
 
         geocoder.coord2Address(userLng, userLat, (result, status) => {
@@ -185,7 +187,7 @@ const Main = () => {
 
           const markerPosition = userPosition;
           const markerImage = new kakao.maps.MarkerImage(
-            myPosition,
+            positionMarker,
             new kakao.maps.Size(40, 50)
           );
           const marker = new kakao.maps.Marker({
@@ -211,7 +213,7 @@ const Main = () => {
     cateList.map((v) => {
       // 마커크기 45 x 60
       const markerImage = new kakao.maps.MarkerImage(
-        v.category === "eat" ? markerOrange : markerBlue,
+        v.category === "eat" ? eatMarker : buyMarker,
         new kakao.maps.Size(45, 60)
       );
       const m = new kakao.maps.Marker({

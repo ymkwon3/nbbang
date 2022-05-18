@@ -23,7 +23,6 @@ const Header = (props) => {
   const isLogin = useSelector((state) => state.user.isLogin);
   const category = useSelector((state) => state.post.category);
   const notificationList = useSelector((state) => state.notification?.list);
-  console.log(notificationList);
 
   const [drop, setDrop] = React.useState(false);
 
@@ -48,7 +47,8 @@ const Header = (props) => {
     borderRadius: "30px",
     border: `1px solid ${primaryDarked}`,
     fontSize: "16px",
-    fontWeight: "500",
+    fontWeight: "700",
+    fontFamily: "Cafe24SsurroundAir"
   };
 
   const checkedStyle = {
@@ -58,7 +58,8 @@ const Header = (props) => {
     height: "35px",
     borderRadius: "30px",
     fontSize: "16px",
-    fontWeight: "500",
+    fontWeight: "700",
+    fontFamily: "Cafe24SsurroundAir"
   };
 
   return (
@@ -119,7 +120,7 @@ const Header = (props) => {
                   src={notification}
                   alt="notification"
                 />
-                <Flex
+                {/* <Flex
                   styles={{
                     flexDirection: "column",
                     position: "absolute",
@@ -146,7 +147,7 @@ const Header = (props) => {
                       {noti.status}
                     </NotiBtn>
                   ))}
-                </Flex>
+                </Flex> */}
               </>
             )}
 

@@ -13,6 +13,7 @@ const RadioInput = props => {
     borderRadius: "0",
     fontSize: "18px",
     fontWeight: "600",
+    fontFamily: "Cafe24Ssurround"
   };
 
   const checkedButton = {
@@ -23,6 +24,7 @@ const RadioInput = props => {
     fontSize: "18px",
     fontWeight: "600",
     color: secondaryColor,
+    fontFamily: "Cafe24Ssurround"
   };
 
   const checkHandler = id => {

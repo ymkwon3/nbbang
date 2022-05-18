@@ -1,6 +1,22 @@
 @font-face {
   font-family: 'pretendard';
-  src: url('../font/PretendardVariable.ttf');
+  src: url('../font/PretendardVariable.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cafe24Ssurround';
+  src: url('../font/Cafe24Ssurround.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cafe24SsurroundAir';
+  src: url('../font/Cafe24SsurroundAir.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 * {

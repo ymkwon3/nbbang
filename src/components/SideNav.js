@@ -74,18 +74,20 @@ const SideNav = props => {
           {category === "buy" ? (
             <Text
               styles={{
-                fontSize: "32px",
-                fontWeight: "800",
+                fontSize: "36px",
+                fontWeight: "700",
                 userSelect: "none",
+                fontFamily: "Cafe24Ssurround"
               }}
             >
               같이{" "}
               <Text
                 styles={{
-                  fontSize: "32px",
-                  fontWeight: "800",
+                  fontSize: "36px",
+                  fontWeight: "700",
                   userSelect: "none",
                   color: secondaryColor,
+                  fontFamily: "Cafe24Ssurround"
                 }}
               >
                 사자
@@ -94,18 +96,20 @@ const SideNav = props => {
           ) : category === "eat" ? (
             <Text
               styles={{
-                fontSize: "32px",
-                fontWeight: "800",
+                fontSize: "36px",
+                fontWeight: "700",
                 userSelect: "none",
+                fontFamily: "Cafe24Ssurround"
               }}
             >
               같이{" "}
               <Text
                 styles={{
-                  fontSize: "32px",
-                  fontWeight: "800",
+                  fontSize: "36px",
+                  fontWeight: "700",
                   userSelect: "none",
                   color: secondaryColor,
+                  fontFamily: "Cafe24Ssurround"
                 }}
               >
                 먹자
@@ -114,9 +118,10 @@ const SideNav = props => {
           ) : (
             <Text
               styles={{
-                fontSize: "32px",
-                fontWeight: "800",
+                fontSize: "36px",
+                fontWeight: "700",
                 userSelect: "none",
+                fontFamily: "Cafe24Ssurround"
               }}
             >
               전체
