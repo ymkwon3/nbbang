@@ -164,7 +164,7 @@ const SideNav = (props) => {
             </StyledPost>
           ))
         ) : (
-          <Flex styles={{ color: "#626262", width: "370px", fontSize: "18px" }}>
+          <Flex styles={{ color: "#626262", width: "360px", fontSize: "18px" }}>
             게시글이 없습니다
           </Flex>
         )}

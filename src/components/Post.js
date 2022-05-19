@@ -11,7 +11,7 @@ import Permit from "../shared/Permit";
 import styled from "styled-components";
 import { filledHeart, emptyHeart, eatCategory, buyCategory } from "../image";
 
-const Post = (props) => {
+const Post = props => {
   const {
     image,
     title,
@@ -37,7 +37,7 @@ const Post = (props) => {
 
   // number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") 3자리마다 콤마찍어주는 정규표현식
 
-  const clickLike = (e) => {
+  const clickLike = e => {
     e.stopPropagation();
     dispatch(postActions.postLikeDB({ postId: postId, isLike: isLike }));
   };
@@ -78,40 +78,40 @@ const Post = (props) => {
           flexDirection: "column",
           justifyContent: "space-between",
           marginLeft: "13px",
+          width: "50%",
           maxHeight: "180px",
           minheight: "100px",
           height: "100%",
           flex: "1",
         }}
       >
-        <Flex>
+        <Flex styles={{ justifyContent: "space-between" }}>
           <Text
             className={"line-break"}
             styles={{
               ...contentStyle,
               fontSize: "20px",
               fontWeight: "700",
+              width: "85%"
             }}
           >
             {title}
           </Text>
-          <Permit>
-            {isLike ? (
+          <Flex styles={{ width: "25px", height: "25px"}}>
+            {category === "eat" ? (
               <img
-                alt="filledHeart"
-                src={filledHeart}
-                className="hover-event"
-                onClick={clickLike}
-              ></img>
+                style={{ width: "100%", height: "100%" }}
+                src={eatCategory}
+                alt="eat"
+              />
             ) : (
               <img
-                alt="filledHeart"
-                src={emptyHeart}
-                className="hover-event"
-                onClick={clickLike}
-              ></img>
+                style={{ width: "100%", height: "100%" }}
+                src={buyCategory}
+                alt="buy"
+              />
             )}
-          </Permit>
+          </Flex>
         </Flex>
         <Flex
           styles={{
@@ -124,21 +124,24 @@ const Post = (props) => {
             <Text styles={{ ...contentStyle, width: "auto" }}>
               작성자: {writer}
             </Text>
-            <Flex styles={{ width: "25px", height: "25px" }}>
-              {category === "eat" ? (
+            
+            <Permit>
+              {isLike ? (
                 <img
-                  style={{ width: "100%", height: "100%" }}
-                  src={eatCategory}
-                  alt="eat"
-                />
+                  alt="filledHeart"
+                  src={filledHeart}
+                  className="hover-event"
+                  onClick={clickLike}
+                ></img>
               ) : (
                 <img
-                  style={{ width: "100%", height: "100%" }}
-                  src={buyCategory}
-                  alt="buy"
-                />
+                  alt="filledHeart"
+                  src={emptyHeart}
+                  className="hover-event"
+                  onClick={clickLike}
+                ></img>
               )}
-            </Flex>
+            </Permit>
           </Flex>
 
           <Text styles={contentStyle}>

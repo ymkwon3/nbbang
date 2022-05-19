@@ -9,6 +9,7 @@ import { postAPI } from "../shared/api";
 import { notify } from "../components/ToastMessage";
 
 import { primaryColor, secondaryColor, primaryDarked } from "../shared/color";
+import {croissant} from "../image/bread"
 
 const Login = props => {
   const history = useHistory();
@@ -240,9 +241,12 @@ const Login = props => {
               styles={{
                 width: "200px",
                 height: "200px",
-                backgroundColor: "red",
+                border: "1px solid #eee"
               }}
-            ></Flex>
+            >
+              <img alt="character" src={croissant} style={{width: "120px", height: "120px"}}></img>
+
+            </Flex>
             <InputLogin
               label="아이디"
               ref={e => (loginRef.current.userEmail = e)}
