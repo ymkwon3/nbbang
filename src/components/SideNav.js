@@ -25,11 +25,13 @@ const SideNav = props => {
 
   const searchPost = useSelector(state => state.post.postSearch);
 
+  //검색창 (수정 빈칸들어가도 검색가능하게 replace로 빈칸제거)
   const newPostList = postList.filter(v =>
     v.title
+      .replace(" ", "")
       .toString()
       .toLowerCase()
-      .includes(searchPost.toString().toLowerCase())
+      .includes(searchPost.replace(" ", "").toString().toLowerCase())
   );
 
   const clickPost = (postId, lat, lng) => {

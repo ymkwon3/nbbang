@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import "./App.css";
 import { Flex } from "../elements";
 import { Header } from "../components";
@@ -11,9 +12,11 @@ import IsLogin from "./IsLogin";
 import { ToastMessage } from "../components/ToastMessage";
 import { Desktop, Mobile } from "../shared/Responsive";
 import FooterNavi from "../components/FooterNavi";
+import Spinner from "../components/Spinner";
 
 const App = () => {
   const isDesktop = Desktop(0);
+  const isLoaded = useSelector(state => state.post.is_loaded)
   return (
     <Flex
       styles={{
@@ -23,8 +26,9 @@ const App = () => {
         position: "relative",
       }}
     >
-      <ToastMessage />
-      <Header />
+      <ToastMessage/>
+      <Header/>
+      {/* {isLoaded ? (<Spinner/>) : null} */}
       <Flex
         styles={{
           height:
@@ -35,7 +39,7 @@ const App = () => {
       >
         {/* <Route path="/mypage" exact component={MyPage}></Route> */}
         <IsLogin>
-          <Route path="/" exact component={Main}></Route>
+          <Route path="/" exact component={Main}></Route> 
           <Route path="/mypage/:userId" exact component={MyPage}></Route>
         </IsLogin>
         <Route path="/login" exact component={Login}></Route>

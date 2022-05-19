@@ -67,7 +67,8 @@ const postSlice = createSlice({
     postList: [],
     postDetail: {},
     postSearch: "",
-    category: "all"
+    category: "all",
+    is_loaded: true,
   },
   reducers: {
     updateCategory(state, action) {
@@ -79,6 +80,9 @@ const postSlice = createSlice({
     searchPost(state,action) {
       state.postSearch = action.payload;
     },
+    // isLoaded(state,action){
+    //   state.is_loaded = action.payload;
+    // },
     updateLastPostList(state, action) {
       state.postList = state.postList.sort(function(a,b) {
         return a.createdAt.substr(0,19).replace(/-/gi, "").replace('T', "").replace(/:/gi, "") < b.createdAt.substr(0,19).replace(/-/gi, "").replace('T', "").replace(/:/gi, "") 
@@ -104,6 +108,7 @@ const postSlice = createSlice({
     });
     builder.addCase(getPostListDB.fulfilled, (state, action) => {
       state.postList = action.payload.data;
+      state.is_loaded = false;
     });
     builder.addCase(getPostDetailDB.fulfilled, (state, action) => {
       state.postDetail = action.payload;

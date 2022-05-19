@@ -6,11 +6,11 @@ import styled from "styled-components";
 import { PostWrite, SideNav } from "../components";
 import { Flex, Button } from "../elements";
 import PostDetail from "../components/PostDetail";
+import Spinner from "../components/Spinner";
 
 import { actionCreator as postActions } from "../redux/modules/post";
 import { actions as notiActions } from "../redux/modules/notification";
 import RadioInput from "../components/RadioInput";
-import MyLocation from "../components/MyLocation";
 
 //style
 import ChatBox from "../components/ChatBox";
@@ -29,6 +29,9 @@ import io from "socket.io-client";
 let socket = io.connect("https://redpingpong.shop");
 
 const Main = () => {
+
+  
+
   const dispatch = useDispatch();
   const history = useHistory();
   const geocoder = new kakao.maps.services.Geocoder();
@@ -137,11 +140,11 @@ const Main = () => {
   React.useEffect(() => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     navigator.geolocation.getCurrentPosition(
-      (position) => {
-        // const userLat = position.coords.latitude;
-        // const userLng = position.coords.longitude;
-        const userLng = 126.89156781562811;
-        const userLat = 37.512634390346236;
+      position => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        // const userLng = 126.89156781562811;
+        // const userLat = 37.512634390346236;
         // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
 
         geocoder.coord2Address(userLng, userLat, (result, status) => {
@@ -341,6 +344,7 @@ const Main = () => {
     </KaKaoMap>
   );
 };
+
 
 const KaKaoMap = styled.div`
   width: 100%;

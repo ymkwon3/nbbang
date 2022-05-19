@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Flex, Image } from "../elements";
 import { actionCreator as postActions } from "../redux/modules/post";
@@ -10,8 +11,6 @@ import { useHistory, useLocation } from "react-router-dom";
 import { logo, whiteHeart, notification } from "../image";
 import { Desktop, Mobile } from "../shared/Responsive";
 import { primaryColor, primaryDarked, secondaryColor } from "../shared/color";
-
-import styled from "styled-components";
 
 const Header = props => {
   const dispatch = useDispatch();
