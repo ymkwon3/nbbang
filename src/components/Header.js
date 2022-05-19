@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Flex, Image } from "../elements";
 import { actionCreator as postActions } from "../redux/modules/post";
@@ -77,7 +78,7 @@ const Header = props => {
           {location.pathname === "/" ? (
             <Flex styles={{ justifyContent: "space-between" }}>
               <Flex styles={{ width: "fit-content", gap: "15px" }}>
-                <SearchBox></SearchBox>
+                <SearchBox/>
                 <Button
                   styles={category === "all" ? checkedStyle : categoryStyle}
                   _onClick={() => dispatch(postActions.updateCategory("all"))}
