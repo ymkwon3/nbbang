@@ -13,16 +13,16 @@ import { primaryColor, primaryDarked, secondaryColor } from "../shared/color";
 
 import styled from "styled-components";
 
-const Header = (props) => {
+const Header = props => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
   const isDesktop = Desktop(0);
 
-  const userInfo = useSelector((state) => state.user.userInfo);
-  const isLogin = useSelector((state) => state.user.isLogin);
-  const category = useSelector((state) => state.post.category);
-  const notificationList = useSelector((state) => state.notification?.list);
+  const userInfo = useSelector(state => state.user.userInfo);
+  const isLogin = useSelector(state => state.user.isLogin);
+  const category = useSelector(state => state.post.category);
+  const notificationList = useSelector(state => state.notification?.list);
 
   const [drop, setDrop] = React.useState(false);
   const [dropNoti, setDropNoti] = React.useState(false);
@@ -31,7 +31,7 @@ const Header = (props) => {
     //temp
     dispatch(userActions.logout());
     history.push("/login");
-    setDrop((prev) => !prev);
+    setDrop(prev => !prev);
   };
 
   const clickLogin = () => {
@@ -161,7 +161,7 @@ const Header = (props) => {
               styles={{ width: "38px", height: "38px" }}
               src={userInfo.userImage}
               className="hover-event"
-              _onClick={() => setDrop((prev) => !prev)}
+              _onClick={() => setDrop(prev => !prev)}
             ></Image>
             {drop ? (
               <Flex
@@ -180,13 +180,14 @@ const Header = (props) => {
                 <Button
                   styles={{
                     fontSize: "14px",
+                    fontFamily: "Cafe24Ssurround",
                   }}
                   _onClick={() => {
                     if (location.pathname !== `/mypage/${userInfo?.userId}`) {
                       history.push(`/mypage/${userInfo?.userId}`);
                     }
 
-                    setDrop((prev) => !prev);
+                    setDrop(prev => !prev);
                   }}
                 >
                   마이페이지
@@ -194,6 +195,7 @@ const Header = (props) => {
                 <Button
                   styles={{
                     fontSize: "14px",
+                    fontFamily: "Cafe24Ssurround",
                     color: "#FF5C00",
                   }}
                   _onClick={clickLogout}
@@ -211,8 +213,9 @@ const Header = (props) => {
                   width: "70px",
                   height: "35px",
                   borderRadius: "30px",
-                  fontSize: "16px",
-                  fontWeight: "500",
+                  fontSize: "14px",
+                  fontWeight: "700",
+                  fontFamily: "Cafe24SsurroundAir",
                 }}
                 _onClick={clickLogin}
               >
