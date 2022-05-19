@@ -68,14 +68,10 @@ const Image = props => {
           height: styles.height,
           maxWidth: styles.maxWidth,
           maxHeight: styles.maxHeight,
+          border: styles.border,
         }}
       >
-        <ImageRectangle
-          style={{ ...styles }}
-          src={src}
-          className={className}
-          {...defaultStyles}
-        ></ImageRectangle>
+        <img alt={src} src={src}></img>
         <Flex
           styles={{
             flexDirection: "column",
@@ -96,7 +92,7 @@ const Image = props => {
 Image.defaultProps = {
   shape: "circle",
   src: "https://image.ajunews.com/content/image/2020/06/25/20200625140042894225.jpg",
-  defaultStyles: { width: "100%", height: "auto" },
+  defaultStyles: { width: "100%", height: "100%" },
 };
 
 const ImageRectangle = styled.img`
@@ -115,8 +111,6 @@ const ImageCircle = styled.div`
 
 const ImageWrapper = styled.div`
   position: relative;
-  width: ${props => props.width};
-  height: ${props => props.height};
 
   & img {
     position: absolute;
@@ -138,18 +132,31 @@ const ImageWrapper = styled.div`
 
 const ImageContainer = styled.div`
   position: relative;
+
+  & img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
+    transition: 0.1s;
+  }
+
   & > div {
     display: flex;
     align-items: start;
     position: absolute;
     top: 0;
     padding: 20px;
-    border-radius: 30px;
     background: rgba(0, 0, 0, 0.5);
     opacity: 0;
     transition: 0.2s;
   }
 
+  
   &:hover > div {
     opacity: 1;
   }

@@ -40,12 +40,11 @@ const MyPage = props => {
   const modalRef = React.useRef(null);
 
   const imageStyle = {
-    borderRadius: "30px",
-    border: "1px solid #dbdbdb",
+    border: "1px solid #eee",
     maxWidth: "300px",
     width: "100%",
     maxHeight: "300px",
-    height: "100%",
+    height: "100vh",
   };
   const buttonStyle = {
     maxWidth: "240px",
@@ -225,13 +224,9 @@ const MyPage = props => {
                 modalRef.current = v;
               }}
             >
-              <Text styles={{ color: "#fff" }}>제목: {v.title}</Text>
-              <Text styles={{ color: "#fff" }}>내용: {v.content}</Text>
-              <Text styles={{ color: "#fff" }}>
-                마감일: {moment(v.endTime).format("MM-DD")}
-              </Text>
-              <Text styles={{ color: "#fff" }}>위치: {v.address}</Text>
+              
             </Image>
+            
           ))}
         </Grid>
         <Flex styles={{ minHeight: "10vh" }}></Flex>
@@ -244,6 +239,12 @@ const MyPage = props => {
     </>
   );
 };
+{/* <Text styles={{ color: "#fff" }}>제목: {v.title}</Text>
+              <Text styles={{ color: "#fff" }}>내용: {v.content}</Text>
+              <Text styles={{ color: "#fff" }}>
+                마감일: {moment(v.endTime).format("MM-DD")}
+              </Text>
+              <Text styles={{ color: "#fff" }}>위치: {v.address}</Text> */}
 
 const PostModal = ({ v }) => {
   const iconStyles = {
