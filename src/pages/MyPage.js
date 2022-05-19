@@ -176,7 +176,7 @@ const MyPage = props => {
           styles={{
             maxWidth: "960px",
             width: "90%",
-            height: "1px",
+            minHeight: "1px",
             backgroundColor: "rgba(0, 0, 0, 0.5)",
             margin: "40px 0",
           }}
@@ -255,7 +255,6 @@ const PostModal = ({ v }) => {
     fontSize: "16px",
     fontWeight: "400",
   };
-  console.log(v);
   return (
     <Flex
       styles={{

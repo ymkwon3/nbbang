@@ -83,11 +83,13 @@ const Header = props => {
           style={{ width: "40px", height: "40px", cursor: "pointer" }}
           onClick={clickLogo}
         ></img>
-        <Desktop>
-          {location.pathname === "/" ? (
-            <Flex styles={{ justifyContent: "space-between" }}>
-              <Flex styles={{ width: "fit-content", gap: "15px" }}>
-                <SearchBox></SearchBox>
+
+        {location.pathname === "/" ? (
+          <Flex styles={{ justifyContent: "space-between" }}>
+            <Flex styles={{ width: "fit-content", gap: "15px" }}>
+              <SearchBox></SearchBox>
+              <Desktop>
+                {" "}
                 <Button
                   styles={category === "all" ? checkedStyle : categoryStyle}
                   _onClick={() => dispatch(postActions.updateCategory("all"))}
@@ -106,10 +108,10 @@ const Header = props => {
                 >
                   같이 먹자
                 </Button>
-              </Flex>
+              </Desktop>
             </Flex>
-          ) : null}
-        </Desktop>
+          </Flex>
+        ) : null}
         {isLogin ? (
           <Flex styles={{ gap: "15px", justifyContent: "end" }}>
             {/* <img src={whiteHeart} alt="filledHeart" /> */}

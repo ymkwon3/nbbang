@@ -52,12 +52,10 @@ const Post = props => {
     >
       <Flex
         styles={{
-          maxWidth: "120px",
-          maxHeight: "120px",
-          minWidth: "100px",
-          minHeight: "100px",
-          width: "100%",
-          height: "100%",
+          width: "120px",
+          height: "120px",
+          minWidth: "120px",
+          minHeight: "120px",
           borderRadius: "10px",
           overflow: "hidden",
         }}
@@ -78,12 +76,13 @@ const Post = props => {
           flexDirection: "column",
           justifyContent: "space-between",
           marginLeft: "13px",
-          width: "50%",
+          maxWidth: "180px",
+          width: "60%",
+          minWidth: "100px",
           maxHeight: "180px",
           minheight: "100px",
           height: "100%",
-          width: "auto",
-          // flex: "1",
+          flex: "1",
         }}
       >
         <Flex styles={{ justifyContent: "space-between" }}>
@@ -93,12 +92,12 @@ const Post = props => {
               ...contentStyle,
               fontSize: "20px",
               fontWeight: "700",
-              width: "85%"
+              width: "85%",
             }}
           >
             {title}
           </Text>
-          <Flex styles={{ width: "25px", height: "25px"}}>
+          <Flex styles={{ width: "25px", height: "25px" }}>
             {category === "eat" ? (
               <img
                 style={{ width: "100%", height: "100%" }}
@@ -115,53 +114,43 @@ const Post = props => {
           </Flex>
         </Flex>
 
-        <Flex
-          styles={{
-            flexDirection: "column",
-            height: "100%",
-            justifyContent: "space-between",
-            maxWidth: "187px",
-            width: "auto",
-          }}
-        >
-          <Flex styles={{ justifyContent: "space-between" }}>
-            <Text styles={{ ...contentStyle, width: "auto" }}>
-              작성자: {writer}
-            </Text>
-            
-            <Permit>
-              {isLike ? (
-                <img
-                  alt="filledHeart"
-                  src={filledHeart}
-                  className="hover-event"
-                  onClick={clickLike}
-                ></img>
-              ) : (
-                <img
-                  alt="filledHeart"
-                  src={emptyHeart}
-                  className="hover-event"
-                  onClick={clickLike}
-                ></img>
-              )}
-            </Permit>
-          </Flex>
+        <Flex styles={{ justifyContent: "space-between" }}>
+          <Text styles={{ ...contentStyle, width: "auto" }}>
+            작성자: {writer}
+          </Text>
 
-          <Text styles={contentStyle}>
-            <Text>가격:</Text>{" "}
-            {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
-          </Text>
-          <Text styles={contentStyle}>
-            <Text>마감일:</Text> {moment(endTime).format("MM-DD")}
-          </Text>
-          <StyledClamp>
-            <Text styles={contentStyle}>
-              <Text>위치:</Text>
-              {address}
-            </Text>
-          </StyledClamp>
+          <Permit>
+            {isLike ? (
+              <img
+                alt="filledHeart"
+                src={filledHeart}
+                className="hover-event"
+                onClick={clickLike}
+              ></img>
+            ) : (
+              <img
+                alt="filledHeart"
+                src={emptyHeart}
+                className="hover-event"
+                onClick={clickLike}
+              ></img>
+            )}
+          </Permit>
         </Flex>
+
+        <Text styles={contentStyle}>
+          <Text>가격:</Text>{" "}
+          {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+        </Text>
+        <Text styles={contentStyle}>
+          <Text>마감일:</Text> {moment(endTime).format("MM-DD")}
+        </Text>
+        <StyledClamp>
+          <Text styles={contentStyle}>
+            <Text>위치:</Text>
+            {address}
+          </Text>
+        </StyledClamp>
       </Flex>
     </Flex>
   );

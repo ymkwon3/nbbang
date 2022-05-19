@@ -1,26 +1,26 @@
 @font-face {
-  font-family: 'Pretendard';
-  src: url('../font/PretendardVariable.ttf') format('woff');
+  font-family: "Pretendard";
+  src: url("../font/PretendardVariable.ttf") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Cafe24Ssurround';
-  src: url('../font/Cafe24Ssurround.ttf') format('woff');
+  font-family: "Cafe24Ssurround";
+  src: url("../font/Cafe24Ssurround.ttf") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Cafe24SsurroundAir';
-  src: url('../font/Cafe24SsurroundAir.ttf') format('woff');
+  font-family: "Cafe24SsurroundAir";
+  src: url("../font/Cafe24SsurroundAir.ttf") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 * {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -58,13 +58,12 @@
 }
 
 .change-color-to-orange:hover {
-  color: #FF5C00;
+  color: #ff5c00;
 }
 
 .click {
-  width: "60%",
+  width: "60%";
 }
-
 
 .flex-column-center {
   display: flex;
@@ -88,10 +87,13 @@
   left: -1px;
   width: 151px;
   height: 151px;
+  transform: translate(50, 50);
+  object-fit: cover;
+  margin: auto;
 }
 
 .info-window > div {
-  background-color: #DFD3CA;
+  background-color: #fff;
   position: absolute;
   bottom: 0;
   left: -1px;
@@ -99,7 +101,7 @@
   height: 40px;
   padding: 10px;
   width: 151px;
-
+  font-family: "Pretendard";
   font-size: 14px;
   font-weight: 500;
   overflow: hidden;
@@ -116,5 +118,5 @@
 
 .post-card:hover {
   cursor: pointer;
-    transform: scale(1.02);
+  transform: scale(1.02);
 }

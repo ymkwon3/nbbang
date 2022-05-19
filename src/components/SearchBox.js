@@ -59,10 +59,11 @@ const SearchInput = styled.div`
   position: relative;
   margin: 0 20px 0 40px;
   & > input {
-    width: 350px;
+    max-width: 350px;
+    width: 40vw;
     height: 35px;
     border-radius: 30px;
-    padding: 0 40px;
+    padding: 0 40px 0 20px;
     border: none;
     outline: none;
   }

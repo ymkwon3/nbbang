@@ -1,28 +1,31 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Post from "./Post";
+import { actionCreator as postActions } from "../redux/modules/post";
 import { Button, Flex, Text } from "../elements";
 import Pagination from "./Pagination";
 import Dropdown from "./Dropdown";
+import Permit from "../shared/Permit";
+import { Mobile } from "../shared/Responsive";
 //style
 import styled from "styled-components";
-import Permit from "../shared/Permit";
 import { write } from "../image";
 import { secondaryColor } from "../shared/color";
 
-const SideNav = (props) => {
+const SideNav = props => {
   const { _onClickWrite, _onClickDetail, _clickPost, postList, category } =
     props;
+  const dispatch = useDispatch();
   //useState 함수를 이용해서 페이지 당 게시물 수 (limit), 현재 페이지 번호(page)를 상태로 추가.
   //그리고 첫 게지물의 위치 (offset) 계산필요
   const limit = 8; // 한 페이지에 들어갈 카드의 개수
   const [page, setPage] = useState(1); // 현재 페이지 번호
   const offset = (page - 1) * limit; // 첫 게시물의 위치
 
-  const searchPost = useSelector((state) => state.post.postSearch);
+  const searchPost = useSelector(state => state.post.postSearch);
 
-  const newPostList = postList.filter((v) =>
+  const newPostList = postList.filter(v =>
     v.title
       .toString()
       .toLowerCase()
@@ -66,13 +69,10 @@ const SideNav = (props) => {
       >
         <Flex
           styles={{
-            justifyContent: "end",
+            justifyContent: "space-between",
             marginBottom: "20px",
           }}
         >
-          <Dropdown></Dropdown>
-        </Flex>
-        <Flex styles={{ justifyContent: "space-between" }}>
           {category === "buy" ? (
             <Text
               styles={{
@@ -129,7 +129,46 @@ const SideNav = (props) => {
               전체
             </Text>
           )}
-
+          <Dropdown></Dropdown>
+        </Flex>
+        <Flex styles={{ justifyContent: "end", minHeight: "38px" }}>
+          <Mobile>
+            <Flex styles={{ flex: 1, justifyContent: "start", gap: "10px" }}>
+              <Button
+                styles={{
+                  fontSize: "16px",
+                  fontWeight: "700",
+                  fontFamily: "Cafe24SsurroundAir",
+                  color: category === "all" ? secondaryColor : "#ababab",
+                }}
+                _onClick={() => dispatch(postActions.updateCategory("all"))}
+              >
+                #전체
+              </Button>
+              <Button
+                styles={{
+                  fontSize: "16px",
+                  fontWeight: "700",
+                  fontFamily: "Cafe24SsurroundAir",
+                  color: category === "buy" ? secondaryColor : "#ababab",
+                }}
+                _onClick={() => dispatch(postActions.updateCategory("buy"))}
+              >
+                #같이 사자
+              </Button>
+              <Button
+                styles={{
+                  fontSize: "16px",
+                  fontWeight: "700",
+                  fontFamily: "Cafe24SsurroundAir",
+                  color: category === "eat" ? secondaryColor : "#ababab",
+                }}
+                _onClick={() => dispatch(postActions.updateCategory("eat"))}
+              >
+                #같이 먹자
+              </Button>
+            </Flex>
+          </Mobile>
           <Permit>
             <Button
               styles={{
