@@ -141,10 +141,10 @@ const Main = () => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     navigator.geolocation.getCurrentPosition(
       position => {
-        const userLat = position.coords.latitude;
-        const userLng = position.coords.longitude;
-        // const userLng = 126.89156781562811;
-        // const userLat = 37.512634390346236;
+        // const userLat = position.coords.latitude;
+        // const userLng = position.coords.longitude;
+        const userLng = 126.89156781562811;
+        const userLat = 37.512634390346236;
         // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
 
         geocoder.coord2Address(userLng, userLat, (result, status) => {

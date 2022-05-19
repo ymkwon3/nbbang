@@ -239,12 +239,6 @@ const MyPage = props => {
     </>
   );
 };
-{/* <Text styles={{ color: "#fff" }}>제목: {v.title}</Text>
-              <Text styles={{ color: "#fff" }}>내용: {v.content}</Text>
-              <Text styles={{ color: "#fff" }}>
-                마감일: {moment(v.endTime).format("MM-DD")}
-              </Text>
-              <Text styles={{ color: "#fff" }}>위치: {v.address}</Text> */}
 
 const PostModal = ({ v }) => {
   const iconStyles = {

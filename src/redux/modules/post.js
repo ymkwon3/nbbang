@@ -99,7 +99,6 @@ const postSlice = createSlice({
         ? -1 : a.endTime.substr(0,19).replace(/-/gi, "").replace('T', "").replace(/:/gi, "") > b.endTime.substr(0,19).replace(/-/gi, "").replace('T', "").replace(/:/gi, "")
         ? 1 : 0;
       })
-      // console.log(state.postList.map(v => v.endTime.substr(0,19).replace(/-/gi, "").replace('T', "").replace(/:/gi, "")))
     }
   },
   extraReducers: builder => {

@@ -70,6 +70,7 @@ const Image = props => {
           maxHeight: styles.maxHeight,
           border: styles.border,
         }}
+        className="hover-event"
       >
         <img alt={src} src={src}></img>
         <Flex
@@ -92,7 +93,7 @@ const Image = props => {
 Image.defaultProps = {
   shape: "circle",
   src: "https://image.ajunews.com/content/image/2020/06/25/20200625140042894225.jpg",
-  defaultStyles: { width: "100%", height: "100%" },
+  defaultStyles: { width: "100%" },
 };
 
 const ImageRectangle = styled.img`

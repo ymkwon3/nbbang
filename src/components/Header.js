@@ -42,7 +42,7 @@ const Header = props => {
   };
 
   const categoryStyle = {
-    width: "120px",
+    minWidth: "120px",
     height: "35px",
     borderRadius: "30px",
     // border: `1px solid ${primaryDarked}`,
@@ -54,7 +54,7 @@ const Header = props => {
   const checkedStyle = {
     color: "#fff",
     backgroundColor: secondaryColor,
-    width: "120px",
+    minWidth: "120px",
     height: "35px",
     borderRadius: "30px",
     fontSize: "16px",
@@ -79,7 +79,7 @@ const Header = props => {
         <img
           src={logo}
           alt="logo"
-          style={{ width: "40px", height: "40px", cursor: "pointer" }}
+          style={{ width: "40px", height: "40px", cursor: "pointer", marginRight: "40px" }}
           onClick={clickLogo}
         ></img>
 
@@ -182,6 +182,7 @@ const Header = props => {
                   styles={{
                     fontSize: "14px",
                     fontFamily: "Cafe24Ssurround",
+                    height: "40px",
                   }}
                   _onClick={() => {
                     if (location.pathname !== `/mypage/${userInfo?.userId}`) {
@@ -197,6 +198,7 @@ const Header = props => {
                   styles={{
                     fontSize: "14px",
                     fontFamily: "Cafe24Ssurround",
+                    height: "40px",
                     color: "#FF5C00",
                   }}
                   _onClick={clickLogout}

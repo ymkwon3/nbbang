@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import "./App.css";
 import { Flex } from "../elements";
@@ -7,16 +7,17 @@ import { Route } from "react-router";
 import Main from "../pages/Main";
 import Login from "../pages/Login";
 import MyPage from "../pages/MyPage";
-import ChatBox from "../components/ChatBox";
 import IsLogin from "./IsLogin";
 import { ToastMessage } from "../components/ToastMessage";
 import { Desktop, Mobile } from "../shared/Responsive";
 import FooterNavi from "../components/FooterNavi";
-import Spinner from "../components/Spinner";
+import Modal from "./Modal";
+import Loading from "../components/Loading";
 
 const App = () => {
   const isDesktop = Desktop(0);
-  const isLoaded = useSelector(state => state.post.is_loaded)
+  const isLoaded = useSelector(state => state.post.is_loaded);
+  
   return (
     <Flex
       styles={{
@@ -26,9 +27,9 @@ const App = () => {
         position: "relative",
       }}
     >
-      <ToastMessage/>
-      <Header/>
-      {/* {isLoaded ? (<Spinner/>) : null} */}
+      <ToastMessage />
+      <Header />
+
       <Flex
         styles={{
           height:
@@ -37,9 +38,8 @@ const App = () => {
               : "calc(100% - 100px)",
         }}
       >
-        {/* <Route path="/mypage" exact component={MyPage}></Route> */}
         <IsLogin>
-          <Route path="/" exact component={Main}></Route> 
+          <Route path="/" exact component={Main}></Route>
           <Route path="/mypage/:userId" exact component={MyPage}></Route>
         </IsLogin>
         <Route path="/login" exact component={Login}></Route>
@@ -47,6 +47,11 @@ const App = () => {
       <Mobile>
         <FooterNavi />
       </Mobile>
+      {isLoaded ? (
+        <Modal>
+          <Loading />
+        </Modal>
+      ) : null}
     </Flex>
   );
 };
