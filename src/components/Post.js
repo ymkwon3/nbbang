@@ -58,17 +58,17 @@ const Post = props => {
           minHeight: "100px",
           width: "100%",
           height: "100%",
-          borderRadius: "20px",
+          borderRadius: "10px",
+          overflow: "hidden",
         }}
       >
         <Image
           styles={{
             width: "100%",
             height: "100%",
-            borderRadius: "20px",
             border: "1px solid #dbdbdb",
           }}
-          shape="rectangle"
+          shape="square"
           src={image}
         />
       </Flex>

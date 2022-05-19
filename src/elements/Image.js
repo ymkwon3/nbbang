@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Flex from "./Flex";
-import Text from "./Text";
 
 const Image = props => {
   /*
@@ -32,6 +31,19 @@ const Image = props => {
         className={className}
         {...defaultStyles}
       ></ImageRectangle>
+    );
+  }
+
+  if (shape === "square") {
+    return (
+      <ImageWrapper
+        style={{ ...styles }}
+        onClick={_onClick}
+        className={className}
+        {...defaultStyles}
+      >
+        <img alt={src} src={src}></img>
+      </ImageWrapper>
     );
   }
 
@@ -99,6 +111,29 @@ const ImageCircle = styled.div`
   border-radius: 50%;
   background-image: url(${props => props.src});
   background-size: cover;
+`;
+
+const ImageWrapper = styled.div`
+  position: relative;
+  width: ${props => props.width};
+  height: ${props => props.height};
+
+  & img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
+    transition: 0.1s;
+  }
+
+  & img:hover {
+    
+    transform: scale(1.2);
+  }
 `;
 
 const ImageContainer = styled.div`
