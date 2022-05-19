@@ -25,6 +25,7 @@ const Header = props => {
   const notificationList = useSelector(state => state.notification?.list);
 
   const [drop, setDrop] = React.useState(false);
+  const [dropNoti, setDropNoti] = React.useState(false);
 
   const clickLogout = () => {
     //temp
@@ -119,35 +120,40 @@ const Header = props => {
                   className="hover-event"
                   src={notification}
                   alt="notification"
-                />
-                {/* <Flex
-                  styles={{
-                    flexDirection: "column",
-                    position: "absolute",
-                    backgroundColor: "#fff",
-                    boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-                    width: "243px",
-                    top: "40px",
-                    borderRadius: "10px",
-                    padding: "10px",
-                    gap: "10px",
+                  onClick={() => {
+                    setDropNoti(!dropNoti);
                   }}
-                >
-                  {notificationList.map((noti, idx) => (
-                    <NotiBtn
-                      key={noti.alarmId}
-                      style={{
-                        bg: "#fff",
-                        width: "",
-                        height: "",
-                        border: "none",
-                        borderRadius: "4px",
-                      }}
-                    >
-                      {noti.status}
-                    </NotiBtn>
-                  ))}
-                </Flex> */}
+                />
+                {dropNoti && (
+                  <Flex
+                    styles={{
+                      flexDirection: "column",
+                      position: "absolute",
+                      backgroundColor: "#fff",
+                      boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+                      width: "243px",
+                      top: "40px",
+                      borderRadius: "10px",
+                      padding: "10px",
+                      gap: "10px",
+                    }}
+                  >
+                    {notificationList.map((noti, idx) => (
+                      <NotiBtn
+                        key={noti.alarmId}
+                        style={{
+                          bg: "#fff",
+                          width: "",
+                          height: "",
+                          border: "none",
+                          borderRadius: "4px",
+                        }}
+                      >
+                        {noti.status}
+                      </NotiBtn>
+                    ))}
+                  </Flex>
+                )}
               </>
             )}
 

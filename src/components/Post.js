@@ -82,7 +82,8 @@ const Post = props => {
           maxHeight: "180px",
           minheight: "100px",
           height: "100%",
-          flex: "1",
+          width: "auto",
+          // flex: "1",
         }}
       >
         <Flex styles={{ justifyContent: "space-between" }}>
@@ -113,11 +114,14 @@ const Post = props => {
             )}
           </Flex>
         </Flex>
+
         <Flex
           styles={{
             flexDirection: "column",
             height: "100%",
             justifyContent: "space-between",
+            maxWidth: "187px",
+            width: "auto",
           }}
         >
           <Flex styles={{ justifyContent: "space-between" }}>
@@ -152,7 +156,10 @@ const Post = props => {
             <Text>마감일:</Text> {moment(endTime).format("MM-DD")}
           </Text>
           <StyledClamp>
-            <Text>위치:</Text> {address.slice(0, 10) + ".."}
+            <Text styles={contentStyle}>
+              <Text>위치:</Text>
+              {address}
+            </Text>
           </StyledClamp>
         </Flex>
       </Flex>

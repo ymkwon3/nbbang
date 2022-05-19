@@ -415,12 +415,6 @@ export const ChatBoxRight = forwardRef(
     const selfLeavChatroom = () => {
       // put the spinner later
       stateShiftForClosingChatroom();
-      // let selectedUser = {
-      //   User_userEmail: loggedUser.userEmail,
-      //   User_userId: loggedUser.userId,
-      //   User_userName: loggedUser.userName,
-      // };
-      // deleteParticipant(selectedUser);
       socket.emit("leave chatroom", postid, loggedUser.userId);
     };
 
