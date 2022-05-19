@@ -16,7 +16,7 @@ import Loading from "../components/Loading";
 
 const App = () => {
   const isDesktop = Desktop(0);
-  const isLoaded = useSelector(state => state.post.is_loaded);
+  const isLoading = useSelector(state => state.post.isLoading);
   
   return (
     <Flex
@@ -47,7 +47,7 @@ const App = () => {
       <Mobile>
         <FooterNavi />
       </Mobile>
-      {isLoaded ? (
+      {isLoading ? (
         <Modal>
           <Loading />
         </Modal>

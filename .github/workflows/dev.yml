@@ -12,6 +12,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
 
+    - name: Create env file
+      run: |
+          touch .env
+          echo REACT_APP_KAKAO_CLIENT_ID=${{ secrets.REACT_APP_KAKAO_CLIENT_ID }} >> .env
+          echo REACT_APP_KAKAO_REDIRECT_URI="https://redpingpong.shop/kakao-auth/kakao/callback" >> .env
+          cat .env
+
     - name: Install dependencies
       run: yarn
 

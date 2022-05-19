@@ -70,21 +70,21 @@ const Image = props => {
           maxHeight: styles.maxHeight,
           border: styles.border,
         }}
+        onClick={_onClick}
         className="hover-event"
       >
-        <img alt={src} src={src}></img>
-        <Flex
+        <img alt={src} src={src} ></img>
+        {children ? <Flex
           styles={{
             flexDirection: "column",
             width: styles.width,
-            height: styles.height,
+            height: "30%",
             maxWidth: styles.maxWidth,
             maxHeight: styles.maxHeight,
           }}
-          _onClick={_onClick}
         >
           {children}
-        </Flex>
+        </Flex> : null}
       </ImageContainer>
     );
   }
@@ -126,7 +126,6 @@ const ImageWrapper = styled.div`
   }
 
   & img:hover {
-    
     transform: scale(1.2);
   }
 `;
@@ -148,18 +147,15 @@ const ImageContainer = styled.div`
 
   & > div {
     display: flex;
-    align-items: start;
     position: absolute;
-    top: 0;
-    padding: 20px;
+    bottom: 0;
     background: rgba(0, 0, 0, 0.5);
-    opacity: 0;
     transition: 0.2s;
-  }
-
-  
-  &:hover > div {
     opacity: 1;
+    color: #fff;
+    font-family: "Cafe24SsurroundAir";
+    font-size: 20px;
+    font-weight: 600;
   }
 `;
 

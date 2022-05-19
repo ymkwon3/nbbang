@@ -150,6 +150,7 @@ const Main = () => {
         geocoder.coord2Address(userLng, userLat, (result, status) => {
           // 지번 주소
           const addr = result[0].address;
+          dispatch(postActions.isLoading(true))
           dispatch(
             postActions.getPostListDB({
               address: addr.address_name,

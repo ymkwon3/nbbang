@@ -9,7 +9,6 @@ import { notify } from "../components/ToastMessage";
 import { Desktop } from "../shared/Responsive";
 
 import {
-  trash,
   eatCategory,
   buyCategory,
   price,
@@ -145,7 +144,6 @@ const MyPage = props => {
               >
                 {userInfo?.userName}
               </Text>
-              님 반갑습니다!
             </Text>
             <Text
               styles={{
@@ -224,9 +222,8 @@ const MyPage = props => {
                 modalRef.current = v;
               }}
             >
-              
+              {v.isDone ? "종료된 공구" : null}
             </Image>
-            
           ))}
         </Grid>
         <Flex styles={{ minHeight: "10vh" }}></Flex>
