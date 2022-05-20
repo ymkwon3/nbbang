@@ -11,8 +11,20 @@ const InputLogin = React.forwardRef((props, ref) => {
   */
 
   // input 태그에 className 추가
-  const { styles, padding, type, label, subText, value, readOnly, _onChange, defaultStyles, className } = props;
-  
+  const {
+    styles,
+    padding,
+    type,
+    label,
+    subText,
+    value,
+    readOnly,
+    _onChange,
+    _onKeyUp,
+    defaultStyles,
+    className,
+  } = props;
+
   return (
     <InputContainer padding={padding} {...defaultStyles} {...styles}>
       <input
@@ -24,11 +36,10 @@ const InputLogin = React.forwardRef((props, ref) => {
         readOnly={readOnly}
         onChange={_onChange}
         className={className}
+        onKeyUp={_onKeyUp}
       />
       <label>{label}</label>
-      <Text styles={{fontSize: "12px"}}>
-        {subText}
-      </Text>
+      <Text styles={{ fontSize: "12px" }}>{subText}</Text>
     </InputContainer>
   );
 });

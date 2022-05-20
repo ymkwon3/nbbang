@@ -285,6 +285,11 @@ const Login = props => {
               type="password"
               ref={e => (loginRef.current.userPassword = e)}
               styles={{ borderRadius: "20px" }}
+              _onKeyUp={(e) => {
+                if(e.key === "Enter") {
+                  clickLogin();
+                }
+              }}
             ></InputLogin>
             <Button
               styles={{
@@ -308,7 +313,6 @@ const Login = props => {
                 width: "80%",
               }}
             >
-              <Button>아이디ㆍ</Button>
               <Button>비밀번호 찾기</Button>
             </Flex>
             <Flex styles={{
@@ -466,6 +470,7 @@ const SlideControl = styled.div`
     text-align: center;
     line-height: 48px;
     cursor: pointer;
+    user-select: none;
     z-index: 1;
     transition: all 0.6s ease;
   }
@@ -510,13 +515,14 @@ const FormContainer = styled.div`
     display: flex;
     width: 200%;
     height: calc(100% - 50px);
+    overflow-y: scroll;
   }
 
   .form-inner > div {
     width: 50%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     flex-direction: column;
     margin: 30px 0;
     gap: 10px;
