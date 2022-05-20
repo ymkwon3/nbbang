@@ -39,7 +39,7 @@ const isLoginDB = createAsyncThunk(
 const kakaoLogin = createAsyncThunk(
   "user/kakaologin",
   async (code) => {
-    return await getAPI(`/kakao-auth/kakao/callback/${code}`).then(res => {
+    return await getAPI(`/kakao-auth/kakao/callback?code=${code}`).then(res => {
       console.log(res)
     });
   }
