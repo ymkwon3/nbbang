@@ -13,6 +13,7 @@ import { Desktop, Mobile } from "../shared/Responsive";
 import FooterNavi from "../components/FooterNavi";
 import Modal from "./Modal";
 import Loading from "../components/Loading";
+import KaKaoUri from "../pages/KakaoUri";
 
 const App = () => {
   const isDesktop = Desktop(0);
@@ -41,6 +42,7 @@ const App = () => {
         <IsLogin>
           <Route path="/" exact component={Main}></Route>
           <Route path="/mypage/:userId" exact component={MyPage}></Route>
+          <Route path="/kakao-auth/kakao/callback" exact component={KaKaoUri}></Route>
         </IsLogin>
         <Route path="/login" exact component={Login}></Route>
       </Flex>

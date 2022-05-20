@@ -36,6 +36,15 @@ const isLoginDB = createAsyncThunk(
   }
 );
 
+const kakaoLogin = createAsyncThunk(
+  "user/kakaologin",
+  async (code) => {
+    return await getAPI(`/kakao-auth/kakao/callback`).then(res => {
+      console.log(res)
+    });
+  }
+);
+
 const postUserImageDB = createAsyncThunk("user/me", async formData => {
   return await postFormAPI(`/user/me`, formData).then(res => {
     return res;
@@ -93,6 +102,7 @@ const actionCreator = {
   loginDB,
   isLoginDB,
   postUserImageDB,
+  kakaoLogin,
   ...userSlice.actions,
 };
 

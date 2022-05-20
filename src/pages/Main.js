@@ -139,6 +139,7 @@ const Main = () => {
   */
   React.useEffect(() => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
+    dispatch(postActions.isLoading(true))
     navigator.geolocation.getCurrentPosition(
       position => {
         // const userLat = position.coords.latitude;
@@ -150,7 +151,7 @@ const Main = () => {
         geocoder.coord2Address(userLng, userLat, (result, status) => {
           // 지번 주소
           const addr = result[0].address;
-          dispatch(postActions.isLoading(true))
+          
           dispatch(
             postActions.getPostListDB({
               address: addr.address_name,

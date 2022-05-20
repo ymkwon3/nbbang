@@ -19,6 +19,8 @@ import {
 
 import moment from "moment";
 import "moment/locale/ko";
+import Modal from "../shared/Modal";
+import Confirm from "./Confirm";
 
 // import io from "socket.io-client";
 // let socket = io.connect("https://localhost:3443");
@@ -37,9 +39,14 @@ const PostDetail = ({
   const isLogin = useSelector(state => state.user.isLogin);
   const chatRef = React.useRef();
 
+  const [isDelete, setIsDelete] = React.useState(false);
+  const [isComplete, setIsComplete] = React.useState(false);
+
   const iconStyles = {
-     width: "24px", height: "24px", marginRight: "10px" 
-  }
+    width: "24px",
+    height: "24px",
+    marginRight: "10px",
+  };
 
   const valueStyles = {
     fontSize: "16px",
@@ -59,22 +66,6 @@ const PostDetail = ({
   const closeChatRoom = userWillLeave => {
     stateShiftForClosingChatroom();
     socket.emit("close chatroom", `p${detailInfo.postId}`, userWillLeave);
-  };
-
-  // 게시물 삭제
-  const clickdelete = postId => {
-    if (window.confirm("정말로 삭제하시겠습니까?")) {
-      dispatch(postActions.deletePostDB(postId));
-      _clickContainer();
-    }
-  };
-
-  // 게시물 모집 완료
-  const clickComplete = postId => {
-    if (window.confirm("모집 완료 하시겠습니까?")) {
-      dispatch(postActions.completePostDB(postId));
-      _clickContainer();
-    }
   };
 
   React.useEffect(() => {
@@ -142,7 +133,7 @@ const PostDetail = ({
               </Text>
             </Flex>
             {userInfo?.userId === detailInfo?.User_userId ? (
-              <Button _onClick={() => clickdelete(detailInfo.postId)}>
+              <Button _onClick={() => setIsDelete(true)}>
                 <img alt="trash" src={trash}></img>
               </Button>
             ) : null}
@@ -160,17 +151,9 @@ const PostDetail = ({
           </Flex>
           <Flex styles={{ justifyContent: "start" }}>
             {detailInfo.category === "eat" ? (
-              <img
-                alt="eat"
-                src={eatCategory}
-                style={iconStyles}
-              ></img>
+              <img alt="eat" src={eatCategory} style={iconStyles}></img>
             ) : (
-              <img
-                alt="buy"
-                src={buyCategory}
-                style={iconStyles}
-              ></img>
+              <img alt="buy" src={buyCategory} style={iconStyles}></img>
             )}
             <Text
               styles={{
@@ -199,11 +182,7 @@ const PostDetail = ({
           >
             <Flex styles={{ justifyContent: "space-between" }}>
               <Flex styles={{ flex: 1, justifyContent: "start" }}>
-                <img
-                  alt="price"
-                  src={price}
-                  style={iconStyles}
-                ></img>
+                <img alt="price" src={price} style={iconStyles}></img>
                 <Text styles={valueStyles}>
                   {detailInfo.price
                     .toString()
@@ -212,36 +191,20 @@ const PostDetail = ({
                 </Text>
               </Flex>
               <Flex styles={{ flex: 1, justifyContent: "start" }}>
-                <img
-                  alt="calendar"
-                  src={calendar}
-                  style={iconStyles}
-                ></img>
+                <img alt="calendar" src={calendar} style={iconStyles}></img>
                 <Text styles={valueStyles}>
                   {moment(detailInfo.endTime).format("MM-DD")} 까지
                 </Text>
               </Flex>
             </Flex>
             <Flex styles={{ justifyContent: "start" }}>
-                <img
-                  alt="address"
-                  src={address}
-                  style={iconStyles}
-                ></img>
-                <Text styles={valueStyles}>
-                {detailInfo.address}
-                </Text>
-              </Flex>
-              <Flex styles={{ justifyContent: "start" }}>
-                <img
-                  alt="content"
-                  src={content}
-                  style={iconStyles}
-                ></img>
-                <Text styles={valueStyles}>
-                {detailInfo.content}
-                </Text>
-              </Flex>
+              <img alt="address" src={address} style={iconStyles}></img>
+              <Text styles={valueStyles}>{detailInfo.address}</Text>
+            </Flex>
+            <Flex styles={{ justifyContent: "start" }}>
+              <img alt="content" src={content} style={iconStyles}></img>
+              <Text styles={valueStyles}>{detailInfo.content}</Text>
+            </Flex>
           </Flex>
 
           {
@@ -279,7 +242,7 @@ const PostDetail = ({
                   fontWeight: "700",
                   marginTop: "20px",
                 }}
-                _onClick={() => clickComplete(detailInfo.postId)}
+                _onClick={() => setIsComplete(true)}
               >
                 모집 완료
               </Button>
@@ -299,33 +262,34 @@ const PostDetail = ({
       ) : (
         <></>
       )}
+      {isDelete ? (
+        <Modal close={() => setIsDelete(false)}>
+          <Confirm
+            _positive={() => {
+              // 게시물 삭제
+              dispatch(postActions.deletePostDB(detailInfo.postId));
+              _clickContainer();
+            }}
+            _close={() => setIsDelete(false)}
+            message="정말로 삭제하시겠습니까?"
+          ></Confirm>
+        </Modal>
+      ) : null}
+      {isComplete ? (
+        <Modal close={() => setIsComplete(false)}>
+          <Confirm
+            _positive={() => {
+              // 모집 완료
+              dispatch(postActions.completePostDB(detailInfo.postId));
+              _clickContainer();
+            }}
+            _close={() => setIsComplete(false)}
+            message="모집 완료하시겠습니까?"
+          ></Confirm>
+        </Modal>
+      ) : null}
     </>
   );
 };
 
 export default PostDetail;
-
-{
-  /* <Button
-                styles={{
-                  width: "155px",
-                  height: "41px",
-                  backgroundColor: "grey",
-                  borderRadius: "30px",
-                  margin: "0 0 12px 0",
-                }}
-                _onClick={openChatModal}
-              >
-                채팅 참여
-              </Button>
-              <Button
-                styles={{
-                  width: "155px",
-                  height: "41px",
-                  backgroundColor: "grey",
-                  borderRadius: "30px",
-                }}
-              >
-                거래 완료!
-              </Button> */
-}

@@ -5,7 +5,7 @@ import { Button, Flex, InputLogin } from "../elements";
 import { actionCreator as userActions } from "../redux/modules/user";
 import { useHistory } from "react-router-dom";
 import { debounce } from "lodash";
-import { postAPI } from "../shared/api";
+import { getAPI, postAPI } from "../shared/api";
 import { notify } from "../components/ToastMessage";
 
 import { primaryColor, secondaryColor, primaryDarked } from "../shared/color";
