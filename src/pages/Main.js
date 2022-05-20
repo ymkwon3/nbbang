@@ -15,16 +15,8 @@ import MyLocation from "../components/MyLocation";
 //style
 import ChatBox from "../components/ChatBox";
 import { Desktop } from "../shared/Responsive";
-import {
-  right,
-  left,
-  position,
-} from "../image";
-import {
-  buyMarker,
-  eatMarker,
-  positionMarker,
-} from "../image/marker"
+import { right, left, position } from "../image";
+import { buyMarker, eatMarker, positionMarker } from "../image/marker";
 import io from "socket.io-client";
 let socket = io.connect("https://redpingpong.shop");
 
@@ -116,12 +108,12 @@ const Main = () => {
       console.log(messageNoti[0]);
       dispatch(notiActions.getNotification(messageNoti[0]));
     });
-    socket.on("block chatroom", (blockChatroomNoti) => {
+    socket.on("block", (blockChatroomNoti) => {
       console.log(blockChatroomNoti);
-      // dispatch(notiActions.getNotification(blockChatroomNoti));
+      dispatch(notiActions.getNotification(blockChatroomNoti));
     });
     socket.on("leaved chatroom", (leaveNoti) => {
-      console.log(leaveNoti[0]);
+      console.log(leaveNoti);
       dispatch(notiActions.getNotification(leaveNoti[0]));
     });
     socket.on("added_new_participant", (addedNewParticiparntNoti) => {
@@ -153,7 +145,7 @@ const Main = () => {
               range: cityRange,
               userId: userInfo?.userId,
               lat: userLat,
-              lng: userLng
+              lng: userLng,
             })
           );
 
