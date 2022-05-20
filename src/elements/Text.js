@@ -16,7 +16,7 @@ const Text = props => {
 };
 
 Text.defaultProps = {
-  defaultStyles: { fontSize: "14px", fontWeight: "400", color: "#000" },
+  defaultStyles: { fontWeight: "400", color: "#000" },
 };
 
 const TextStyled = styled.span`

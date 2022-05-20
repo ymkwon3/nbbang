@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Button, Flex, InputLogin } from "../elements";
+import { Button, Flex, InputLogin, Text } from "../elements";
 import { actionCreator as userActions } from "../redux/modules/user";
 import { useHistory } from "react-router-dom";
 import { debounce } from "lodash";
@@ -11,10 +11,12 @@ import { notify } from "../components/ToastMessage";
 import { primaryColor, secondaryColor, primaryDarked } from "../shared/color";
 import { croissant } from "../image/bread";
 import { kakaoLogin } from "../image";
+import { Desktop } from "../shared/Responsive";
 
 const Login = props => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const isDesktop = Desktop(0);
   const autoClose = 2000; // toastmessage 매개변수
   const CLIENT_ID = process.env.REACT_APP_KAKAO_CLIENT_ID;
   const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
@@ -239,21 +241,41 @@ const Login = props => {
           <div className="login" ref={refForm}>
             <Flex
               styles={{
-                width: "200px",
-                height: "200px",
-                border: "1px solid #eee",
+                flexDirection: "column",
+                fontSize: isDesktop === undefined ? "10px" : "8px"
               }}
             >
               <img
                 alt="character"
                 src={croissant}
-                style={{ width: "120px", height: "120px" }}
+                style={{ width: "12em", height: "12em" }}
               ></img>
+              <Text
+                styles={{
+                  color: secondaryColor,
+                  fontFamily: "Cafe24Ssurround",
+                  fontSize: "3em",
+                  fontWeight: "700",
+                  margin: "0.66em 0 0.25em"
+                }}
+              >
+                엔빵
+              </Text>
+              <Text
+                styles={{
+                  fontFamily: "Cafe24Ssurround",
+                  fontSize: "3em",
+                  fontWeight: "700",
+                  marginBottom: "0.66em"
+                }}
+              >
+                친구도, 삶도 더 빵빵하게!
+              </Text>
             </Flex>
             <InputLogin
               label="아이디"
               ref={e => (loginRef.current.userEmail = e)}
-              styles={{ borderRadius: "20px" }}
+              styles={{ borderRadius: "20px"}}
             ></InputLogin>
             <InputLogin
               label="비밀번호"
@@ -263,7 +285,7 @@ const Login = props => {
             ></InputLogin>
             <Button
               styles={{
-                backgroundColor: "#FF5C00",
+                backgroundColor: secondaryColor,
                 color: "#fff",
                 maxWidth: "360px",
                 width: "80%",
@@ -286,7 +308,14 @@ const Login = props => {
               <Button>아이디ㆍ</Button>
               <Button>비밀번호 찾기</Button>
             </Flex>
-            <Flex>
+            <Flex styles={{
+              flexDirection: "column"
+            }}>
+              {isDesktop === undefined ? <Text styles={{
+                fontSize: "16px",
+                fontWeight: "600",
+                margin: "15px 0"
+              }}>SNS 계정으로 간편 로그인하기</Text> : null}
               <img
                 className="hover-event"
                 alt="kakaologin"
@@ -403,13 +432,13 @@ const Login = props => {
 
 const Wrapper = styled.div`
   overflow: hidden;
-  width: 80vw;
+  width: 100%;
   height: 100%;
   max-width: 430px;
-  max-height: 600px;
+  max-height: 700px;
   background: #fff;
   border-radius: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 `;
 
 const SlideControl = styled.div`
@@ -422,7 +451,6 @@ const SlideControl = styled.div`
   border: none;
   border-radius: 10px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-
   input[type="radio"] {
     display: none;
   }
@@ -485,9 +513,9 @@ const FormContainer = styled.div`
     width: 50%;
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
     flex-direction: column;
-    margin-top: 50px;
+    margin: 30px 0;
     gap: 10px;
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }

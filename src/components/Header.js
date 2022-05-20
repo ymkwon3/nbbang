@@ -70,7 +70,7 @@ const Header = props => {
         minHeight: "50px",
         backgroundColor: primaryColor,
         border: `1px solid ${primaryDarked}`,
-        boxShadow: "0px 9px 10px -4px rgba(0, 0, 0, 0.2)",
+        boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
         zIndex: 11,
         padding: isDesktop === undefined ? "0 50px" : "0 10px",
       }}
