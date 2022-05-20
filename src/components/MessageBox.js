@@ -21,7 +21,13 @@ const MessageBox = ({ messages, loggedUser }) => {
   React.useEffect(scrollToBottom, [messages]);
 
   return (
-    <Flex styles={{ flexDirection: "column" }}>
+    <Flex
+      styles={{
+        flexDirection: "column",
+        height: "100%",
+        justifyContent: "flex-start",
+      }}
+    >
       {messages &&
         messages.map((message, idx) => (
           <div key={2 + idx} style={{ width: "100%" }}>

@@ -64,7 +64,7 @@ const deleteAPI = async (api, data = {}) => {
 // axios patch api
 const patchAPI = async (api, data = {}) => {
   return await axios
-    .patch(`${api}`, { headers: headers(), data })
+    .patch(`${api}`, { ...data }, { headers: headers() })
     .then((res) => {
       return res.data;
     })
