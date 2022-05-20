@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Button, Flex, InputLogin, Text } from "../elements";
 import { actionCreator as userActions } from "../redux/modules/user";
+import { actionCreator as postActions } from "../redux/modules/post";
 import { useHistory } from "react-router-dom";
 import { debounce } from "lodash";
 import { postAPI } from "../shared/api";
@@ -172,12 +173,14 @@ const Login = props => {
       notify("warning", "이메일 형식이 올바르지 않습니다.", autoClose);
       return;
     }
+    dispatch(postActions.isLoading(true));
     postAPI("/user/mail", { userEmail: email }).then(res => {
       if (res.msg === "success") {
         notify("info", "해당 이메일로 인증 메일이 발송되었습니다!", autoClose);
       } else if (res.msg === "fail") {
         notify("error", "5분안에 3번만 요청할 수 있습니다!", autoClose);
       }
+      dispatch(postActions.isLoading(false));
     });
   };
 

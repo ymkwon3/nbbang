@@ -29,9 +29,6 @@ import io from "socket.io-client";
 let socket = io.connect("https://redpingpong.shop");
 
 const Main = () => {
-
-  
-
   const dispatch = useDispatch();
   const history = useHistory();
   const geocoder = new kakao.maps.services.Geocoder();

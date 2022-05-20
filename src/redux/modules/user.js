@@ -62,6 +62,7 @@ const initialState = {
     tradeCount: "",
   },
   isLogin: false,
+  isLoading: false,
 };
 
 // reducer
@@ -73,6 +74,9 @@ const userSlice = createSlice({
       state.userInfo = initialState.userInfo;
       state.isLogin = initialState.isLogin;
       removeToken();
+    },
+    isLoading(state,action){
+      state.isLoading = action.payload;
     },
   },
   extraReducers: (builder) => {

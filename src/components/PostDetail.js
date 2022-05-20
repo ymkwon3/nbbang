@@ -21,6 +21,7 @@ import moment from "moment";
 import "moment/locale/ko";
 import Modal from "../shared/Modal";
 import Confirm from "./Confirm";
+import { useHistory } from "react-router-dom";
 
 // import io from "socket.io-client";
 // let socket = io.connect("https://localhost:3443");
@@ -34,6 +35,7 @@ const PostDetail = ({
   socket,
 }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const detailInfo = useSelector(state => state.post.postDetail);
   const userInfo = useSelector(state => state.user.userInfo);
   const isLogin = useSelector(state => state.user.isLogin);
@@ -120,6 +122,11 @@ const PostDetail = ({
                   height: "50px",
                 }}
                 src={detailInfo.userImage}
+                _onClick={() => {
+                  if (isLogin)
+                    history.push(`/mypage/${detailInfo.User_userId}`);
+                }}
+                className="hover-event"
               />
               <Text
                 styles={{
@@ -128,6 +135,11 @@ const PostDetail = ({
                   fontSize: "20px",
                   fontFamily: "Cafe24Ssurround",
                 }}
+                _onClick={() => {
+                  if (isLogin)
+                    history.push(`/mypage/${detailInfo.User_userId}`);
+                }}
+                className="hover-event"
               >
                 {detailInfo.writer}
               </Text>

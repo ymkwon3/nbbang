@@ -28,7 +28,8 @@ const MyPage = props => {
   const myList = useSelector(state => state.userpage.myList);
   const joinList = useSelector(state => state.userpage.joinList);
   const likeList = useSelector(state => state.userpage.likeList);
-  const userId = useParams().userId;
+  const loginUserId = useSelector(state => state.user.userInfo.userId);
+  const userId = parseInt(useParams().userId);
   const isDesktop = Desktop(0);
 
   // 이미지 미리보기
@@ -85,7 +86,7 @@ const MyPage = props => {
 
   React.useEffect(() => {
     dispatch(userPageActions.getUserPageDB({ userId }));
-  }, []);
+  }, [userId]);
 
   const setUserImage = e => {
     //사진이 변경되었으면 미리보기, 사진 데이터 저장
@@ -111,7 +112,7 @@ const MyPage = props => {
         }}
       >
         <Flex styles={{ width: "80%", maxWidth: "800px" }}>
-          <label htmlFor="profile" className="hover-event">
+          <label htmlFor="profile" style={{ position: "relative" }}>
             <Image
               src={preview ? preview : userInfo?.userImage}
               styles={{
@@ -121,13 +122,28 @@ const MyPage = props => {
               }}
               shape="circle"
             />
+
+            {/* 톱니바퀴 아이콘으로 대체해야함 */}
+            {loginUserId === userId ? <div
+              style={{
+                width: "20px",
+                height: "20px",
+                backgroundColor: "red",
+                position: "absolute",
+                bottom: 0,
+                right: 0
+              }}
+            ></div> : null}
           </label>
-          <input
-            onChange={e => setUserImage(e)}
-            id="profile"
-            type="file"
-            style={{ visibility: "hidden", width: "0" }}
-          ></input>
+          {loginUserId === userId ? (
+            <input
+              onChange={e => setUserImage(e)}
+              id="profile"
+              type="file"
+              style={{ visibility: "hidden", width: "0" }}
+            ></input>
+          ) : null}
+
           <Flex styles={{ flexDirection: "column", flex: 1 }}>
             <Text
               styles={{

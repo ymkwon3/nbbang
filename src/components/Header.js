@@ -171,7 +171,7 @@ const Header = props => {
                   position: "absolute",
                   backgroundColor: "#fff",
                   boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-                  width: "200px",
+                  width: "150px",
                   top: "40px",
                   borderRadius: "10px",
                   padding: "10px",
@@ -185,9 +185,7 @@ const Header = props => {
                     height: "40px",
                   }}
                   _onClick={() => {
-                    if (location.pathname !== `/mypage/${userInfo?.userId}`) {
-                      history.push(`/mypage/${userInfo?.userId}`);
-                    }
+                    history.push(`/mypage/${userInfo?.userId}`);
 
                     setDrop(prev => !prev);
                   }}

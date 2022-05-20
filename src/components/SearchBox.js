@@ -76,7 +76,7 @@ export default function SearchBox() {
         <input
           ref={searchRef}
           type="text"
-          placeholder="검색어를 입력해주세요"
+          placeholder="제목입력"
           onChange={getDebounce}
           onKeyUp={show_input}
         />

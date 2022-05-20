@@ -18,7 +18,6 @@ import KaKaoUri from "../pages/KakaoUri";
 const App = () => {
   const isDesktop = Desktop(0);
   const isLoading = useSelector(state => state.post.isLoading);
-  
   return (
     <Flex
       styles={{
