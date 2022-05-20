@@ -5,11 +5,12 @@ import { Button, Flex, InputLogin } from "../elements";
 import { actionCreator as userActions } from "../redux/modules/user";
 import { useHistory } from "react-router-dom";
 import { debounce } from "lodash";
-import { getAPI, postAPI } from "../shared/api";
+import { postAPI } from "../shared/api";
 import { notify } from "../components/ToastMessage";
 
 import { primaryColor, secondaryColor, primaryDarked } from "../shared/color";
-import {croissant} from "../image/bread"
+import { croissant } from "../image/bread";
+import { kakaoLogin } from "../image";
 
 const Login = props => {
   const history = useHistory();
@@ -240,11 +241,14 @@ const Login = props => {
               styles={{
                 width: "200px",
                 height: "200px",
-                border: "1px solid #eee"
+                border: "1px solid #eee",
               }}
             >
-              <img alt="character" src={croissant} style={{width: "120px", height: "120px"}}></img>
-
+              <img
+                alt="character"
+                src={croissant}
+                style={{ width: "120px", height: "120px" }}
+              ></img>
             </Flex>
             <InputLogin
               label="아이디"
@@ -283,7 +287,12 @@ const Login = props => {
               <Button>비밀번호 찾기</Button>
             </Flex>
             <Flex>
-              <Button _onClick={clickKaKao}>카카오소셜로그인임시</Button>
+              <img
+                className="hover-event"
+                alt="kakaologin"
+                src={kakaoLogin}
+                onClick={clickKaKao}
+              ></img>
             </Flex>
           </div>
           <div className="signup">

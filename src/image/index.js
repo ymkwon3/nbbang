@@ -16,6 +16,7 @@ import calendar from "./calendar.svg";
 import trash from "./trash.svg";
 import address from "./address.svg";
 import content from "./content.svg";
+import kakaoLogin from "./kakaologin.png";
 
 export {
   exit,
@@ -35,5 +36,6 @@ export {
   calendar,
   trash,
   address,
-  content
+  content,
+  kakaoLogin,
 };
