@@ -17,8 +17,8 @@ const Login = props => {
   const autoClose = 2000; // toastmessage 매개변수
   const CLIENT_ID = process.env.REACT_APP_KAKAO_CLIENT_ID;
   const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
-
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  const test = "http://localhost:3000/kakao-auth/kakao/callback"
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${test}&response_type=code`;
 
   // css용도
   const [isLogin, setIsLogin] = React.useState("login");
