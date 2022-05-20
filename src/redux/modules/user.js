@@ -40,7 +40,10 @@ const kakaoLogin = createAsyncThunk(
   "user/kakaologin",
   async (code) => {
     return await getAPI(`/kakao-auth/kakao/callback?code=${code}`).then(res => {
-      console.log(res)
+      if(res.msg === "success"){
+        setToken(res.user.token);
+        isLoginDB();
+      }
     });
   }
 );
