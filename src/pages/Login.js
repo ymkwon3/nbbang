@@ -212,7 +212,7 @@ const Login = props => {
 
   return (
     <Wrapper className="wrapper">
-      <FormContainer className="form-container">
+      <FormContainer className="form-container" isDesktop={isDesktop}>
         <SlideControl className="slide-controls" state={isLogin}>
           <input
             type="radio"
@@ -245,7 +245,7 @@ const Login = props => {
             <Flex
               styles={{
                 flexDirection: "column",
-                fontSize: isDesktop === undefined ? "10px" : "8px"
+                fontSize: isDesktop === undefined ? "10px" : "8px",
               }}
             >
               <img
@@ -259,7 +259,7 @@ const Login = props => {
                   fontFamily: "Cafe24Ssurround",
                   fontSize: "3em",
                   fontWeight: "700",
-                  margin: "0.66em 0 0.25em"
+                  margin: "0.66em 0 0.25em",
                 }}
               >
                 엔빵
@@ -269,28 +269,40 @@ const Login = props => {
                   fontFamily: "Cafe24Ssurround",
                   fontSize: "3em",
                   fontWeight: "700",
-                  marginBottom: "0.66em"
+                  marginBottom: "0.66em",
                 }}
               >
                 친구도, 삶도 더 빵빵하게!
               </Text>
             </Flex>
-            <InputLogin
-              label="아이디"
-              ref={e => (loginRef.current.userEmail = e)}
-              styles={{ borderRadius: "20px"}}
-            ></InputLogin>
-            <InputLogin
-              label="비밀번호"
-              type="password"
-              ref={e => (loginRef.current.userPassword = e)}
-              styles={{ borderRadius: "20px" }}
-              _onKeyUp={(e) => {
-                if(e.key === "Enter") {
-                  clickLogin();
-                }
+            <form
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                width: "100%",
+                margin: "10px 0",
+                gap: "10px",
               }}
-            ></InputLogin>
+            >
+              <InputLogin
+                label="아이디"
+                ref={e => (loginRef.current.userEmail = e)}
+                styles={{ borderRadius: "20px" }}
+              ></InputLogin>
+              <InputLogin
+                label="비밀번호"
+                type="password"
+                ref={e => (loginRef.current.userPassword = e)}
+                styles={{ borderRadius: "20px" }}
+                _onKeyUp={e => {
+                  if (e.keyCode === 13) {
+                    e.preventDefault();
+                    clickLogin();
+                  }
+                }}
+              ></InputLogin>
+            </form>
             <Button
               styles={{
                 backgroundColor: secondaryColor,
@@ -315,14 +327,22 @@ const Login = props => {
             >
               <Button>비밀번호 찾기</Button>
             </Flex>
-            <Flex styles={{
-              flexDirection: "column"
-            }}>
-              {isDesktop === undefined ? <Text styles={{
-                fontSize: "16px",
-                fontWeight: "600",
-                margin: "15px 0"
-              }}>SNS 계정으로 간편 로그인하기</Text> : null}
+            <Flex
+              styles={{
+                flexDirection: "column",
+              }}
+            >
+              {isDesktop === undefined ? (
+                <Text
+                  styles={{
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    margin: "15px 0",
+                  }}
+                >
+                  SNS 계정으로 간편 로그인하기
+                </Text>
+              ) : null}
               <img
                 className="hover-event"
                 alt="kakaologin"
@@ -524,9 +544,13 @@ const FormContainer = styled.div`
     align-items: center;
     justify-content: start;
     flex-direction: column;
-    margin: 30px 0;
+    padding: 30px 0;
     gap: 10px;
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .form-inner > .signup {
+    padding: ${props => props.isDesktop === undefined ? "100px 0!important" : "30px 0!important"};
   }
 `;
 

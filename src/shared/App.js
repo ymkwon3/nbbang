@@ -29,7 +29,6 @@ const App = () => {
     >
       <ToastMessage />
       <Header />
-
       <Flex
         styles={{
           height:

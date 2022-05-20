@@ -1,12 +1,11 @@
 /* global kakao */
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { PostWrite, SideNav } from "../components";
 import { Flex, Button } from "../elements";
 import PostDetail from "../components/PostDetail";
-import Spinner from "../components/Spinner";
 
 import { actionCreator as postActions } from "../redux/modules/post";
 import { actions as notiActions } from "../redux/modules/notification";
