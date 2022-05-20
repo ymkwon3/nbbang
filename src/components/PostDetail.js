@@ -256,7 +256,7 @@ const PostDetail = ({
                 }}
                 _onClick={() => setIsComplete(true)}
               >
-                모집 완료
+                공구 완료
               </Button>
             ) : null
           }

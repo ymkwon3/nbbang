@@ -15,6 +15,13 @@ import { GiExitDoor } from "react-icons/gi";
 
 import moment from "moment";
 import "moment/locale/ko";
+import {
+  getDoesTheSamePersonExist,
+  getDoesTheSameUserExist,
+  getNewAwaiterList,
+  getNewlyAddedUser,
+  getNewParticipantList,
+} from "../config/ChatLogics";
 
 const ChatBox = React.forwardRef(
   (
@@ -97,7 +104,6 @@ const ChatBox = React.forwardRef(
         socket.emit("sendmessage", {
           postid: postid,
           newMessage: newChat,
-          // chatRoomUserList,
         });
 
         setNewlyAddedMessages((messageList) => [...messageList, newChat]);
@@ -110,15 +116,68 @@ const ChatBox = React.forwardRef(
     }, [postid]);
 
     React.useEffect(() => {
-      socket.on("connected", (enteredUser) => {
+      socket.on("connected", (enteredUser, updatedChatroomUserList, status) => {
         setSocketConnected(true);
-        // 나중에 css 커스터마이징하기
+
+        // 새로 업데이트된 채팅유저 목록있고, 채팅목록에 새로 추가된 유저가 방장이 아닐 때
+        if (updatedChatroomUserList) {
+          // 형식 다름에 따른 형식 변환
+          let newlyAddedUser = getNewlyAddedUser(updatedChatroomUserList);
+
+          // 참여자 리스트에서 방장 및 겹치는 유저 제거(채팅을 시작거나 채팅방을 나갈 때)
+          let newAwaiterList = getNewAwaiterList(
+            updatedChatroomUserList,
+            newlyAddedUser,
+            status
+          );
+
+          // 거래자 리스트에서 방장 및 겹치는 유저 제거(채팅을 시작거나 채팅방을 나갈 때)
+          let newParticipantList = getNewParticipantList(
+            updatedChatroomUserList,
+            newlyAddedUser,
+            status
+          );
+
+          // 스타트챗 버튼을 누른 사람 이 방장일 때
+          if (
+            newlyAddedUser.User_userId ===
+            updatedChatroomUserList[3][0].User_userId
+          ) {
+            setAwaiters(newAwaiterList);
+
+            // 스타트챗 버튼을 누른 사람 이 방장이 아닐 때
+            // 혹은
+            // 방장 이외에 어떤 유저가 채팅방을 나갈 때
+          } else {
+            // 채팅방을 입장하려거나 퇴장하려는 유저가 각각 새로 필터링된 채팅 참여자 리스트와 거래자 리스트에 여전히 존재하는지 체크
+            let doesTheSameUserExist = getDoesTheSameUserExist(
+              newlyAddedUser,
+              newAwaiterList,
+              newParticipantList
+            );
+
+            if (doesTheSameUserExist) {
+              setAwaiters(newAwaiterList);
+            } else {
+              // 채팅방 나가기 버튼을 눌렀을 때 방장과 새로 나갈 유저를 제거한 참여자 리스트로 업데이트
+              if (status === "leave") {
+                setAwaiters(newAwaiterList);
+              } else {
+                // 스타트 챗 버튼을 눌렀을 때 새로운 인원을 추가하여 반환
+                setAwaiters([newlyAddedUser, ...newAwaiterList]);
+              }
+            }
+          }
+          setParticipants(newParticipantList);
+        }
+
         let newChat = {
           status: "messageAlarm",
           chat: enteredUser,
         };
         setNewlyAddedMessages((messageList) => [...messageList, newChat]);
       });
+
       socket.on("typing", () => setIsTyping(true));
       socket.on("stop typing", () => setIsTyping(false));
     }, []);
@@ -126,17 +185,18 @@ const ChatBox = React.forwardRef(
     //receive message
     React.useEffect(() => {
       socket.on("receive message", (newMessageReceived) => {
-        console.log("실행2");
-        console.log(newMessageReceived);
-        // setNewlyAddedMessages((messageList) => [
-        //   ...messageList,
-        //   newMessageReceived,
-        // ]);
+        setNewlyAddedMessages((messageList) => [
+          ...messageList,
+          newMessageReceived,
+        ]);
       });
 
       socket.on(
         "receive_participant_list_after_added",
         (updatedParticipantList, updatedAwaiterList) => {
+          // console.log("추가");
+          // console.log("수정된 거래자 리스트: ", updatedParticipantList);
+          // console.log("수정된 참여자 리스트: ", updatedAwaiterList);
           setParticipants(updatedParticipantList);
           setAwaiters(updatedAwaiterList);
         }
@@ -145,6 +205,9 @@ const ChatBox = React.forwardRef(
       socket.on(
         "receive_participant_list_after_canceled",
         (updatedParticipantList, updatedAwaiterList) => {
+          // console.log("취소");
+          // console.log("수정된 거래자 리스트: ", updatedParticipantList);
+          // console.log("수정된 참여자 리스트: ", updatedAwaiterList);
           setParticipants(updatedParticipantList);
           setAwaiters(updatedAwaiterList);
         }
@@ -159,7 +222,6 @@ const ChatBox = React.forwardRef(
 
       if (!typing) {
         setTyping(true);
-        // 나중에 진짜 포스트 번호로 바꾸기
         socket.emit("typing", postid);
       }
 
@@ -179,7 +241,7 @@ const ChatBox = React.forwardRef(
 
     const OpenChatRoomUserList = () => {
       if (chatroomUserListRef.current.style.width === "0px")
-        chatroomUserListRef.current.style.width = "60%";
+        chatroomUserListRef.current.style.width = "70%";
       else chatroomUserListRef.current.style.width = "0px";
     };
 
@@ -190,11 +252,13 @@ const ChatBox = React.forwardRef(
           style={{
             position: "absolute",
             transition: "top 500ms cubic-bezier(0.86, 0, 0.07, 1)",
-            zIndex: "100",
+            zIndex: "20",
             maxWidth: "360px",
             width: "100%",
             height: "100%",
-            padding: "20px 23px",
+            padding: "40px 18px",
+            backgroundColor: "rgba(245, 236, 229, 0.2)",
+            boxShadow: "20px 8px 11px -8px rgba(0, 0, 0, 0.05)",
           }}
         >
           <Flex
@@ -260,46 +324,56 @@ export const ChatBoxLeft = ({
         styles={{
           width: "100%",
           height: "100%",
-          padding: "20px",
+          padding: "15px",
           flexDirection: "column",
           backgroundColor: "#FFFFFF",
           boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
           borderRadius: "22px",
-          position: "absolute",
+          position: "relative",
         }}
       >
-        <Flex styles={{ justifyContent: "flex-end" }}>
-          <Text
-            className="hover-event"
-            styles={{
-              fontSize: "32px",
-              position: "relative",
-              color: "rgb(187, 187, 187)",
-            }}
-            _onClick={() => {
-              closeChatRoom(loggedUser);
-            }}
-          >
-            {"×"}
-          </Text>
+        <Flex
+          styles={{
+            justifyContent: "space-between",
+            padding: "0 10px",
+            margin: "5px 0 22px 0",
+          }}
+        >
+          <Flex styles={{ width: "auto" }}>
+            <BsChatText
+              className="hover-event-to-blurr"
+              style={{ fontSize: "28px", marginRight: "8px" }}
+              onClick={OpenChatRoomUserList}
+            />
+            <Text
+              styles={{
+                fontWeight: "700",
+                fontSize: "18px",
+                lineHeight: "22px",
+                color: "#000000",
+              }}
+            >
+              {title}
+            </Text>
+          </Flex>
+
+          <Flex styles={{ width: "auto" }}>
+            <Text
+              className="hover-event"
+              styles={{
+                fontSize: "32px",
+                position: "relative",
+                color: "rgb(187, 187, 187)",
+              }}
+              _onClick={() => {
+                closeChatRoom(loggedUser);
+              }}
+            >
+              {"×"}
+            </Text>
+          </Flex>
         </Flex>
-        <Flex styles={{ justifyContent: "flex-start", margin: "5px 0 22px 0" }}>
-          <BsChatText
-            className="hover-event-to-blurr"
-            style={{ fontSize: "28px", marginRight: "8px" }}
-            onClick={OpenChatRoomUserList}
-          />
-          <Text
-            styles={{
-              fontWeight: "700",
-              fontSize: "18px",
-              lineHeight: "22px",
-              color: "#000000",
-            }}
-          >
-            {title}
-          </Text>
-        </Flex>
+
         <Flex
           className="removeScroll"
           styles={{
@@ -308,22 +382,46 @@ export const ChatBoxLeft = ({
             overflowX: "hidden",
             overflowY: "auto",
             height: "635px",
-            backgroundColor: "#E8E8F2",
+            backgroundColor: "#DFD3CA",
             borderRadius: "22px",
             padding: "0px 14px",
+            position: "relative",
           }}
         >
           {/* 메시지가 보이는 곳 */}
-          <MessageBox messages={messages} loggedUser={loggedUser} />
+          <MessageBox
+            isTyping={isTyping}
+            messages={messages}
+            loggedUser={loggedUser}
+          />
+          {isTyping ? (
+            <Flex
+              styles={{ position: "sticky", bottom: "0px", height: "auto" }}
+            >
+              loading...
+            </Flex>
+          ) : (
+            <></>
+          )}
+          {/* 입시 */}
+          {/* <Flex
+            styles={{
+              position: "absolute",
+              bottom: "0px",
+              height: "auto",
+              border: "1px solid black",
+            }}
+          >
+            loading...
+          </Flex> */}
         </Flex>
-        {isTyping ? <div>loading...</div> : <></>}
         {/* 메시지 보내는 곳 */}
         <Flex
           styles={{
-            height: "47px",
+            minHeight: "40px",
             marginTop: "29px",
             borderRadius: "20px",
-            backgroundColor: "#E8E8F2",
+            backgroundColor: "#DFD3CA",
             padding: "0 5px",
           }}
         >
@@ -335,14 +433,14 @@ export const ChatBoxLeft = ({
               outline: "none",
               border: "none",
               boxShadow: "none",
-              backgroundColor: "#E8E8F2",
+              backgroundColor: "#DFD3CA",
             }}
             onChange={typingHandler}
             onKeyUp={sendNewMessage}
             value={newMessage}
           />
           <FaRegPaperPlane
-            className="hover-event"
+            className="hover-event-to-blurr"
             onClick={sendNewMessage}
             style={{ fontSize: "1.2rem", marginLeft: "6px" }}
           />
@@ -414,8 +512,9 @@ export const ChatBoxRight = forwardRef(
 
     const selfLeavChatroom = () => {
       // put the spinner later
+      console.log("실행");
       stateShiftForClosingChatroom();
-      socket.emit("leave chatroom", postid, loggedUser.userId);
+      socket.emit("leave chatroom", postid, loggedUser);
     };
 
     return (
@@ -532,6 +631,7 @@ export const ChatBoxRight = forwardRef(
               justifyContent: "flex-end",
               paddingRight: "18px",
               marginBottom: "110px",
+              display: chatAdminId === loggedUser.userId ? "none" : "flex",
             }}
           >
             <GiExitDoor
@@ -553,7 +653,7 @@ const UserListContainer = styled.div`
   flex-direction: column;
   position: absolute;
   right: -23px;
-  top: -23px;
+  top: -40px;
   background-color: #ffffff;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   display: flex;
