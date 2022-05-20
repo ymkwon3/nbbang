@@ -42,7 +42,6 @@ const kakaoLogin = createAsyncThunk(
     return await getAPI(`/kakao-auth/kakao/callback?code=${code}`).then(res => {
       if(res.msg === "success"){
         setToken(res.user.token);
-        isLoginDB();
       }
     });
   }

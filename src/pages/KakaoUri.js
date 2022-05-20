@@ -9,10 +9,8 @@ const KaKaoUri = () => {
   const history = useHistory();
   const params = new URL(document.location).searchParams;
   const code = params.get("code");
-  console.log(code);
   React.useEffect(() => {
     dispatch(userActions.kakaoLogin(code)).then(res => {
-      console.log(res)
       history.replace('/')
     })
   }, [])
