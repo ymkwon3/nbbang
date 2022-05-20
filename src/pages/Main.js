@@ -179,7 +179,7 @@ const Main = () => {
         });
 
         //제일 처음 한 번만 실행
-        if (!userPositionRef.current && containerRef.current) {
+        if (!userPositionRef.current) {
           const userPosition = new kakao.maps.LatLng(userLat, userLng);
           const options = {
             center: userPosition,
