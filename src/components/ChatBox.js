@@ -185,7 +185,6 @@ const ChatBox = React.forwardRef(
     //receive message
     React.useEffect(() => {
       socket.on("receive message", (newMessageReceived) => {
-        console.log(newMessageReceived);
         setNewlyAddedMessages((messageList) => [
           ...messageList,
           newMessageReceived,
@@ -258,6 +257,8 @@ const ChatBox = React.forwardRef(
             width: "100%",
             height: "100%",
             padding: "40px 18px",
+            backgroundColor: "rgba(245, 236, 229, 0.2)",
+            boxShadow: "20px 8px 11px -8px rgba(0, 0, 0, 0.05)",
           }}
         >
           <Flex
@@ -478,7 +479,6 @@ export const ChatBoxRight = forwardRef(
 
       socket.emit("add_new_participant", { postid, selectedUser });
 
-      console.log(selectedUser);
       setParticipants((existingParticipantList) => {
         return existingParticipantList
           ? [selectedUser, ...existingParticipantList]
@@ -494,7 +494,7 @@ export const ChatBoxRight = forwardRef(
 
     const deleteParticipant = (selectedUser) => {
       setLoadingDeleteParticipant(true);
-      console.log(selectedUser);
+
       socket.emit("cancel_new_participant", { postid, selectedUser });
 
       let updatedParticipantList = participants.filter(

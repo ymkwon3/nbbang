@@ -13,16 +13,16 @@ import { primaryColor, primaryDarked, secondaryColor } from "../shared/color";
 
 import styled from "styled-components";
 
-const Header = props => {
+const Header = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
   const isDesktop = Desktop(0);
 
-  const userInfo = useSelector(state => state.user.userInfo);
-  const isLogin = useSelector(state => state.user.isLogin);
-  const category = useSelector(state => state.post.category);
-  const notificationList = useSelector(state => state.notification?.list);
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const isLogin = useSelector((state) => state.user.isLogin);
+  const category = useSelector((state) => state.post.category);
+  const notificationList = useSelector((state) => state.user?.alarm);
 
   const [drop, setDrop] = React.useState(false);
   const [dropNoti, setDropNoti] = React.useState(false);
@@ -31,7 +31,7 @@ const Header = props => {
     //temp
     dispatch(userActions.logout());
     history.push("/login");
-    setDrop(prev => !prev);
+    setDrop((prev) => !prev);
   };
 
   const clickLogin = () => {
@@ -40,6 +40,15 @@ const Header = props => {
 
   const clickLogo = () => {
     history.push("/");
+  };
+
+  const readAllAlarm = () => {
+    console.log("실행");
+
+    if (dropNoti && notificationList.length > 0) {
+      dispatch(userActions.readAllAlarmDB());
+    }
+    setDropNoti(!dropNoti);
   };
 
   const categoryStyle = {
@@ -116,14 +125,43 @@ const Header = props => {
 
             {location.pathname === "/" && (
               <>
-                <img
-                  className="hover-event"
-                  src={notification}
-                  alt="notification"
-                  onClick={() => {
-                    setDropNoti(!dropNoti);
+                <div
+                  style={{
+                    position: "relative",
+                    height: "auto",
+                    width: "auto",
                   }}
-                />
+                >
+                  <img
+                    className="hover-event"
+                    src={notification}
+                    alt="notification"
+                    onClick={readAllAlarm}
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      right: "0px",
+                      top: "0px",
+                      fontSize: "13px",
+                      backgroundColor: "red",
+                      width: "17px",
+                      height: "17px",
+                      borderRadius: "50%",
+                      textAlign: "center",
+                      color: "white",
+                      fontWeight: "600",
+                    }}
+                  >
+                    {notificationList.length <= 99 &&
+                    notificationList.length > 0
+                      ? notificationList.length
+                      : notificationList.length <= 0
+                      ? 0
+                      : 99}
+                  </div>
+                </div>
+
                 {dropNoti && (
                   <Flex
                     styles={{
@@ -161,7 +199,7 @@ const Header = props => {
               styles={{ width: "38px", height: "38px" }}
               src={userInfo.userImage}
               className="hover-event"
-              _onClick={() => setDrop(prev => !prev)}
+              _onClick={() => setDrop((prev) => !prev)}
             ></Image>
             {drop ? (
               <Flex
@@ -187,7 +225,7 @@ const Header = props => {
                       history.push(`/mypage/${userInfo?.userId}`);
                     }
 
-                    setDrop(prev => !prev);
+                    setDrop((prev) => !prev);
                   }}
                 >
                   마이페이지

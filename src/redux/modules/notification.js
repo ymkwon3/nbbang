@@ -28,6 +28,9 @@ const notificationSlice = createSlice({
       //   console.log(action.payload);
       state.list = [...state.list, action.payload];
     },
+    deleteNotification: (state, action) => {
+      console.log(action.payload);
+    },
   },
   extraReducers: (builder) => {},
 });

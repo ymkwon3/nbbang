@@ -8,7 +8,7 @@ import { Flex, Button } from "../elements";
 import PostDetail from "../components/PostDetail";
 
 import { actionCreator as postActions } from "../redux/modules/post";
-import { actions as notiActions } from "../redux/modules/notification";
+import { actionCreator as userActions } from "../redux/modules/user";
 import RadioInput from "../components/RadioInput";
 import MyLocation from "../components/MyLocation";
 
@@ -105,20 +105,20 @@ const Main = () => {
   React.useEffect(() => {
     socket.emit("socket is connected", userInfo);
     socket.on("send message alarm", (messageNoti) => {
-      console.log(messageNoti[0]);
-      dispatch(notiActions.getNotification(messageNoti[0]));
+      console.log(messageNoti);
+      dispatch(userActions.addAlarm(messageNoti[0]));
     });
     socket.on("block", (blockChatroomNoti) => {
       console.log(blockChatroomNoti);
-      dispatch(notiActions.getNotification(blockChatroomNoti));
+      dispatch(userActions.addAlarm(blockChatroomNoti));
     });
     socket.on("leaved chatroom", (leaveNoti) => {
       console.log(leaveNoti);
-      dispatch(notiActions.getNotification(leaveNoti[0]));
+      dispatch(userActions.addAlarm(leaveNoti[0]));
     });
     socket.on("added_new_participant", (addedNewParticiparntNoti) => {
-      console.log(addedNewParticiparntNoti[0]);
-      dispatch(notiActions.getNotification(addedNewParticiparntNoti[0]));
+      console.log(addedNewParticiparntNoti);
+      dispatch(userActions.addAlarm(addedNewParticiparntNoti[0]));
     });
   }, []);
   /*
