@@ -25,7 +25,6 @@ const loginDB = createAsyncThunk("user/login", async (data) => {
 const isLoginDB = createAsyncThunk("user/islogin", async () => {
   // 실패 시 고려해야함
   return await getAPI("/user/islogin").then((res) => {
-    console.log(res);
     return res;
   });
 });
@@ -35,6 +34,7 @@ const kakaoLogin = createAsyncThunk(
   async (code) => {
     return await getAPI(`/kakao-auth/kakao/callback?code=${code}`).then(res => {
       if(res.msg === "success"){
+        console.log(setToken(res.user.token))
         setToken(res.user.token);
       }
     });
@@ -49,7 +49,6 @@ const postUserImageDB = createAsyncThunk("user/me", async formData => {
 
 const readAllAlarmDB = createAsyncThunk("user/ischecked", async () => {
   return await patchAPI(`/user/ischecked`).then((res) => {
-    console.log(res);
     return res;
   });
 });

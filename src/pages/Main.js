@@ -119,6 +119,12 @@ const Main = () => {
       console.log(addedNewParticiparntNoti);
       dispatch(userActions.addAlarm(addedNewParticiparntNoti[0]));
     });
+    return () => {
+      socket.off("send message alarm");
+      socket.off("block");
+      socket.off("leaved chatroom");
+      socket.off("added_new_participant");
+    }
   }, []);
   /*
   현재 로그인 상태일 때, 게시물 데이터를 두 번 불러옴.
