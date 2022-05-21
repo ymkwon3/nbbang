@@ -56,6 +56,15 @@ const FooterNavi = props => {
         backgroundColor: "#fff",
       }}
     >
+      
+      <FooterBtn style={location === "/info" ? checkedStyle : null} onClick={clickInfo}>
+        {location === "/info" ? (
+          <img alt="info" src={infoWhite}></img>
+        ) : (
+          <img alt="info" src={info}></img>
+        )}
+        Info
+      </FooterBtn>
       <FooterBtn
         style={location === "/" ? checkedStyle : null}
         onClick={clickHome}
@@ -66,14 +75,6 @@ const FooterNavi = props => {
           <img alt="home" src={home}></img>
         )}
         Home
-      </FooterBtn>
-      <FooterBtn style={location === "/info" ? checkedStyle : null} onClick={clickInfo}>
-        {location === "/info" ? (
-          <img alt="info" src={infoWhite}></img>
-        ) : (
-          <img alt="info" src={info}></img>
-        )}
-        Info
       </FooterBtn>
       {isLogin ? (
         <FooterBtn

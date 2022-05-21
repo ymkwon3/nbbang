@@ -190,7 +190,7 @@ const PostWrite = props => {
         styles={{
           justifyContent: "start",
           padding: "5px",
-          height: "60px",
+          minHeight: "60px",
           borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
         }}
       >
@@ -210,6 +210,7 @@ const PostWrite = props => {
             marginLeft: "6px",
             fontSize: "14px",
           }}
+          title="category"
           ref={e => (submitRef.current.categoryRef = e)}
           options={[
             { key: "같이 사자", value: "buy" },

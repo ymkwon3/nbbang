@@ -1,27 +1,26 @@
 @font-face {
   font-family: "Pretendard";
-  src: url("../font/PretendardVariable.ttf") format("woff");
+  src: url("../font/PretendardVariable.ttf") format("woff2");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Cafe24Ssurround";
-  src: url("../font/Cafe24Ssurround.ttf") format("woff");
+  src: url("../font/Cafe24Ssurround.ttf") format("woff2");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Cafe24SsurroundAir";
-  src: url("../font/Cafe24SsurroundAir.ttf") format("woff");
+  src: url("../font/Cafe24SsurroundAir.ttf") format("woff2");
   font-weight: normal;
   font-style: normal;
 }
 
 * {
   font-family: "Pretendard";
-  -webkit-tap-highlight-color: transparent;
 }
 
 .border-left-radius {

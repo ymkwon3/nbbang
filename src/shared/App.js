@@ -17,7 +17,6 @@ import Loading from "../components/Loading";
 import KaKaoUri from "../pages/KakaoUri";
 import { secondaryColor } from "./color";
 
-
 const App = () => {
   const isDesktop = Desktop(0);
   const isLoading = useSelector(state => state.post.isLoading);
