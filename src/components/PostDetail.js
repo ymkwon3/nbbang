@@ -23,10 +23,6 @@ import Modal from "../shared/Modal";
 import Confirm from "./Confirm";
 import { useHistory } from "react-router-dom";
 
-// import io from "socket.io-client";
-// let socket = io.connect("https://localhost:3443");
-// let socket = io.connect("https://redpingpong.shop");
-
 const PostDetail = ({
   openChatroom,
   setOpenChatroom,
@@ -36,9 +32,9 @@ const PostDetail = ({
 }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const detailInfo = useSelector(state => state.post.postDetail);
-  const userInfo = useSelector(state => state.user.userInfo);
-  const isLogin = useSelector(state => state.user.isLogin);
+  const detailInfo = useSelector((state) => state.post.postDetail);
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const isLogin = useSelector((state) => state.user.isLogin);
   const chatRef = React.useRef();
 
   const [isDelete, setIsDelete] = React.useState(false);
@@ -65,7 +61,7 @@ const PostDetail = ({
     setIsChatButtonClicked(true);
   };
 
-  const closeChatRoom = userWillLeave => {
+  const closeChatRoom = (userWillLeave) => {
     stateShiftForClosingChatroom();
     socket.emit("close chatroom", `p${detailInfo.postId}`, userWillLeave);
   };

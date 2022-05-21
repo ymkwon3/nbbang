@@ -118,6 +118,11 @@ const ChatBox = React.forwardRef(
     React.useEffect(() => {
       socket.on("connected", (enteredUser, updatedChatroomUserList, status) => {
         setSocketConnected(true);
+        let newChat = {
+          status: "messageAlarm",
+          chat: enteredUser,
+        };
+        setNewlyAddedMessages((messageList) => [...messageList, newChat]);
 
         // 새로 업데이트된 채팅유저 목록있고, 채팅목록에 새로 추가된 유저가 방장이 아닐 때
         if (updatedChatroomUserList) {
@@ -170,12 +175,6 @@ const ChatBox = React.forwardRef(
           }
           setParticipants(newParticipantList);
         }
-
-        let newChat = {
-          status: "messageAlarm",
-          chat: enteredUser,
-        };
-        setNewlyAddedMessages((messageList) => [...messageList, newChat]);
       });
 
       socket.on("typing", () => setIsTyping(true));

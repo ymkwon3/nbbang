@@ -25,24 +25,21 @@ const loginDB = createAsyncThunk("user/login", async (data) => {
 const isLoginDB = createAsyncThunk("user/islogin", async () => {
   // 실패 시 고려해야함
   return await getAPI("/user/islogin").then((res) => {
-    console.log(res);
+    // console.log(res);
     return res;
   });
 });
 
-const kakaoLogin = createAsyncThunk(
-  "user/kakaologin",
-  async (code) => {
-    return await getAPI(`/kakao-auth/kakao/callback?code=${code}`).then(res => {
-      if(res.msg === "success"){
-        setToken(res.user.token);
-      }
-    });
-  }
-);
+const kakaoLogin = createAsyncThunk("user/kakaologin", async (code) => {
+  return await getAPI(`/kakao-auth/kakao/callback?code=${code}`).then((res) => {
+    if (res.msg === "success") {
+      setToken(res.user.token);
+    }
+  });
+});
 
-const postUserImageDB = createAsyncThunk("user/me", async formData => {
-  return await postFormAPI(`/user/me`, formData).then(res => {
+const postUserImageDB = createAsyncThunk("user/me", async (formData) => {
+  return await postFormAPI(`/user/me`, formData).then((res) => {
     return res;
   });
 });
@@ -85,12 +82,11 @@ const userSlice = createSlice({
       state.isLogin = initialState.isLogin;
       removeToken();
     },
-    isLoading(state,action){
+    isLoading(state, action) {
       state.isLoading = action.payload;
     },
 
     addAlarm: (state, action) => {
-      //   console.log(action.payload);
       state.alarm = [...state.alarm, action.payload];
     },
     readAlarm: (state, action) => {
