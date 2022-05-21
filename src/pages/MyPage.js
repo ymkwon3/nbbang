@@ -15,11 +15,13 @@ import {
   calendar,
   address,
   content,
+  edit,
 } from "../image";
 
 import moment from "moment";
 import "moment/locale/ko";
 import Modal from "../shared/Modal";
+import { primaryColor } from "../shared/color";
 
 const MyPage = props => {
   const dispatch = useDispatch();
@@ -30,6 +32,7 @@ const MyPage = props => {
   const likeList = useSelector(state => state.userpage.likeList);
   const loginUserId = useSelector(state => state.user.userInfo.userId);
   const userId = parseInt(useParams().userId);
+
   const isDesktop = Desktop(0);
 
   // 이미지 미리보기
@@ -94,7 +97,7 @@ const MyPage = props => {
       setPreview(URL.createObjectURL(e.target.files[0]));
       const formData = new FormData();
       formData.append("userImage", e.target.files[0]);
-      // 유저이미지 알림 필요할지도???
+      
       notify("success", "프로필 사진이 변경되었습니다", 2000, "top-right");
       dispatch(userActions.postUserImageDB(formData));
     }
@@ -118,22 +121,22 @@ const MyPage = props => {
               styles={{
                 width: isDesktop === undefined ? "200px" : "120px",
                 height: isDesktop === undefined ? "200px" : "120px",
-                border: "6px solid #FF5C00",
+                border: `6px solid ${primaryColor}`,
               }}
               shape="circle"
             />
 
             {/* 톱니바퀴 아이콘으로 대체해야함 */}
-            {loginUserId === userId ? <div
+            {loginUserId === userId ? <img
+            alt="edit"
+            src={edit}
+            className="hover-event"
               style={{
-                width: "20px",
-                height: "20px",
-                backgroundColor: "red",
                 position: "absolute",
-                bottom: 0,
-                right: 0
+                bottom: "10px",
+                right: "10px"
               }}
-            ></div> : null}
+            ></img> : null}
           </label>
           {loginUserId === userId ? (
             <input
@@ -205,7 +208,7 @@ const MyPage = props => {
             _onClick={() => changeType("mine")}
             styles={postType === "mine" ? checkedStyle : buttonStyle}
           >
-            나의 공구
+            {loginUserId === userId ? "나의 공구" : "모집 공구"}
           </Button>
           <Button
             _onClick={() => changeType("join")}

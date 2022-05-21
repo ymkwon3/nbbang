@@ -8,8 +8,8 @@ import SearchBox from "./SearchBox";
 
 import { useHistory, useLocation } from "react-router-dom";
 
-import { logo, whiteHeart, notification } from "../image";
-import { Desktop, Mobile } from "../shared/Responsive";
+import { logo, notification } from "../image";
+import { Desktop } from "../shared/Responsive";
 import { primaryColor, primaryDarked, secondaryColor } from "../shared/color";
 
 const Header = props => {
@@ -27,7 +27,6 @@ const Header = props => {
   const [dropNoti, setDropNoti] = React.useState(false);
 
   const clickLogout = () => {
-    //temp
     dispatch(userActions.logout());
     history.push("/login");
     setDrop((prev) => !prev);
@@ -54,7 +53,6 @@ const Header = props => {
     minWidth: "120px",
     height: "35px",
     borderRadius: "30px",
-    // border: `1px solid ${primaryDarked}`,
     fontSize: "16px",
     fontWeight: "700",
     fontFamily: "Cafe24SsurroundAir",

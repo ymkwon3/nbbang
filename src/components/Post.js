@@ -9,13 +9,20 @@ import Permit from "../shared/Permit";
 
 //style
 import styled from "styled-components";
-import { filledHeart, emptyHeart, eatCategory, buyCategory } from "../image";
+import {
+  filledHeart,
+  emptyHeart,
+  eatCategory,
+  buyCategory,
+  priceGray,
+  calendarGray,
+  addressGray,
+} from "../image";
 
 const Post = props => {
   const {
     image,
     title,
-    writer,
     category,
     price,
     endTime,
@@ -74,7 +81,7 @@ const Post = props => {
       <Flex
         styles={{
           flexDirection: "column",
-          justifyContent: "space-between",
+          justifyContent: "start",
           marginLeft: "13px",
           maxWidth: "180px",
           width: "60%",
@@ -85,19 +92,46 @@ const Post = props => {
           flex: "1",
         }}
       >
-        <Flex styles={{ justifyContent: "space-between" }}>
+        <Flex styles={{ justifyContent: "space-between", 
+              marginBottom: "10px", }}>
           <Text
             className={"line-break"}
             styles={{
               ...contentStyle,
-              fontSize: "20px",
+              fontSize: "18px",
               fontWeight: "700",
               width: "85%",
+              fontFamily: "Cafe24SsurroundAir",
             }}
           >
             {title}
           </Text>
-          <Flex styles={{ width: "25px", height: "25px" }}>
+          <Flex
+            styles={{
+              width: "25px",
+              height: "25px",
+              flexDirection: "column",
+              justifyContent: "start",
+              gap: "5px"
+            }}
+          >
+            <Permit>
+              {isLike ? (
+                <img
+                  alt="filledHeart"
+                  src={filledHeart}
+                  className="hover-event"
+                  onClick={clickLike}
+                ></img>
+              ) : (
+                <img
+                  alt="filledHeart"
+                  src={emptyHeart}
+                  className="hover-event"
+                  onClick={clickLike}
+                ></img>
+              )}
+            </Permit>
             {category === "eat" ? (
               <img
                 style={{ width: "100%", height: "100%" }}
@@ -114,42 +148,34 @@ const Post = props => {
           </Flex>
         </Flex>
 
-        <Flex styles={{ justifyContent: "space-between" }}>
-          <Text styles={{ ...contentStyle, width: "auto" }}>
-            작성자: {writer}
+        <Flex styles={{
+          marginBottom: "15px",
+        }}>
+          <img alt="price" src={priceGray} style={{ marginRight: "5px" }}></img>
+          <Text styles={contentStyle}>
+            {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
           </Text>
-
-          <Permit>
-            {isLike ? (
-              <img
-                alt="filledHeart"
-                src={filledHeart}
-                className="hover-event"
-                onClick={clickLike}
-              ></img>
-            ) : (
-              <img
-                alt="filledHeart"
-                src={emptyHeart}
-                className="hover-event"
-                onClick={clickLike}
-              ></img>
-            )}
-          </Permit>
+        </Flex>
+        <Flex styles={{
+          marginBottom: "15px",
+        }}>
+          <img
+            alt="calendar"
+            src={calendarGray}
+            style={{ marginRight: "5px" }}
+          ></img>
+          <Text styles={contentStyle}>{moment(endTime).format("MM-DD")}</Text>
         </Flex>
 
-        <Text styles={contentStyle}>
-          <Text>가격:</Text>{" "}
-          {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
-        </Text>
-        <Text styles={contentStyle}>
-          <Text>마감일:</Text> {moment(endTime).format("MM-DD")}
-        </Text>
         <StyledClamp>
-          <Text styles={contentStyle}>
-            <Text>위치:</Text>
-            {address}
-          </Text>
+          <Flex>
+            <img
+              alt="address"
+              src={addressGray}
+              style={{ marginRight: "5px" }}
+            ></img>
+            <Text styles={contentStyle}>{address}</Text>
+          </Flex>
         </StyledClamp>
       </Flex>
     </Flex>
@@ -160,9 +186,10 @@ const StyledClamp = styled.div`
   width: 100%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   overflow: hidden;
   font-size: 13px;
+ 
 `;
 
 export default Post;

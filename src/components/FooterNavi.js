@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Flex } from "../elements";
 
 import { primaryDarked } from "../shared/color";
+import { home, homeWhite, info, infoWhite, userpage, userpageWhite } from "../image";
 
 const FooterNavi = props => {
   const history = useHistory();
@@ -32,7 +33,11 @@ const FooterNavi = props => {
     }
   };
 
-  // const clickInfo = () => {};
+  const clickInfo = () => {
+    if (!location.includes("info")) {
+      history.push("/info")
+    }
+  };
 
   const checkedStyle = {
     backgroundColor: primaryDarked,
@@ -51,10 +56,23 @@ const FooterNavi = props => {
         backgroundColor: "#fff",
       }}
     >
-      <FooterBtn style={ location === "/" ? checkedStyle : null} onClick={clickHome}>
+      <FooterBtn
+        style={location === "/" ? checkedStyle : null}
+        onClick={clickHome}
+      >
+        {location === "/" ? (
+          <img alt="home" src={homeWhite}></img>
+        ) : (
+          <img alt="home" src={home}></img>
+        )}
         Home
       </FooterBtn>
-      <FooterBtn style={location === "/info" ? checkedStyle : null}>
+      <FooterBtn style={location === "/info" ? checkedStyle : null} onClick={clickInfo}>
+        {location === "/info" ? (
+          <img alt="info" src={infoWhite}></img>
+        ) : (
+          <img alt="info" src={info}></img>
+        )}
         Info
       </FooterBtn>
       {isLogin ? (
@@ -62,6 +80,12 @@ const FooterNavi = props => {
           style={location.includes("mypage") ? checkedStyle : null}
           onClick={clickMypage}
         >
+          {location.includes("mypage") ? (
+         <img alt="userpage" src={userpageWhite}></img>
+        ) : (
+          <img alt="userpage" src={userpage}></img>
+        )}
+          
           MyPage
         </FooterBtn>
       ) : (
@@ -77,6 +101,10 @@ const FooterNavi = props => {
 };
 
 const FooterBtn = styled.button`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   flex: 1;
   height: 100%;
   border: none;
@@ -84,6 +112,8 @@ const FooterBtn = styled.button`
   background-color: inherit;
   color: ${primaryDarked};
   font-weight: 700;
+
+  font-size: 12px;
   cursor: pointer;
 `;
 

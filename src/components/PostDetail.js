@@ -6,7 +6,7 @@ import { actionCreator as postActions } from "../redux/modules/post";
 import { Flex, Button, Text, Image } from "../elements";
 import ChatBox from "./ChatBox";
 
-import { primaryColor, secondaryColor } from "../shared/color";
+import { primaryDarked, secondaryColor } from "../shared/color";
 import {
   trash,
   eatCategory,
@@ -118,8 +118,8 @@ const PostDetail = ({
             >
               <Image
                 styles={{
-                  width: "50px",
-                  height: "50px",
+                  width: "40px",
+                  height: "40px",
                 }}
                 src={detailInfo.userImage}
                 _onClick={() => {
@@ -132,8 +132,8 @@ const PostDetail = ({
                 styles={{
                   marginLeft: "10px",
                   fontWeight: "700",
-                  fontSize: "20px",
-                  fontFamily: "Cafe24Ssurround",
+                  fontSize: "18px",
+                  fontFamily: "Cafe24SsurroundAir",
                 }}
                 _onClick={() => {
                   if (isLogin)
@@ -171,6 +171,7 @@ const PostDetail = ({
               styles={{
                 fontSize: "28px",
                 fontWeight: "800",
+                fontFamily: "Cafe24SsurroundAir"
               }}
             >
               {detailInfo.title}
@@ -247,7 +248,7 @@ const PostDetail = ({
                 styles={{
                   width: "150px",
                   minHeight: "40px",
-                  backgroundColor: "#19253D",
+                  backgroundColor: primaryDarked,
                   color: "#fff",
                   borderRadius: "30px",
                   fontSize: "18px",
@@ -296,7 +297,7 @@ const PostDetail = ({
               _clickContainer();
             }}
             _close={() => setIsComplete(false)}
-            message="모집 완료하시겠습니까?"
+            message="공구를 완료하시겠습니까?"
           ></Confirm>
         </Modal>
       ) : null}

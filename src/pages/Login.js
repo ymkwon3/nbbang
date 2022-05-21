@@ -262,12 +262,12 @@ const Login = props => {
                   margin: "0.66em 0 0.25em",
                 }}
               >
-                엔빵
+                N빵
               </Text>
               <Text
                 styles={{
                   fontFamily: "Cafe24Ssurround",
-                  fontSize: "3em",
+                  fontSize: "2.4em",
                   fontWeight: "700",
                   marginBottom: "0.66em",
                 }}
@@ -286,7 +286,7 @@ const Login = props => {
               }}
             >
               <InputLogin
-                label="아이디"
+                label="이메일"
                 ref={e => (loginRef.current.userEmail = e)}
                 styles={{ borderRadius: "20px" }}
               ></InputLogin>

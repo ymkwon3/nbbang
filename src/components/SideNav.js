@@ -174,7 +174,7 @@ const SideNav = props => {
           <Permit>
             <Button
               styles={{
-                boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
+                boxShadow: "0 0 2px rgba(0, 0, 0, 0.2)",
                 borderRadius: "50%",
                 width: "38px",
                 height: "38px",

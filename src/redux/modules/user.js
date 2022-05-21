@@ -63,23 +63,24 @@ const initialState = {
   },
   isLogin: false,
   isLoading: false,
+  isGrant: true,
   alarm: [],
 };
 
-const initialAlarmForm = {
-  addDeal: [],
-  blockChat: [],
-  byebye: [],
-  leaveChat: [],
-  sendMessage: [],
-};
+// const initialAlarmForm = {
+//   addDeal: [],
+//   blockChat: [],
+//   byebye: [],
+//   leaveChat: [],
+//   sendMessage: [],
+// };
 
 // reducer
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    logout(state, action) {
+    logout(state) {
       state.userInfo = initialState.userInfo;
       state.isLogin = initialState.isLogin;
       removeToken();
@@ -87,9 +88,10 @@ const userSlice = createSlice({
     isLoading(state,action){
       state.isLoading = action.payload;
     },
-
+    isGranting(state, action) {
+      state.isGrant = action.payload;
+    },
     addAlarm: (state, action) => {
-      //   console.log(action.payload);
       state.alarm = [...state.alarm, action.payload];
     },
     readAlarm: (state, action) => {

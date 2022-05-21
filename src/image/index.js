@@ -12,13 +12,30 @@ import write from "./write.svg";
 import addImage from "./addImage.svg";
 import exit from "./exit.svg";
 import price from "./price.svg";
+import priceGray from "./priceGray.svg";
 import calendar from "./calendar.svg";
+import calendarGray from "./calendarGray.svg";
 import trash from "./trash.svg";
 import address from "./address.svg";
+import addressGray from "./addressGray.svg";
 import content from "./content.svg";
 import kakaoLogin from "./kakaologin.png";
+import home from "./home.svg";
+import homeWhite from "./homeWhite.svg";
+import info from "./info.svg";
+import infoWhite from "./infoWhite.svg";
+import userpage from "./userpage.svg";
+import userpageWhite from "./userpageWhite.svg";
+import edit from "./edit.svg";
 
 export {
+  edit,
+  home,
+  homeWhite,
+  info,
+  infoWhite,
+  userpage,
+  userpageWhite,
   exit,
   addImage,
   buyCategory,
@@ -33,9 +50,12 @@ export {
   search,
   write,
   price,
+  priceGray,
   calendar,
+  calendarGray,
   trash,
   address,
+  addressGray,
   content,
   kakaoLogin,
 };

@@ -179,6 +179,46 @@ const PostWrite = props => {
       </Flex>
       <Flex
         styles={{
+          color: "#aaa",
+          fontSize: "14px",
+          userSelect: "none",
+        }}
+      >
+        ※모든 항목은 필수입니다
+      </Flex>
+      <Flex
+        styles={{
+          justifyContent: "start",
+          padding: "5px",
+          height: "60px",
+          borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
+        }}
+      >
+        <Text
+          styles={{
+            fontSize: "14px",
+            fontWeight: "700",
+            whiteSpace: "nowrap",
+          }}
+        >
+          카테고리
+        </Text>
+        <Select
+          styles={{
+            width: "90px",
+            height: "30px",
+            marginLeft: "6px",
+            fontSize: "14px",
+          }}
+          ref={e => (submitRef.current.categoryRef = e)}
+          options={[
+            { key: "같이 사자", value: "buy" },
+            { key: "같이 먹자", value: "eat" },
+          ]}
+        />
+      </Flex>
+      <Flex
+        styles={{
           borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
         }}
       >
@@ -194,32 +234,6 @@ const PostWrite = props => {
           borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
         }}
       >
-        <Flex
-          styles={{ justifyContent: "start", width: "50%", padding: "5px" }}
-        >
-          <Text styles={{ fontSize: "14px", fontWeight: "700", whiteSpace: "nowrap" }}>카테고리</Text>
-          <Select
-            styles={{
-              width: "70px",
-              height: "30px",
-              marginLeft: "6px",
-              fontSize: "8px",
-            }}
-            ref={e => (submitRef.current.categoryRef = e)}
-            options={[
-              { key: "같이 사자", value: "buy" },
-              { key: "같이 먹자", value: "eat" },
-            ]}
-          />
-        </Flex>
-        <Flex
-          styles={{
-            width: "1px",
-            height: "80%",
-            backgroundColor: "#808080",
-            margin: "0 16px 0 0",
-          }}
-        />
         <Input
           label="마감일"
           type="date"
@@ -227,9 +241,7 @@ const PostWrite = props => {
           max={moment().add(14, "days").format("YYYY-MM-DD")}
           ref={e => (submitRef.current.endTimeRef = e)}
           styles={{
-            width: "calc(50% - 16px)",
             height: "60px",
-            padding: "0 5px 0 0",
             overflowX: "scroll",
           }}
         />
@@ -293,6 +305,7 @@ const PostWrite = props => {
           _onClick={() => {
             setFindState(true);
             _clickFold();
+            // 지도 마우스 커서 변경 가능할까???
             toastRef.current = notify(
               "info",
               "모임 장소를 지도에서 선택해주세요!",
