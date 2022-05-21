@@ -46,6 +46,7 @@ const postUserImageDB = createAsyncThunk("user/me", async (formData) => {
 
 const readAllAlarmDB = createAsyncThunk("user/ischecked", async () => {
   return await patchAPI(`/user/ischecked`).then((res) => {
+    console.log(res);
     return res;
   });
 });

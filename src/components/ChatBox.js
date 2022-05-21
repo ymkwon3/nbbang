@@ -384,7 +384,7 @@ export const ChatBoxLeft = ({
             backgroundColor: "#DFD3CA",
             borderRadius: "22px",
             padding: "0px 14px",
-            position: "relative",
+            justifyContent: "space-between",
           }}
         >
           {/* 메시지가 보이는 곳 */}
@@ -393,27 +393,33 @@ export const ChatBoxLeft = ({
             messages={messages}
             loggedUser={loggedUser}
           />
-          {isTyping ? (
+          {/* {isTyping ? (
             <Flex
-              styles={{ position: "sticky", bottom: "0px", height: "auto" }}
+              styles={{
+                position: "sticky",
+                bottom: "0px",
+                height: "auto",
+                border: "1px solid black",
+              }}
             >
               loading...
             </Flex>
           ) : (
             <></>
-          )}
+          )} */}
           {/* 입시 */}
-          {/* <Flex
+          <Flex
             styles={{
-              position: "absolute",
+              position: "sticky",
               bottom: "0px",
               height: "auto",
               border: "1px solid black",
             }}
           >
             loading...
-          </Flex> */}
+          </Flex>
         </Flex>
+
         {/* 메시지 보내는 곳 */}
         <Flex
           styles={{

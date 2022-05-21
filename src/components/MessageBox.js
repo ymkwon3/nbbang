@@ -24,7 +24,6 @@ const MessageBox = ({ messages, loggedUser }) => {
     <Flex
       styles={{
         flexDirection: "column",
-        height: "100%",
         justifyContent: "flex-start",
       }}
     >
