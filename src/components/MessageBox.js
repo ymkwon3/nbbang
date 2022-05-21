@@ -21,157 +21,197 @@ const MessageBox = ({ messages, loggedUser }) => {
   React.useEffect(scrollToBottom, [messages]);
 
   return (
-    <Flex
-      styles={{
-        flexDirection: "column",
-        height: "100%",
-        justifyContent: "flex-start",
-      }}
-    >
-      {messages &&
-        messages.map((message, idx) => (
-          <div key={2 + idx} style={{ width: "100%" }}>
-            {isTheSameDate(message, idx, messages) ? (
-              <Flex
-                styles={{
-                  width: "fit-content",
-                  margin: "12px auto",
-                  padding: "5px 10px",
-                  backgroundColor: "#c3c7cc",
-                  borderRadius: "20px",
-                }}
-              >
-                <Text styles={{ color: "white" }}>
-                  {isTheSameDate(message, idx, messages)}
-                </Text>
-              </Flex>
-            ) : (
-              <></>
-            )}
-            <Flex
-              styles={{
-                flexDirection: "column",
-                margin: "5px 0px",
-              }}
-            >
-              <Flex styles={{ justifyContent: "flex-start" }}>
+    <>
+      <Flex
+        styles={{
+          flexDirection: "column",
+          justifyContent: "flex-start",
+        }}
+      >
+        {messages &&
+          messages.map((message, idx) => (
+            <div key={2 + idx} style={{ width: "100%" }}>
+              {isTheSameDate(message, idx, messages) ? (
                 <Flex
                   styles={{
-                    height: "30px",
-                    width: "30px",
-                    marginRight: "10px",
-                    marginBottom: "10px",
-                    display:
-                      isFirstMessage(message, idx, messages, loggedUser) &&
-                      !message.status
-                        ? "flex"
-                        : "none",
+                    width: "fit-content",
+                    margin: "12px auto",
+                    padding: "5px 10px",
+                    backgroundColor: "#c3c7cc",
+                    borderRadius: "20px",
                   }}
                 >
-                  <Image
-                    shape="circle"
-                    src={
-                      isFirstMessage(message, idx, messages, loggedUser) &&
-                      !message.status
-                        ? message.userImage
-                        : ""
-                    }
-                    styles={{ height: "100%" }}
-                  />
-                </Flex>
-                {isFirstMessage(message, idx, messages, loggedUser) ? (
-                  <Text>{message.User_userName}</Text>
-                ) : (
-                  <></>
-                )}
-              </Flex>
-              {isLoggedUser(message, loggedUser) ? (
-                <Flex
-                  styles={{
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      height: "100%",
-                      alignItems: "flex-end",
-                      marginRight: "5px",
+                  <Text
+                    styles={{
+                      color: "white",
+                      fontSize: "14px",
+                      fontFamily: "Pretendard",
                     }}
                   >
-                    <Text>{formatAMPM(message.createdAt)}</Text>
-                  </div>
-                  <Bubble
-                    style={{
-                      maxWidth: "80%",
-                      width: "auto",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "flex-end",
-                      backgroundColor: "#FFEF82",
-                      boxShadow: "2px 2px 10px -1px rgba(0,0,0,0.37)",
-                    }}
-                  >
-                    <Text>{message.chat}</Text>
-                  </Bubble>
+                    {isTheSameDate(message, idx, messages)}
+                  </Text>
                 </Flex>
               ) : (
-                <Flex
-                  styles={{
-                    justifyContent: "flex-start",
-                  }}
-                >
-                  {!message.status ? (
-                    <>
-                      <Bubble
-                        style={{
-                          maxWidth: "80%",
-                          width: "auto",
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "flex-start",
-                          boxShadow: "2px 2px 10px -1px rgba(0,0,0,0.37)",
-                        }}
-                      >
-                        <Text>{message.chat}</Text>
-                      </Bubble>
-                      <div
-                        style={{
-                          display: "flex",
-                          height: "100%",
-                          alignItems: "flex-end",
-                          marginLeft: "5px",
-                        }}
-                      >
-                        <Text>{formatAMPM(message.createdAt)}</Text>
-                      </div>
-                    </>
+                <></>
+              )}
+              <Flex
+                styles={{
+                  flexDirection: "column",
+                  margin: "5px 0px",
+                }}
+              >
+                <Flex styles={{ justifyContent: "flex-start" }}>
+                  <Flex
+                    styles={{
+                      height: "30px",
+                      width: "30px",
+                      marginRight: "10px",
+                      marginBottom: "10px",
+                      display:
+                        isFirstMessage(message, idx, messages, loggedUser) &&
+                        !message.status
+                          ? "flex"
+                          : "none",
+                    }}
+                  >
+                    <Image
+                      shape="circle"
+                      src={
+                        isFirstMessage(message, idx, messages, loggedUser) &&
+                        !message.status
+                          ? message.userImage
+                          : ""
+                      }
+                      styles={{ height: "100%" }}
+                    />
+                  </Flex>
+                  {isFirstMessage(message, idx, messages, loggedUser) ? (
+                    <Text
+                      styles={{ fontSize: "14px", fontFamily: "Pretendard" }}
+                    >
+                      {message.User_userName}
+                    </Text>
                   ) : (
-                    <>
-                      <Flex>
-                        <Flex
-                          styles={{
-                            width: "auto",
-                            margin: "5px 0",
-                            padding: "5px 10px",
-                            backgroundColor: "#c3c7cc",
-                            borderRadius: "20px",
-                          }}
-                        >
-                          <Text styles={{ color: "white" }}>
-                            {message.chat}
-                          </Text>
-                        </Flex>
-                      </Flex>
-                    </>
+                    <></>
                   )}
                 </Flex>
-              )}
-            </Flex>
-          </div>
-        ))}
-      <div ref={messagesEndRef}></div>
-    </Flex>
+                {isLoggedUser(message, loggedUser) ? (
+                  <Flex
+                    styles={{
+                      justifyContent: "flex-end",
+                      alignItems: "flex-end",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        height: "100%",
+                        marginRight: "5px",
+                      }}
+                    >
+                      <Text
+                        styles={{ fontSize: "12px", fontFamily: "Pretendard" }}
+                      >
+                        {formatAMPM(message.createdAt)}
+                      </Text>
+                    </div>
+                    <Bubble
+                      style={{
+                        maxWidth: "80%",
+                        width: "auto",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-end",
+                        backgroundColor: "#FFEF82",
+                        boxShadow: "2px 2px 10px -1px rgba(0,0,0,0.1)",
+                      }}
+                    >
+                      <Text
+                        styles={{ fontSize: "15px", fontFamily: "Pretendard" }}
+                      >
+                        {message.chat}
+                      </Text>
+                    </Bubble>
+                  </Flex>
+                ) : (
+                  <Flex
+                    styles={{
+                      justifyContent: "flex-start",
+                      alignItems: "flex-end",
+                    }}
+                  >
+                    {!message.status ? (
+                      <>
+                        <Bubble
+                          style={{
+                            maxWidth: "80%",
+                            width: "auto",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "flex-start",
+                            boxShadow: "2px 2px 10px -1px rgba(0,0,0,0.1)",
+                          }}
+                        >
+                          <Text
+                            styles={{
+                              fontSize: "15px",
+                              fontFamily: "Pretendard",
+                            }}
+                          >
+                            {message.chat}
+                          </Text>
+                        </Bubble>
+                        <div
+                          style={{
+                            display: "flex",
+                            height: "100%",
+                            alignItems: "flex-end",
+                            marginLeft: "5px",
+                          }}
+                        >
+                          <Text
+                            styles={{
+                              fontSize: "12px",
+                              fontFamily: "Pretendard",
+                            }}
+                          >
+                            {formatAMPM(message.createdAt)}
+                          </Text>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <Flex>
+                          <Flex
+                            styles={{
+                              width: "auto",
+                              margin: "5px 0",
+                              padding: "5px 10px",
+                              backgroundColor: "#c3c7cc",
+                              borderRadius: "20px",
+                            }}
+                          >
+                            <Text
+                              styles={{
+                                color: "white",
+                                fontSize: "15px",
+                                fontFamily: "Pretendard",
+                              }}
+                            >
+                              {message.chat}
+                            </Text>
+                          </Flex>
+                        </Flex>
+                      </>
+                    )}
+                  </Flex>
+                )}
+              </Flex>
+            </div>
+          ))}
+        <div ref={messagesEndRef}></div>
+      </Flex>
+    </>
   );
 };
 

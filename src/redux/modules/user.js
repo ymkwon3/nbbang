@@ -29,26 +29,24 @@ const isLoginDB = createAsyncThunk("user/islogin", async () => {
   });
 });
 
-const kakaoLogin = createAsyncThunk(
-  "user/kakaologin",
-  async (code) => {
-    return await getAPI(`/kakao-auth/kakao/callback?code=${code}`).then(res => {
-      if(res.msg === "success"){
-        console.log(setToken(res.user.token))
-        setToken(res.user.token);
-      }
-    });
-  }
-);
+const kakaoLogin = createAsyncThunk("user/kakaologin", async (code) => {
+  return await getAPI(`/kakao-auth/kakao/callback?code=${code}`).then((res) => {
+    if (res.msg === "success") {
+      console.log(setToken(res.user.token));
+      setToken(res.user.token);
+    }
+  });
+});
 
-const postUserImageDB = createAsyncThunk("user/me", async formData => {
-  return await postFormAPI(`/user/me`, formData).then(res => {
+const postUserImageDB = createAsyncThunk("user/me", async (formData) => {
+  return await postFormAPI(`/user/me`, formData).then((res) => {
     return res;
   });
 });
 
 const readAllAlarmDB = createAsyncThunk("user/ischecked", async () => {
   return await patchAPI(`/user/ischecked`).then((res) => {
+    console.log(res);
     return res;
   });
 });
@@ -85,7 +83,7 @@ const userSlice = createSlice({
       state.isLogin = initialState.isLogin;
       removeToken();
     },
-    isLoading(state,action){
+    isLoading(state, action) {
       state.isLoading = action.payload;
     },
     isGranting(state, action) {

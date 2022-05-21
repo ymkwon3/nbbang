@@ -23,6 +23,9 @@ import {
   getNewParticipantList,
 } from "../config/ChatLogics";
 
+import TypingAni from "./TypingAni";
+import ChattingLoadingAni from "./ChattingLoadingAni";
+
 const ChatBox = React.forwardRef(
   (
     {
@@ -47,16 +50,11 @@ const ChatBox = React.forwardRef(
 
     const [newMessage, setNewMessage] = React.useState("");
     const [newlyAddedMessages, setNewlyAddedMessages] = React.useState([]);
-    // const [chatUsers, setChatUsers] = React.useState([]);
-    const [notification, setNotification] = React.useState([]);
-    const [loading, setLoading] = React.useState(false);
-    React.useState(false);
     const [typing, setTyping] = React.useState(false);
     const [isTyping, setIsTyping] = React.useState(false);
     const [socketConnected, setSocketConnected] = React.useState(false); // socket 연결 상태 체크
     const [awaiters, setAwaiters] = React.useState(null);
     const [participants, setParticipants] = React.useState(null);
-    const [openUserList, setOpenUserList] = React.useState(false);
 
     const goToChat = () => {
       if (openChatroom) {
@@ -69,10 +67,7 @@ const ChatBox = React.forwardRef(
 
     const fetchMessages = () => {
       if (!postid) return;
-      // setLoading(true);
-      // setLoading(false);
       dispatch(chatActions.startChatDB(detailInfo.postId));
-      // dispatch(chatActions.startChatDB(1));
     };
 
     const sendNewMessage = (e) => {
@@ -80,7 +75,6 @@ const ChatBox = React.forwardRef(
         !newMessage &&
         ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
       ) {
-        //  replace this alert with toast box later in this position.
         window.alert("칸이 비었음!! 채워주삼 ㅇㅇ");
         return;
       }
@@ -100,7 +94,6 @@ const ChatBox = React.forwardRef(
         };
 
         socket.emit("stop typing", postid);
-        // let chatRoomUserList = [...chatRoomUsers, chatAdmin];
         socket.emit("sendmessage", {
           postid: postid,
           newMessage: newChat,
@@ -118,6 +111,11 @@ const ChatBox = React.forwardRef(
     React.useEffect(() => {
       socket.on("connected", (enteredUser, updatedChatroomUserList, status) => {
         setSocketConnected(true);
+        let newChat = {
+          status: "messageAlarm",
+          chat: enteredUser,
+        };
+        setNewlyAddedMessages((messageList) => [...messageList, newChat]);
 
         // 새로 업데이트된 채팅유저 목록있고, 채팅목록에 새로 추가된 유저가 방장이 아닐 때
         if (updatedChatroomUserList) {
@@ -170,12 +168,6 @@ const ChatBox = React.forwardRef(
           }
           setParticipants(newParticipantList);
         }
-
-        let newChat = {
-          status: "messageAlarm",
-          chat: enteredUser,
-        };
-        setNewlyAddedMessages((messageList) => [...messageList, newChat]);
       });
 
       socket.on("typing", () => setIsTyping(true));
@@ -185,6 +177,7 @@ const ChatBox = React.forwardRef(
     //receive message
     React.useEffect(() => {
       socket.on("receive message", (newMessageReceived) => {
+        console.log(newMessageReceived);
         setNewlyAddedMessages((messageList) => [
           ...messageList,
           newMessageReceived,
@@ -194,9 +187,6 @@ const ChatBox = React.forwardRef(
       socket.on(
         "receive_participant_list_after_added",
         (updatedParticipantList, updatedAwaiterList) => {
-          // console.log("추가");
-          // console.log("수정된 거래자 리스트: ", updatedParticipantList);
-          // console.log("수정된 참여자 리스트: ", updatedAwaiterList);
           setParticipants(updatedParticipantList);
           setAwaiters(updatedAwaiterList);
         }
@@ -205,9 +195,6 @@ const ChatBox = React.forwardRef(
       socket.on(
         "receive_participant_list_after_canceled",
         (updatedParticipantList, updatedAwaiterList) => {
-          // console.log("취소");
-          // console.log("수정된 거래자 리스트: ", updatedParticipantList);
-          // console.log("수정된 참여자 리스트: ", updatedAwaiterList);
           setParticipants(updatedParticipantList);
           setAwaiters(updatedAwaiterList);
         }
@@ -274,7 +261,6 @@ const ChatBox = React.forwardRef(
               sendNewMessage={sendNewMessage}
               loggedUser={loggedUser}
               isTyping={isTyping}
-              openUserList={openUserList}
               OpenChatRoomUserList={OpenChatRoomUserList}
               closeChatRoom={closeChatRoom}
               title={detailInfo.title}
@@ -385,7 +371,7 @@ export const ChatBoxLeft = ({
             backgroundColor: "#DFD3CA",
             borderRadius: "22px",
             padding: "0px 14px",
-            position: "relative",
+            justifyContent: "space-between",
           }}
         >
           {/* 메시지가 보이는 곳 */}
@@ -395,26 +381,18 @@ export const ChatBoxLeft = ({
             loggedUser={loggedUser}
           />
           {isTyping ? (
-            <Flex
-              styles={{ position: "sticky", bottom: "0px", height: "auto" }}
-            >
-              loading...
-            </Flex>
+            <TypingAni
+              styles={{ height: "50px", position: "sticky", bottom: "5px" }}
+            />
           ) : (
-            <></>
+            <>
+              {/* <ChattingLoadingAni
+                styles={{ height: "100px", width: "100px" }}
+              /> */}
+            </>
           )}
-          {/* 입시 */}
-          {/* <Flex
-            styles={{
-              position: "absolute",
-              bottom: "0px",
-              height: "auto",
-              border: "1px solid black",
-            }}
-          >
-            loading...
-          </Flex> */}
         </Flex>
+
         {/* 메시지 보내는 곳 */}
         <Flex
           styles={{
@@ -469,14 +447,7 @@ export const ChatBoxRight = forwardRef(
     const selectedChat = useSelector((state) => state.chat);
     const chatAdminId = selectedChat.chatAdmin;
 
-    const [loadingAddParticipant, setLoadingAddParticipant] =
-      React.useState(false);
-    const [loadingDeleteParticipant, setLoadingDeleteParticipant] =
-      React.useState(false);
-
     const addNewParticipant = (selectedUser) => {
-      setLoadingAddParticipant(true);
-
       socket.emit("add_new_participant", { postid, selectedUser });
 
       setParticipants((existingParticipantList) => {
@@ -488,13 +459,9 @@ export const ChatBoxRight = forwardRef(
         (awaiter) => awaiter.User_userId !== selectedUser.User_userId
       );
       setAwaiters(updatedAwaiterList);
-
-      setLoadingAddParticipant(false);
     };
 
     const deleteParticipant = (selectedUser) => {
-      setLoadingDeleteParticipant(true);
-
       socket.emit("cancel_new_participant", { postid, selectedUser });
 
       let updatedParticipantList = participants.filter(
@@ -506,13 +473,9 @@ export const ChatBoxRight = forwardRef(
           ? [selectedUser, ...existingAwaiterList]
           : [selectedUser, ...awaiterList];
       });
-
-      setLoadingDeleteParticipant(false);
     };
 
     const selfLeavChatroom = () => {
-      // put the spinner later
-      console.log("실행");
       stateShiftForClosingChatroom();
       socket.emit("leave chatroom", postid, loggedUser);
     };
