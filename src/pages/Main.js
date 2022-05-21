@@ -15,7 +15,7 @@ import { Desktop } from "../shared/Responsive";
 import { right, left, position } from "../image";
 import { buyMarker, eatMarker, positionMarker } from "../image/marker";
 import io from "socket.io-client";
-let socket = io.connect("https://redpingpong.shop");
+const socket = io.connect("https://redpingpong.shop");
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -104,10 +104,7 @@ const Main = () => {
       console.log(messageNoti);
       dispatch(userActions.addAlarm(messageNoti[0]));
     });
-    socket.on("block", blockChatroomNoti => {
-      console.log(blockChatroomNoti);
-      dispatch(userActions.addAlarm(blockChatroomNoti));
-    });
+    
     socket.on("leaved chatroom", leaveNoti => {
       console.log(leaveNoti);
       dispatch(userActions.addAlarm(leaveNoti[0]));
@@ -118,7 +115,6 @@ const Main = () => {
     });
     return () => {
       socket.off("send message alarm");
-      socket.off("block");
       socket.off("leaved chatroom");
       socket.off("added_new_participant");
     };

@@ -59,9 +59,9 @@ const ChatBox = React.forwardRef(
     const goToChat = () => {
       if (openChatroom) {
         fetchMessages();
-        if (postid !== undefined) {
-          socket.emit("startchat", { postid: postid, loggedUser });
-        }
+        // if (postid !== undefined) {
+        //   socket.emit("startchat", { postid: postid, loggedUser });
+        // }
       }
     };
 
