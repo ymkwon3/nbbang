@@ -49,16 +49,16 @@ const Main = () => {
 
   /*해당 지역의 전체 게시물, 현재 선택된 카테고리, 
   게시물 지역 범위, 현재 위치 구분*/
-  const postList = useSelector(state => state.post.postList);
-  const category = useSelector(state => state.post.category);
+  const postList = useSelector((state) => state.post.postList);
+  const category = useSelector((state) => state.post.category);
   const [cityRange, setCityRange] = React.useState(2);
   const [city, setCity] = React.useState(3);
 
   // 로그인된 유저 정보
-  const userInfo = useSelector(state => state.user.userInfo);
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   const cateList = postList.filter(
-    v => v.category === category || category === "all"
+    (v) => v.category === category || category === "all"
   );
 
   // 글쓰기 상세보기 컨테이너 펼치기 및 컴포넌트 변경
@@ -74,7 +74,7 @@ const Main = () => {
   };
 
   // sidenav 전체 접어두기, 펼치기
-  const clickFold = markerClick => {
+  const clickFold = (markerClick) => {
     if (sideNavRef.current.style.maxWidth === "0px" || markerClick) {
       sideNavRef.current.style.maxWidth = "fit-content";
       leftContainerRef.current.style.display = "block";
@@ -100,19 +100,19 @@ const Main = () => {
   // 소켓으로부터 알림 받는 부분
   React.useEffect(() => {
     socket.emit("socket is connected", userInfo);
-    socket.on("send message alarm", messageNoti => {
+    socket.on("send message alarm", (messageNoti) => {
       console.log(messageNoti);
       dispatch(userActions.addAlarm(messageNoti[0]));
     });
-    socket.on("block", blockChatroomNoti => {
+    socket.on("block", (blockChatroomNoti) => {
       console.log(blockChatroomNoti);
-      dispatch(userActions.addAlarm(blockChatroomNoti));
+      // dispatch(userActions.addAlarm(blockChatroomNoti));
     });
-    socket.on("leaved chatroom", leaveNoti => {
+    socket.on("leaved chatroom", (leaveNoti) => {
       console.log(leaveNoti);
       dispatch(userActions.addAlarm(leaveNoti[0]));
     });
-    socket.on("added_new_participant", addedNewParticiparntNoti => {
+    socket.on("added_new_participant", (addedNewParticiparntNoti) => {
       console.log(addedNewParticiparntNoti);
       dispatch(userActions.addAlarm(addedNewParticiparntNoti[0]));
     });
@@ -132,93 +132,89 @@ const Main = () => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     dispatch(postActions.isLoading(true));
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            // const userLat = position.coords.latitude;
-            // const userLng = position.coords.longitude;
-            const userLng = 126.89156781562811;
-            const userLat = 37.512634390346236;
-            // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
-            geocoder.coord2Address(userLng, userLat, (result, status) => {
-              // 지번 주소
-              const addr = result[0].address;
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // const userLat = position.coords.latitude;
+          // const userLng = position.coords.longitude;
+          const userLng = 126.89156781562811;
+          const userLat = 37.512634390346236;
+          // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
+          geocoder.coord2Address(userLng, userLat, (result, status) => {
+            // 지번 주소
+            const addr = result[0].address;
 
-              dispatch(
-                postActions.getPostListDB({
-                  address: addr.address_name,
-                  range: cityRange,
-                  userId: userInfo?.userId,
-                  lat: userLat,
-                  lng: userLng,
-                })
-              );
+            dispatch(
+              postActions.getPostListDB({
+                address: addr.address_name,
+                range: cityRange,
+                userId: userInfo?.userId,
+                lat: userLat,
+                lng: userLng,
+              })
+            );
 
-              // 해당 지역들은 특별시, 광역시, 자치시라 보여지는 범위를 3단계로 분류
-              const locale = [
-                "서울",
-                "인천",
-                "대전",
-                "광주",
-                "부산",
-                "울산",
-                "대구",
-                "제주특별자치도",
-              ];
-              locale.find(v => v === addr.region_1depth_name)
-                ? setCity(3)
-                : setCity(2);
+            // 해당 지역들은 특별시, 광역시, 자치시라 보여지는 범위를 3단계로 분류
+            const locale = [
+              "서울",
+              "인천",
+              "대전",
+              "광주",
+              "부산",
+              "울산",
+              "대구",
+              "제주특별자치도",
+            ];
+            locale.find((v) => v === addr.region_1depth_name)
+              ? setCity(3)
+              : setCity(2);
+          });
+
+          //제일 처음 한 번만 실행
+          if (!userPositionRef.current && containerRef.current) {
+            const userPosition = new kakao.maps.LatLng(userLat, userLng);
+            const options = {
+              center: userPosition,
+              level: 5,
+            };
+            userPositionRef.current = userPosition;
+            mapRef.current = new kakao.maps.Map(containerRef.current, options);
+
+            mapRef.current.panTo(userPosition);
+
+            const markerPosition = userPosition;
+            const markerImage = new kakao.maps.MarkerImage(
+              positionMarker,
+              new kakao.maps.Size(40, 50)
+            );
+            const marker = new kakao.maps.Marker({
+              position: markerPosition,
+              image: markerImage,
             });
-
-            //제일 처음 한 번만 실행
-            if (!userPositionRef.current && containerRef.current) {
-              const userPosition = new kakao.maps.LatLng(userLat, userLng);
-              const options = {
-                center: userPosition,
-                level: 5,
-              };
-              userPositionRef.current = userPosition;
-              mapRef.current = new kakao.maps.Map(
-                containerRef.current,
-                options
-              );
-
-              mapRef.current.panTo(userPosition);
-
-              const markerPosition = userPosition;
-              const markerImage = new kakao.maps.MarkerImage(
-                positionMarker,
-                new kakao.maps.Size(40, 50)
-              );
-              const marker = new kakao.maps.Marker({
-                position: markerPosition,
-                image: markerImage,
-              });
-              marker.setMap(mapRef.current);
+            marker.setMap(mapRef.current);
+          }
+        },
+        () => {
+          navigator.permissions.query({ name: "geolocation" }).then((res) => {
+            if (res.state === "denied") {
+              dispatch(userActions.isGranting(false));
+              // 코드상으로 어쩔수 없다면 모달창으로 라도 안내해야함 "브라우저 위치권한 허용 후 새로고침 해주세요" 라고
             }
-          },
-          () => {
-            navigator.permissions.query({name:'geolocation'}).then((res) => {
-              if(res.state === "denied") {
-                dispatch(userActions.isGranting(false));
-                // 코드상으로 어쩔수 없다면 모달창으로 라도 안내해야함 "브라우저 위치권한 허용 후 새로고침 해주세요" 라고
-              }
-            });
-          },
-          { enableHighAccuracy: true }
-        );
-      
+          });
+        },
+        { enableHighAccuracy: true }
+      );
     }
   }, [cityRange]);
 
   React.useEffect(() => {
     // DB에서 받아오는 게시글들을 마커로 표시 후 띄워줌
     // 게시물이 바뀔 때마다, 마커들을 초기화 시킨 후 시작
-    markerListRef.current.map(m => {
+    markerListRef.current.map((m) => {
       m.setMap(null);
       return null;
     });
     markerListRef.current = [];
-    cateList.map(v => {
+    cateList.map((v) => {
       // 마커크기 45 x 60
       const markerImage = new kakao.maps.MarkerImage(
         v.category === "eat" ? eatMarker : buyMarker,
