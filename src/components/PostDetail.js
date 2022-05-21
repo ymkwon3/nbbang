@@ -22,6 +22,7 @@ import "moment/locale/ko";
 import Modal from "../shared/Modal";
 import Confirm from "./Confirm";
 import { useHistory } from "react-router-dom";
+import { notify } from "./ToastMessage";
 
 const PostDetail = ({
   openChatroom,
@@ -36,6 +37,9 @@ const PostDetail = ({
   const userInfo = useSelector((state) => state.user.userInfo);
   const isLogin = useSelector((state) => state.user.isLogin);
   const chatRef = React.useRef();
+
+  // 현재 채팅방 접속이 가능한지, true: 접속 불가, false: 접속 가능
+  const [isBlock, setIsBlock] = React.useState(true);
 
   const [isDelete, setIsDelete] = React.useState(false);
   const [isComplete, setIsComplete] = React.useState(false);
@@ -57,8 +61,7 @@ const PostDetail = ({
   };
 
   const openChatModal = () => {
-    setOpenChatroom(true);
-    setIsChatButtonClicked(true);
+    socket.emit("startchat", { postid: `p${detailInfo.postId}`, loggedUser: userInfo });
   };
 
   const closeChatRoom = async (userWillCloseChatroom) => {
@@ -72,10 +75,32 @@ const PostDetail = ({
   };
 
   React.useEffect(() => {
-    if (openChatroom) {
+    console.log(openChatroom)
+    if (openChatroom && chatRef.current) {
       chatRef.current.style.top = "0px";
     }
   }, [openChatroom]);
+
+  React.useEffect(() => {
+    if(!isBlock) {
+      setOpenChatroom(true);
+      setIsChatButtonClicked(true);
+    }
+  }, [isBlock])
+
+  React.useEffect(() => {
+    socket.on("block", blockChatroomNoti => {
+      if(blockChatroomNoti === "success"){
+        setIsBlock(false);
+      }else {
+        setIsBlock(true);
+        notify("error", "거래인원이 꽉 찬 상태입니다.", 2000)
+      }
+    });
+    return () => {
+      socket.off("block");
+    }
+  }, [])
 
   if (Object.keys(detailInfo).length === 0) {
     return null;
