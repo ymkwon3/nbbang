@@ -61,9 +61,14 @@ const PostDetail = ({
     setIsChatButtonClicked(true);
   };
 
-  const closeChatRoom = (userWillLeave) => {
+  const closeChatRoom = async (userWillCloseChatroom) => {
+    console.log(`p${detailInfo.postId}`, userWillCloseChatroom);
+    await socket.emit(
+      "closeChatroom",
+      `p${detailInfo.postId}`,
+      userWillCloseChatroom
+    );
     stateShiftForClosingChatroom();
-    socket.emit("close chatroom", `p${detailInfo.postId}`, userWillLeave);
   };
 
   React.useEffect(() => {

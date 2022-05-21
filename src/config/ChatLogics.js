@@ -17,11 +17,13 @@ export const isLoggedUser = (message, loggedUser) => {
 };
 
 export const formatAMPM = (date) => {
-  return new Date(date).toLocaleString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  });
+  return new Date(date)
+    .toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    })
+    .toString();
 };
 
 export const isTheSameDate = (message, idx, messages) => {
@@ -30,7 +32,7 @@ export const isTheSameDate = (message, idx, messages) => {
       messages[idx - 1].createdAt &&
       messages[idx - 1].createdAt.split(" ")[0] !==
         message.createdAt.split(" ")[0])
-    ? new Date(message.createdAt).toLocaleDateString()
+    ? new Date(message.createdAt).toLocaleDateString().toString()
     : "";
 };
 
