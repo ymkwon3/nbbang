@@ -17,7 +17,7 @@ const loginDB = createAsyncThunk("user/login", async (data) => {
       return null;
     } else {
       setToken(res.token);
-      return res.userInfo;
+      return res;
     }
   });
 });
@@ -88,9 +88,16 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(loginDB.fulfilled, (state, action) => {
-      if (action.payload) {
+      if (action.payload.userInfo) {
         state.userInfo = action.payload;
         state.isLogin = true;
+        state.alarm = [
+          ...action.payload.alarm.addDeal,
+          ...action.payload.alarm.blockChat,
+          ...action.payload.alarm.byebye,
+          ...action.payload.alarm.leaveChat,
+          ...action.payload.alarm.sendMessage,
+        ];
       }
     });
     builder.addCase(isLoginDB.fulfilled, (state, action) => {

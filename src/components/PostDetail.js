@@ -84,20 +84,13 @@ const PostDetail = ({
   }, [openChatroom]);
 
   React.useEffect(() => {
-    if (!isBlock) {
-      setOpenChatroom(true);
-      setIsChatButtonClicked(true);
-    }
-  }, [isBlock]);
-
-  React.useEffect(() => {
     socket.on("block", (blockChatroomNoti) => {
       // success 일 경우 방 입장이 가능한 상태
       // fail 일 경우 방 입장이 불가한 상태
       if (blockChatroomNoti === "success") {
-        setIsBlock(false);
+        setOpenChatroom(true);
+        setIsChatButtonClicked(true);
       } else {
-        setIsBlock(true);
         notify("error", "거래인원이 꽉 찬 상태입니다.", 2000);
       }
     });

@@ -16,15 +16,13 @@ import { GiExitDoor } from "react-icons/gi";
 import moment from "moment";
 import "moment/locale/ko";
 import {
-  getDoesTheSamePersonExist,
   getDoesTheSameUserExist,
   getNewAwaiterList,
   getNewlyAddedUser,
   getNewParticipantList,
 } from "../config/ChatLogics";
 
-import TypingAni from "./TypingAni";
-import ChattingLoadingAni from "./ChattingLoadingAni";
+import LottieAni from "./LottieAni";
 
 const ChatBox = React.forwardRef(
   (
@@ -372,24 +370,21 @@ export const ChatBoxLeft = ({
             messages={messages}
             loggedUser={loggedUser}
           />
-          {isTyping ? (
-            <TypingAni
-              styles={{ height: "34px", position: "sticky", bottom: "5px" }}
-            />
-          ) : (
-            <>
-              {/* <ChattingLoadingAni
-                styles={{ height: "100px", width: "100px" }}
-              /> */}
-            </>
-          )}
         </Flex>
+        {isTyping ? (
+          <LottieAni
+            styles={{ height: "40px", position: "sticky", bottom: "5px" }}
+            filename="typing.json"
+          />
+        ) : (
+          <></>
+        )}
 
         {/* 메시지 보내는 곳 */}
         <Flex
           styles={{
             minHeight: "40px",
-            marginTop: "29px",
+            marginTop: isTyping ? "0px" : "40px",
             borderRadius: "20px",
             backgroundColor: "#DFD3CA",
             padding: "0 5px",
