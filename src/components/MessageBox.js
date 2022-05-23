@@ -9,23 +9,30 @@ import { Flex, Image, Text } from "../elements";
 
 import styled from "styled-components";
 
-import { debounce, throttle } from "lodash";
+import { debounce } from "lodash";
 
 import { calendarGray } from "../image";
 
-const MessageBox = ({ messages, loggedUser }) => {
+const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
+  const [pressToBottom, setPressToBottom] = React.useState(false);
   const messagesEndRef = React.useRef(null);
   const scrollToBottom = debounce(() => {
     console.log("실행");
     messagesEndRef.current.scrollIntoView({
+      behavior: "smooth",
       block: "end",
       inline: "nearest",
     });
-  }, 5000);
+    setPressToBottom(true);
+  }, 300);
 
   React.useEffect(() => {
-    // scrollToBottom();
-  }, [messages]);
+    scrollToBottom();
+  }, []);
+
+  React.useEffect(() => {
+    setPressToBottom(false);
+  }, [newMessageReceived, messages]);
 
   return (
     <>
@@ -230,6 +237,37 @@ const MessageBox = ({ messages, loggedUser }) => {
             </div>
           ))}
         <div ref={messagesEndRef}></div>
+      </Flex>
+      <Flex
+        styles={{
+          position: "sticky",
+          height: "auto",
+          bottom: "0",
+          borderRadius: "4px",
+          backgroundColor: "rgba(196, 173, 157, 0.4)",
+          display: pressToBottom ? "none" : "flex",
+          width: "120%",
+        }}
+      >
+        <button
+          className="hover-event-to-blurr"
+          style={{
+            width: "100%",
+            outline: "none",
+            border: "none",
+            fontSize: "16px",
+            textAlign: "center",
+            backgroundColor: "#fff",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            padding: "5px 25px",
+            backgroundColor: "transparent",
+          }}
+          onClick={scrollToBottom}
+        >
+          {newMessageReceived.chat}
+        </button>
       </Flex>
     </>
   );
