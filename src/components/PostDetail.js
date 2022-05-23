@@ -38,9 +38,6 @@ const PostDetail = ({
   const isLogin = useSelector((state) => state.user.isLogin);
   const chatRef = React.useRef();
 
-  // 현재 채팅방 접속이 가능한지, true: 접속 불가, false: 접속 가능
-  const [isBlock, setIsBlock] = React.useState(true);
-
   const [isDelete, setIsDelete] = React.useState(false);
   const [isComplete, setIsComplete] = React.useState(false);
 
@@ -58,7 +55,6 @@ const PostDetail = ({
   const stateShiftForClosingChatroom = () => {
     setOpenChatroom(false);
     setIsChatButtonClicked(false);
-    setIsBlock(true);
   };
 
   const openChatModal = () => {
@@ -294,7 +290,6 @@ const PostDetail = ({
           detailInfo={detailInfo}
           closeChatRoom={closeChatRoom}
           stateShiftForClosingChatroom={stateShiftForClosingChatroom}
-          setIsBlock={setIsBlock}
         />
       ) : (
         <></>
