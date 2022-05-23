@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { actionCreator as postActions } from "../redux/modules/post";
+import { actions as chatActions } from "../redux/modules/chat";
 
 import { Flex, Button, Text, Image } from "../elements";
 import ChatBox from "./ChatBox";
@@ -58,6 +59,7 @@ const PostDetail = ({
   };
 
   const openChatModal = () => {
+    dispatch(chatActions.isLoading(true));
     socket.emit("startchat", {
       postid: `p${detailInfo.postId}`,
       loggedUser: userInfo,
@@ -86,10 +88,10 @@ const PostDetail = ({
       if (blockChatroomNoti === "success") {
         setOpenChatroom(true);
         setIsChatButtonClicked(true);
-        console.log("방 입장 가능")
+        console.log("방 입장 가능");
       } else {
         notify("error", "거래인원이 꽉 찬 상태입니다.", 2000);
-        console.log("방 입장 불가")
+        console.log("방 입장 불가");
       }
     });
     return () => {

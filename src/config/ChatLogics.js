@@ -19,7 +19,7 @@ export const isLoggedUser = (message, loggedUser) => {
 };
 
 export const formatAMPM = (date) => {
-  return moment(date).format("HH:mm A")
+  return moment(date).format("hh:mm A");
 };
 
 export const isTheSameDate = (message, idx, messages) => {

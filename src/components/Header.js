@@ -12,7 +12,7 @@ import { logo, notification } from "../image";
 import { Desktop } from "../shared/Responsive";
 import { primaryColor, primaryDarked, secondaryColor } from "../shared/color";
 
-const Header = props => {
+const Header = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();

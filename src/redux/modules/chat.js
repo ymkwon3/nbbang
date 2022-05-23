@@ -51,18 +51,17 @@ const initialMessageForm = {
 const chatSlice = createSlice({
   name: "chat",
   initialState,
-  reducers: {},
+  reducers: {
+    isLoading(state, action) {
+      state.isLoading = action.payload;
+    },
+  },
   extraReducers: (builder) => {
-    builder.addCase(startChatDB.pending, (state, action) => {
-      state.isLoading = true;
-    });
     builder.addCase(startChatDB.fulfilled, (state, action) => {
       state.chatAdmin = action.payload.chatAdmin[0].User_userId;
       state.userInfo = action.payload.userInfo;
       state.chatInfo = action.payload.chatInfo;
       state.headList = action.payload.headList;
-
-      state.isLoading = false;
     });
   },
 });

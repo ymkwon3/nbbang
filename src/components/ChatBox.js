@@ -7,7 +7,10 @@ import styled from "styled-components";
 import MessageBox from "./MessageBox";
 
 import { useDispatch, useSelector } from "react-redux";
-import { actionCreator as chatActions } from "../redux/modules/chat";
+import {
+  actionCreator as chatActions,
+  actions as chatactions,
+} from "../redux/modules/chat";
 
 import { BsChatText } from "react-icons/bs";
 import { FaRegPaperPlane } from "react-icons/fa";
@@ -55,7 +58,9 @@ const ChatBox = React.forwardRef(
 
     const fetchMessages = async () => {
       if (!openChatroom && !postid) return;
-      dispatch(chatActions.startChatDB(detailInfo.postId));
+      await dispatch(chatActions.startChatDB(detailInfo.postId)).then(() =>
+        dispatch(chatactions.isLoading(false))
+      );
     };
 
     const sendNewMessage = (e) => {
