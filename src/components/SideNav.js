@@ -131,7 +131,13 @@ const SideNav = props => {
               전체
             </Text>
           )}
-          <Dropdown></Dropdown>
+          <Flex styles={{
+            width: "70px",
+            height: "100%",
+            alignItems: "start"
+          }}>
+            <Dropdown></Dropdown>
+          </Flex>
         </Flex>
         <Flex styles={{ justifyContent: "end", minHeight: "38px" }}>
           <Mobile>

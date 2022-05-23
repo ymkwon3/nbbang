@@ -256,7 +256,7 @@ const PostDetail = ({
                   borderRadius: "30px",
                   fontSize: "18px",
                   fontWeight: "700",
-                  marginTop: "20px",
+                  marginTop: "40px",
                 }}
                 _onClick={openChatModal}
               >
@@ -277,7 +277,7 @@ const PostDetail = ({
                   borderRadius: "30px",
                   fontSize: "18px",
                   fontWeight: "700",
-                  marginTop: "20px",
+                  marginTop: "10px",
                 }}
                 _onClick={() => setIsComplete(true)}
               >

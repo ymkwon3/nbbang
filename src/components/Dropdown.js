@@ -8,8 +8,6 @@ import { secondaryColor } from "../shared/color";
 
 const Dropdown = () => {
   const dispatch = useDispatch();
-
-  // 임시로 로그인 체크 여기서 했습니다. 나중에 부모 컴포넌트에서 받아올 수 있으면 해야함
   const isLogin = useSelector(state => state.user.isLogin);
   const selectRef = React.useRef(null);
   const options = [
@@ -32,9 +30,8 @@ const Dropdown = () => {
   return (
     <Select
       styles={{
-        width: "90px",
+        width: "70px",
         height: "30px",
-        padding: "0 15px",
         outline: "none",
         color: secondaryColor
       }}

@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Flex, Image } from "../elements";
+import { Button, Flex, Image, Text } from "../elements";
 import { actionCreator as postActions } from "../redux/modules/post";
 import { actionCreator as userActions } from "../redux/modules/user";
+import moment from "moment";
 import SearchBox from "./SearchBox";
 
 import { useHistory, useLocation } from "react-router-dom";
@@ -12,7 +13,7 @@ import { logo, notification } from "../image";
 import { Desktop } from "../shared/Responsive";
 import { primaryColor, primaryDarked, secondaryColor } from "../shared/color";
 
-const Header = (props) => {
+const Header = props => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
@@ -182,10 +183,28 @@ const Header = (props) => {
                     }}
                   >
                     {notificationList.map((noti, idx) => {
-                      console.log (noti)
+                      console.log(noti);
                       return (
-                        <NotiBtn key={noti.alarmId}>{noti.status}</NotiBtn>
-                      )
+                        <NotiBtn key={noti.alarmId}>
+                          <img alt="postImage" src={noti.image} style={{
+                            width: "38px",
+                            height: "38px",
+                            borderRadius: "50%",
+                            boxShadow: "0 0 2px rgba(0, 0, 0, 0.2)",
+                            marginRight: "10px",
+                          }}></img>
+                          <Flex styles={{
+                            flex: 3,
+                            fontSize: "12px",
+                            wordBreak: "keep-all"
+                          }}>{noti.status}</Flex>
+                          <Text styles={{
+                            flex: 1,
+                            fontSize: "8px",
+                            color: "#716969",
+                          }}>{moment(noti.createdAt).fromNow()}</Text>
+                        </NotiBtn>
+                      );
                     })}
                   </Flex>
                 )}
@@ -265,15 +284,17 @@ const Header = (props) => {
 };
 
 const NotiBtn = styled.div`
+  display: flex;
+  
   cursor: pointer;
   transition: 0.2s;
   border: none;
   border-radius: 4px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
   background-color: #fff;
-  width : 90%;
-  padding : 10px;
-  
+  width: 90%;
+  padding: 5px;
+
   &:active {
     opacity: 1;
   }
@@ -293,6 +314,5 @@ const NotiBtn = styled.div`
     height: 100%;
     background-color: yellow;
   }
-
 `;
 export default Header;

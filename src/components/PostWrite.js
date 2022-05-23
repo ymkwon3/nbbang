@@ -182,6 +182,9 @@ const PostWrite = props => {
           color: "#aaa",
           fontSize: "14px",
           userSelect: "none",
+          margin: "15px 0",
+          padding: "2px",
+          justifyContent: "start",
         }}
       >
         ※모든 항목은 필수입니다
@@ -339,7 +342,7 @@ const PostWrite = props => {
           label="내용"
           placehorder="내용을 입력해주세요"
           ref={e => (submitRef.current.contentRef = e)}
-          styles={{ height: "60px" }}
+          styles={{ height: "90px", margin: "15px 0" }}
         />
       </Flex>
       <Flex
@@ -353,14 +356,19 @@ const PostWrite = props => {
           styles={{
             fontSize: "14px",
             fontWeight: "700",
-            height: "60px",
+            minHeight: "60px",
             width: "auto",
             padding: "10px",
           }}
         >
           사진 첨부하기
         </Flex>
-        <Flex maxWidth="290px">
+        <Flex
+          styles={{
+            border: "1px solid #eee",
+            minHeight: "160px",
+          }}
+        >
           <label htmlFor="profile" className="hover-event">
             <Image src={preview} styles={{ width: "100%" }} shape="rectangle" />
           </label>
