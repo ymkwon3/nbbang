@@ -104,9 +104,8 @@ const Main = () => {
     mapRef.current.panTo(userPositionRef.current);
   };
 
-  //
+  // 인포페이지 모달
   const clickInfoPage = () => {
-    console.log("인포페이지 모달 켜져야함");
     setInfoPage(true);
   };
 

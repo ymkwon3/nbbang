@@ -85,6 +85,7 @@ const PostDetail = ({
     socket.on("block", (blockChatroomNoti) => {
       // success 일 경우 방 입장이 가능한 상태
       // fail 일 경우 방 입장이 불가한 상태
+      console.log(blockChatroomNoti);
       if (blockChatroomNoti === "success") {
         setOpenChatroom(true);
         setIsChatButtonClicked(true);

@@ -8,8 +8,8 @@ const Info = props => {
     styles={{
       flexDirection: "column",
       position: "relative",
-      width: "300px",
-      height: "140px",
+      width: "400px",
+      height: "600px",
       backgroundColor: "rgba(255, 255, 255, 1)",
       borderRadius: "20px",
     }}
