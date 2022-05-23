@@ -41,12 +41,12 @@ const ChatBox = React.forwardRef(
     const chatroomUserListRef = React.useRef(null);
     let postid = `p${detailInfo.postId}`;
 
-    const selectedChat = useSelector((state) => state.chat);
+    const selectedChat = useSelector(state => state.chat);
     const chatRoomUsers = selectedChat.userInfo;
     const selectedRoomMessages = selectedChat.chatInfo;
     const participantList = selectedChat.headList;
-    const awaiterList = chatRoomUsers.filter((user) => user.isPick === 0);
-    const loggedUser = useSelector((state) => state.user.userInfo);
+    const awaiterList = chatRoomUsers.filter(user => user.isPick === 0);
+    const loggedUser = useSelector(state => state.user.userInfo);
 
     const [newMessage, setNewMessage] = React.useState("");
     const [newlyAddedMessages, setNewlyAddedMessages] = React.useState([]);
@@ -56,29 +56,12 @@ const ChatBox = React.forwardRef(
     const [awaiters, setAwaiters] = React.useState(null);
     const [participants, setParticipants] = React.useState(null);
 
-    const goToChat = () => {
-      if (openChatroom) {
-        fetchMessages();
-        // if (postid !== undefined) {
-        //   socket.emit("startchat", { postid: postid, loggedUser });
-        // }
-      }
-    };
-
     const fetchMessages = () => {
-      if (!postid) return;
+      if (!openChatroom && !postid) return;
       dispatch(chatActions.startChatDB(detailInfo.postId));
     };
 
-    const sendNewMessage = (e) => {
-      if (
-        !newMessage &&
-        ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
-      ) {
-        window.alert("칸이 비었음!! 채워주삼 ㅇㅇ");
-        return;
-      }
-
+    const sendNewMessage = e => {
       if (
         newMessage &&
         ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
@@ -99,13 +82,13 @@ const ChatBox = React.forwardRef(
           newMessage: newChat,
         });
 
-        setNewlyAddedMessages((messageList) => [...messageList, newChat]);
+        setNewlyAddedMessages(messageList => [...messageList, newChat]);
         setNewMessage("");
       }
     };
 
     React.useEffect(() => {
-      goToChat();
+      fetchMessages();
     }, [postid]);
 
     React.useEffect(() => {
@@ -115,7 +98,7 @@ const ChatBox = React.forwardRef(
           status: "messageAlarm",
           chat: enteredUser,
         };
-        setNewlyAddedMessages((messageList) => [...messageList, newChat]);
+        setNewlyAddedMessages(messageList => [...messageList, newChat]);
 
         // 새로 업데이트된 채팅유저 목록있고, 채팅목록에 새로 추가된 유저가 방장이 아닐 때
         if (updatedChatroomUserList) {
@@ -172,13 +155,19 @@ const ChatBox = React.forwardRef(
 
       socket.on("typing", () => setIsTyping(true));
       socket.on("stop typing", () => setIsTyping(false));
+
+      return () => {
+        socket.off("connected");
+        socket.off("typing");
+        socket.off("stop typing");
+      };
     }, []);
 
     //receive message
     React.useEffect(() => {
-      socket.on("receive message", (newMessageReceived) => {
+      socket.on("receive message", newMessageReceived => {
         console.log(newMessageReceived);
-        setNewlyAddedMessages((messageList) => [
+        setNewlyAddedMessages(messageList => [
           ...messageList,
           newMessageReceived,
         ]);
@@ -199,9 +188,15 @@ const ChatBox = React.forwardRef(
           setAwaiters(updatedAwaiterList);
         }
       );
+
+      return () => {
+        socket.off("receive message");
+        socket.off("receive_participant_list_after_added");
+        socket.off("receive_participant_list_after_canceled");
+      };
     }, []);
 
-    const typingHandler = (e) => {
+    const typingHandler = e => {
       setNewMessage(e.target.value);
 
       // Typing Indicator Logic
@@ -240,10 +235,8 @@ const ChatBox = React.forwardRef(
             position: "absolute",
             transition: "top 500ms cubic-bezier(0.86, 0, 0.07, 1)",
             zIndex: "20",
-            maxWidth: "360px",
-            width: "100%",
-            height: "100%",
-            padding: "40px 18px",
+            width: "90%",
+            height: "90%",
             backgroundColor: "rgba(245, 236, 229, 0.2)",
             boxShadow: "20px 8px 11px -8px rgba(0, 0, 0, 0.05)",
           }}
@@ -382,7 +375,7 @@ export const ChatBoxLeft = ({
           />
           {isTyping ? (
             <TypingAni
-              styles={{ height: "50px", position: "sticky", bottom: "5px" }}
+              styles={{ height: "34px", position: "sticky", bottom: "5px" }}
             />
           ) : (
             <>
@@ -414,12 +407,12 @@ export const ChatBoxLeft = ({
               backgroundColor: "#DFD3CA",
             }}
             onChange={typingHandler}
-            onKeyUp={sendNewMessage}
+            onKeyUp={newMessage.trim() ? sendNewMessage : null}
             value={newMessage}
           />
           <FaRegPaperPlane
             className="hover-event-to-blurr"
-            onClick={sendNewMessage}
+            onClick={newMessage.trim() ? sendNewMessage : null}
             style={{ fontSize: "1.2rem", marginLeft: "6px" }}
           />
         </Flex>
@@ -444,37 +437,38 @@ export const ChatBoxRight = forwardRef(
     },
     ref
   ) => {
-    const selectedChat = useSelector((state) => state.chat);
+    const selectedChat = useSelector(state => state.chat);
     const chatAdminId = selectedChat.chatAdmin;
 
-    const addNewParticipant = (selectedUser) => {
+    const addNewParticipant = selectedUser => {
       socket.emit("add_new_participant", { postid, selectedUser });
 
-      setParticipants((existingParticipantList) => {
+      setParticipants(existingParticipantList => {
         return existingParticipantList
           ? [selectedUser, ...existingParticipantList]
           : [selectedUser, ...participantList];
       });
       let updatedAwaiterList = awaiters.filter(
-        (awaiter) => awaiter.User_userId !== selectedUser.User_userId
+        awaiter => awaiter.User_userId !== selectedUser.User_userId
       );
       setAwaiters(updatedAwaiterList);
     };
 
-    const deleteParticipant = (selectedUser) => {
+    const deleteParticipant = selectedUser => {
       socket.emit("cancel_new_participant", { postid, selectedUser });
 
       let updatedParticipantList = participants.filter(
-        (participant) => participant.User_userId !== selectedUser.User_userId
+        participant => participant.User_userId !== selectedUser.User_userId
       );
       setParticipants(updatedParticipantList);
-      setAwaiters((existingAwaiterList) => {
+      setAwaiters(existingAwaiterList => {
         return existingAwaiterList
           ? [selectedUser, ...existingAwaiterList]
           : [selectedUser, ...awaiterList];
       });
     };
 
+    // 채팅방에서 퇴장합니다(유저목록에서 삭제됩니다)
     const selfLeavChatroom = () => {
       stateShiftForClosingChatroom();
       socket.emit("leave chatroom", postid, loggedUser);

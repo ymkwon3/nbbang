@@ -58,6 +58,7 @@ const PostDetail = ({
   const stateShiftForClosingChatroom = () => {
     setOpenChatroom(false);
     setIsChatButtonClicked(false);
+    setIsBlock(true);
   };
 
   const openChatModal = () => {
@@ -65,7 +66,6 @@ const PostDetail = ({
   };
 
   const closeChatRoom = async (userWillCloseChatroom) => {
-    console.log(`p${detailInfo.postId}`, userWillCloseChatroom);
     await socket.emit(
       "closeChatroom",
       `p${detailInfo.postId}`,
@@ -75,9 +75,8 @@ const PostDetail = ({
   };
 
   React.useEffect(() => {
-    console.log(openChatroom)
     if (openChatroom && chatRef.current) {
-      chatRef.current.style.top = "0px";
+      chatRef.current.style.top = "5%";
     }
   }, [openChatroom]);
 
@@ -90,6 +89,8 @@ const PostDetail = ({
 
   React.useEffect(() => {
     socket.on("block", blockChatroomNoti => {
+      // success 일 경우 방 입장이 가능한 상태
+      // fail 일 경우 방 입장이 불가한 상태
       if(blockChatroomNoti === "success"){
         setIsBlock(false);
       }else {

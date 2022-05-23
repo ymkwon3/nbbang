@@ -41,8 +41,6 @@ const Header = props => {
   };
 
   const readAllAlarm = () => {
-    console.log("실행");
-
     if (dropNoti && notificationList.length > 0) {
       dispatch(userActions.readAllAlarmDB());
     }
