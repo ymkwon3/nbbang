@@ -228,10 +228,6 @@ const ChatBox = React.forwardRef(
           ref={ref}
           style={{
             position: "absolute",
-<<<<<<< HEAD
-            // transition: "top 500ms cubic-bezier(0.86, 0, 0.07, 1)",
-=======
->>>>>>> acd116b1aab32dfc4b9e50582f8de0a066f443e3
             zIndex: "20",
             width: "90%",
             height: "90%",
