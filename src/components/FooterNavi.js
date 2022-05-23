@@ -35,7 +35,6 @@ const FooterNavi = props => {
 
   const clickInfo = () => {
     if (!location.includes("info")) {
-      history.push("/info")
     }
   };
 

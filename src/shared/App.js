@@ -7,7 +7,6 @@ import { Route } from "react-router";
 import Main from "../pages/Main";
 import Login from "../pages/Login";
 import MyPage from "../pages/MyPage";
-import Info from "../pages/Info";
 import IsLogin from "./IsLogin";
 import { ToastMessage } from "../components/ToastMessage";
 import { Desktop, Mobile } from "../shared/Responsive";
@@ -50,7 +49,6 @@ const App = () => {
           ></Route>
         </IsLogin>
         <Route path="/login" exact component={Login}></Route>
-        <Route path="/info" exact component={Info}></Route>
       </Flex>
       <Mobile>
         <FooterNavi />
