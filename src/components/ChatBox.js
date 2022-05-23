@@ -49,6 +49,7 @@ const ChatBox = React.forwardRef(
     const loggedUser = useSelector((state) => state.user.userInfo);
 
     const [newMessage, setNewMessage] = React.useState("");
+    const [newMessageReceived, setNewMessageReceived] = React.useState([]);
     const [newlyAddedMessages, setNewlyAddedMessages] = React.useState([]);
     const [typing, setTyping] = React.useState(false);
     const [isTyping, setIsTyping] = React.useState(false);
@@ -167,6 +168,7 @@ const ChatBox = React.forwardRef(
     //receive message
     React.useEffect(() => {
       socket.on("receive message", (newMessageReceived) => {
+        setNewMessageReceived(newMessageReceived);
         setNewlyAddedMessages((messageList) => [
           ...messageList,
           newMessageReceived,
@@ -256,6 +258,7 @@ const ChatBox = React.forwardRef(
               OpenChatRoomUserList={OpenChatRoomUserList}
               closeChatRoom={closeChatRoom}
               title={detailInfo.title}
+              newMessageReceived={newMessageReceived}
             />
             <ChatBoxRight
               postid={postid}
@@ -294,6 +297,7 @@ export const ChatBoxLeft = ({
   OpenChatRoomUserList,
   closeChatRoom,
   title,
+  newMessageReceived,
 }) => {
   const isChatLoading = useSelector((state) => state.chat.isLoading);
   return (
@@ -380,10 +384,33 @@ export const ChatBoxLeft = ({
           ) : (
             <>
               <MessageBox
-                isTyping={isTyping}
                 messages={messages}
                 loggedUser={loggedUser}
+                newMessageReceived={newMessageReceived}
               />
+              {/* <Flex
+                styles={{
+                  position: "sticky",
+                  height: "auto",
+                  bottom: "0",
+                  borderRadius: "4px",
+                  backgroundColor: "#fff",
+                }}
+              >
+                <button
+                  className="hover-event-to-blurr"
+                  style={{
+                    width: "100%",
+                    outline: "none",
+                    border: "none",
+                    fontSize: "14px",
+                    textAlign: "center",
+                    backgroundColor: "#fff",
+                  }}
+                >
+                  {newMessageReceived.chat}
+                </button>
+              </Flex> */}
             </>
           )}
         </Flex>
