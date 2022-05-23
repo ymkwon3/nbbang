@@ -17,7 +17,7 @@ const MessageBox = ({ messages, loggedUser }) => {
       inline: "nearest",
     });
   };
-  
+
   React.useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -211,7 +211,7 @@ const MessageBox = ({ messages, loggedUser }) => {
               </Flex>
             </div>
           ))}
-        <div ref={messagesEndRef}></div>
+        <div ref={messagesEndRef} className="iphone-scroll-block"></div>
       </Flex>
     </>
   );

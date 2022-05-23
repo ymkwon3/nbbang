@@ -131,3 +131,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.iphone-scroll-block {
+  -webkit-overflow-scrolling: touch;
+}
