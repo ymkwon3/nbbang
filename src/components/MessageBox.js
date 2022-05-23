@@ -19,7 +19,7 @@ const MessageBox = ({ messages, loggedUser }) => {
   };
 
   React.useEffect(() => {
-    scrollToBottom();
+    // scrollToBottom();
   }, [messages]);
 
   return (
@@ -119,7 +119,7 @@ const MessageBox = ({ messages, loggedUser }) => {
                     </div>
                     <Bubble
                       style={{
-                        maxWidth: "80%",
+                        maxWidth: "65%",
                         width: "auto",
                         display: "flex",
                         flexDirection: "column",
@@ -146,7 +146,7 @@ const MessageBox = ({ messages, loggedUser }) => {
                       <>
                         <Bubble
                           style={{
-                            maxWidth: "80%",
+                            maxWidth: "65%",
                             width: "auto",
                             display: "flex",
                             flexDirection: "column",
@@ -211,7 +211,7 @@ const MessageBox = ({ messages, loggedUser }) => {
               </Flex>
             </div>
           ))}
-        <div ref={messagesEndRef} className="iphone-scroll-block"></div>
+        <div ref={messagesEndRef}></div>
       </Flex>
     </>
   );
