@@ -54,7 +54,7 @@ const ChatBox = React.forwardRef(
     const [awaiters, setAwaiters] = React.useState(null);
     const [participants, setParticipants] = React.useState(null);
 
-    const fetchMessages = () => {
+    const fetchMessages = async () => {
       if (!openChatroom && !postid) return;
       dispatch(chatActions.startChatDB(detailInfo.postId));
     };
@@ -163,7 +163,6 @@ const ChatBox = React.forwardRef(
     //receive message
     React.useEffect(() => {
       socket.on("receive message", (newMessageReceived) => {
-        // console.log(newMessageReceived);
         setNewlyAddedMessages((messageList) => [
           ...messageList,
           newMessageReceived,
@@ -293,6 +292,7 @@ export const ChatBoxLeft = ({
   closeChatRoom,
   title,
 }) => {
+  const isChatLoading = useSelector((state) => state.chat.isLoading);
   return (
     <>
       {/* 왼쪽 */}
@@ -365,16 +365,31 @@ export const ChatBoxLeft = ({
           }}
         >
           {/* 메시지가 보이는 곳 */}
-          <MessageBox
-            isTyping={isTyping}
-            messages={messages}
-            loggedUser={loggedUser}
-          />
+          {isChatLoading ? (
+            <>
+              <Flex styles={{ height: "100%" }}>
+                <LottieAni
+                  styles={{ height: "auto", position: "sticky" }}
+                  filename="happy-toast.json"
+                  speed={1.5}
+                />
+              </Flex>
+            </>
+          ) : (
+            <>
+              <MessageBox
+                isTyping={isTyping}
+                messages={messages}
+                loggedUser={loggedUser}
+              />
+            </>
+          )}
         </Flex>
         {isTyping ? (
           <LottieAni
             styles={{ height: "40px", position: "sticky", bottom: "5px" }}
             filename="typing.json"
+            speed={1}
           />
         ) : (
           <></>
