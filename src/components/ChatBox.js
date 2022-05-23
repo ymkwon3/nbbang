@@ -234,10 +234,8 @@ const ChatBox = React.forwardRef(
             position: "absolute",
             transition: "top 500ms cubic-bezier(0.86, 0, 0.07, 1)",
             zIndex: "20",
-            maxWidth: "360px",
-            width: "100%",
-            height: "100%",
-            padding: "40px 18px",
+            width: "90%",
+            height: "90%",
             backgroundColor: "rgba(245, 236, 229, 0.2)",
             boxShadow: "20px 8px 11px -8px rgba(0, 0, 0, 0.05)",
           }}
@@ -408,12 +406,12 @@ export const ChatBoxLeft = ({
               backgroundColor: "#DFD3CA",
             }}
             onChange={typingHandler}
-            onKeyUp={newMessage.trim() ? sendNewMessage : ""}
+            onKeyUp={newMessage.trim() ? sendNewMessage : null}
             value={newMessage}
           />
           <FaRegPaperPlane
             className="hover-event-to-blurr"
-            onClick={newMessage.trim() ? sendNewMessage : ""}
+            onClick={newMessage.trim() ? sendNewMessage : null}
             style={{ fontSize: "1.2rem", marginLeft: "6px" }}
           />
         </Flex>
@@ -469,6 +467,7 @@ export const ChatBoxRight = forwardRef(
       });
     };
 
+    // 채팅방에서 퇴장합니다(유저목록에서 삭제됩니다)
     const selfLeavChatroom = () => {
       stateShiftForClosingChatroom();
       socket.emit("leave chatroom", postid, loggedUser);

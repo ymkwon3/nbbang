@@ -15,6 +15,7 @@ import { Desktop } from "../shared/Responsive";
 import { right, left, position } from "../image";
 import { buyMarker, eatMarker, positionMarker } from "../image/marker";
 import io from "socket.io-client";
+
 const socket = io.connect("https://redpingpong.shop");
 
 const Main = () => {
