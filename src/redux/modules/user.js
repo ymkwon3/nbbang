@@ -17,7 +17,7 @@ const loginDB = createAsyncThunk("user/login", async (data) => {
       return null;
     } else {
       setToken(res.token);
-      return res.userInfo;
+      return res;
     }
   });
 });
@@ -97,8 +97,17 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(loginDB.fulfilled, (state, action) => {
       if (action.payload) {
-        state.userInfo = action.payload;
+        state.userInfo = action.payload.userInfo;
         state.isLogin = true;
+
+        // 알림 정보
+        state.alarm = [
+          ...action.payload.alarm.addDeal,
+          ...action.payload.alarm.blockChat,
+          ...action.payload.alarm.byebye,
+          ...action.payload.alarm.leaveChat,
+          ...action.payload.alarm.sendMessage,
+        ];
       }
     });
     builder.addCase(isLoginDB.fulfilled, (state, action) => {
