@@ -58,14 +58,17 @@ const PostDetail = ({
   const stateShiftForClosingChatroom = () => {
     setOpenChatroom(false);
     setIsChatButtonClicked(false);
+    setIsBlock(true);
   };
 
   const openChatModal = () => {
-    socket.emit("startchat", { postid: `p${detailInfo.postId}`, loggedUser: userInfo });
+    socket.emit("startchat", {
+      postid: `p${detailInfo.postId}`,
+      loggedUser: userInfo,
+    });
   };
 
   const closeChatRoom = async (userWillCloseChatroom) => {
-    console.log(`p${detailInfo.postId}`, userWillCloseChatroom);
     await socket.emit(
       "closeChatroom",
       `p${detailInfo.postId}`,
@@ -75,32 +78,33 @@ const PostDetail = ({
   };
 
   React.useEffect(() => {
-    console.log(openChatroom)
+    console.log(openChatroom);
     if (openChatroom && chatRef.current) {
       chatRef.current.style.top = "0px";
     }
   }, [openChatroom]);
 
   React.useEffect(() => {
-    if(!isBlock) {
+    if (!isBlock) {
       setOpenChatroom(true);
       setIsChatButtonClicked(true);
     }
-  }, [isBlock])
+  }, [isBlock]);
 
   React.useEffect(() => {
-    socket.on("block", blockChatroomNoti => {
-      if(blockChatroomNoti === "success"){
+    socket.on("block", (blockChatroomNoti) => {
+      console.log(blockChatroomNoti);
+      if (blockChatroomNoti === "success") {
         setIsBlock(false);
-      }else {
+      } else {
         setIsBlock(true);
-        notify("error", "거래인원이 꽉 찬 상태입니다.", 2000)
+        notify("error", "거래인원이 꽉 찬 상태입니다.", 2000);
       }
     });
     return () => {
       socket.off("block");
-    }
-  }, [])
+    };
+  }, []);
 
   if (Object.keys(detailInfo).length === 0) {
     return null;
@@ -197,7 +201,7 @@ const PostDetail = ({
               styles={{
                 fontSize: "28px",
                 fontWeight: "800",
-                fontFamily: "Cafe24SsurroundAir"
+                fontFamily: "Cafe24SsurroundAir",
               }}
             >
               {detailInfo.title}
@@ -297,6 +301,7 @@ const PostDetail = ({
           detailInfo={detailInfo}
           closeChatRoom={closeChatRoom}
           stateShiftForClosingChatroom={stateShiftForClosingChatroom}
+          setIsBlock={setIsBlock}
         />
       ) : (
         <></>

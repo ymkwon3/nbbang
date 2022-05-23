@@ -56,29 +56,12 @@ const ChatBox = React.forwardRef(
     const [awaiters, setAwaiters] = React.useState(null);
     const [participants, setParticipants] = React.useState(null);
 
-    const goToChat = () => {
-      if (openChatroom) {
-        fetchMessages();
-        // if (postid !== undefined) {
-        //   socket.emit("startchat", { postid: postid, loggedUser });
-        // }
-      }
-    };
-
     const fetchMessages = () => {
-      if (!postid) return;
+      if (!openChatroom && !postid) return;
       dispatch(chatActions.startChatDB(detailInfo.postId));
     };
 
     const sendNewMessage = (e) => {
-      if (
-        !newMessage &&
-        ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
-      ) {
-        window.alert("칸이 비었음!! 채워주삼 ㅇㅇ");
-        return;
-      }
-
       if (
         newMessage &&
         ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
@@ -105,7 +88,7 @@ const ChatBox = React.forwardRef(
     };
 
     React.useEffect(() => {
-      goToChat();
+      fetchMessages();
     }, [postid]);
 
     React.useEffect(() => {
@@ -172,6 +155,11 @@ const ChatBox = React.forwardRef(
 
       socket.on("typing", () => setIsTyping(true));
       socket.on("stop typing", () => setIsTyping(false));
+      return () => {
+        socket.off("connected");
+        socket.off("typing");
+        socket.off("stop typing");
+      };
     }, []);
 
     //receive message
@@ -199,6 +187,12 @@ const ChatBox = React.forwardRef(
           setAwaiters(updatedAwaiterList);
         }
       );
+
+      return () => {
+        socket.off("receive message");
+        socket.off("receive_participant_list_after_added");
+        socket.off("receive_participant_list_after_canceled");
+      };
     }, []);
 
     const typingHandler = (e) => {
@@ -382,7 +376,7 @@ export const ChatBoxLeft = ({
           />
           {isTyping ? (
             <TypingAni
-              styles={{ height: "50px", position: "sticky", bottom: "5px" }}
+              styles={{ height: "34px", position: "sticky", bottom: "5px" }}
             />
           ) : (
             <>
@@ -414,12 +408,12 @@ export const ChatBoxLeft = ({
               backgroundColor: "#DFD3CA",
             }}
             onChange={typingHandler}
-            onKeyUp={sendNewMessage}
+            onKeyUp={newMessage.trim() ? sendNewMessage : ""}
             value={newMessage}
           />
           <FaRegPaperPlane
             className="hover-event-to-blurr"
-            onClick={sendNewMessage}
+            onClick={newMessage.trim() ? sendNewMessage : ""}
             style={{ fontSize: "1.2rem", marginLeft: "6px" }}
           />
         </Flex>

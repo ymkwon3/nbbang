@@ -104,16 +104,8 @@ const Main = () => {
       console.log(messageNoti);
       dispatch(userActions.addAlarm(messageNoti[0]));
     });
-<<<<<<< HEAD
-    socket.on("block", (blockChatroomNoti) => {
-      console.log(blockChatroomNoti);
-      // dispatch(userActions.addAlarm(blockChatroomNoti));
-    });
+
     socket.on("leaved chatroom", (leaveNoti) => {
-=======
-    
-    socket.on("leaved chatroom", leaveNoti => {
->>>>>>> 912fc7f74a26b0f76db943993d96b971f74ac268
       console.log(leaveNoti);
       dispatch(userActions.addAlarm(leaveNoti[0]));
     });

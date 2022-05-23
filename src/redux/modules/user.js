@@ -65,14 +65,6 @@ const initialState = {
   alarm: [],
 };
 
-// const initialAlarmForm = {
-//   addDeal: [],
-//   blockChat: [],
-//   byebye: [],
-//   leaveChat: [],
-//   sendMessage: [],
-// };
-
 // reducer
 const userSlice = createSlice({
   name: "user",
