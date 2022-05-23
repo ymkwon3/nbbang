@@ -33,11 +33,10 @@ const PostDetail = ({
 }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const detailInfo = useSelector(state => state.post.postDetail);
-  const userInfo = useSelector(state => state.user.userInfo);
-  const isLogin = useSelector(state => state.user.isLogin);
+  const detailInfo = useSelector((state) => state.post.postDetail);
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const isLogin = useSelector((state) => state.user.isLogin);
   const chatRef = React.useRef();
-
 
   const [isDelete, setIsDelete] = React.useState(false);
   const [isComplete, setIsComplete] = React.useState(false);
@@ -65,7 +64,7 @@ const PostDetail = ({
     });
   };
 
-  const closeChatRoom = async userWillCloseChatroom => {
+  const closeChatRoom = async (userWillCloseChatroom) => {
     await socket.emit(
       "closeChatroom",
       `p${detailInfo.postId}`,
@@ -80,16 +79,17 @@ const PostDetail = ({
     }
   }, [openChatroom]);
 
-
   React.useEffect(() => {
-    socket.on("block", blockChatroomNoti => {
+    socket.on("block", (blockChatroomNoti) => {
       // success 일 경우 방 입장이 가능한 상태
       // fail 일 경우 방 입장이 불가한 상태
       if (blockChatroomNoti === "success") {
         setOpenChatroom(true);
         setIsChatButtonClicked(true);
+        console.log("방 입장 가능")
       } else {
         notify("error", "거래인원이 꽉 찬 상태입니다.", 2000);
+        console.log("방 입장 불가")
       }
     });
     return () => {

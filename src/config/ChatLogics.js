@@ -1,3 +1,5 @@
+import moment from "moment";
+
 // MessageBox 컴포넌트 함수 모음
 export const isFirstMessage = (message, idx, messages, loggedUser) => {
   return (
@@ -17,13 +19,7 @@ export const isLoggedUser = (message, loggedUser) => {
 };
 
 export const formatAMPM = (date) => {
-  return new Date(date)
-    .toLocaleString("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    })
-    .toString();
+  return moment(date).format("HH:mm A")
 };
 
 export const isTheSameDate = (message, idx, messages) => {
@@ -32,7 +28,7 @@ export const isTheSameDate = (message, idx, messages) => {
       messages[idx - 1].createdAt &&
       messages[idx - 1].createdAt.split(" ")[0] !==
         message.createdAt.split(" ")[0])
-    ? new Date(message.createdAt).toLocaleDateString().toString()
+    ? moment(message.createdAt).format("YYYY. MM. DD.")
     : "";
 };
 

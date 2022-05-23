@@ -41,6 +41,9 @@ const Header = props => {
   };
 
   const readAllAlarm = () => {
+    if(notificationList.length === 0) {
+      return;
+    }
     if (dropNoti && notificationList.length > 0) {
       dispatch(userActions.readAllAlarmDB());
     }
@@ -54,7 +57,7 @@ const Header = props => {
     fontSize: "16px",
     fontWeight: "700",
     fontFamily: "Cafe24SsurroundAir",
-  };
+  }; 
 
   const checkedStyle = {
     color: "#fff",

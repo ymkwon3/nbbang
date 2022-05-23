@@ -63,14 +63,6 @@ const initialState = {
   alarm: [],
 };
 
-// const initialAlarmForm = {
-//   addDeal: [],
-//   blockChat: [],
-//   byebye: [],
-//   leaveChat: [],
-//   sendMessage: [],
-// };
-
 // reducer
 const userSlice = createSlice({
   name: "user",
@@ -96,11 +88,9 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(loginDB.fulfilled, (state, action) => {
-      if (action.payload) {
+      if (action.payload.userInfo) {
         state.userInfo = action.payload.userInfo;
         state.isLogin = true;
-
-        // 알림 정보
         state.alarm = [
           ...action.payload.alarm.addDeal,
           ...action.payload.alarm.blockChat,

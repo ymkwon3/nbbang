@@ -14,17 +14,14 @@ import { FaRegPaperPlane } from "react-icons/fa";
 import { GiExitDoor } from "react-icons/gi";
 
 import moment from "moment";
-import "moment/locale/ko";
 import {
-  getDoesTheSamePersonExist,
   getDoesTheSameUserExist,
   getNewAwaiterList,
   getNewlyAddedUser,
   getNewParticipantList,
 } from "../config/ChatLogics";
 
-import TypingAni from "./TypingAni";
-import ChattingLoadingAni from "./ChattingLoadingAni";
+import LottieAni from "./LottieAni";
 
 const ChatBox = React.forwardRef(
   (
@@ -41,12 +38,12 @@ const ChatBox = React.forwardRef(
     const chatroomUserListRef = React.useRef(null);
     let postid = `p${detailInfo.postId}`;
 
-    const selectedChat = useSelector(state => state.chat);
+    const selectedChat = useSelector((state) => state.chat);
     const chatRoomUsers = selectedChat.userInfo;
     const selectedRoomMessages = selectedChat.chatInfo;
     const participantList = selectedChat.headList;
-    const awaiterList = chatRoomUsers.filter(user => user.isPick === 0);
-    const loggedUser = useSelector(state => state.user.userInfo);
+    const awaiterList = chatRoomUsers.filter((user) => user.isPick === 0);
+    const loggedUser = useSelector((state) => state.user.userInfo);
 
     const [newMessage, setNewMessage] = React.useState("");
     const [newlyAddedMessages, setNewlyAddedMessages] = React.useState([]);
@@ -56,12 +53,12 @@ const ChatBox = React.forwardRef(
     const [awaiters, setAwaiters] = React.useState(null);
     const [participants, setParticipants] = React.useState(null);
 
-    const fetchMessages = () => {
+    const fetchMessages = async () => {
       if (!openChatroom && !postid) return;
       dispatch(chatActions.startChatDB(detailInfo.postId));
     };
 
-    const sendNewMessage = e => {
+    const sendNewMessage = (e) => {
       if (
         newMessage &&
         ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
@@ -82,7 +79,7 @@ const ChatBox = React.forwardRef(
           newMessage: newChat,
         });
 
-        setNewlyAddedMessages(messageList => [...messageList, newChat]);
+        setNewlyAddedMessages((messageList) => [...messageList, newChat]);
         setNewMessage("");
       }
     };
@@ -98,7 +95,7 @@ const ChatBox = React.forwardRef(
           status: "messageAlarm",
           chat: enteredUser,
         };
-        setNewlyAddedMessages(messageList => [...messageList, newChat]);
+        setNewlyAddedMessages((messageList) => [...messageList, newChat]);
 
         // 새로 업데이트된 채팅유저 목록있고, 채팅목록에 새로 추가된 유저가 방장이 아닐 때
         if (updatedChatroomUserList) {
@@ -155,7 +152,6 @@ const ChatBox = React.forwardRef(
 
       socket.on("typing", () => setIsTyping(true));
       socket.on("stop typing", () => setIsTyping(false));
-
       return () => {
         socket.off("connected");
         socket.off("typing");
@@ -165,9 +161,8 @@ const ChatBox = React.forwardRef(
 
     //receive message
     React.useEffect(() => {
-      socket.on("receive message", newMessageReceived => {
-        // console.log(newMessageReceived);
-        setNewlyAddedMessages(messageList => [
+      socket.on("receive message", (newMessageReceived) => {
+        setNewlyAddedMessages((messageList) => [
           ...messageList,
           newMessageReceived,
         ]);
@@ -196,7 +191,7 @@ const ChatBox = React.forwardRef(
       };
     }, []);
 
-    const typingHandler = e => {
+    const typingHandler = (e) => {
       setNewMessage(e.target.value);
 
       // Typing Indicator Logic
@@ -233,7 +228,6 @@ const ChatBox = React.forwardRef(
           ref={ref}
           style={{
             position: "absolute",
-            transition: "top 500ms cubic-bezier(0.86, 0, 0.07, 1)",
             zIndex: "20",
             width: "90%",
             height: "90%",
@@ -296,6 +290,7 @@ export const ChatBoxLeft = ({
   closeChatRoom,
   title,
 }) => {
+  const isChatLoading = useSelector((state) => state.chat.isLoading);
   return (
     <>
       {/* 왼쪽 */}
@@ -357,7 +352,6 @@ export const ChatBoxLeft = ({
           className="removeScroll"
           styles={{
             flexDirection: "column",
-            justifyContent: "stretch",
             overflowX: "hidden",
             overflowY: "auto",
             height: "635px",
@@ -368,29 +362,41 @@ export const ChatBoxLeft = ({
           }}
         >
           {/* 메시지가 보이는 곳 */}
-          <MessageBox
-            isTyping={isTyping}
-            messages={messages}
-            loggedUser={loggedUser}
-          />
-          {isTyping ? (
-            <TypingAni
-              styles={{ height: "34px", position: "sticky", bottom: "5px" }}
-            />
+          {isChatLoading ? (
+            <>
+              <Flex styles={{ height: "100%" }}>
+                <LottieAni
+                  styles={{ height: "auto", position: "sticky" }}
+                  filename="happy-toast.json"
+                  speed={1.5}
+                />
+              </Flex>
+            </>
           ) : (
             <>
-              {/* <ChattingLoadingAni
-                styles={{ height: "100px", width: "100px" }}
-              /> */}
+              <MessageBox
+                isTyping={isTyping}
+                messages={messages}
+                loggedUser={loggedUser}
+              />
             </>
           )}
         </Flex>
+        {isTyping ? (
+          <LottieAni
+            styles={{ height: "40px", position: "sticky", bottom: "5px" }}
+            filename="typing.json"
+            speed={1}
+          />
+        ) : (
+          <></>
+        )}
 
         {/* 메시지 보내는 곳 */}
         <Flex
           styles={{
             minHeight: "40px",
-            marginTop: "29px",
+            marginTop: isTyping ? "0px" : "40px",
             borderRadius: "20px",
             backgroundColor: "#DFD3CA",
             padding: "0 5px",
@@ -405,6 +411,7 @@ export const ChatBoxLeft = ({
               border: "none",
               boxShadow: "none",
               backgroundColor: "#DFD3CA",
+              fontSize: "16px",
             }}
             onChange={typingHandler}
             onKeyUp={newMessage.trim() ? sendNewMessage : null}
@@ -437,31 +444,31 @@ export const ChatBoxRight = forwardRef(
     },
     ref
   ) => {
-    const selectedChat = useSelector(state => state.chat);
+    const selectedChat = useSelector((state) => state.chat);
     const chatAdminId = selectedChat.chatAdmin;
 
-    const addNewParticipant = selectedUser => {
+    const addNewParticipant = (selectedUser) => {
       socket.emit("add_new_participant", { postid, selectedUser });
 
-      setParticipants(existingParticipantList => {
+      setParticipants((existingParticipantList) => {
         return existingParticipantList
           ? [selectedUser, ...existingParticipantList]
           : [selectedUser, ...participantList];
       });
       let updatedAwaiterList = awaiters.filter(
-        awaiter => awaiter.User_userId !== selectedUser.User_userId
+        (awaiter) => awaiter.User_userId !== selectedUser.User_userId
       );
       setAwaiters(updatedAwaiterList);
     };
 
-    const deleteParticipant = selectedUser => {
+    const deleteParticipant = (selectedUser) => {
       socket.emit("cancel_new_participant", { postid, selectedUser });
 
       let updatedParticipantList = participants.filter(
-        participant => participant.User_userId !== selectedUser.User_userId
+        (participant) => participant.User_userId !== selectedUser.User_userId
       );
       setParticipants(updatedParticipantList);
-      setAwaiters(existingAwaiterList => {
+      setAwaiters((existingAwaiterList) => {
         return existingAwaiterList
           ? [selectedUser, ...existingAwaiterList]
           : [selectedUser, ...awaiterList];
@@ -506,7 +513,6 @@ export const ChatBoxRight = forwardRef(
                     height: "100%",
                     width: "100%",
                     justifyContent: "start",
-                    flexDirection: "column",
                     overflowX: "hidden",
                     overflowY: "scroll",
                   }}
