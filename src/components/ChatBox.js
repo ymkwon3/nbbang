@@ -166,7 +166,7 @@ const ChatBox = React.forwardRef(
     //receive message
     React.useEffect(() => {
       socket.on("receive message", newMessageReceived => {
-        console.log(newMessageReceived);
+        // console.log(newMessageReceived);
         setNewlyAddedMessages(messageList => [
           ...messageList,
           newMessageReceived,

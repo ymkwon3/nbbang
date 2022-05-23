@@ -33,13 +33,11 @@ const PostDetail = ({
 }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const detailInfo = useSelector((state) => state.post.postDetail);
-  const userInfo = useSelector((state) => state.user.userInfo);
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const detailInfo = useSelector(state => state.post.postDetail);
+  const userInfo = useSelector(state => state.user.userInfo);
+  const isLogin = useSelector(state => state.user.isLogin);
   const chatRef = React.useRef();
 
-  // 현재 채팅방 접속이 가능한지, true: 접속 불가, false: 접속 가능
-  const [isBlock, setIsBlock] = React.useState(true);
 
   const [isDelete, setIsDelete] = React.useState(false);
   const [isComplete, setIsComplete] = React.useState(false);
@@ -58,14 +56,16 @@ const PostDetail = ({
   const stateShiftForClosingChatroom = () => {
     setOpenChatroom(false);
     setIsChatButtonClicked(false);
-    setIsBlock(true);
   };
 
   const openChatModal = () => {
-    socket.emit("startchat", { postid: `p${detailInfo.postId}`, loggedUser: userInfo });
+    socket.emit("startchat", {
+      postid: `p${detailInfo.postId}`,
+      loggedUser: userInfo,
+    });
   };
 
-  const closeChatRoom = async (userWillCloseChatroom) => {
+  const closeChatRoom = async userWillCloseChatroom => {
     await socket.emit(
       "closeChatroom",
       `p${detailInfo.postId}`,
@@ -80,28 +80,22 @@ const PostDetail = ({
     }
   }, [openChatroom]);
 
-  React.useEffect(() => {
-    if(!isBlock) {
-      setOpenChatroom(true);
-      setIsChatButtonClicked(true);
-    }
-  }, [isBlock])
 
   React.useEffect(() => {
     socket.on("block", blockChatroomNoti => {
       // success 일 경우 방 입장이 가능한 상태
       // fail 일 경우 방 입장이 불가한 상태
-      if(blockChatroomNoti === "success"){
-        setIsBlock(false);
-      }else {
-        setIsBlock(true);
-        notify("error", "거래인원이 꽉 찬 상태입니다.", 2000)
+      if (blockChatroomNoti === "success") {
+        setOpenChatroom(true);
+        setIsChatButtonClicked(true);
+      } else {
+        notify("error", "거래인원이 꽉 찬 상태입니다.", 2000);
       }
     });
     return () => {
       socket.off("block");
-    }
-  }, [])
+    };
+  }, []);
 
   if (Object.keys(detailInfo).length === 0) {
     return null;
@@ -198,7 +192,7 @@ const PostDetail = ({
               styles={{
                 fontSize: "28px",
                 fontWeight: "800",
-                fontFamily: "Cafe24SsurroundAir"
+                fontFamily: "Cafe24SsurroundAir",
               }}
             >
               {detailInfo.title}
