@@ -19,7 +19,7 @@ export const isLoggedUser = (message, loggedUser) => {
 };
 
 export const formatAMPM = (date) => {
-  return moment(date).format("hh:mm A");
+  return moment(date).format("h:mm A");
 };
 
 export const isTheSameDate = (message, idx, messages) => {
@@ -28,7 +28,7 @@ export const isTheSameDate = (message, idx, messages) => {
       messages[idx - 1].createdAt &&
       messages[idx - 1].createdAt.split(" ")[0] !==
         message.createdAt.split(" ")[0])
-    ? moment(message.createdAt).format("YYYY. MM. DD.")
+    ? moment(message.createdAt).format("YYYY년 M월 DD일 dd요일")
     : "";
 };
 

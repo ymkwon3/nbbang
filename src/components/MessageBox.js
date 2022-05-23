@@ -9,14 +9,19 @@ import { Flex, Image, Text } from "../elements";
 
 import styled from "styled-components";
 
+import { debounce, throttle } from "lodash";
+
+import { calendarGray } from "../image";
+
 const MessageBox = ({ messages, loggedUser }) => {
   const messagesEndRef = React.useRef(null);
-  const scrollToBottom = () => {
+  const scrollToBottom = debounce(() => {
+    console.log("실행");
     messagesEndRef.current.scrollIntoView({
       block: "end",
       inline: "nearest",
     });
-  };
+  }, 5000);
 
   React.useEffect(() => {
     // scrollToBottom();
@@ -39,13 +44,18 @@ const MessageBox = ({ messages, loggedUser }) => {
                     width: "fit-content",
                     margin: "12px auto",
                     padding: "5px 10px",
-                    backgroundColor: "#c3c7cc",
+                    backgroundColor: "rgba(196,173,157, 0.3)",
                     borderRadius: "20px",
                   }}
                 >
+                  <img
+                    style={{ width: "14px", height: "14px" }}
+                    src={calendarGray}
+                  />
                   <Text
                     styles={{
-                      color: "white",
+                      marginLeft: "5px",
+                      color: "black",
                       fontSize: "14px",
                       fontFamily: "Pretendard",
                     }}
@@ -108,11 +118,15 @@ const MessageBox = ({ messages, loggedUser }) => {
                       style={{
                         display: "flex",
                         height: "100%",
-                        marginRight: "5px",
+                        marginRight: "2px",
                       }}
                     >
                       <Text
-                        styles={{ fontSize: "12px", fontFamily: "Pretendard" }}
+                        styles={{
+                          fontSize: "12px",
+                          fontFamily: "Pretendard",
+                          color: "#716969",
+                        }}
                       >
                         {formatAMPM(message.createdAt)}
                       </Text>
@@ -125,11 +139,14 @@ const MessageBox = ({ messages, loggedUser }) => {
                         flexDirection: "column",
                         alignItems: "flex-end",
                         backgroundColor: "#FFEF82",
-                        boxShadow: "2px 2px 10px -1px rgba(0,0,0,0.1)",
                       }}
                     >
                       <Text
-                        styles={{ fontSize: "15px", fontFamily: "Pretendard" }}
+                        styles={{
+                          fontSize: "15px",
+                          fontFamily: "Pretendard",
+                          textAlign: "left",
+                        }}
                       >
                         {message.chat}
                       </Text>
@@ -151,13 +168,13 @@ const MessageBox = ({ messages, loggedUser }) => {
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "flex-start",
-                            boxShadow: "2px 2px 10px -1px rgba(0,0,0,0.1)",
                           }}
                         >
                           <Text
                             styles={{
                               fontSize: "15px",
                               fontFamily: "Pretendard",
+                              textAlign: "left",
                             }}
                           >
                             {message.chat}
@@ -168,13 +185,14 @@ const MessageBox = ({ messages, loggedUser }) => {
                             display: "flex",
                             height: "100%",
                             alignItems: "flex-end",
-                            marginLeft: "5px",
+                            marginLeft: "2px",
                           }}
                         >
                           <Text
                             styles={{
                               fontSize: "12px",
                               fontFamily: "Pretendard",
+                              color: "#716969",
                             }}
                           >
                             {formatAMPM(message.createdAt)}
@@ -189,13 +207,13 @@ const MessageBox = ({ messages, loggedUser }) => {
                               width: "auto",
                               margin: "5px 0",
                               padding: "5px 10px",
-                              backgroundColor: "#c3c7cc",
+                              backgroundColor: "rgba(196,173,157, 0.3)",
                               borderRadius: "20px",
                             }}
                           >
                             <Text
                               styles={{
-                                color: "white",
+                                color: "black",
                                 fontSize: "15px",
                                 fontFamily: "Pretendard",
                               }}
@@ -225,7 +243,7 @@ const Bubble = styled.div`
   width: 300px;
   background: #fff;
   border-radius: 40px;
-  padding: 5px 13px;
+  padding: 6px 13px;
   text-align: center;
   color: #000;
 `;
