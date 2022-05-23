@@ -12,9 +12,7 @@ import {
   actions as chatactions,
 } from "../redux/modules/chat";
 
-import { BsChatText } from "react-icons/bs";
-import { FaRegPaperPlane } from "react-icons/fa";
-import { GiExitDoor } from "react-icons/gi";
+import { send, menu, exit } from "../image";
 
 import moment from "moment";
 import {
@@ -41,14 +39,15 @@ const ChatBox = React.forwardRef(
     const chatroomUserListRef = React.useRef(null);
     let postid = `p${detailInfo.postId}`;
 
-    const selectedChat = useSelector((state) => state.chat);
+    const selectedChat = useSelector(state => state.chat);
     const chatRoomUsers = selectedChat.userInfo;
     const selectedRoomMessages = selectedChat.chatInfo;
     const participantList = selectedChat.headList;
-    const awaiterList = chatRoomUsers.filter((user) => user.isPick === 0);
-    const loggedUser = useSelector((state) => state.user.userInfo);
+    const awaiterList = chatRoomUsers.filter(user => user.isPick === 0);
+    const loggedUser = useSelector(state => state.user.userInfo);
 
-    const [newMessage, setNewMessage] = React.useState("");
+    // const [newMessage, setNewMessage] = React.useState("");
+    const newMessageRef = React.useRef("");
     const [newMessageReceived, setNewMessageReceived] = React.useState([]);
     const [newlyAddedMessages, setNewlyAddedMessages] = React.useState([]);
     const [typing, setTyping] = React.useState(false);
@@ -64,9 +63,12 @@ const ChatBox = React.forwardRef(
       );
     };
 
-    const sendNewMessage = (e) => {
+    const sendNewMessage = e => {
+      if (!newMessageRef.current.value.trim()) {
+        return;
+      }
       if (
-        newMessage &&
+        newMessageRef.current.value &&
         ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
       ) {
         let newChat = {
@@ -75,7 +77,7 @@ const ChatBox = React.forwardRef(
           User_userEmail: loggedUser.userEmail,
           User_userName: loggedUser.userName,
           userImage: loggedUser.userImage,
-          chat: newMessage,
+          chat: newMessageRef.current.value,
           createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
         };
 
@@ -85,8 +87,9 @@ const ChatBox = React.forwardRef(
           newMessage: newChat,
         });
 
-        setNewlyAddedMessages((messageList) => [...messageList, newChat]);
-        setNewMessage("");
+        setNewlyAddedMessages(messageList => [...messageList, newChat]);
+        newMessageRef.current.value = "";
+        setNewMessageReceived(newChat);
       }
     };
 
@@ -101,7 +104,7 @@ const ChatBox = React.forwardRef(
           status: "messageAlarm",
           chat: enteredUser,
         };
-        setNewlyAddedMessages((messageList) => [...messageList, newChat]);
+        setNewlyAddedMessages(messageList => [...messageList, newChat]);
 
         // 새로 업데이트된 채팅유저 목록있고, 채팅목록에 새로 추가된 유저가 방장이 아닐 때
         if (updatedChatroomUserList) {
@@ -167,9 +170,9 @@ const ChatBox = React.forwardRef(
 
     //receive message
     React.useEffect(() => {
-      socket.on("receive message", (newMessageReceived) => {
+      socket.on("receive message", newMessageReceived => {
         setNewMessageReceived(newMessageReceived);
-        setNewlyAddedMessages((messageList) => [
+        setNewlyAddedMessages(messageList => [
           ...messageList,
           newMessageReceived,
         ]);
@@ -198,12 +201,11 @@ const ChatBox = React.forwardRef(
       };
     }, []);
 
-    const typingHandler = (e) => {
-      setNewMessage(e.target.value);
-
+    const typingHandler = e => {
       // Typing Indicator Logic
       if (!socketConnected) return;
 
+      // todo: 나중에 쓰로틀이 나을듯
       if (!typing) {
         setTyping(true);
         socket.emit("typing", postid);
@@ -251,7 +253,7 @@ const ChatBox = React.forwardRef(
             <ChatBoxLeft
               messages={[...selectedRoomMessages, ...newlyAddedMessages]}
               typingHandler={typingHandler}
-              newMessage={newMessage}
+              ref={e => (newMessageRef.current = e)}
               sendNewMessage={sendNewMessage}
               loggedUser={loggedUser}
               isTyping={isTyping}
@@ -287,108 +289,114 @@ const ChatModal = styled.div`
 `;
 export default ChatBox;
 
-export const ChatBoxLeft = ({
-  messages,
-  typingHandler,
-  newMessage,
-  sendNewMessage,
-  loggedUser,
-  isTyping,
-  OpenChatRoomUserList,
-  closeChatRoom,
-  title,
-  newMessageReceived,
-}) => {
-  const isChatLoading = useSelector((state) => state.chat.isLoading);
-  return (
-    <>
-      {/* 왼쪽 */}
-      <Flex
-        styles={{
-          width: "100%",
-          height: "100%",
-          padding: "15px",
-          flexDirection: "column",
-          backgroundColor: "#FFFFFF",
-          boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-          borderRadius: "22px",
-          position: "relative",
-        }}
-      >
+export const ChatBoxLeft = forwardRef(
+  (
+    {
+      messages,
+      typingHandler,
+      sendNewMessage,
+      loggedUser,
+      isTyping,
+      OpenChatRoomUserList,
+      closeChatRoom,
+      title,
+      newMessageReceived,
+    },
+    ref
+  ) => {
+    const isChatLoading = useSelector(state => state.chat.isLoading);
+    return (
+      <>
+        {/* 왼쪽 */}
         <Flex
           styles={{
-            justifyContent: "space-between",
-            padding: "0 10px",
-            margin: "5px 0 22px 0",
-          }}
-        >
-          <Flex styles={{ width: "auto" }}>
-            <BsChatText
-              className="hover-event-to-blurr"
-              style={{ fontSize: "28px", marginRight: "8px" }}
-              onClick={OpenChatRoomUserList}
-            />
-            <Text
-              styles={{
-                fontWeight: "700",
-                fontSize: "18px",
-                lineHeight: "22px",
-                color: "#000000",
-              }}
-            >
-              {title}
-            </Text>
-          </Flex>
-
-          <Flex styles={{ width: "auto" }}>
-            <Text
-              className="hover-event"
-              styles={{
-                fontSize: "32px",
-                position: "relative",
-                color: "rgb(187, 187, 187)",
-              }}
-              _onClick={() => {
-                closeChatRoom(loggedUser);
-              }}
-            >
-              {"×"}
-            </Text>
-          </Flex>
-        </Flex>
-
-        <Flex
-          className="removeScroll"
-          styles={{
+            width: "100%",
+            height: "100%",
+            padding: "15px",
             flexDirection: "column",
-            overflowX: "hidden",
-            overflowY: "auto",
-            height: "635px",
-            backgroundColor: "#DFD3CA",
+            backgroundColor: "#FFFFFF",
+            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
             borderRadius: "22px",
-            padding: "0px 14px",
-            justifyContent: "space-between",
+            position: "relative",
           }}
         >
-          {/* 메시지가 보이는 곳 */}
-          {isChatLoading ? (
-            <>
-              <Flex styles={{ height: "100%" }}>
-                <LottieAni
-                  styles={{ height: "auto", position: "sticky" }}
-                  filename="happy-toast.json"
-                  speed={1.5}
+          <Flex
+            styles={{
+              justifyContent: "space-between",
+              padding: "0 10px",
+              margin: "5px 0 22px 0",
+            }}
+          >
+            <Flex styles={{ width: "auto" }}>
+              <img
+                alt="menu"
+                src={menu}
+                style={{ marginRight: "8px", width: "22px", height: "24px" }}
+                className="hover-event"
+                onClick={OpenChatRoomUserList}
+              ></img>
+
+              <Text
+                styles={{
+                  fontWeight: "700",
+                  fontSize: "18px",
+                  lineHeight: "22px",
+                  color: "#000000",
+                }}
+              >
+                {title}
+              </Text>
+            </Flex>
+
+            <Flex styles={{ width: "auto" }}>
+              <Text
+                className="hover-event"
+                styles={{
+                  fontSize: "32px",
+                  position: "relative",
+                  color: "rgb(187, 187, 187)",
+                }}
+                _onClick={() => {
+                  closeChatRoom(loggedUser);
+                }}
+              >
+                {"×"}
+              </Text>
+            </Flex>
+          </Flex>
+
+          <Flex
+            className="removeScroll"
+            styles={{
+              flexDirection: "column",
+              overflowX: "hidden",
+              overflowY: "auto",
+              height: "635px",
+              backgroundColor: "#DFD3CA",
+              borderRadius: "22px",
+              padding: "0px 14px",
+              justifyContent: "space-between",
+            }}
+          >
+            {/* 메시지가 보이는 곳 */}
+            {isChatLoading ? (
+              <>
+                <Flex styles={{ height: "100%" }}>
+                  <LottieAni
+                    styles={{ height: "auto", position: "sticky" }}
+                    filename="happy-toast.json"
+                    speed={1.5}
+                  />
+                </Flex>
+              </>
+            ) : (
+              <>
+                <MessageBox
+                  messages={messages}
+                  loggedUser={loggedUser}
+                  newMessageReceived={newMessageReceived}
                 />
-              </Flex>
-            </>
-          ) : (
-            <>
-              <MessageBox
-                messages={messages}
-                loggedUser={loggedUser}
-                newMessageReceived={newMessageReceived}
-              />
-              {/* <Flex
+                {/* <Flex
                 styles={{
                   position: "sticky",
                   height: "auto",
@@ -411,54 +419,57 @@ export const ChatBoxLeft = ({
                   {newMessageReceived.chat}
                 </button>
               </Flex> */}
-            </>
+              </>
+            )}
+          </Flex>
+          {isTyping ? (
+            <LottieAni
+              styles={{ height: "40px", position: "sticky", bottom: "5px" }}
+              filename="typing.json"
+              speed={1}
+            />
+          ) : (
+            <></>
           )}
-        </Flex>
-        {isTyping ? (
-          <LottieAni
-            styles={{ height: "40px", position: "sticky", bottom: "5px" }}
-            filename="typing.json"
-            speed={1}
-          />
-        ) : (
-          <></>
-        )}
 
-        {/* 메시지 보내는 곳 */}
-        <Flex
-          styles={{
-            minHeight: "40px",
-            marginTop: isTyping ? "0px" : "40px",
-            borderRadius: "20px",
-            backgroundColor: "#DFD3CA",
-            padding: "0 5px",
-          }}
-        >
-          <input
-            type="text"
-            style={{
-              height: "100%",
-              width: "85%",
-              outline: "none",
-              border: "none",
-              boxShadow: "none",
+          {/* 메시지 보내는 곳 */}
+          <Flex
+            styles={{
+              minHeight: "40px",
+              marginTop: isTyping ? "0px" : "40px",
+              borderRadius: "20px",
               backgroundColor: "#DFD3CA",
-              fontSize: "16px",
+              padding: "0 5px",
             }}
-            onChange={typingHandler}
-            onKeyUp={newMessage.trim() ? sendNewMessage : null}
-            value={newMessage}
-          />
-          <FaRegPaperPlane
-            className="hover-event-to-blurr"
-            onClick={newMessage.trim() ? sendNewMessage : null}
-            style={{ fontSize: "1.2rem", marginLeft: "6px" }}
-          />
+          >
+            <input
+              type="text"
+              style={{
+                height: "100%",
+                width: "85%",
+                outline: "none",
+                border: "none",
+                boxShadow: "none",
+                backgroundColor: "#DFD3CA",
+                fontSize: "16px",
+              }}
+              ref={ref}
+              onChange={typingHandler}
+              onKeyUp={sendNewMessage}
+            />
+            <img
+              alt="send"
+              src={send}
+              style={{ marginRight: "8px" }}
+              onClick={sendNewMessage}
+              className="hover-event"
+            ></img>
+          </Flex>
         </Flex>
-      </Flex>
-    </>
-  );
-};
+      </>
+    );
+  }
+);
 
 export const ChatBoxRight = forwardRef(
   (
@@ -476,31 +487,31 @@ export const ChatBoxRight = forwardRef(
     },
     ref
   ) => {
-    const selectedChat = useSelector((state) => state.chat);
+    const selectedChat = useSelector(state => state.chat);
     const chatAdminId = selectedChat.chatAdmin;
 
-    const addNewParticipant = (selectedUser) => {
+    const addNewParticipant = selectedUser => {
       socket.emit("add_new_participant", { postid, selectedUser });
 
-      setParticipants((existingParticipantList) => {
+      setParticipants(existingParticipantList => {
         return existingParticipantList
           ? [selectedUser, ...existingParticipantList]
           : [selectedUser, ...participantList];
       });
       let updatedAwaiterList = awaiters.filter(
-        (awaiter) => awaiter.User_userId !== selectedUser.User_userId
+        awaiter => awaiter.User_userId !== selectedUser.User_userId
       );
       setAwaiters(updatedAwaiterList);
     };
 
-    const deleteParticipant = (selectedUser) => {
+    const deleteParticipant = selectedUser => {
       socket.emit("cancel_new_participant", { postid, selectedUser });
 
       let updatedParticipantList = participants.filter(
-        (participant) => participant.User_userId !== selectedUser.User_userId
+        participant => participant.User_userId !== selectedUser.User_userId
       );
       setParticipants(updatedParticipantList);
-      setAwaiters((existingAwaiterList) => {
+      setAwaiters(existingAwaiterList => {
         return existingAwaiterList
           ? [selectedUser, ...existingAwaiterList]
           : [selectedUser, ...awaiterList];
@@ -627,13 +638,16 @@ export const ChatBoxRight = forwardRef(
               paddingRight: "18px",
               marginBottom: "110px",
               display: chatAdminId === loggedUser.userId ? "none" : "flex",
+              minHeight: "30px",
             }}
           >
-            <GiExitDoor
-              className="hover-event-to-blurr"
-              style={{ width: "31px", height: "28px" }}
+            <img
+              alt="exit"
+              src={exit}
+              style={{ marginRight: "8px"}}
               onClick={selfLeavChatroom}
-            />
+              className="hover-event"
+            ></img>
           </Flex>
         </UserListContainer>
       </>
@@ -643,12 +657,11 @@ export const ChatBoxRight = forwardRef(
 
 const UserListContainer = styled.div`
   width: 0px;
-  height: 100vh;
+  height: 111.1%;
   overflow: hidden;
   flex-direction: column;
   position: absolute;
   right: -23px;
-  top: -40px;
   background-color: #ffffff;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   display: flex;

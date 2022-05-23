@@ -9,30 +9,36 @@ import { Flex, Image, Text } from "../elements";
 
 import styled from "styled-components";
 
-import { debounce } from "lodash";
-
-import { calendarGray } from "../image";
+import { calendarBlack } from "../image";
 
 const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
   const [pressToBottom, setPressToBottom] = React.useState(false);
   const messagesEndRef = React.useRef(null);
-  const scrollToBottom = debounce(() => {
-    console.log("실행");
+  const scrollToBottom = () => {
     messagesEndRef.current.scrollIntoView({
-      behavior: "smooth",
       block: "end",
       inline: "nearest",
     });
-    setPressToBottom(true);
-  }, 300);
+    setPressToBottom(false);
+  };
 
   React.useEffect(() => {
     scrollToBottom();
   }, []);
 
   React.useEffect(() => {
-    setPressToBottom(false);
-  }, [newMessageReceived, messages]);
+    if (
+      newMessageReceived.User_userId &&
+      newMessageReceived.User_userId !== loggedUser.userId
+    ) {
+      // 다른 사람이 메시지를 보냈을 경우
+      console.log(11);
+      setPressToBottom(true);
+    } else {
+      // 내가 메시지를 보냈을 경우
+      scrollToBottom();
+    }
+  }, [newMessageReceived]);
 
   return (
     <>
@@ -57,7 +63,8 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
                 >
                   <img
                     style={{ width: "14px", height: "14px" }}
-                    src={calendarGray}
+                    src={calendarBlack}
+                    alt={"calendar"}
                   />
                   <Text
                     styles={{
@@ -242,32 +249,29 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
         styles={{
           position: "sticky",
           height: "auto",
-          bottom: "0",
+          bottom: "10px",
           borderRadius: "4px",
-          backgroundColor: "rgba(196, 173, 157, 0.4)",
-          display: pressToBottom ? "none" : "flex",
-          width: "120%",
+          backgroundColor: "#fff",
+          display: pressToBottom ? "flex" : "none",
+          minHeight: "40px",
+          boxShadow: "0 0 2px rgba(0, 0,0, 0.4)",
         }}
+        _onClick={scrollToBottom}
+        className="hover-event"
       >
-        <button
-          className="hover-event-to-blurr"
-          style={{
-            width: "100%",
-            outline: "none",
-            border: "none",
-            fontSize: "16px",
-            textAlign: "center",
-            backgroundColor: "#fff",
+        <Text
+          styles={{
+            display: "block",
             overflow: "hidden",
-            textOverflow: "ellipsis",
             whiteSpace: "nowrap",
-            padding: "5px 25px",
-            backgroundColor: "transparent",
+            textOverflow: "ellipsis",
+            width: "70%",
+            fontSize: "16px",
           }}
-          onClick={scrollToBottom}
         >
           {newMessageReceived.chat}
-        </button>
+        </Text>
+        {"▽"}
       </Flex>
     </>
   );

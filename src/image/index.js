@@ -15,6 +15,7 @@ import price from "./price.svg";
 import priceGray from "./priceGray.svg";
 import calendar from "./calendar.svg";
 import calendarGray from "./calendarGray.svg";
+import calendarBlack from "./calendarGray.svg";
 import trash from "./trash.svg";
 import address from "./address.svg";
 import addressGray from "./addressGray.svg";
@@ -27,8 +28,12 @@ import infoWhite from "./infoWhite.svg";
 import userpage from "./userpage.svg";
 import userpageWhite from "./userpageWhite.svg";
 import edit from "./edit.svg";
+import menu from "./menu.svg";
+import send from "./send.svg";
 
 export {
+  menu,
+  send,
   edit,
   home,
   homeWhite,
@@ -53,6 +58,7 @@ export {
   priceGray,
   calendar,
   calendarGray,
+  calendarBlack,
   trash,
   address,
   addressGray,
