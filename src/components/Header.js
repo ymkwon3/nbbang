@@ -41,7 +41,11 @@ const Header = (props) => {
   };
 
   const readAllAlarm = () => {
+<<<<<<< HEAD
     if (notificationList.length === 0) {
+=======
+    if(notificationList.length === 0) {
+>>>>>>> acd116b1aab32dfc4b9e50582f8de0a066f443e3
       return;
     }
     if (dropNoti && notificationList.length > 0) {
@@ -57,7 +61,7 @@ const Header = (props) => {
     fontSize: "16px",
     fontWeight: "700",
     fontFamily: "Cafe24SsurroundAir",
-  };
+  }; 
 
   const checkedStyle = {
     color: "#fff",

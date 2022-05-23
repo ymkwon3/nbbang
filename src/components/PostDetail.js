@@ -86,8 +86,10 @@ const PostDetail = ({
       if (blockChatroomNoti === "success") {
         setOpenChatroom(true);
         setIsChatButtonClicked(true);
+        console.log("방 입장 가능")
       } else {
         notify("error", "거래인원이 꽉 찬 상태입니다.", 2000);
+        console.log("방 입장 불가")
       }
     });
     return () => {

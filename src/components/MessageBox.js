@@ -17,7 +17,10 @@ const MessageBox = ({ messages, loggedUser }) => {
       inline: "nearest",
     });
   };
-  React.useEffect(scrollToBottom, [messages]);
+  
+  React.useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   return (
     <>

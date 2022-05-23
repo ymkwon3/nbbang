@@ -14,7 +14,6 @@ import { FaRegPaperPlane } from "react-icons/fa";
 import { GiExitDoor } from "react-icons/gi";
 
 import moment from "moment";
-import "moment/locale/ko";
 import {
   getDoesTheSameUserExist,
   getNewAwaiterList,
@@ -229,7 +228,10 @@ const ChatBox = React.forwardRef(
           ref={ref}
           style={{
             position: "absolute",
+<<<<<<< HEAD
             // transition: "top 500ms cubic-bezier(0.86, 0, 0.07, 1)",
+=======
+>>>>>>> acd116b1aab32dfc4b9e50582f8de0a066f443e3
             zIndex: "20",
             width: "90%",
             height: "90%",
@@ -413,6 +415,7 @@ export const ChatBoxLeft = ({
               border: "none",
               boxShadow: "none",
               backgroundColor: "#DFD3CA",
+              fontSize: "16px",
             }}
             onChange={typingHandler}
             onKeyUp={newMessage.trim() ? sendNewMessage : null}
