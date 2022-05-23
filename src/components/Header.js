@@ -12,7 +12,7 @@ import { logo, notification } from "../image";
 import { Desktop } from "../shared/Responsive";
 import { primaryColor, primaryDarked, secondaryColor } from "../shared/color";
 
-const Header = props => {
+const Header = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
@@ -41,6 +41,9 @@ const Header = props => {
   };
 
   const readAllAlarm = () => {
+    if (notificationList.length === 0) {
+      return;
+    }
     if (dropNoti && notificationList.length > 0) {
       dispatch(userActions.readAllAlarmDB());
     }
@@ -84,7 +87,12 @@ const Header = props => {
         <img
           src={logo}
           alt="logo"
-          style={{ width: "40px", height: "40px", cursor: "pointer", marginRight: "40px" }}
+          style={{
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+            marginRight: "40px",
+          }}
           onClick={clickLogo}
         ></img>
 

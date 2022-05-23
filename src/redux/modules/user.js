@@ -89,7 +89,7 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(loginDB.fulfilled, (state, action) => {
       if (action.payload.userInfo) {
-        state.userInfo = action.payload;
+        state.userInfo = action.payload.userInfo;
         state.isLogin = true;
         state.alarm = [
           ...action.payload.alarm.addDeal,

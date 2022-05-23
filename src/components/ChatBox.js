@@ -229,7 +229,7 @@ const ChatBox = React.forwardRef(
           ref={ref}
           style={{
             position: "absolute",
-            transition: "top 500ms cubic-bezier(0.86, 0, 0.07, 1)",
+            // transition: "top 500ms cubic-bezier(0.86, 0, 0.07, 1)",
             zIndex: "20",
             width: "90%",
             height: "90%",
@@ -354,7 +354,6 @@ export const ChatBoxLeft = ({
           className="removeScroll"
           styles={{
             flexDirection: "column",
-            justifyContent: "stretch",
             overflowX: "hidden",
             overflowY: "auto",
             height: "635px",
@@ -515,7 +514,6 @@ export const ChatBoxRight = forwardRef(
                     height: "100%",
                     width: "100%",
                     justifyContent: "start",
-                    flexDirection: "column",
                     overflowX: "hidden",
                     overflowY: "scroll",
                   }}

@@ -13,7 +13,6 @@ const MessageBox = ({ messages, loggedUser }) => {
   const messagesEndRef = React.useRef(null);
   const scrollToBottom = () => {
     messagesEndRef.current.scrollIntoView({
-      behavior: "smooth",
       block: "end",
       inline: "nearest",
     });
