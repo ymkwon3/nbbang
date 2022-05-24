@@ -14,7 +14,7 @@ import RadioInput from "../components/RadioInput";
 import styled from "styled-components";
 import { Desktop } from "../shared/Responsive";
 import { right, left, position, info } from "../image";
-import {askBread} from "../image/bread"
+import { askBread } from "../image/bread";
 import { buyMarker, eatMarker, positionMarker } from "../image/marker";
 import io from "socket.io-client";
 import Modal from "../shared/Modal";
@@ -115,18 +115,16 @@ const Main = () => {
 
   const clickExp = () => {
     setExp(true);
-  }
+  };
 
   // 소켓으로부터 알림 받는 부분
   React.useEffect(() => {
     socket.emit("socket is connected", userInfo);
     socket.on("send message alarm", (messageNoti) => {
-      console.log(messageNoti);
       dispatch(userActions.addAlarm(messageNoti[0]));
     });
 
     socket.on("leaved chatroom", (leaveNoti) => {
-      console.log(leaveNoti);
       dispatch(userActions.addAlarm(leaveNoti[0]));
     });
     socket.on("added_new_participant", (addedNewParticiparntNoti) => {
@@ -358,26 +356,26 @@ const Main = () => {
         </Desktop>
 
         <Flex
-            styles={{
-              width: "50px",
-              height: "50px",
-              backgroundColor: "#fff",
-              boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.25)",
-              borderRadius: "10px",
-              margin: "0 0 10px",
-            }}
-          >
-            <Button _onClick={clickExp}>
-              <img
-                style={{
-                  width: "35px",
-                  height: "35px",
-                }}
-                alt="askBread"
-                src={askBread}
-              ></img>
-            </Button>
-          </Flex>
+          styles={{
+            width: "50px",
+            height: "50px",
+            backgroundColor: "#fff",
+            boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.25)",
+            borderRadius: "10px",
+            margin: "0 0 10px",
+          }}
+        >
+          <Button _onClick={clickExp}>
+            <img
+              style={{
+                width: "35px",
+                height: "35px",
+              }}
+              alt="askBread"
+              src={askBread}
+            ></img>
+          </Button>
+        </Flex>
 
         {/*현재위치이동버튼*/}
         <Flex
@@ -407,8 +405,16 @@ const Main = () => {
           setCityRange={setCityRange}
         ></RadioInput>
       </ButtonContainer>
-      {infoPage && <Modal close={() => setInfoPage(false)}><Info></Info></Modal>}
-      {exp && <Modal close={() => setExp(false)}><Explain></Explain></Modal>}
+      {infoPage && (
+        <Modal close={() => setInfoPage(false)}>
+          <Info></Info>
+        </Modal>
+      )}
+      {exp && (
+        <Modal close={() => setExp(false)}>
+          <Explain></Explain>
+        </Modal>
+      )}
     </KaKaoMap>
   );
 };

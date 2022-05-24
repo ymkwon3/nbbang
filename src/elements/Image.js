@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Flex from "./Flex";
+import {croissant} from "../image/bread" 
 
 const Image = props => {
   /*
@@ -92,7 +93,7 @@ const Image = props => {
 
 Image.defaultProps = {
   shape: "circle",
-  src: "https://image.ajunews.com/content/image/2020/06/25/20200625140042894225.jpg",
+  src: croissant,
   defaultStyles: { width: "100%" },
 };
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex } from "../elements";
 
-const Explain = props => {
+const Explain = () => {
   return (
     <Flex
       styles={{
