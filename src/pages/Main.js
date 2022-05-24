@@ -411,7 +411,7 @@ const Main = () => {
       )}
       {exp && (
         <Modal close={() => setExp(false)}>
-          <Explain></Explain>
+          <Explain close={() => setExp(false)}></Explain>
         </Modal>
       )}
     </KaKaoMap>
