@@ -14,9 +14,11 @@ import RadioInput from "../components/RadioInput";
 import styled from "styled-components";
 import { Desktop } from "../shared/Responsive";
 import { right, left, position, info } from "../image";
+import {askBread} from "../image/bread"
 import { buyMarker, eatMarker, positionMarker } from "../image/marker";
 import io from "socket.io-client";
 import Modal from "../shared/Modal";
+import Explain from "./Explain";
 
 const socket = io.connect("https://redpingpong.shop");
 
@@ -37,8 +39,9 @@ const Main = () => {
   // 카테고리에 따라 마커를 띄워주기 위해 저장해두는 마커 리스트
   const markerListRef = React.useRef([]);
 
-  // 인포페이지 모달 state
+  // 인포페이지, 설명페이지 모달 state
   const [infoPage, setInfoPage] = React.useState(false);
+  const [exp, setExp] = React.useState(false);
 
   /* 왼쪽 사이드네비 전체를 관리하기 위한 ref, state
   상세, 글쓰기 페이지를 관리하기 위한 ref, state */
@@ -108,6 +111,10 @@ const Main = () => {
   const clickInfoPage = () => {
     setInfoPage(true);
   };
+
+  const clickExp = () => {
+    setExp(true);
+  }
 
   // 소켓으로부터 알림 받는 부분
   React.useEffect(() => {
@@ -349,6 +356,28 @@ const Main = () => {
           </Flex>
         </Desktop>
 
+        <Flex
+            styles={{
+              width: "50px",
+              height: "50px",
+              backgroundColor: "#fff",
+              boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.25)",
+              borderRadius: "10px",
+              margin: "0 0 10px",
+            }}
+          >
+            <Button _onClick={clickExp}>
+              <img
+                style={{
+                  width: "35px",
+                  height: "35px",
+                }}
+                alt="askBread"
+                src={askBread}
+              ></img>
+            </Button>
+          </Flex>
+
         {/*현재위치이동버튼*/}
         <Flex
           styles={{
@@ -378,6 +407,7 @@ const Main = () => {
         ></RadioInput>
       </ButtonContainer>
       {infoPage && <Modal close={() => setInfoPage(false)}><Info></Info></Modal>}
+      {exp && <Modal close={() => setExp(false)}><Explain></Explain></Modal>}
     </KaKaoMap>
   );
 };

@@ -153,6 +153,7 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
                         flexDirection: "column",
                         alignItems: "flex-end",
                         backgroundColor: "#FFEF82",
+                        borderRadius: '10px',
                       }}
                     >
                       <Text
@@ -182,6 +183,7 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "flex-start",
+                            borderRadius: "10px",
                           }}
                         >
                           <Text

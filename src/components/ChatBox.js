@@ -5,6 +5,7 @@ import { Button, Flex, Grid, Image, Input, Text } from "../elements";
 import styled from "styled-components";
 
 import MessageBox from "./MessageBox";
+import Modal from "../shared/Modal";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -23,6 +24,7 @@ import {
 } from "../config/ChatLogics";
 
 import LottieAni from "./LottieAni";
+import Confirm from "./Confirm";
 
 const ChatBox = React.forwardRef(
   (
@@ -489,7 +491,7 @@ export const ChatBoxRight = forwardRef(
   ) => {
     const selectedChat = useSelector(state => state.chat);
     const chatAdminId = selectedChat.chatAdmin;
-
+    const [isModal, setIsModal] = React.useState(false);
     const addNewParticipant = selectedUser => {
       socket.emit("add_new_participant", { postid, selectedUser });
 
@@ -520,8 +522,7 @@ export const ChatBoxRight = forwardRef(
 
     // 채팅방에서 퇴장합니다(유저목록에서 삭제됩니다)
     const selfLeavChatroom = () => {
-      stateShiftForClosingChatroom();
-      socket.emit("leave chatroom", postid, loggedUser);
+      setIsModal(true);
     };
 
     return (
@@ -644,11 +645,23 @@ export const ChatBoxRight = forwardRef(
             <img
               alt="exit"
               src={exit}
-              style={{ marginRight: "8px"}}
+              style={{ marginRight: "8px" }}
               onClick={selfLeavChatroom}
               className="hover-event"
             ></img>
           </Flex>
+          {isModal && (
+            <Modal close={() => setIsModal(false)}>
+              <Confirm
+                _positive={() => {
+                  stateShiftForClosingChatroom();
+                  socket.emit("leave chatroom", postid, loggedUser);
+                }}
+                _close={() => setIsModal(false)}
+                message="채팅방에서 나가시겠습니까?"
+              ></Confirm>
+            </Modal>
+          )}
         </UserListContainer>
       </>
     );

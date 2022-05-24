@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { actionCreator as postActions } from "../redux/modules/post";
 import { Flex, Image, Text } from "../elements";
 import Permit from "../shared/Permit";
+import { Desktop } from "../shared/Responsive";
 
 //style
 import styled from "styled-components";
@@ -41,7 +42,7 @@ const Post = props => {
     textOverflow: "ellipsis",
     letterSpacing: "0.5px",
   };
-
+  const isDesktop = Desktop(0);
   // number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") 3자리마다 콤마찍어주는 정규표현식
 
   const clickLike = e => {
@@ -52,8 +53,8 @@ const Post = props => {
   return (
     <Flex
       styles={{
-        padding: "30px 0px",
-        height: "180px",
+        padding: isDesktop === undefined ? "30px 0px" : "20px 0px",
+        height: isDesktop === undefined ? "180px" : "160px",
       }}
       className="hover-event"
     >
@@ -164,7 +165,7 @@ const Post = props => {
             src={calendarGray}
             style={{ marginRight: "5px" }}
           ></img>
-          <Text styles={contentStyle}>{moment(endTime).format("MM-DD")}</Text>
+          <Text styles={contentStyle}>{moment(endTime).format("MM-DD")} 까지</Text>
         </Flex>
 
         <StyledClamp>
