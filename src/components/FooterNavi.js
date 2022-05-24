@@ -6,12 +6,16 @@ import { Flex } from "../elements";
 
 import { primaryDarked } from "../shared/color";
 import { home, homeWhite, info, infoWhite, userpage, userpageWhite } from "../image";
+import Modal from "../shared/Modal";
+import Info from "../pages/Info";
 
 const FooterNavi = props => {
   const history = useHistory();
   const location = useLocation().pathname;
   const userInfo = useSelector(state => state.user.userInfo);
   const isLogin = useSelector(state => state.user.isLogin);
+
+  const [isInfo, setIsInfo] = React.useState(); 
   // Home버튼을 눌렀을 경우
   const clickHome = () => {
     if (location !== "/") {
@@ -34,8 +38,7 @@ const FooterNavi = props => {
   };
 
   const clickInfo = () => {
-    if (!location.includes("info")) {
-    }
+    setIsInfo(true);
   };
 
   const checkedStyle = {
@@ -55,9 +58,9 @@ const FooterNavi = props => {
         backgroundColor: "#fff",
       }}
     >
-      
-      <FooterBtn style={location === "/info" ? checkedStyle : null} onClick={clickInfo}>
-        {location === "/info" ? (
+      {isInfo && <Modal close={() => {setIsInfo(false)}}><Info></Info></Modal>}
+      <FooterBtn style={isInfo ? checkedStyle : null} onClick={clickInfo}>
+        {isInfo ? (
           <img alt="info" src={infoWhite}></img>
         ) : (
           <img alt="info" src={info}></img>
@@ -65,7 +68,7 @@ const FooterNavi = props => {
         Info
       </FooterBtn>
       <FooterBtn
-        style={location === "/" ? checkedStyle : null}
+        style={location === "/" && !isInfo ? checkedStyle : null}
         onClick={clickHome}
       >
         {location === "/" ? (
@@ -77,7 +80,7 @@ const FooterNavi = props => {
       </FooterBtn>
       {isLogin ? (
         <FooterBtn
-          style={location.includes("mypage") ? checkedStyle : null}
+          style={location.includes("mypage") && !isInfo ? checkedStyle : null}
           onClick={clickMypage}
         >
           {location.includes("mypage") ? (
@@ -85,7 +88,6 @@ const FooterNavi = props => {
         ) : (
           <img alt="userpage" src={userpage}></img>
         )}
-          
           MyPage
         </FooterBtn>
       ) : (

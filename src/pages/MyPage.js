@@ -241,7 +241,7 @@ const MyPage = props => {
                 modalRef.current = v;
               }}
             >
-              {v.isDone ? "종료된 공구" : null}
+              {v.isDone === 1 ? "완료 공구" : v.isDone === 2 ? "미완료 공구" : null}
             </Image>
           ))}
         </Grid>
@@ -266,6 +266,7 @@ const PostModal = ({ v }) => {
     fontSize: "16px",
     fontWeight: "400",
   };
+  console.log(v)
   return (
     <Flex
       styles={{

@@ -183,7 +183,6 @@ const Header = props => {
                     }}
                   >
                     {notificationList.map((noti, idx) => {
-                      console.log(noti);
                       return (
                         <NotiBtn key={noti.alarmId}>
                           <img alt="postImage" src={noti.image} style={{
