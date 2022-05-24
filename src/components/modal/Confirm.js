@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Flex } from "../elements";
-import { secondaryColor } from "../shared/color";
+import { Button, Flex } from "../../elements";
+import { secondaryColor } from "../../shared/color";
 const Confirm = (props) => {
   const {_positive, _close, message} = props
   const clickPositive = () => {

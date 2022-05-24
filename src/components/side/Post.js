@@ -3,10 +3,10 @@ import moment from "moment";
 import "moment/locale/ko";
 
 import { useDispatch } from "react-redux";
-import { actionCreator as postActions } from "../redux/modules/post";
-import { Flex, Image, Text } from "../elements";
-import Permit from "../shared/Permit";
-import { Desktop } from "../shared/Responsive";
+import { actionCreator as postActions } from "../../redux/modules/post";
+import { Flex, Image, Text } from "../../elements";
+import Permit from "../../shared/Permit";
+import { Desktop } from "../../shared/Responsive";
 
 //style
 import styled from "styled-components";
@@ -18,7 +18,7 @@ import {
   priceGray,
   calendarGray,
   addressGray,
-} from "../image";
+} from "../../image";
 
 const Post = props => {
   const {

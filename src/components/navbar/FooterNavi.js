@@ -2,12 +2,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { Flex } from "../elements";
+import { Flex } from "../../elements";
 
-import { primaryDarked } from "../shared/color";
-import { home, homeWhite, info, infoWhite, userpage, userpageWhite } from "../image";
-import Modal from "../shared/Modal";
-import Info from "../pages/Info";
+import { primaryDarked } from "../../shared/color";
+import { home, homeWhite, info, infoWhite, userpage, userpageWhite } from "../../image";
+import Modal from "../../shared/Modal";
+import Info from "../modal/Info";
 
 const FooterNavi = props => {
   const history = useHistory();

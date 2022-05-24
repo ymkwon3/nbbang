@@ -12,7 +12,7 @@ const LottieAni = (props) => {
       renderer: "svg",
       loop: true,
       autoplay: true,
-      animationData: require(`../image/chatani/${filename}`),
+      animationData: require(`../../image/chatani/${filename}`),
     });
     lottie.setSpeed(speed);
   }, []);

@@ -10,9 +10,9 @@ import MyPage from "../pages/MyPage";
 import IsLogin from "./IsLogin";
 import { ToastMessage } from "../components/ToastMessage";
 import { Desktop, Mobile } from "../shared/Responsive";
-import FooterNavi from "../components/FooterNavi";
+import FooterNavi from "../components/navbar/FooterNavi";
 import Modal from "./Modal";
-import Loading from "../components/Loading";
+import Loading from "../components/modal/Loading";
 import KaKaoUri from "../pages/KakaoUri";
 import { secondaryColor } from "./color";
 

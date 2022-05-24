@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Flex, Image, Text } from "../elements";
-import { actionCreator as postActions } from "../redux/modules/post";
-import { actionCreator as userActions } from "../redux/modules/user";
+import { Button, Flex, Image, Text } from "../../elements";
+import { actionCreator as postActions } from "../../redux/modules/post";
+import { actionCreator as userActions } from "../../redux/modules/user";
 import moment from "moment";
 import SearchBox from "./SearchBox";
 
 import { useHistory, useLocation } from "react-router-dom";
 
-import { logo, notification } from "../image";
-import { Desktop } from "../shared/Responsive";
-import { primaryColor, primaryDarked, secondaryColor } from "../shared/color";
+import { logo, notification } from "../../image";
+import { Desktop } from "../../shared/Responsive";
+import { primaryColor, primaryDarked, secondaryColor } from "../../shared/color";
 
 const Header = () => {
   const dispatch = useDispatch();

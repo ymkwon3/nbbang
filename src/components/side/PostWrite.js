@@ -1,13 +1,13 @@
 /* global kakao */
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Button, Flex, Image, Input, Select, Text } from "../elements";
-import { actionCreator as postActions } from "../redux/modules/post";
+import { Button, Flex, Image, Input, Select, Text } from "../../elements";
+import { actionCreator as postActions } from "../../redux/modules/post";
 import moment from "moment";
-import { notify, toast } from "../components/ToastMessage";
+import { notify, toast } from "../ToastMessage";
 
-import { addImage } from "../image";
-import { primaryColor, secondaryColor } from "../shared/color";
+import { addImage } from "../../image";
+import { primaryColor, secondaryColor } from "../../shared/color";
 
 const PostWrite = props => {
   const { map, userInfo, _clickContainer, _setRightContainer, _clickFold } =

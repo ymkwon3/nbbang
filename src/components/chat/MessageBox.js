@@ -4,12 +4,12 @@ import {
   isFirstMessage,
   isLoggedUser,
   isTheSameDate,
-} from "../config/ChatLogics";
-import { Flex, Image, Text } from "../elements";
+} from "../../config/ChatLogics";
+import { Flex, Image, Text } from "../../elements";
 
 import styled from "styled-components";
 
-import { calendarBlack } from "../image";
+import { calendarBlack } from "../../image";
 
 const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
   const [pressToBottom, setPressToBottom] = React.useState(false);
@@ -159,7 +159,7 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
                         styles={{
                           fontSize: "15px",
                           fontFamily: "Pretendard",
-                          textAlign: "left",
+                          textAlign: "right",
                         }}
                       >
                         {message.chat}

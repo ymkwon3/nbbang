@@ -1,12 +1,12 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Flex, Button } from "../elements/index";
+import { Flex, Button } from "../../elements/index";
 import styled from "styled-components";
 import _ from "lodash";
 
-import { actionCreator as searchAction } from "../redux/modules/post";
+import { actionCreator as searchAction } from "../../redux/modules/post";
 
-import { search } from "../image";
+import { search } from "../../image";
 
 export default function SearchBox() {
   const dispatch = useDispatch();

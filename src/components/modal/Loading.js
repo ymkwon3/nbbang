@@ -1,8 +1,8 @@
 import React from "react";
-import { Flex } from "../elements";
+import { Flex } from "../../elements";
 import styled from "styled-components";
-import { waffle, croissant, baguette, redBean } from "../image/bread";
-import { Desktop } from "../shared/Responsive";
+import { waffle, croissant, baguette, redBean } from "../../image/bread";
+import { Desktop } from "../../shared/Responsive";
 const Loading = (props) => {
   const { children } = props;
   const breadList = [waffle, croissant, baguette, redBean]

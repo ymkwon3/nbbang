@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Flex, Button } from "../elements/index";
-import { primaryColor } from "../shared/color";
+import { Flex, Button } from "../../elements/index";
+import { primaryColor } from "../../shared/color";
 
 function Pagination({ total, limit, page, setPage }) {
   const numPages = Math.ceil(total / limit);

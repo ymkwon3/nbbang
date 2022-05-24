@@ -1,6 +1,5 @@
 import axios from "axios";
-import { getToken, setToken } from "./localStorage";
-// import moment from "moment";
+import { getToken } from "./localStorage";
 
 const headers = () => {
   return { authorization: `Bearer ${getToken()}` };
@@ -8,8 +7,7 @@ const headers = () => {
 axios.defaults.baseURL = "https://redpingpong.shop";
 // axios.defaults.baseURL = "https://redpingpong.link";
 // https://redpingpong.shop/
-// http://3.34.129.39
-
+ 
 // axios get api
 const getAPI = async (api, params) => {
   return await axios

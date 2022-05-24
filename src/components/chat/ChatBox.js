@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   actionCreator as chatActions,
   actions as chatactions,
-} from "../redux/modules/chat";
+} from "../../redux/modules/chat";
 
 import moment from "moment";
 import {
@@ -14,11 +14,11 @@ import {
   getNewAwaiterList,
   getNewlyAddedUser,
   getNewParticipantList,
-} from "../config/ChatLogics";
+} from "../../config/ChatLogics";
 
 import ChatBoxLeft from "./ChatBoxLeft";
 import ChatBoxRight from "./ChatBoxRight";
-import { Flex } from "../elements";
+import { Flex } from "../../elements";
 
 const ChatBox = React.forwardRef(
   (

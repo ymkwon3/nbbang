@@ -1,13 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { actionCreator as postActions } from "../redux/modules/post";
-import { actions as chatActions } from "../redux/modules/chat";
+import { actionCreator as postActions } from "../../redux/modules/post";
+import { actions as chatActions } from "../../redux/modules/chat";
 
-import { Flex, Button, Text, Image } from "../elements";
-import ChatBox from "./ChatBox";
+import { Flex, Button, Text, Image } from "../../elements";
+import ChatBox from "../chat/ChatBox";
 
-import { primaryDarked, secondaryColor } from "../shared/color";
+import { primaryDarked, secondaryColor } from "../../shared/color";
 import {
   trash,
   eatCategory,
@@ -16,14 +16,14 @@ import {
   calendar,
   address,
   content,
-} from "../image";
+} from "../../image";
 
 import moment from "moment";
 import "moment/locale/ko";
-import Modal from "../shared/Modal";
-import Confirm from "./Confirm";
+import Modal from "../../shared/Modal";
+import Confirm from "../modal/Confirm";
 import { useHistory } from "react-router-dom";
-import { notify } from "./ToastMessage";
+import { notify } from "../ToastMessage";
 
 const PostDetail = ({
   openChatroom,
@@ -60,7 +60,6 @@ const PostDetail = ({
 
   const openChatModal = () => {
     dispatch(chatActions.isLoading(true));
-    console.log(socket)
     socket.emit("startchat", {
       postid: `p${detailInfo.postId}`,
       loggedUser: userInfo,

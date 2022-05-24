@@ -83,7 +83,6 @@ const userSlice = createSlice({
       state.alarm = [...state.alarm, action.payload];
     },
     readAlarm: (state, action) => {
-      console.log(action.payload);
     },
   },
   extraReducers: (builder) => {

@@ -1,11 +1,11 @@
 import React, { forwardRef } from "react";
 import { useSelector } from "react-redux";
-import { Flex, Text } from "../elements";
-import { exit } from "../image";
-import Modal from "../shared/Modal";
+import { Flex, Text } from "../../elements";
+import { exit } from "../../image";
+import Modal from "../../shared/Modal";
 import Awaiters from "./Awaiters";
 import Participants from "./Participants";
-import Confirm from "./Confirm";
+import Confirm from "../modal/Confirm";
 import styled from "styled-components";
 
 const ChatBoxRight = forwardRef(

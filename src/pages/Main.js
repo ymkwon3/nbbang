@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { PostWrite, SideNav } from "../components";
 import { Flex, Button } from "../elements";
-import PostDetail from "../components/PostDetail";
-import Info from "../pages/Info";
+import PostDetail from "../components/side/PostDetail";
+import Info from "../components/modal/Info";
 import { actionCreator as postActions } from "../redux/modules/post";
 import { actionCreator as userActions } from "../redux/modules/user";
 import RadioInput from "../components/RadioInput";
@@ -18,7 +18,7 @@ import { askBread } from "../image/bread";
 import { buyMarker, eatMarker, positionMarker } from "../image/marker";
 import io from "socket.io-client";
 import Modal from "../shared/Modal";
-import Explain from "./Explain";
+import Explain from "../components/modal/Explain";
 
 const socket = io.connect("https://redpingpong.shop");
 // const socket = io.connect("https://redpingpong.link");
@@ -123,13 +123,13 @@ const Main = () => {
     socket.on("send message alarm", (messageNoti) => {
       dispatch(userActions.addAlarm(messageNoti[0]));
     });
-
     socket.on("leaved chatroom", (leaveNoti) => {
       dispatch(userActions.addAlarm(leaveNoti[0]));
     });
     socket.on("added_new_participant", addedNewParticiparntNoti => {
       dispatch(userActions.addAlarm(addedNewParticiparntNoti[0]));
     });
+
     return () => {
       socket.off("send message alarm");
       socket.off("leaved chatroom");

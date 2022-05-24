@@ -1,10 +1,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Select } from "../elements";
+import { Select } from "../../elements";
 import "moment/locale/ko";
 
-import { actionCreator as postActions } from "../redux/modules/post";
-import { secondaryColor } from "../shared/color";
+import { actionCreator as postActions } from "../../redux/modules/post";
+import { secondaryColor } from "../../shared/color";
 
 const Dropdown = () => {
   const dispatch = useDispatch();

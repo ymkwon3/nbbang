@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex } from "../elements";
+import { Flex } from "../../elements";
 
 const Info = () => {
   return (

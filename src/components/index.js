@@ -1,6 +1,6 @@
-import PostWrite from "./PostWrite";
-import PostDetail from "./PostDetail";
-import SideNav from "./SideNav";
-import Header from "./Header"
+import PostWrite from "./side/PostWrite";
+import PostDetail from "./side/PostDetail";
+import SideNav from "./side/SideNav";
+import Header from "./navbar/Header"
 
 export {PostWrite, PostDetail, SideNav, Header};

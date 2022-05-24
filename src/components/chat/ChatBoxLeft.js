@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { useSelector } from "react-redux";
-import { Flex, Text } from "../elements";
-import { menu, send } from "../image";
+import { Flex, Text } from "../../elements";
+import { menu, send } from "../../image";
 import LottieAni from "./LottieAni";
 import MessageBox from "./MessageBox";
 
@@ -138,7 +138,7 @@ const ChatBoxLeft = forwardRef(
             <input
               type="text"
               style={{
-                height: "100%",
+                height: "90%",
                 width: "85%",
                 outline: "none",
                 border: "none",

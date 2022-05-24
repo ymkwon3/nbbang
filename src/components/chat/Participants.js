@@ -1,4 +1,4 @@
-import { Flex, Image, Text } from "../elements";
+import { Flex, Image, Text } from "../../elements";
 
 const Participants = ({
   participant,

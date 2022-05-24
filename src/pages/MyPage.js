@@ -266,7 +266,6 @@ const PostModal = ({ v }) => {
     fontSize: "16px",
     fontWeight: "400",
   };
-  console.log(v)
   return (
     <Flex
       styles={{

@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import Post from "./Post";
-import { actionCreator as postActions } from "../redux/modules/post";
-import { Button, Flex, Text } from "../elements";
+import { actionCreator as postActions } from "../../redux/modules/post";
+import { Button, Flex, Text } from "../../elements";
 import Pagination from "./Pagination";
 import Dropdown from "./Dropdown";
-import Permit from "../shared/Permit";
-import { Mobile } from "../shared/Responsive";
+import Permit from "../../shared/Permit";
+import { Mobile } from "../../shared/Responsive";
 //style
 import styled from "styled-components";
-import { write } from "../image";
-import { secondaryColor } from "../shared/color";
+import { write } from "../../image";
+import { secondaryColor } from "../../shared/color";
 
 const SideNav = props => {
   const { _onClickWrite, _onClickDetail, _clickPost, postList, category } =
