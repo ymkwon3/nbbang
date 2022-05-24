@@ -252,7 +252,7 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
           height: "auto",
           bottom: "10px",
           borderRadius: "4px",
-          backgroundColor: "#fff",
+          background: "rgba(255, 255, 255, 0.8)",
           display: pressToBottom ? "flex" : "none",
           minHeight: "40px",
           boxShadow: "0 0 2px rgba(0, 0,0, 0.4)",
@@ -272,7 +272,11 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
         >
           {newMessageReceived.chat}
         </Text>
+        <Text styles={{
+          color: "#666"
+        }}>
         {"▽"}
+        </Text>
       </Flex>
     </>
   );

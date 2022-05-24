@@ -212,7 +212,7 @@ const Login = props => {
 
   return (
     <Wrapper className="wrapper">
-      <FormContainer className="form-container" isDesktop={isDesktop}>
+      <FormContainer className="form-container">
         <SlideControl className="slide-controls" state={isLogin}>
           <input
             type="radio"
@@ -325,7 +325,7 @@ const Login = props => {
                 width: "80%",
               }}
             >
-              <Button>비밀번호 찾기</Button>
+              {/* <Button>비밀번호 찾기</Button> */}
             </Flex>
             <Flex
               styles={{
@@ -542,15 +542,11 @@ const FormContainer = styled.div`
     width: 50%;
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
     flex-direction: column;
     padding: 30px 0;
     gap: 10px;
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  }
-
-  .form-inner > .signup {
-    padding: ${props => props.isDesktop === undefined ? "100px 0!important" : "30px 0!important"};
   }
 `;
 
