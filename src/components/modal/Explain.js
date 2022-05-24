@@ -1,5 +1,7 @@
 import React from "react";
 import { Flex } from "../../elements";
+import { Desktop, Mobile } from "../../shared/Responsive";
+import {} from "../../image/explain/web"
 
 const Explain = () => {
   return (
@@ -16,7 +18,8 @@ const Explain = () => {
       }}
       _onClick={e => e.stopPropagation()}
     >
-      explain page
+      <Desktop>explain page11111</Desktop>
+      <Mobile>explain page22222</Mobile>
     </Flex>
   );
 };
