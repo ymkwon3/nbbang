@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { PostWrite, SideNav } from "../components";
 import { Flex, Button } from "../elements";
 import PostDetail from "../components/PostDetail";
-import Info from "../pages/Info"
+import Info from "../pages/Info";
 import { actionCreator as postActions } from "../redux/modules/post";
 import { actionCreator as userActions } from "../redux/modules/user";
 import RadioInput from "../components/RadioInput";
@@ -14,13 +14,14 @@ import RadioInput from "../components/RadioInput";
 import styled from "styled-components";
 import { Desktop } from "../shared/Responsive";
 import { right, left, position, info } from "../image";
-import {askBread} from "../image/bread"
+import { askBread } from "../image/bread";
 import { buyMarker, eatMarker, positionMarker } from "../image/marker";
 import io from "socket.io-client";
 import Modal from "../shared/Modal";
 import Explain from "./Explain";
 
 const socket = io.connect("https://redpingpong.shop");
+// const socket = io.connect("https://redpingpong.link");
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -58,16 +59,16 @@ const Main = () => {
 
   /*해당 지역의 전체 게시물, 현재 선택된 카테고리, 
   게시물 지역 범위, 현재 위치 구분*/
-  const postList = useSelector(state => state.post.postList);
-  const category = useSelector(state => state.post.category);
+  const postList = useSelector((state) => state.post.postList);
+  const category = useSelector((state) => state.post.category);
   const [cityRange, setCityRange] = React.useState(2);
   const [city, setCity] = React.useState(3);
 
   // 로그인된 유저 정보
-  const userInfo = useSelector(state => state.user.userInfo);
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   const cateList = postList.filter(
-    v => v.category === category || category === "all"
+    (v) => v.category === category || category === "all"
   );
 
   // 글쓰기 상세보기 컨테이너 펼치기 및 컴포넌트 변경
@@ -83,7 +84,7 @@ const Main = () => {
   };
 
   // sidenav 전체 접어두기, 펼치기
-  const clickFold = markerClick => {
+  const clickFold = (markerClick) => {
     if (sideNavRef.current.style.maxWidth === "0px" || markerClick) {
       sideNavRef.current.style.maxWidth = "fit-content";
       leftContainerRef.current.style.display = "block";
@@ -114,16 +115,16 @@ const Main = () => {
 
   const clickExp = () => {
     setExp(true);
-  }
+  };
 
   // 소켓으로부터 알림 받는 부분
   React.useEffect(() => {
     socket.emit("socket is connected", userInfo);
-    socket.on("send message alarm", messageNoti => {
+    socket.on("send message alarm", (messageNoti) => {
       dispatch(userActions.addAlarm(messageNoti[0]));
     });
 
-    socket.on("leaved chatroom", leaveNoti => {
+    socket.on("leaved chatroom", (leaveNoti) => {
       dispatch(userActions.addAlarm(leaveNoti[0]));
     });
     socket.on("added_new_participant", addedNewParticiparntNoti => {
@@ -145,7 +146,7 @@ const Main = () => {
     dispatch(postActions.isLoading(true));
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        position => {
+        (position) => {
           // const userLat = position.coords.latitude;
           // const userLng = position.coords.longitude;
           const userLng = 126.89156781562811;
@@ -176,7 +177,7 @@ const Main = () => {
               "대구",
               "제주특별자치도",
             ];
-            locale.find(v => v === addr.region_1depth_name)
+            locale.find((v) => v === addr.region_1depth_name)
               ? setCity(3)
               : setCity(2);
           });
@@ -206,7 +207,7 @@ const Main = () => {
           }
         },
         () => {
-          navigator.permissions.query({ name: "geolocation" }).then(res => {
+          navigator.permissions.query({ name: "geolocation" }).then((res) => {
             if (res.state === "denied") {
               dispatch(userActions.isGranting(false));
               // 코드상으로 어쩔수 없다면 모달창으로 라도 안내해야함 "브라우저 위치권한 허용 후 새로고침 해주세요" 라고
@@ -221,12 +222,12 @@ const Main = () => {
   React.useEffect(() => {
     // DB에서 받아오는 게시글들을 마커로 표시 후 띄워줌
     // 게시물이 바뀔 때마다, 마커들을 초기화 시킨 후 시작
-    markerListRef.current.map(m => {
+    markerListRef.current.map((m) => {
       m.setMap(null);
       return null;
     });
     markerListRef.current = [];
-    cateList.map(v => {
+    cateList.map((v) => {
       // 마커크기 45 x 60
       const markerImage = new kakao.maps.MarkerImage(
         v.category === "eat" ? eatMarker : buyMarker,
@@ -354,26 +355,26 @@ const Main = () => {
         </Desktop>
 
         <Flex
-            styles={{
-              width: "50px",
-              height: "50px",
-              backgroundColor: "#fff",
-              boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.25)",
-              borderRadius: "10px",
-              margin: "0 0 10px",
-            }}
-          >
-            <Button _onClick={clickExp}>
-              <img
-                style={{
-                  width: "35px",
-                  height: "35px",
-                }}
-                alt="askBread"
-                src={askBread}
-              ></img>
-            </Button>
-          </Flex>
+          styles={{
+            width: "50px",
+            height: "50px",
+            backgroundColor: "#fff",
+            boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.25)",
+            borderRadius: "10px",
+            margin: "0 0 10px",
+          }}
+        >
+          <Button _onClick={clickExp}>
+            <img
+              style={{
+                width: "35px",
+                height: "35px",
+              }}
+              alt="askBread"
+              src={askBread}
+            ></img>
+          </Button>
+        </Flex>
 
         {/*현재위치이동버튼*/}
         <Flex
@@ -403,8 +404,16 @@ const Main = () => {
           setCityRange={setCityRange}
         ></RadioInput>
       </ButtonContainer>
-      {infoPage && <Modal close={() => setInfoPage(false)}><Info></Info></Modal>}
-      {exp && <Modal close={() => setExp(false)}><Explain></Explain></Modal>}
+      {infoPage && (
+        <Modal close={() => setInfoPage(false)}>
+          <Info></Info>
+        </Modal>
+      )}
+      {exp && (
+        <Modal close={() => setExp(false)}>
+          <Explain></Explain>
+        </Modal>
+      )}
     </KaKaoMap>
   );
 };

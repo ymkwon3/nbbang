@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  getAPI,
-} from "../../shared/api";
+import { getAPI } from "../../shared/api";
 
 const startChatDB = createAsyncThunk("chat/startChat", async (postid) => {
   return getAPI(`/main/getchat/${postid}`).then((res) => {
@@ -17,29 +15,6 @@ const initialState = {
   headList: [],
   isLoading: false,
 };
-
-// const initialUserFrom = {
-//   Post_postId: "",
-//   Room_roomId: "",
-//   User_userEmail: "",
-//   User_userId: "",
-//   User_userName: "",
-//   chat: "",
-//   chatId: "",
-//   createdAt: "",
-//   userImage: "",
-// };
-
-// const initialMessageForm = {
-//   postId: "",
-//   roomId: "",
-//   messageId: "",
-//   sender: {
-//     ...initialUserFrom,
-//   },
-//   content: "",
-//   createdAt: "",
-// };
 
 // actions, action creators, reducers
 const chatSlice = createSlice({
