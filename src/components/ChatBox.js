@@ -39,12 +39,12 @@ const ChatBox = React.forwardRef(
     const chatroomUserListRef = React.useRef(null);
     let postid = `p${detailInfo.postId}`;
 
-    const selectedChat = useSelector(state => state.chat);
+    const selectedChat = useSelector((state) => state.chat);
     const chatRoomUsers = selectedChat.userInfo;
     const selectedRoomMessages = selectedChat.chatInfo;
     const participantList = selectedChat.headList;
-    const awaiterList = chatRoomUsers.filter(user => user.isPick === 0);
-    const loggedUser = useSelector(state => state.user.userInfo);
+    const awaiterList = chatRoomUsers.filter((user) => user.isPick === 0);
+    const loggedUser = useSelector((state) => state.user.userInfo);
 
     // const [newMessage, setNewMessage] = React.useState("");
     const newMessageRef = React.useRef("");
@@ -63,7 +63,7 @@ const ChatBox = React.forwardRef(
       );
     };
 
-    const sendNewMessage = e => {
+    const sendNewMessage = (e) => {
       if (!newMessageRef.current.value.trim()) {
         return;
       }
@@ -87,7 +87,7 @@ const ChatBox = React.forwardRef(
           newMessage: newChat,
         });
 
-        setNewlyAddedMessages(messageList => [...messageList, newChat]);
+        setNewlyAddedMessages((messageList) => [...messageList, newChat]);
         newMessageRef.current.value = "";
         setNewMessageReceived(newChat);
       }
@@ -104,7 +104,7 @@ const ChatBox = React.forwardRef(
           status: "messageAlarm",
           chat: enteredUser,
         };
-        setNewlyAddedMessages(messageList => [...messageList, newChat]);
+        setNewlyAddedMessages((messageList) => [...messageList, newChat]);
 
         // 새로 업데이트된 채팅유저 목록있고, 채팅목록에 새로 추가된 유저가 방장이 아닐 때
         if (updatedChatroomUserList) {
@@ -170,9 +170,9 @@ const ChatBox = React.forwardRef(
 
     //receive message
     React.useEffect(() => {
-      socket.on("receive message", newMessageReceived => {
+      socket.on("receive message", (newMessageReceived) => {
         setNewMessageReceived(newMessageReceived);
-        setNewlyAddedMessages(messageList => [
+        setNewlyAddedMessages((messageList) => [
           ...messageList,
           newMessageReceived,
         ]);
@@ -201,7 +201,7 @@ const ChatBox = React.forwardRef(
       };
     }, []);
 
-    const typingHandler = e => {
+    const typingHandler = (e) => {
       // Typing Indicator Logic
       if (!socketConnected) return;
 
@@ -253,7 +253,7 @@ const ChatBox = React.forwardRef(
             <ChatBoxLeft
               messages={[...selectedRoomMessages, ...newlyAddedMessages]}
               typingHandler={typingHandler}
-              ref={e => (newMessageRef.current = e)}
+              ref={(e) => (newMessageRef.current = e)}
               sendNewMessage={sendNewMessage}
               loggedUser={loggedUser}
               isTyping={isTyping}
@@ -304,7 +304,7 @@ export const ChatBoxLeft = forwardRef(
     },
     ref
   ) => {
-    const isChatLoading = useSelector(state => state.chat.isLoading);
+    const isChatLoading = useSelector((state) => state.chat.isLoading);
     return (
       <>
         {/* 왼쪽 */}
@@ -396,29 +396,6 @@ export const ChatBoxLeft = forwardRef(
                   loggedUser={loggedUser}
                   newMessageReceived={newMessageReceived}
                 />
-                {/* <Flex
-                styles={{
-                  position: "sticky",
-                  height: "auto",
-                  bottom: "0",
-                  borderRadius: "4px",
-                  backgroundColor: "#fff",
-                }}
-              >
-                <button
-                  className="hover-event-to-blurr"
-                  style={{
-                    width: "100%",
-                    outline: "none",
-                    border: "none",
-                    fontSize: "14px",
-                    textAlign: "center",
-                    backgroundColor: "#fff",
-                  }}
-                >
-                  {newMessageReceived.chat}
-                </button>
-              </Flex> */}
               </>
             )}
           </Flex>
@@ -487,31 +464,31 @@ export const ChatBoxRight = forwardRef(
     },
     ref
   ) => {
-    const selectedChat = useSelector(state => state.chat);
+    const selectedChat = useSelector((state) => state.chat);
     const chatAdminId = selectedChat.chatAdmin;
 
-    const addNewParticipant = selectedUser => {
+    const addNewParticipant = (selectedUser) => {
       socket.emit("add_new_participant", { postid, selectedUser });
 
-      setParticipants(existingParticipantList => {
+      setParticipants((existingParticipantList) => {
         return existingParticipantList
           ? [selectedUser, ...existingParticipantList]
           : [selectedUser, ...participantList];
       });
       let updatedAwaiterList = awaiters.filter(
-        awaiter => awaiter.User_userId !== selectedUser.User_userId
+        (awaiter) => awaiter.User_userId !== selectedUser.User_userId
       );
       setAwaiters(updatedAwaiterList);
     };
 
-    const deleteParticipant = selectedUser => {
+    const deleteParticipant = (selectedUser) => {
       socket.emit("cancel_new_participant", { postid, selectedUser });
 
       let updatedParticipantList = participants.filter(
-        participant => participant.User_userId !== selectedUser.User_userId
+        (participant) => participant.User_userId !== selectedUser.User_userId
       );
       setParticipants(updatedParticipantList);
-      setAwaiters(existingAwaiterList => {
+      setAwaiters((existingAwaiterList) => {
         return existingAwaiterList
           ? [selectedUser, ...existingAwaiterList]
           : [selectedUser, ...awaiterList];
@@ -644,7 +621,7 @@ export const ChatBoxRight = forwardRef(
             <img
               alt="exit"
               src={exit}
-              style={{ marginRight: "8px"}}
+              style={{ marginRight: "8px" }}
               onClick={selfLeavChatroom}
               className="hover-event"
             ></img>
