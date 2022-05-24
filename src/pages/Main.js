@@ -20,8 +20,8 @@ import io from "socket.io-client";
 import Modal from "../shared/Modal";
 import Explain from "./Explain";
 
-// const socket = io.connect("https://redpingpong.shop");
-const socket = io.connect("https://redpingpong.link");
+const socket = io.connect("https://redpingpong.shop");
+// const socket = io.connect("https://redpingpong.link");
 
 const Main = () => {
   const dispatch = useDispatch();

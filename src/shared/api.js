@@ -5,8 +5,8 @@ import { getToken, setToken } from "./localStorage";
 const headers = () => {
   return { authorization: `Bearer ${getToken()}` };
 };
-// axios.defaults.baseURL = "https://redpingpong.shop";
-axios.defaults.baseURL = "https://redpingpong.link";
+axios.defaults.baseURL = "https://redpingpong.shop";
+// axios.defaults.baseURL = "https://redpingpong.link";
 // https://redpingpong.shop/
 // http://3.34.129.39
 
