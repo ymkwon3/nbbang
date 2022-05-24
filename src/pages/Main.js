@@ -127,7 +127,6 @@ const Main = () => {
       dispatch(userActions.addAlarm(leaveNoti[0]));
     });
     socket.on("added_new_participant", addedNewParticiparntNoti => {
-      console.log(addedNewParticiparntNoti);
       dispatch(userActions.addAlarm(addedNewParticiparntNoti[0]));
     });
     return () => {

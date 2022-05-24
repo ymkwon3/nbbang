@@ -60,6 +60,7 @@ const PostDetail = ({
 
   const openChatModal = () => {
     dispatch(chatActions.isLoading(true));
+    console.log(socket)
     socket.emit("startchat", {
       postid: `p${detailInfo.postId}`,
       loggedUser: userInfo,
