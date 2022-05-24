@@ -120,12 +120,10 @@ const Main = () => {
   React.useEffect(() => {
     socket.emit("socket is connected", userInfo);
     socket.on("send message alarm", messageNoti => {
-      console.log(messageNoti);
       dispatch(userActions.addAlarm(messageNoti[0]));
     });
 
     socket.on("leaved chatroom", leaveNoti => {
-      console.log(leaveNoti);
       dispatch(userActions.addAlarm(leaveNoti[0]));
     });
     socket.on("added_new_participant", addedNewParticiparntNoti => {

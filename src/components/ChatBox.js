@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 
-import { Button, Flex, Grid, Image, Input, Text } from "../elements";
+import { Flex, Image, Text } from "../elements";
 
 import styled from "styled-components";
 
@@ -447,7 +447,7 @@ export const ChatBoxLeft = forwardRef(
             <input
               type="text"
               style={{
-                height: "100%",
+                height: "90%",
                 width: "85%",
                 outline: "none",
                 border: "none",

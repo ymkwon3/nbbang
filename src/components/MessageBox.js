@@ -32,7 +32,6 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
       newMessageReceived.User_userId !== loggedUser.userId
     ) {
       // 다른 사람이 메시지를 보냈을 경우
-      console.log(11);
       setPressToBottom(true);
     } else {
       // 내가 메시지를 보냈을 경우
