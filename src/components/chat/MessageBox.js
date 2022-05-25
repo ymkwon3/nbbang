@@ -152,7 +152,7 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
                         flexDirection: "column",
                         alignItems: "flex-end",
                         backgroundColor: "#FFEF82",
-                        borderRadius: '10px',
+                        borderRadius: "10px",
                       }}
                     >
                       <Text
@@ -272,11 +272,21 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
         >
           {newMessageReceived.chat}
         </Text>
-        <Text styles={{
+        {/* <Text styles={{
           color: "#666"
         }}>
         {"▽"}
-        </Text>
+        </Text> */}
+        <div
+          style={{
+            transform: "rotate(-90deg)",
+            width: "auto",
+            height: "auto",
+            display: "inline-block",
+          }}
+        >
+          &#9001;
+        </div>
       </Flex>
     </>
   );

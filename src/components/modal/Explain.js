@@ -13,16 +13,34 @@ import {
   parti3,
   parti4,
 } from "../../image/explain/web";
+import {
+  mstart,
+  mend,
+  mhost1,
+  mhost2,
+  mhost3,
+  mhost4,
+  mparti1,
+  mparti2,
+  mparti3,
+  mparti4,
+} from "../../image/explain/mobile";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { secondaryColor } from "../../shared/color";
 
-const Explain = props => {
+const Explain = (props) => {
   const { close } = props;
   const [isHost, setIsHost] = React.useState(true);
   const hostList = [host1, host2, host3, host4];
   const partiList = [parti1, parti2, parti3, parti4];
+
+  // for mobile use
+  const mhostList = [mhost1, mhost2, mhost3, mhost4];
+  const mpartiList = [mparti1, mparti2, mparti3, mparti4];
+  const isDesktop = Desktop(0);
+
   // slider options
   const settings = {
     dots: true,
@@ -30,9 +48,9 @@ const Explain = props => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
-    appendDots: dots => (
+    nextArrow: <NextArrow isDesktop={isDesktop} />,
+    prevArrow: <PrevArrow isDesktop={isDesktop} />,
+    appendDots: (dots) => (
       <div
         style={{
           display: "absolute",
@@ -46,6 +64,7 @@ const Explain = props => {
     ),
   };
 
+  // for web use
   const checkedBtn = {
     width: "250px",
     height: "90px",
@@ -55,8 +74,9 @@ const Explain = props => {
     backgroundColor: secondaryColor,
     color: "#fff",
     filter: "drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25))",
-  }
+  };
 
+  // for web use
   const btn = {
     width: "250px",
     height: "90px",
@@ -66,20 +86,48 @@ const Explain = props => {
     backgroundColor: "#fff",
     color: "#000",
     filter: "drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25))",
-  }
+  };
+
+  // for mobile use
+  const mcheckedBtn = {
+    width: "calc(100%*152/400)",
+    maxWidth: "152px",
+    height: "54px",
+    fontSize: "20px",
+    fontWeight: "800",
+    borderRadius: "10px",
+    backgroundColor: secondaryColor,
+    color: "#fff",
+    filter: "drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25))",
+  };
+
+  // for mobile use
+  const mbtn = {
+    width: "calc(100%*152/400)",
+    maxWidth: "152px",
+    height: "54px",
+    fontSize: "20px",
+    fontWeight: "800",
+    borderRadius: "10px",
+    backgroundColor: "#fff",
+    color: "#000",
+    filter: "drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25))",
+  };
+
   return (
     <Flex
       styles={{
         flexDirection: "column",
         position: "relative",
         width: "80vw",
-        height: "80vh",
-        maxWidth: "900px",
-        maxHeight: "600px",
-        backgroundColor: "rgba(255, 255, 255, 1)",
+        height: isDesktop === undefined ? "80vh" : "auto",
+        aspectRatio: isDesktop === undefined ? "auto" : "400 / 550",
+        maxWidth: isDesktop === undefined ? "900px" : "400px",
+        maxHeight: isDesktop === undefined ? "600px" : "550px",
+        backgroundColor: "transparent",
         borderRadius: "20px",
       }}
-      _onClick={e => e.stopPropagation()}
+      _onClick={(e) => e.stopPropagation()}
     >
       <Desktop>
         <Slider
@@ -96,8 +144,18 @@ const Explain = props => {
               style={{ width: "100%", height: "100%" }}
             ></img>
             <Flex styles={{ position: "absolute", bottom: "15%", gap: "35px" }}>
-              <Button styles={isHost ? checkedBtn : btn} _onClick={() => setIsHost(true)}>방장</Button>
-              <Button styles={!isHost ? checkedBtn : btn} _onClick={() => setIsHost(false)}>참가자</Button>
+              <Button
+                styles={isHost ? checkedBtn : btn}
+                _onClick={() => setIsHost(true)}
+              >
+                방장
+              </Button>
+              <Button
+                styles={!isHost ? checkedBtn : btn}
+                _onClick={() => setIsHost(false)}
+              >
+                참가자
+              </Button>
             </Flex>
           </Flex>
           {isHost
@@ -124,42 +182,128 @@ const Explain = props => {
               style={{ width: "100%", height: "100%" }}
             ></img>
             <Flex styles={{ position: "absolute", bottom: "15%" }}>
-              <Button styles={btn} _onClick={close}>좋아!</Button>
+              <Button styles={btn} _onClick={close}>
+                좋아!
+              </Button>
             </Flex>
           </Flex>
         </Slider>
       </Desktop>
-      <Mobile>explain page22222</Mobile>
+      <Mobile>
+        <Slider
+          {...settings}
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <Flex
+            styles={{
+              position: "relative",
+              width: "100%",
+              height: "100%",
+              overflow: "hidden",
+            }}
+          >
+            <img
+              src={mstart}
+              alt="mstart"
+              style={{
+                width: "100%",
+                height: "100%",
+              }}
+            />
+            <Flex
+              styles={{
+                position: "absolute",
+                bottom: "15%",
+                gap: "calc(100%*21/400)",
+              }}
+            >
+              <Button
+                styles={isHost ? mcheckedBtn : mbtn}
+                _onClick={() => setIsHost(true)}
+              >
+                방장
+              </Button>
+              <Button
+                styles={!isHost ? mcheckedBtn : mbtn}
+                _onClick={() => setIsHost(false)}
+              >
+                참가자
+              </Button>
+            </Flex>
+          </Flex>
+          {isHost
+            ? mhostList.map((v, i) => (
+                <img
+                  key={`mhost${i}`}
+                  alt={`mhost${i}`}
+                  src={v}
+                  style={{ width: "100%", height: "100%" }}
+                ></img>
+              ))
+            : mpartiList.map((v, i) => (
+                <img
+                  key={`mparti${i}`}
+                  alt={`mparti${i}`}
+                  src={v}
+                  style={{ width: "100%", height: "100%" }}
+                ></img>
+              ))}
+          <Flex
+            styles={{
+              position: "relative",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <img
+              src={mend}
+              alt="mend"
+              style={{
+                width: "100%",
+                height: "100%",
+              }}
+            />
+            <Flex styles={{ position: "absolute", bottom: "15%" }}>
+              <Button styles={mbtn} _onClick={close}>
+                좋아!
+              </Button>
+            </Flex>
+          </Flex>
+        </Slider>
+      </Mobile>
     </Flex>
   );
 };
 
-const NextArrow = props => {
-  const { className, style, onClick } = props;
+const NextArrow = (props) => {
+  const { className, style, onClick, isDesktop } = props;
   return (
     <div
       className={className}
       style={{
         ...style,
         display: "block",
-        transform: "scale(5.0)",
-        right: "-80px",
+        transform: isDesktop === undefined ? "scale(5.0)" : "scale(2.0)",
+        right: isDesktop === undefined ? "-80px" : "-30px",
       }}
       onClick={onClick}
     />
   );
 };
 
-const PrevArrow = props => {
-  const { className, style, onClick } = props;
+const PrevArrow = (props) => {
+  const { className, style, onClick, isDesktop } = props;
   return (
     <div
       className={className}
       style={{
         ...style,
         display: "block",
-        transform: "scale(5.0)",
-        left: "-80px",
+        transform: isDesktop === undefined ? "scale(5.0)" : "scale(2.0)",
+        left: isDesktop === undefined ? "-80px" : "-30px",
       }}
       onClick={onClick}
     />
