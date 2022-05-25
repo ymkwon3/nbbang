@@ -293,5 +293,6 @@ const Bubble = styled.div`
   padding: 6px 13px;
   text-align: center;
   color: #000;
+  word-break: break-all;
 `;
 export default MessageBox;
