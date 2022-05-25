@@ -119,7 +119,7 @@ const Info = () => {
               서비스 이름 : <span style={{ fontWeight: "200" }}>N빵</span>
             </Text>
             <Text styles={{ fontSize: "16px", fontWeight: "400" }}>
-              서비스 버전 : <span style={{ fontWeight: "200" }}>v1.0.0</span>
+              서비스 버전 : <span style={{ fontWeight: "200" }}>v1.0.1</span>
             </Text>
             <Text styles={{ fontSize: "16px", fontWeight: "400" }}>
               오류신고 및 문의 :{" "}
