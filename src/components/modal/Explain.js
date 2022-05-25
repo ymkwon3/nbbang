@@ -286,8 +286,8 @@ const NextArrow = (props) => {
       style={{
         ...style,
         display: "block",
-        transform: isDesktop === undefined ? "scale(5.0)" : "scale(2.0)",
-        right: isDesktop === undefined ? "-80px" : "-30px",
+        transform: isDesktop === undefined ? "scale(3.0)" : "scale(2.0)",
+        right: isDesktop === undefined ? "-50px" : "-30px",
       }}
       onClick={onClick}
     />
@@ -302,8 +302,8 @@ const PrevArrow = (props) => {
       style={{
         ...style,
         display: "block",
-        transform: isDesktop === undefined ? "scale(5.0)" : "scale(2.0)",
-        left: isDesktop === undefined ? "-80px" : "-30px",
+        transform: isDesktop === undefined ? "scale(3.0)" : "scale(2.0)",
+        left: isDesktop === undefined ? "-50px" : "-30px",
       }}
       onClick={onClick}
     />

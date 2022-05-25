@@ -66,6 +66,7 @@ const Info = () => {
               border: "none",
               backgroundColor: "transparent"
             }}
+            className="hover-event"
             onClick={() => window.open("https://forms.gle/jD5mWW3gQaRLDUvR6", "_blank")}
           ></button>
         </Flex>
