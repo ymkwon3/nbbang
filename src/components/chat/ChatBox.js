@@ -69,7 +69,7 @@ const ChatBox = React.forwardRef(
         newMessageRef.current.maxLength
       ) {
         newMessageRef.current.value = newMessageRef.current.value.slice(0, 100);
-        notify("warning", "입력 최대 글자 100자를 넘었습니다.", true);
+        // notify("warning", "입력 최대 글자 100자를 넘었습니다.", true);
         return;
       }
       if (
