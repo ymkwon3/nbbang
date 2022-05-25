@@ -316,7 +316,7 @@ const PostModal = ({ v }) => {
               boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
             }}
           >
-            {v.headList.length + 1}/{v.headCount}
+            {v.headList.length}/{v.headCount}
           </Flex>
         </Flex>
         <Flex styles={{ justifyContent: "start" }}>
