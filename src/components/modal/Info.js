@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import eventpage1 from "../../image/eventpage/eventpage1.jpg";
+import { logoGray } from "../../image";
 import { secondaryColor } from "../../shared/color";
 const Info = () => {
   const settings = {
@@ -83,14 +84,14 @@ const Info = () => {
             textOverflow: "ellipsis",
           }}
         >
-          {/* <img
+          <img
             alt="logo"
-            src={logo}
+            src={logoGray}
             style={{
               width: "40px",
               height: "40px",
             }}
-          ></img> */}
+          ></img>
           <Text
             styles={{
               color: secondaryColor,

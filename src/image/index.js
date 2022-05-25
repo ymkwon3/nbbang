@@ -6,6 +6,7 @@ import notification from "./notification.svg";
 import left from "./left.svg";
 import right from "./right.svg";
 import logo from "./logo.svg";
+import logoGray from "./logoGray.svg";
 import position from "./position.svg";
 import search from "./search.svg";
 import write from "./write.svg";
@@ -51,6 +52,7 @@ export {
   left,
   right,
   logo,
+  logoGray,
   position,
   search,
   write,
