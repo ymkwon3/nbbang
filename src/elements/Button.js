@@ -1,7 +1,7 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import styled from "styled-components";
 
-const Button = props => {
+const Button = forwardRef((props, ref) => {
   /*
     스타일 사용 가능한 요소들
     width, height, margin, padding, border, borderRadius, position
@@ -17,12 +17,13 @@ const Button = props => {
       style={{ ...styles }}
       onClick={_onClick}
       disabled={_disabled}
+      ref={ref}
       {...defaultStyles}
     >
       {children}
     </ButtonStyle>
   );
-};
+});
 
 Button.defaultProps = {
   defaultStyles: {

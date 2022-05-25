@@ -20,6 +20,10 @@ const PostWrite = props => {
   const dispatch = useDispatch();
   const [preview, setPreview] = React.useState(addImage);
   const [image, setImage] = React.useState(null);
+
+  // 유저피드백: 게시물 중복 등록을 방지하기 위한
+  const btnRef = React.useRef(null);
+
   const submitRef = React.useRef({
     titleRef: null,
     categoryRef: null,
@@ -73,28 +77,63 @@ const PostWrite = props => {
 
   // 전송하기 버튼 이벤트
   const clickSubmit = () => {
+    btnRef.current.disabled = true;
+    // 제목 길이 제한 20자
+    if (submitRef.current.titleRef.value.length > 20) {
+      notify("warning", "제목은 20자 이내로 입력해주세요", autoClose);
+      btnRef.current.disabled = false;
+      return;
+    }
     // 가격, 인원 숫자형식 확인
     if (
       isNaN(submitRef.current.priceRef.value) ||
       isNaN(submitRef.current.headCountRef.value)
     ) {
       notify("warning", "가격, 인원은 숫자만 입력해주세요", autoClose);
+      btnRef.current.disabled = false;
+      return;
+    }
+    // 가격 제한 1천만원
+    if (submitRef.current.priceRef.value > 10000000) {
+      notify("warning", "가격은 천만원 미만으로 설정해주세요", autoClose);
+      btnRef.current.disabled = false;
       return;
     }
     // 인원 2명이상 확인
     if (parseInt(submitRef.current.headCountRef.value) < 2) {
       notify("warning", "인원은 2명 이상 설정해주세요", autoClose);
+      btnRef.current.disabled = false;
+      return;
+    }
+    // 인원 99명초과 방지
+    if (parseInt(submitRef.current.headCountRef.value) > 99) {
+      notify("warning", "인원은 99명을 넘을 수 없습니다", autoClose);
+      btnRef.current.disabled = false;
+      return;
+    }
+    // 상세주소 제한 30자
+    if (submitRef.current.addressDetailRef.value.length > 30) {
+      notify("warning", "상세위치는 30자 이내로 입력해주세요", autoClose);
+      btnRef.current.disabled = false;
+      return;
+    }
+    // 내용 제한 100자
+    if (submitRef.current.contentRef.value.length > 100) {
+      notify("warning", "내용은 100자 이내로 입력해주세요", autoClose);
+      btnRef.current.disabled = false;
       return;
     }
     // 입력칸 빈칸확인
     for (let ref in submitRef.current) {
       if (submitRef.current[ref].value === "") {
         notify("warning", "빈 칸을 확인해주세요", autoClose);
+        btnRef.current.disabled = false;
         return;
       }
     }
     if (!image) {
       notify("warning", "사진을 추가해주세요", autoClose);
+      btnRef.current.disabled = false;
       return;
     }
 
@@ -228,7 +267,7 @@ const PostWrite = props => {
       >
         <Input
           label="제목"
-          placehorder="제목을 입력해주세요"
+          placehorder="20자 이내로 입력해주세요"
           ref={e => (submitRef.current.titleRef = e)}
           styles={{ height: "60px" }}
         />
@@ -258,7 +297,7 @@ const PostWrite = props => {
         <Input
           label="가격"
           type="number"
-          placehorder="ex) 5000"
+          placehorder="ex) 50000"
           ref={e => (submitRef.current.priceRef = e)}
           styles={{ width: "calc(50% - 28px)", height: "60px" }}
         />
@@ -393,6 +432,7 @@ const PostWrite = props => {
           marginTop: "20px",
         }}
         _onClick={clickSubmit}
+        ref={btnRef}
       >
         등록하기
       </Button>
