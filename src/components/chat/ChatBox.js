@@ -60,9 +60,6 @@ const ChatBox = React.forwardRef(
     };
 
     const sendNewMessage = (e) => {
-      console.log(newMessageRef.current.value.trim());
-      console.log(newMessageRef.current.value.trim().length);
-      console.log(newMessageRef.current.maxLength);
       // 입력값이 없으면
       if (!newMessageRef.current.value.trim()) {
         return;
