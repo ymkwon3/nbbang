@@ -43,7 +43,7 @@ const ChatBoxLeft = forwardRef(
               margin: "5px 0 22px 0",
             }}
           >
-            <Flex styles={{ width: "auto" }}>
+            <Flex styles={{ width: "85%" }}>
               <img
                 alt="menu"
                 src={menu}
@@ -51,13 +51,17 @@ const ChatBoxLeft = forwardRef(
                 className="hover-event"
                 onClick={OpenChatRoomUserList}
               ></img>
-
               <Text
                 styles={{
                   fontWeight: "700",
                   fontSize: "18px",
                   lineHeight: "22px",
                   color: "#000000",
+                  display: "block",
+                  width: "100%",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
                 }}
               >
                 {title}
@@ -146,6 +150,7 @@ const ChatBoxLeft = forwardRef(
                 backgroundColor: "#DFD3CA",
                 fontSize: "16px",
               }}
+              maxLength="100"
               ref={ref}
               onChange={typingHandler}
               onKeyUp={sendNewMessage}

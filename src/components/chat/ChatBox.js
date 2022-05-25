@@ -19,6 +19,7 @@ import {
 import ChatBoxLeft from "./ChatBoxLeft";
 import ChatBoxRight from "./ChatBoxRight";
 import { Flex } from "../../elements";
+import { notify } from "../ToastMessage";
 
 const ChatBox = React.forwardRef(
   (
@@ -59,7 +60,19 @@ const ChatBox = React.forwardRef(
     };
 
     const sendNewMessage = (e) => {
+      console.log(newMessageRef.current.value.trim());
+      console.log(newMessageRef.current.value.trim().length);
+      console.log(newMessageRef.current.maxLength);
+      // 입력값이 없으면
       if (!newMessageRef.current.value.trim()) {
+        return;
+      }
+      if (
+        newMessageRef.current.value.trim().length >
+        newMessageRef.current.maxLength
+      ) {
+        newMessageRef.current.value = newMessageRef.current.value.slice(0, 100);
+        notify("warning", "입력 최대 글자 100자를 넘었습니다.", true);
         return;
       }
       if (
@@ -72,7 +85,7 @@ const ChatBox = React.forwardRef(
           User_userEmail: loggedUser.userEmail,
           User_userName: loggedUser.userName,
           userImage: loggedUser.userImage,
-          chat: newMessageRef.current.value,
+          chat: newMessageRef.current.value.trim(),
           createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
         };
 
