@@ -21,16 +21,8 @@ import {
 } from "../../image";
 
 const Post = props => {
-  const {
-    image,
-    title,
-    category,
-    price,
-    endTime,
-    address,
-    postId,
-    isLike,
-  } = props;
+  const { image, title, category, price, endTime, address, postId, isLike } =
+    props;
   const dispatch = useDispatch();
   //span tag에 text-overflow를 주기 위함
   const contentStyle = {
@@ -93,8 +85,9 @@ const Post = props => {
           flex: "1",
         }}
       >
-        <Flex styles={{ justifyContent: "space-between", 
-              marginBottom: "10px", }}>
+        <Flex
+          styles={{ justifyContent: "space-between", marginBottom: "10px" }}
+        >
           <Text
             className={"line-break"}
             styles={{
@@ -113,18 +106,19 @@ const Post = props => {
               height: "25px",
               flexDirection: "column",
               justifyContent: "start",
-              gap: "5px"
+              gap: "5px",
             }}
           >
             <Permit>
-              {isLike ? (
+              {isLike === 1 && (
                 <img
                   alt="filledHeart"
                   src={filledHeart}
                   className="hover-event"
                   onClick={clickLike}
                 ></img>
-              ) : (
+              )}
+              {isLike === 0 && (
                 <img
                   alt="filledHeart"
                   src={emptyHeart}
@@ -149,23 +143,29 @@ const Post = props => {
           </Flex>
         </Flex>
 
-        <Flex styles={{
-          marginBottom: "15px",
-        }}>
+        <Flex
+          styles={{
+            marginBottom: "15px",
+          }}
+        >
           <img alt="price" src={priceGray} style={{ marginRight: "5px" }}></img>
           <Text styles={contentStyle}>
             {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
           </Text>
         </Flex>
-        <Flex styles={{
-          marginBottom: "15px",
-        }}>
+        <Flex
+          styles={{
+            marginBottom: "15px",
+          }}
+        >
           <img
             alt="calendar"
             src={calendarGray}
             style={{ marginRight: "5px" }}
           ></img>
-          <Text styles={contentStyle}>{moment(endTime).format("MM-DD")} 까지</Text>
+          <Text styles={contentStyle}>
+            {moment(endTime).format("MM-DD")} 까지
+          </Text>
         </Flex>
 
         <StyledClamp>
@@ -190,7 +190,6 @@ const StyledClamp = styled.div`
   -webkit-line-clamp: 2;
   overflow: hidden;
   font-size: 13px;
- 
 `;
 
 export default Post;

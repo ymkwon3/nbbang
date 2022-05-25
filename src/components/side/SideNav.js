@@ -11,7 +11,10 @@ import { Mobile } from "../../shared/Responsive";
 //style
 import styled from "styled-components";
 import { write } from "../../image";
+import eventpage1 from "../../image/eventpage/eventpage1.jpg"
 import { secondaryColor } from "../../shared/color";
+import Modal from "../../shared/Modal";
+import Info from "../modal/Info";
 
 const SideNav = props => {
   const { _onClickWrite, _onClickDetail, _clickPost, postList, category } =
@@ -38,6 +41,19 @@ const SideNav = props => {
     _clickPost(lat, lng);
     _onClickDetail("detail", postId);
   };
+
+  // 이벤트 배너 관련
+  const [infoPage, setInfoPage] = React.useState(false);
+  const eventBanner = {
+    image: eventpage1,
+    title: "이벤트 참여하세요",
+    category: "eat",
+    price: "0",
+    endTime: "2022-06-01",
+    address: "치킨, 커피 기프티콘 증정!",
+    postId: "event1",
+    isLike: 2,
+  }
 
   return (
     <Flex
@@ -200,6 +216,10 @@ const SideNav = props => {
           justifyContent: "start",
         }}
       >
+        {/* 이벤트 배너 */}
+        <StyledPost onClick={() => setInfoPage(true)}>
+          <Post {...eventBanner}></Post>
+        </StyledPost>
         {/* pagination 적용 후  */}
         {newPostList.length !== 0 ? (
           newPostList.slice(offset, offset + limit).map((v, i) => (
@@ -225,6 +245,11 @@ const SideNav = props => {
             setPage={setPage}
           />
         </Flex>
+      )}
+      {infoPage && (
+        <Modal close={() => setInfoPage(false)}>
+          <Info></Info>
+        </Modal>
       )}
     </Flex>
   );

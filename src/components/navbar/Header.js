@@ -201,6 +201,7 @@ const Header = () => {
                             flex: 1,
                             fontSize: "8px",
                             color: "#716969",
+                            whiteSpace: "nowrap"
                           }}>{moment(noti.createdAt).fromNow()}</Text>
                         </NotiBtn>
                       );
