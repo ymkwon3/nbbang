@@ -80,7 +80,7 @@ const PostWrite = props => {
     btnRef.current.disabled = true;
     // 제목 길이 제한 20자
     if (submitRef.current.titleRef.value.length > 20) {
-      notify("warning", "제목은 20자 이내로 입력해주세요", autoClose);
+      notify("warning", "제목은 20자 이하로 입력해주세요", autoClose);
       btnRef.current.disabled = false;
       return;
     }
@@ -113,19 +113,20 @@ const PostWrite = props => {
     }
     // 상세주소 제한 30자
     if (submitRef.current.addressDetailRef.value.length > 30) {
-      notify("warning", "상세위치는 30자 이내로 입력해주세요", autoClose);
+      notify("warning", "상세위치는 30자 이하로 입력해주세요", autoClose);
       btnRef.current.disabled = false;
       return;
     }
     // 내용 제한 100자
     if (submitRef.current.contentRef.value.length > 100) {
-      notify("warning", "내용은 100자 이내로 입력해주세요", autoClose);
+      notify("warning", "내용은 100자 이하로 입력해주세요", autoClose);
       btnRef.current.disabled = false;
       return;
     }
     // 입력칸 빈칸확인
     for (let ref in submitRef.current) {
       if (submitRef.current[ref].value === "") {
+        // 빈 칸 종류 확인이 될까?
         notify("warning", "빈 칸을 확인해주세요", autoClose);
         btnRef.current.disabled = false;
         return;
@@ -184,7 +185,8 @@ const PostWrite = props => {
         justifyContent: "start",
       }}
     >
-      <Flex styles={{ justifyContent: "end" }}>
+      <Flex styles={{ justifyContent: "space-between" }}>
+      <Text styles={{ fontSize: "32px", fontWeight: "800", whiteSpace: "nowrap" }}>모집하기</Text>
         <Text
           styles={{
             fontSize: "32px",
@@ -197,28 +199,10 @@ const PostWrite = props => {
           {"×"}
         </Text>
       </Flex>
-      <Flex styles={{ justifyContent: "space-between", marginBottom: "10px" }}>
-        <Text styles={{ fontSize: "32px", fontWeight: "800" }}>모집하기</Text>
-        <Flex styles={{ width: "auto" }}>
-          <Image
-            shape="circle"
-            src={userInfo?.userImage}
-            styles={{
-              width: "34px",
-              height: "34px",
-              boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-            }}
-          ></Image>
-          <Text
-            styles={{ fontSize: "20px", fontWeight: "700", marginLeft: "12px" }}
-          >
-            {userInfo?.userName}
-          </Text>
-        </Flex>
-      </Flex>
+      
       <Flex
         styles={{
-          color: "#aaa",
+          color: secondaryColor,
           fontSize: "14px",
           userSelect: "none",
           margin: "15px 0",
@@ -226,7 +210,7 @@ const PostWrite = props => {
           justifyContent: "start",
         }}
       >
-        ※모든 항목은 필수입니다
+        ※ 모든 항목은 필수입니다
       </Flex>
       <Flex
         styles={{
@@ -267,7 +251,7 @@ const PostWrite = props => {
       >
         <Input
           label="제목"
-          placehorder="20자 이내로 입력해주세요"
+          placehorder="20자 이하로 입력해주세요"
           ref={e => (submitRef.current.titleRef = e)}
           styles={{ height: "60px" }}
         />
@@ -366,7 +350,7 @@ const PostWrite = props => {
       >
         <Input
           label="상세위치"
-          placehorder="상세위치를 입력해주세요"
+          placehorder="30자 이하로 입력해주세요"
           ref={e => (submitRef.current.addressDetailRef = e)}
           styles={{ height: "60px" }}
         />
@@ -379,7 +363,7 @@ const PostWrite = props => {
         <Input
           type="textarea"
           label="내용"
-          placehorder="내용을 입력해주세요"
+          placehorder="100자 이하로 입력해주세요"
           ref={e => (submitRef.current.contentRef = e)}
           styles={{ height: "90px", margin: "15px 0" }}
         />

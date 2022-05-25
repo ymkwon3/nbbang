@@ -20,8 +20,11 @@ import io from "socket.io-client";
 import Modal from "../shared/Modal";
 import Explain from "../components/modal/Explain";
 
-const socket = io.connect("https://redpingpong.shop");
-// const socket = io.connect("https://redpingpong.link");
+// 배포서버에 들어갈 주소 ※매우중요 안지키면 병걸림
+// const socket = io.connect("https://redpingpong.shop");
+
+// 배포서버에 들어갈 주소 ※매우중요 안지키면 병걸림
+const socket = io.connect("https://lyubov.shop");
 
 const Main = () => {
   const dispatch = useDispatch();

@@ -272,21 +272,11 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
         >
           {newMessageReceived.chat}
         </Text>
-        {/* <Text styles={{
+        <Text styles={{
           color: "#666"
         }}>
         {"▽"}
-        </Text> */}
-        <div
-          style={{
-            transform: "rotate(-90deg)",
-            width: "auto",
-            height: "auto",
-            display: "inline-block",
-          }}
-        >
-          &#9001;
-        </div>
+        </Text>
       </Flex>
     </>
   );
