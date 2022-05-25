@@ -5,7 +5,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import eventpage1 from "../../image/eventpage/eventpage1.jpg";
-import { logo } from "../../image";
 import { secondaryColor } from "../../shared/color";
 const Info = () => {
   const settings = {
