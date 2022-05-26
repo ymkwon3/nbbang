@@ -23,7 +23,7 @@ import Explain from "../components/modal/Explain";
 // 배포서버에 들어갈 주소 ※매우중요 안지키면 병걸림
 // const socket = io.connect("https://redpingpong.shop");
 
-// 배포서버에 들어갈 주소 ※매우중요 안지키면 병걸림
+// 테스트서버에 들어갈 주소 ※매우중요 안지키면 병걸림
 const socket = io.connect("https://lyubov.shop");
 
 const Main = () => {

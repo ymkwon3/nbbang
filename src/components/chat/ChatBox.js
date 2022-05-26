@@ -44,6 +44,7 @@ const ChatBox = React.forwardRef(
     const loggedUser = useSelector((state) => state.user.userInfo);
 
     const newMessageRef = React.useRef("");
+    const [isOpenUserList, setIsOpenUserList] = React.useState(false);
     const [newMessageReceived, setNewMessageReceived] = React.useState([]);
     const [newlyAddedMessages, setNewlyAddedMessages] = React.useState([]);
     const [typing, setTyping] = React.useState(false);
@@ -69,7 +70,6 @@ const ChatBox = React.forwardRef(
         newMessageRef.current.maxLength
       ) {
         newMessageRef.current.value = newMessageRef.current.value.slice(0, 100);
-        // notify("warning", "입력 최대 글자 100자를 넘었습니다.", true);
         return;
       }
       if (
@@ -231,9 +231,13 @@ const ChatBox = React.forwardRef(
     };
 
     const OpenChatRoomUserList = () => {
-      if (chatroomUserListRef.current.style.width === "0px")
+      if (chatroomUserListRef.current.style.width === "0px") {
         chatroomUserListRef.current.style.width = "70%";
-      else chatroomUserListRef.current.style.width = "0px";
+        setIsOpenUserList(true);
+      } else {
+        chatroomUserListRef.current.style.width = "0px";
+        setIsOpenUserList(false);
+      }
     };
 
     return (
@@ -282,6 +286,25 @@ const ChatBox = React.forwardRef(
             />
           </Flex>
         </ChatModal>
+        {isOpenUserList ? (
+          <>
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                // backgroundColor: "white",
+                // opacity: "0.5",
+                zIndex: "21",
+                position: "absolute",
+                top: "0",
+                left: "0",
+              }}
+              onClick={OpenChatRoomUserList}
+            ></div>
+          </>
+        ) : (
+          <></>
+        )}
       </>
     );
   }

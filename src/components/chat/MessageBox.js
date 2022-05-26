@@ -272,10 +272,12 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
         >
           {newMessageReceived.chat}
         </Text>
-        <Text styles={{
-          color: "#666"
-        }}>
-        {"▽"}
+        <Text
+          styles={{
+            color: "#666",
+          }}
+        >
+          {"▽"}
         </Text>
       </Flex>
     </>
