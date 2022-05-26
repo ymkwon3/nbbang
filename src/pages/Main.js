@@ -211,8 +211,9 @@ const Main = () => {
             const userPosition = new kakao.maps.LatLng(userLat, userLng);
             const options = {
               center: userPosition,
-              level: 5,
+              level: 6,
             };
+
             userPositionRef.current = userPosition;
             mapRef.current = new kakao.maps.Map(containerRef.current, options);
 
@@ -426,6 +427,7 @@ const Main = () => {
           city={city}
           setCityRange={setRange}
           ref={cityRange}
+          map={mapRef.current}
         ></RadioInput>
       </ButtonContainer>
       {infoPage && (

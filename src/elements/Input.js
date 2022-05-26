@@ -40,7 +40,7 @@ const Input = forwardRef((props, ref) => {
           ref={ref}
         ></textarea>
       ) : type === "date" ? (
-        <input
+        <InputDate
           ref={ref}
           type={type}
           min={min}
@@ -48,7 +48,7 @@ const Input = forwardRef((props, ref) => {
           style={{
             backgroundColor: "#fff",
           }}
-        ></input>
+        ></InputDate>
       ) : (
         <input
           placeholder={placehorder}
@@ -77,6 +77,12 @@ Input.defaultProps = {
     width: "100%",
   },
 };
+
+const InputDate = styled.input`
+  &[type="date"]::-webkit-calendar-picker-indicator {
+    width: 55%;
+  }
+`;
 
 const InputStyled = styled.div`
   display: flex;

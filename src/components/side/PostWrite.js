@@ -310,7 +310,6 @@ const PostWrite = props => {
           ref={e => (submitRef.current.endTimeRef = e)}
           styles={{
             height: "60px",
-            overflowX: "scroll",
           }}
         />
       </Flex>

@@ -148,7 +148,7 @@ const Post = props => {
             marginBottom: "6px",
           }}
         >
-          <img alt="price" src={priceGray} style={{ marginRight: "5px" }}></img>
+          {/* <img alt="price" src={priceGray} style={{ marginRight: "5px" }}></img> */}
           <Text styles={contentStyle}>
             {type}
           </Text>

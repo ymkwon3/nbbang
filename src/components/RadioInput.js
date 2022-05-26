@@ -4,7 +4,7 @@ import { secondaryColor } from "../shared/color";
 const RadioInput = forwardRef((props, ref) => {
   // city: 사용자의 위치가 2범위인지 3범위인지(일반 시인지, 특별,광역시인지)
   // cityRange: 현재 데이터를 불러오는 범위
-  const { city, setCityRange } = props;
+  const { city, setCityRange, map } = props;
 
   const buttonStyles = {
     width: "40px",
@@ -45,7 +45,7 @@ const RadioInput = forwardRef((props, ref) => {
         <>
           <Button
             styles={ref.current === 1 ? checkedButton : buttonStyles}
-            _onClick={() => checkHandler(1)}
+            _onClick={() => {checkHandler(1); map.setLevel(8)}}
           >
             시
           </Button>
@@ -57,13 +57,13 @@ const RadioInput = forwardRef((props, ref) => {
               },
               ref.current === 2 ? checkedButton : buttonStyles
             )}
-            _onClick={() => checkHandler(2)}
+            _onClick={() => {checkHandler(2);map.setLevel(6);}}
           >
             구
           </Button>
           <Button
             styles={ref.current === 3 ? checkedButton : buttonStyles}
-            _onClick={() => checkHandler(3)}
+            _onClick={() => {checkHandler(3); map.setLevel(4);}}
           >
             동
           </Button>
@@ -72,7 +72,7 @@ const RadioInput = forwardRef((props, ref) => {
         <>
           <Button
             styles={ref.current === 2 ? checkedButton : buttonStyles}
-            _onClick={() => checkHandler(2)}
+            _onClick={() => {checkHandler(2); map.setLevel(6);}}
           >
             시
           </Button>
@@ -83,7 +83,7 @@ const RadioInput = forwardRef((props, ref) => {
               },
               ref.current === 3 ? checkedButton : buttonStyles
             )}
-            _onClick={() => checkHandler(3)}
+            _onClick={() => {checkHandler(3); map.setLevel(4);}}
           >
             동
           </Button>
