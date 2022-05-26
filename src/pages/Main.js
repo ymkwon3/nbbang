@@ -155,8 +155,16 @@ const Main = () => {
         (position) => {
           // const userLat = position.coords.latitude;
           // const userLng = position.coords.longitude;
+
+          // 진주
           const userLng = 128.09542887654473;
           const userLat = 35.17814477781777;
+
+          // 남성멘션
+          // const userLng = 126.89158782940078;
+          // const userLat = 37.51265421586233;
+        
+
           // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
           geocoder.coord2Address(userLng, userLat, (result, status) => {
             // 지번 주소

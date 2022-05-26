@@ -17,6 +17,7 @@ jobs:
           touch .env
           echo REACT_APP_KAKAO_CLIENT_ID=${{ secrets.REACT_APP_KAKAO_CLIENT_ID }} >> .env
           echo REACT_APP_KAKAO_REDIRECT_URI="https://n09.shop/kakao-auth/kakao/callback" >> .env
+          echo REACT_APP_KAKAO_MAP_API=${{secrets.REACT_APP_KAKAO_MAP_API}} >> .env
           cat .env
 
     - name: Install dependencies
