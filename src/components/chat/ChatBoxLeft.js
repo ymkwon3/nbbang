@@ -47,7 +47,11 @@ const ChatBoxLeft = forwardRef(
               <img
                 alt="menu"
                 src={menu}
-                style={{ marginRight: "8px", width: "22px", height: "24px" }}
+                style={{
+                  marginRight: "8px",
+                  width: "22px",
+                  height: "24px",
+                }}
                 className="hover-event"
                 onClick={OpenChatRoomUserList}
               ></img>
