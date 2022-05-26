@@ -285,26 +285,24 @@ const ChatBox = React.forwardRef(
               stateShiftForClosingChatroom={stateShiftForClosingChatroom}
             />
           </Flex>
+          {isOpenUserList ? (
+            <>
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  zIndex: "21",
+                  position: "fixed",
+                  top: "0",
+                  left: "0",
+                }}
+                onClick={OpenChatRoomUserList}
+              ></div>
+            </>
+          ) : (
+            <></>
+          )}
         </ChatModal>
-        {isOpenUserList ? (
-          <>
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                // backgroundColor: "white",
-                // opacity: "0.5",
-                zIndex: "21",
-                position: "absolute",
-                top: "0",
-                left: "0",
-              }}
-              onClick={OpenChatRoomUserList}
-            ></div>
-          </>
-        ) : (
-          <></>
-        )}
       </>
     );
   }

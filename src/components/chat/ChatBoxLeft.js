@@ -51,6 +51,7 @@ const ChatBoxLeft = forwardRef(
                   marginRight: "8px",
                   width: "22px",
                   height: "24px",
+                  zIndex: "22",
                 }}
                 className="hover-event"
                 onClick={OpenChatRoomUserList}
