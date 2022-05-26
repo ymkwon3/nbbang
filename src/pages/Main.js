@@ -163,7 +163,6 @@ const Main = () => {
           // 남성멘션
           // const userLng = 126.89158782940078;
           // const userLat = 37.51265421586233;
-        
 
           // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
           geocoder.coord2Address(userLng, userLat, (result, status) => {
