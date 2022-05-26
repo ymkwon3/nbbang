@@ -10,8 +10,7 @@ import { addImage } from "../../image";
 import { primaryColor, secondaryColor } from "../../shared/color";
 
 const PostWrite = props => {
-  const { map, userInfo, _clickContainer, _setRightContainer, _clickFold } =
-    props;
+  const { map, _clickContainer, _setRightContainer, _clickFold } = props;
   const geocoder = new kakao.maps.services.Geocoder();
   const markerRef = React.useRef(null);
   const positionRef = React.useRef(null);
@@ -27,6 +26,7 @@ const PostWrite = props => {
   const submitRef = React.useRef({
     titleRef: null,
     categoryRef: null,
+    typeRef: null,
     priceRef: null,
     headCountRef: null,
     endTimeRef: null,
@@ -34,7 +34,7 @@ const PostWrite = props => {
     addressDetailRef: null,
     contentRef: null,
   });
-
+  const [typeState, setTypeState] = React.useState("buy");
   const [findState, setFindState] = React.useState(false);
 
   function handler(e) {
@@ -145,6 +145,7 @@ const PostWrite = props => {
     formData.append("price", submitRef.current.priceRef.value);
     formData.append("headCount", submitRef.current.headCountRef.value);
     formData.append("category", submitRef.current.categoryRef.value);
+    formData.append("type", submitRef.current.typeRef.value);
     formData.append("endTime", submitRef.current.endTimeRef.value);
     formData.append("lat", positionRef.current.lat);
     formData.append("lng", positionRef.current.lng);
@@ -186,20 +187,26 @@ const PostWrite = props => {
       }}
     >
       <Flex styles={{ justifyContent: "space-between" }}>
-      <Text styles={{ fontSize: "32px", fontWeight: "800", whiteSpace: "nowrap" }}>모집하기</Text>
         <Text
+          styles={{ fontSize: "32px", fontWeight: "800", whiteSpace: "nowrap" }}
+        >
+          모집하기
+        </Text>
+        <Flex
           styles={{
+            width: "min-content",
             fontSize: "32px",
             color: "#bbb",
-            lineHeight: "32px",
             cursor: "pointer",
+            height: "40px",
+            alignItems: "start",
           }}
           _onClick={_clickContainer}
         >
           {"×"}
-        </Text>
+        </Flex>
       </Flex>
-      
+
       <Flex
         styles={{
           color: secondaryColor,
@@ -233,15 +240,49 @@ const PostWrite = props => {
           styles={{
             width: "90px",
             height: "30px",
-            marginLeft: "6px",
+            marginLeft: "10px",
             fontSize: "14px",
           }}
           title="category"
           ref={e => (submitRef.current.categoryRef = e)}
+          _onChange={e => setTypeState(e.target.value)}
           options={[
             { key: "같이 사자", value: "buy" },
             { key: "같이 먹자", value: "eat" },
           ]}
+        />
+        <Select
+          styles={{
+            width: "90px",
+            height: "30px",
+            marginLeft: "10px",
+            fontSize: "14px",
+          }}
+          title="category"
+          ref={e => (submitRef.current.typeRef = e)}
+          options={
+            typeState === "buy"
+              ? [
+                  { key: "패션/뷰티", value: "패션/뷰티" },
+                  { key: "식품", value: "식품" },
+                  { key: "디지털/가전", value: "디지털/가전" },
+                  { key: "가구/생활", value: "가구/생활" },
+                  { key: "스포츠/레저/취미", value: "스포츠/레저/취미" },
+                  { key: "도서", value: "도서" },
+                  { key: "문화생활", value: "문화생활" },
+                  { key: "기타", value: "기타" },
+                ]
+              : [
+                  { key: "한식", value: "한식" },
+                  { key: "양식", value: "양식" },
+                  { key: "일식", value: "일식" },
+                  { key: "중식", value: "중식" },
+                  { key: "채식", value: "채식" },
+                  { key: "카페", value: "카페" },
+                  { key: "주점", value: "주점" },
+                  { key: "기타", value: "기타" },
+                ]
+          }
         />
       </Flex>
       <Flex
@@ -264,7 +305,7 @@ const PostWrite = props => {
         <Input
           label="마감일"
           type="date"
-          min={moment().add(1, "days").format("YYYY-MM-DD")}
+          min={moment().add(0, "days").format("YYYY-MM-DD")}
           max={moment().add(14, "days").format("YYYY-MM-DD")}
           ref={e => (submitRef.current.endTimeRef = e)}
           styles={{

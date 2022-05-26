@@ -34,9 +34,9 @@ const PostDetail = ({
 }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const detailInfo = useSelector((state) => state.post.postDetail);
-  const userInfo = useSelector((state) => state.user.userInfo);
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const detailInfo = useSelector(state => state.post.postDetail);
+  const userInfo = useSelector(state => state.user.userInfo);
+  const isLogin = useSelector(state => state.user.isLogin);
   const chatRef = React.useRef();
 
   const [isDelete, setIsDelete] = React.useState(false);
@@ -66,7 +66,7 @@ const PostDetail = ({
     });
   };
 
-  const closeChatRoom = async (userWillCloseChatroom) => {
+  const closeChatRoom = async userWillCloseChatroom => {
     await socket.emit(
       "closeChatroom",
       `p${detailInfo.postId}`,
@@ -82,7 +82,7 @@ const PostDetail = ({
   }, [openChatroom]);
 
   React.useEffect(() => {
-    socket.on("block", (blockChatroomNoti) => {
+    socket.on("block", blockChatroomNoti => {
       // success 일 경우 방 입장이 가능한 상태
       // fail 일 경우 방 입장이 불가한 상태
       if (blockChatroomNoti === "success") {
@@ -116,20 +116,7 @@ const PostDetail = ({
         }}
       >
         <Flex styles={{ flexDirection: "column", padding: "25px" }}>
-          <Flex styles={{ justifyContent: "end" }}>
-            <Text
-              styles={{
-                fontSize: "32px",
-                color: "#bbb",
-                lineHeight: "32px",
-                cursor: "pointer",
-              }}
-              _onClick={_clickContainer}
-            >
-              {"×"}
-            </Text>
-          </Flex>
-          <Flex styles={{ margin: "25px 0" }}>
+          <Flex styles={{ justifyContent: "space-between" }}>
             <Flex
               styles={{
                 width: "fit-content",
@@ -164,6 +151,28 @@ const PostDetail = ({
               >
                 {detailInfo.writer}
               </Text>
+            </Flex>
+            <Flex
+              styles={{
+                width: "min-content",
+                fontSize: "32px",
+                color: "#bbb",
+                cursor: "pointer",
+                height: "40px",
+                alignItems: "start",
+              }}
+              _onClick={_clickContainer}
+            >
+              {"×"}
+            </Flex>
+          </Flex>
+          <Flex styles={{ margin: "20px 0" }}>
+            <Flex
+              styles={{
+                justifyContent: "start",
+              }}
+            >
+              <Text styles={{color: secondaryColor}}>{detailInfo.type}</Text>
             </Flex>
             {userInfo?.userId === detailInfo?.User_userId ? (
               <Button _onClick={() => setIsDelete(true)}>

@@ -48,6 +48,7 @@ const SideNav = props => {
     image: eventpage1,
     title: "이벤트 참여하세요",
     category: "eat",
+    type: "이벤트",
     price: "0",
     endTime: "2022-06-01",
     address: "치킨, 커피 기프티콘 증정!",

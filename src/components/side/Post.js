@@ -21,7 +21,7 @@ import {
 } from "../../image";
 
 const Post = props => {
-  const { image, title, category, price, endTime, address, postId, isLike } =
+  const { image, title, category, price, endTime, address, postId, isLike, type } =
     props;
   const dispatch = useDispatch();
   //span tag에 text-overflow를 주기 위함
@@ -106,7 +106,7 @@ const Post = props => {
               height: "25px",
               flexDirection: "column",
               justifyContent: "start",
-              gap: "5px",
+              gap: "2px",
             }}
           >
             <Permit>
@@ -145,7 +145,18 @@ const Post = props => {
 
         <Flex
           styles={{
-            marginBottom: "15px",
+            marginBottom: "6px",
+          }}
+        >
+          <img alt="price" src={priceGray} style={{ marginRight: "5px" }}></img>
+          <Text styles={contentStyle}>
+            {type}
+          </Text>
+        </Flex>
+
+        <Flex
+          styles={{
+            marginBottom: "6px",
           }}
         >
           <img alt="price" src={priceGray} style={{ marginRight: "5px" }}></img>
@@ -155,7 +166,7 @@ const Post = props => {
         </Flex>
         <Flex
           styles={{
-            marginBottom: "15px",
+            marginBottom: "6px",
           }}
         >
           <img
