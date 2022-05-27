@@ -4,6 +4,7 @@ import { Flex, Text } from "../../elements";
 import { menu, send } from "../../image";
 import LottieAni from "./LottieAni";
 import MessageBox from "./MessageBox";
+import Picker from "emoji-picker-react";
 
 const ChatBoxLeft = forwardRef(
   (
@@ -21,6 +22,23 @@ const ChatBoxLeft = forwardRef(
     ref
   ) => {
     const isChatLoading = useSelector((state) => state.chat.isLoading);
+
+    // 이모티콘 창 열기/닫기 컨트롤
+    const [openEmojiBox, setOpenEmojiBox] = useState(false);
+
+    // 이모티콘 보내기
+    const onEmojiClick = (event, emojiObject) => {
+      console.log(ref.current.selectionStart);
+      let message = [...ref.current.value.trim()];
+      let currentCursorPosition = ref.current.selectionStart;
+      let emoji = String.fromCodePoint(`0x${emojiObject.unified}`);
+
+      message.splice(currentCursorPosition, 0, emoji);
+      ref.current.value = message.join("");
+
+      setOpenEmojiBox(false);
+    };
+
     return (
       <>
         {/* 왼쪽 */}
@@ -144,16 +162,25 @@ const ChatBoxLeft = forwardRef(
               padding: "0 5px",
             }}
           >
+            <Text
+              styles={{ zIndex: "22" }}
+              className="hover-event"
+              _onClick={() => setOpenEmojiBox(!openEmojiBox)}
+            >
+              {String.fromCodePoint(0x1f60d)}
+            </Text>
+
             <input
               type="text"
               style={{
                 height: "90%",
-                width: "85%",
+                width: "80%",
                 outline: "none",
                 border: "none",
                 boxShadow: "none",
                 backgroundColor: "#DFD3CA",
                 fontSize: "16px",
+                padding: "0 5px",
               }}
               maxLength="100"
               ref={ref}
@@ -169,6 +196,33 @@ const ChatBoxLeft = forwardRef(
             ></img>
           </Flex>
         </Flex>
+        {openEmojiBox ? (
+          <>
+            <div
+              style={{
+                position: "absolute",
+                bottom: "45px",
+                left: "40px",
+                zIndex: "22",
+              }}
+            >
+              <Picker onEmojiClick={onEmojiClick} />
+            </div>
+            <div
+              style={{
+                position: "fixed",
+                width: "100%",
+                height: "100%",
+                zIndex: "21",
+              }}
+              onClick={() => setOpenEmojiBox(false)}
+            >
+              하핫
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </>
     );
   }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import styled from "styled-components";
 
@@ -207,7 +207,6 @@ const ChatBox = React.forwardRef(
     }, []);
 
     const typingHandler = (e) => {
-      // Typing Indicator Logic
       if (!socketConnected) return;
 
       // todo: 나중에 쓰로틀이 나을듯
@@ -262,7 +261,8 @@ const ChatBox = React.forwardRef(
             <ChatBoxLeft
               messages={[...selectedRoomMessages, ...newlyAddedMessages]}
               typingHandler={typingHandler}
-              ref={(e) => (newMessageRef.current = e)}
+              // ref={(e) => (newMessageRef.current = e)}
+              ref={newMessageRef}
               sendNewMessage={sendNewMessage}
               loggedUser={loggedUser}
               isTyping={isTyping}
