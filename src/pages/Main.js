@@ -160,12 +160,12 @@ const Main = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
-          // const userLat = position.coords.latitude;
-          // const userLng = position.coords.longitude;
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
 
           // 진주
-          const userLng = 128.09542887654473;
-          const userLat = 35.17814477781777;
+          // const userLng = 128.09542887654473;
+          // const userLat = 35.17814477781777;
 
           // 남성멘션
           // const userLng = 126.89158782940078;
