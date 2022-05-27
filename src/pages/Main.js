@@ -19,6 +19,7 @@ import { buyMarker, eatMarker, positionMarker } from "../image/marker";
 import io from "socket.io-client";
 import Modal from "../shared/Modal";
 import Explain from "../components/modal/Explain";
+import { getNewlyAddedUser } from "../config/ChatLogics";
 
 // 배포서버에 들어갈 주소 ※매우중요 안지키면 병걸림
 // const socket = io.connect("https://redpingpong.shop");
@@ -46,6 +47,11 @@ const Main = () => {
   // 인포페이지, 설명페이지 모달 state
   const [infoPage, setInfoPage] = React.useState(false);
   const [exp, setExp] = React.useState(false);
+
+  // 유저의 현재 주소 표시
+  const userLocation = React.useRef(null);
+
+  const mapLevel = React.useRef(null);
 
   /* 왼쪽 사이드네비 전체를 관리하기 위한 ref, state
   상세, 글쓰기 페이지를 관리하기 위한 ref, state */
@@ -147,28 +153,35 @@ const Main = () => {
   userInfo를 updateMount에 지정해주지 않으면 무조건 비회원일 때의 데이터를 불러옴
   --IsLogin 컴포넌트에서 재로그인요청 시 자식 컴포넌트를 없애줌으로써 문제 해결
   */
+
+
   React.useEffect(() => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     dispatch(postActions.isLoading(true));
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          // const userLat = position.coords.latitude;
-          // const userLng = position.coords.longitude;
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
 
+          console.log( mapRef.current )
           // 진주
-          const userLng = 128.09542887654473;
-          const userLat = 35.17814477781777;
-
+          // const userLng = 128.09542887654473;
+          // const userLat = 35.17814477781777;
           // 남성멘션
           // const userLng = 126.89158782940078;
           // const userLat = 37.51265421586233;
         
-
           // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
           geocoder.coord2Address(userLng, userLat, (result, status) => {
             // 지번 주소
             const addr = result[0].address;
+
+            userLocation.current = {
+                province: addr.region_1depth_name,
+                city: addr.region_2depth_name,
+                town: addr.region_3depth_name,
+            }
 
             dispatch(
               postActions.getPostListDB({
@@ -342,6 +355,39 @@ const Main = () => {
           </Flex>
         </div>
       </LeftContainer>
+      <AdressContainer>
+        {userLocation.current ?
+          <Flex
+            styles={{
+              width: "330px",
+              height:"36px",
+              backgroundColor: "#fff",
+              boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.25)",
+              borderRadius: "5px",
+              padding: "10px",
+              gap:"10px"
+            }}
+          >
+            <Flex
+              styles={{
+                width:"100px",
+              }}
+            >{userLocation.current.province}</Flex>
+            <span>&gt;</span>
+            <Flex
+              styles={{
+                width:"150px",
+              }}            
+            >{userLocation.current.city}</Flex>
+            <span>&gt;</span>
+            <Flex
+              styles={{
+                width:"130px",
+              }}
+            >{userLocation.current.town}</Flex>
+          </Flex>
+        : null}
+      </AdressContainer>
       <ButtonContainer>
         {/*인포페이지이동버튼*/}
         <Desktop>
@@ -452,6 +498,13 @@ const LeftContainer = styled.div`
   max-width: fit-content;
   width: 90vw;
   height: 100%;
+`;
+
+const AdressContainer = styled.div`
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  z-index: 7;
 `;
 
 const ButtonContainer = styled.div`
