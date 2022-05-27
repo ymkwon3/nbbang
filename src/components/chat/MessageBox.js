@@ -62,7 +62,7 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
   React.useEffect(() => {
     messageBoxRef.current?.parentNode.addEventListener("scroll", scroll);
     return () => {
-      messageBoxRef.current?.parentNode.removeEventListener("scroll", () => {});
+      messageBoxRef.current?.parentNode.removeEventListener("scroll", scroll);
     };
   });
 
@@ -309,6 +309,29 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
             >
               {"▽"}
             </Text>
+          </Flex>
+        </>
+      ) : !scrollState ? (
+        <>
+          <Flex
+            styles={{
+              position: "sticky",
+              bottom: "10px",
+              justifyContent: "flex-end",
+            }}
+          >
+            <div
+              className="hover-event"
+              onClick={scrollToBottom}
+              style={{
+                width: "30px",
+                height: "30px",
+                backgroundColor: "black",
+                borderRadius: "50%",
+                opacity: "0.4",
+                transition: "opacity 100ms ease-in-out",
+              }}
+            ></div>
           </Flex>
         </>
       ) : (
