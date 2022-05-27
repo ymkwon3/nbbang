@@ -21,10 +21,10 @@ import Modal from "../shared/Modal";
 import Explain from "../components/modal/Explain";
 
 // 배포서버에 들어갈 주소 ※매우중요 안지키면 병걸림
-const socket = io.connect("https://redpingpong.shop");
+// const socket = io.connect("https://redpingpong.shop");
 
 // 테스트서버에 들어갈 주소 ※매우중요 안지키면 병걸림
-// const socket = io.connect("https://lyubov.shop");
+const socket = io.connect("https://lyubov.shop");
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -161,12 +161,12 @@ const Main = () => {
       navigator.geolocation.getCurrentPosition(
         position => {
           // 배포서버에 들어갈 위치 ※매우중요 안지키면 발가락 문지방에 찧임
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
+          // const userLat = position.coords.latitude;
+          // const userLng = position.coords.longitude;
 
           // 테스트 진주
-          // const userLng = 128.09542887654473;
-          // const userLat = 35.17814477781777;
+          const userLng = 128.09542887654473;
+          const userLat = 35.17814477781777;
 
           // 테스트 서울 남성멘션
           // const userLng = 126.89158782940078;
