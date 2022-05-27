@@ -19,7 +19,6 @@ import { buyMarker, eatMarker, positionMarker } from "../image/marker";
 import io from "socket.io-client";
 import Modal from "../shared/Modal";
 import Explain from "../components/modal/Explain";
-import { getNewlyAddedUser } from "../config/ChatLogics";
 
 // 배포서버에 들어갈 주소 ※매우중요 안지키면 병걸림
 // const socket = io.connect("https://redpingpong.shop");
@@ -50,8 +49,6 @@ const Main = () => {
 
   // 유저의 현재 주소 표시
   const userLocation = React.useRef(null);
-
-  const mapLevel = React.useRef(null);
 
   /* 왼쪽 사이드네비 전체를 관리하기 위한 ref, state
   상세, 글쓰기 페이지를 관리하기 위한 ref, state */
@@ -185,11 +182,13 @@ const Main = () => {
             // 지번 주소
             const addr = result[0].address;
 
+            // 현재 위치 표기
             userLocation.current = {
                 province: addr.region_1depth_name,
                 city: addr.region_2depth_name,
                 town: addr.region_3depth_name,
             }
+
             // 해당 지역들은 특별시, 광역시, 자치시라 보여지는 범위를 3단계로 분류
             const locale = [
               "서울",
@@ -371,30 +370,35 @@ const Main = () => {
         {userLocation.current ?
           <Flex
             styles={{
-              width: "330px",
-              height:"36px",
+              height:"40px",
               backgroundColor: "#fff",
               boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.25)",
               borderRadius: "5px",
-              padding: "10px",
+              padding: "20px",
               gap:"10px"
             }}
           >
             <Flex
               styles={{
-                width:"100px",
-              }}
+                whiteSpace: 'nowrap',
+                fontFamily: "Cafe24SsurroundAir",
+                fontWeight: "600"
+              }}  
             >{userLocation.current.province}</Flex>
             <span>&gt;</span>
             <Flex
               styles={{
-                width:"150px",
+                whiteSpace: 'nowrap',
+                fontFamily: "Cafe24SsurroundAir",
+                fontWeight: "600"
               }}            
             >{userLocation.current.city}</Flex>
             <span>&gt;</span>
             <Flex
               styles={{
-                width:"130px",
+                whiteSpace: 'nowrap',
+                fontFamily: "Cafe24SsurroundAir",
+                fontWeight: "600"
               }}
             >{userLocation.current.town}</Flex>
           </Flex>
@@ -515,8 +519,8 @@ const LeftContainer = styled.div`
 
 const AdressContainer = styled.div`
   position: absolute;
-  right: 15px;
-  top: 15px;
+  right: 20px;
+  top: 20px;
   z-index: 7;
 `;
 
