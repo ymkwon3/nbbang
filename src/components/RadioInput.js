@@ -1,10 +1,10 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { Button, Flex } from "../elements";
 import { secondaryColor } from "../shared/color";
-const RadioInput = props => {
+const RadioInput = forwardRef((props, ref) => {
   // city: 사용자의 위치가 2범위인지 3범위인지(일반 시인지, 특별,광역시인지)
   // cityRange: 현재 데이터를 불러오는 범위
-  const { city, cityRange, setCityRange } = props;
+  const { city, setCityRange, map } = props;
 
   const buttonStyles = {
     width: "40px",
@@ -28,7 +28,8 @@ const RadioInput = props => {
   };
 
   const checkHandler = id => {
-    setCityRange(id);
+    setCityRange(prev => !prev);
+    ref.current = id;
   };
 
   return (
@@ -43,8 +44,8 @@ const RadioInput = props => {
       {city === 3 ? (
         <>
           <Button
-            styles={cityRange === 1 ? checkedButton : buttonStyles}
-            _onClick={() => checkHandler(1)}
+            styles={ref.current === 1 ? checkedButton : buttonStyles}
+            _onClick={() => {checkHandler(1); map.setLevel(8)}}
           >
             시
           </Button>
@@ -54,15 +55,15 @@ const RadioInput = props => {
                 borderTop: "1px solid rgba(0, 0, 0, 0.5)",
                 borderBottom: "1px solid rgba(0, 0, 0, 0.5)",
               },
-              cityRange === 2 ? checkedButton : buttonStyles
+              ref.current === 2 ? checkedButton : buttonStyles
             )}
-            _onClick={() => checkHandler(2)}
+            _onClick={() => {checkHandler(2);map.setLevel(6);}}
           >
             구
           </Button>
           <Button
-            styles={cityRange === 3 ? checkedButton : buttonStyles}
-            _onClick={() => checkHandler(3)}
+            styles={ref.current === 3 ? checkedButton : buttonStyles}
+            _onClick={() => {checkHandler(3); map.setLevel(4);}}
           >
             동
           </Button>
@@ -70,8 +71,8 @@ const RadioInput = props => {
       ) : (
         <>
           <Button
-            styles={cityRange === 2 ? checkedButton : buttonStyles}
-            _onClick={() => checkHandler(2)}
+            styles={ref.current === 2 ? checkedButton : buttonStyles}
+            _onClick={() => {checkHandler(2); map.setLevel(6);}}
           >
             시
           </Button>
@@ -80,9 +81,9 @@ const RadioInput = props => {
               {
                 borderTop: "1px solid rgba(0, 0, 0, 0.5)",
               },
-              cityRange === 3 ? checkedButton : buttonStyles
+              ref.current === 3 ? checkedButton : buttonStyles
             )}
-            _onClick={() => checkHandler(3)}
+            _onClick={() => {checkHandler(3); map.setLevel(4);}}
           >
             동
           </Button>
@@ -90,6 +91,6 @@ const RadioInput = props => {
       )}
     </Flex>
   );
-};
+});
 
 export default RadioInput;

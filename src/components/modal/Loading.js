@@ -17,7 +17,7 @@ const Loading = (props) => {
         backgroundColor: "rgba(255, 255, 255, 1)",
         borderRadius: "20px",
         gap: "10px",
-        padding: isDesktop === undefined ? "20px 40px" : "20px 18px"
+        padding: isDesktop === undefined ? "20px 38px" : "20px 14px"
       }}
     >
       <Animation>

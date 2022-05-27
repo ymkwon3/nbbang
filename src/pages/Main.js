@@ -20,8 +20,11 @@ import io from "socket.io-client";
 import Modal from "../shared/Modal";
 import Explain from "../components/modal/Explain";
 
+// 배포서버에 들어갈 주소 ※매우중요 안지키면 병걸림
 const socket = io.connect("https://redpingpong.shop");
-// const socket = io.connect("https://redpingpong.link");
+
+// 테스트서버에 들어갈 주소 ※매우중요 안지키면 병걸림
+// const socket = io.connect("https://lyubov.shop");
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -61,7 +64,8 @@ const Main = () => {
   게시물 지역 범위, 현재 위치 구분*/
   const postList = useSelector(state => state.post.postList);
   const category = useSelector(state => state.post.category);
-  const [cityRange, setCityRange] = React.useState(2);
+  const [range, setRange] = React.useState(true);
+  const cityRange = React.useRef(1);
   const [city, setCity] = React.useState(3);
 
   // 로그인된 유저 정보
@@ -132,6 +136,12 @@ const Main = () => {
     socket.on("disconnect", () => {
       socket.emit("socket is connected", userInfo);
     });
+
+    // 비로그인일때, 메인페이지 접속 시 설명페이지 보여주기
+    if (!userInfo.userId) {
+      setExp(true);
+    }
+
     return () => {
       socket.off("send message alarm");
       socket.off("leaved chatroom");
@@ -150,24 +160,22 @@ const Main = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
+          // 배포서버에 들어갈 위치 ※매우중요 안지키면 발가락 문지방에 찧임
           const userLat = position.coords.latitude;
           const userLng = position.coords.longitude;
-          // const userLng = 126.89156781562811;
-          // const userLat = 37.512634390346236;
+
+          // 테스트 진주
+          // const userLng = 128.09542887654473;
+          // const userLat = 35.17814477781777;
+
+          // 테스트 서울 남성멘션
+          // const userLng = 126.89158782940078;
+          // const userLat = 37.51265421586233;
+
           // 사용자 좌표를 주소로 변환 후 서버에 요청 (해당 주소의 게시물들 불러오게)
           geocoder.coord2Address(userLng, userLat, (result, status) => {
             // 지번 주소
             const addr = result[0].address;
-
-            dispatch(
-              postActions.getPostListDB({
-                address: addr.address_name,
-                range: cityRange,
-                userId: userInfo?.userId,
-                lat: userLat,
-                lng: userLng,
-              })
-            );
 
             // 해당 지역들은 특별시, 광역시, 자치시라 보여지는 범위를 3단계로 분류
             const locale = [
@@ -180,9 +188,23 @@ const Main = () => {
               "대구",
               "제주특별자치도",
             ];
-            locale.find(v => v === addr.region_1depth_name)
-              ? setCity(3)
-              : setCity(2);
+            
+            if(locale.find(v => v === addr.region_1depth_name)) {
+              setCity(3);
+            }else {
+              setCity(2);
+              cityRange.current === 1 && (cityRange.current = 2);
+            }
+
+            dispatch(
+              postActions.getPostListDB({
+                address: addr.address_name,
+                range: cityRange.current,
+                userId: userInfo?.userId,
+                lat: userLat,
+                lng: userLng,
+              })
+            );
           });
 
           //제일 처음 한 번만 실행
@@ -190,8 +212,9 @@ const Main = () => {
             const userPosition = new kakao.maps.LatLng(userLat, userLng);
             const options = {
               center: userPosition,
-              level: 5,
+              level: 6,
             };
+
             userPositionRef.current = userPosition;
             mapRef.current = new kakao.maps.Map(containerRef.current, options);
 
@@ -220,7 +243,7 @@ const Main = () => {
         { enableHighAccuracy: true }
       );
     }
-  }, [cityRange]);
+  }, [range]);
 
   React.useEffect(() => {
     // DB에서 받아오는 게시글들을 마커로 표시 후 띄워줌
@@ -403,8 +426,9 @@ const Main = () => {
         </Flex>
         <RadioInput
           city={city}
-          cityRange={cityRange}
-          setCityRange={setCityRange}
+          setCityRange={setRange}
+          ref={cityRange}
+          map={mapRef.current}
         ></RadioInput>
       </ButtonContainer>
       {infoPage && (

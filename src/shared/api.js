@@ -4,9 +4,11 @@ import { getToken } from "./localStorage";
 const headers = () => {
   return { authorization: `Bearer ${getToken()}` };
 };
+// 배포서버에 들어갈 주소 ※매우중요 안지키면 병걸림
 axios.defaults.baseURL = "https://redpingpong.shop";
-// axios.defaults.baseURL = "https://redpingpong.link";
-// https://redpingpong.shop/
+
+// 테스트서버에 들어갈 주소 ※매우중요 안지키면 병걸림
+// axios.defaults.baseURL = "https://lyubov.shop";
  
 // axios get api
 const getAPI = async (api, params) => {

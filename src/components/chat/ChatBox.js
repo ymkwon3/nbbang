@@ -19,6 +19,7 @@ import {
 import ChatBoxLeft from "./ChatBoxLeft";
 import ChatBoxRight from "./ChatBoxRight";
 import { Flex } from "../../elements";
+import { notify } from "../ToastMessage";
 
 const ChatBox = React.forwardRef(
   (
@@ -43,6 +44,7 @@ const ChatBox = React.forwardRef(
     const loggedUser = useSelector((state) => state.user.userInfo);
 
     const newMessageRef = React.useRef("");
+    const [isOpenUserList, setIsOpenUserList] = React.useState(false);
     const [newMessageReceived, setNewMessageReceived] = React.useState([]);
     const [newlyAddedMessages, setNewlyAddedMessages] = React.useState([]);
     const [typing, setTyping] = React.useState(false);
@@ -59,7 +61,15 @@ const ChatBox = React.forwardRef(
     };
 
     const sendNewMessage = (e) => {
+      // 입력값이 없으면
       if (!newMessageRef.current.value.trim()) {
+        return;
+      }
+      if (
+        newMessageRef.current.value.trim().length >
+        newMessageRef.current.maxLength
+      ) {
+        newMessageRef.current.value = newMessageRef.current.value.slice(0, 100);
         return;
       }
       if (
@@ -72,7 +82,7 @@ const ChatBox = React.forwardRef(
           User_userEmail: loggedUser.userEmail,
           User_userName: loggedUser.userName,
           userImage: loggedUser.userImage,
-          chat: newMessageRef.current.value,
+          chat: newMessageRef.current.value.trim(),
           createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
         };
 
@@ -221,9 +231,13 @@ const ChatBox = React.forwardRef(
     };
 
     const OpenChatRoomUserList = () => {
-      if (chatroomUserListRef.current.style.width === "0px")
+      if (chatroomUserListRef.current.style.width === "0px") {
         chatroomUserListRef.current.style.width = "70%";
-      else chatroomUserListRef.current.style.width = "0px";
+        setIsOpenUserList(true);
+      } else {
+        chatroomUserListRef.current.style.width = "0px";
+        setIsOpenUserList(false);
+      }
     };
 
     return (
@@ -271,6 +285,23 @@ const ChatBox = React.forwardRef(
               stateShiftForClosingChatroom={stateShiftForClosingChatroom}
             />
           </Flex>
+          {isOpenUserList ? (
+            <>
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  zIndex: "21",
+                  position: "fixed",
+                  top: "0",
+                  left: "0",
+                }}
+                onClick={OpenChatRoomUserList}
+              ></div>
+            </>
+          ) : (
+            <></>
+          )}
         </ChatModal>
       </>
     );

@@ -63,7 +63,7 @@ const App = () => {
                 fontSize: isDesktop === undefined ? "18px" : "14px",
               }}
             >
-              브라우저{" "}
+              브라우저와{" "}기기의{" "}
               <Text
                 styles={{
                   fontFamily: "Cafe24SsurroundAir",

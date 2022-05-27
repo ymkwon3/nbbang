@@ -21,7 +21,7 @@ import {
 import moment from "moment";
 import "moment/locale/ko";
 import Modal from "../shared/Modal";
-import { primaryColor } from "../shared/color";
+import { primaryColor, secondaryColor } from "../shared/color";
 
 const MyPage = props => {
   const dispatch = useDispatch();
@@ -97,7 +97,7 @@ const MyPage = props => {
       setPreview(URL.createObjectURL(e.target.files[0]));
       const formData = new FormData();
       formData.append("userImage", e.target.files[0]);
-      
+
       notify("success", "프로필 사진이 변경되었습니다", 2000, "top-right");
       dispatch(userActions.postUserImageDB(formData));
     }
@@ -127,16 +127,18 @@ const MyPage = props => {
             />
 
             {/* 톱니바퀴 아이콘으로 대체해야함 */}
-            {loginUserId === userId ? <img
-            alt="edit"
-            src={edit}
-            className="hover-event"
-              style={{
-                position: "absolute",
-                bottom: "10px",
-                right: "10px"
-              }}
-            ></img> : null}
+            {loginUserId === userId ? (
+              <img
+                alt="edit"
+                src={edit}
+                className="hover-event"
+                style={{
+                  position: "absolute",
+                  bottom: "10px",
+                  right: "10px",
+                }}
+              ></img>
+            ) : null}
           </label>
           {loginUserId === userId ? (
             <input
@@ -241,7 +243,11 @@ const MyPage = props => {
                 modalRef.current = v;
               }}
             >
-              {v.isDone === 1 ? "완료 공구" : v.isDone === 2 ? "미완료 공구" : null}
+              {v.isDone === 1
+                ? "완료 공구"
+                : v.isDone === 2
+                ? "미완료 공구"
+                : null}
             </Image>
           ))}
         </Grid>
@@ -318,6 +324,19 @@ const PostModal = ({ v }) => {
           >
             {v.headList.length}/{v.headCount}
           </Flex>
+        </Flex>
+        <Flex styles={{ justifyContent: "start" }}>
+          {/* <img alt="price" src={priceGray} style={{ marginRight: "5px" }}></img> */}
+          <Text
+            styles={{
+              fontSize: "16px",
+              fontWeight: "600",
+              marginBottom: "6px",
+              color: secondaryColor,
+            }}
+          >
+            {v.type}
+          </Text>
         </Flex>
         <Flex styles={{ justifyContent: "start" }}>
           {v.category === "eat" ? (

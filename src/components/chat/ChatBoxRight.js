@@ -63,7 +63,7 @@ const ChatBoxRight = forwardRef(
     return (
       <>
         {/* 오른쪽 */}
-        <UserListContainer ref={ref} style={{ width: "0px" }}>
+        <UserListContainer ref={ref} style={{ width: "0px", zIndex: "22" }}>
           <div style={{ width: "100%", height: "81%", marginTop: "43px" }}>
             <Flex
               styles={{

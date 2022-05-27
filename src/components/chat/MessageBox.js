@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   formatAMPM,
   isFirstMessage,
@@ -11,9 +11,14 @@ import styled from "styled-components";
 
 import { calendarBlack } from "../../image";
 
+import { debounce } from "lodash";
+
 const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
   const [pressToBottom, setPressToBottom] = React.useState(false);
+
+  const messageBoxRef = React.useRef(null);
   const messagesEndRef = React.useRef(null);
+
   const scrollToBottom = () => {
     messagesEndRef.current.scrollIntoView({
       block: "end",
@@ -22,26 +27,49 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
     setPressToBottom(false);
   };
 
-  React.useEffect(() => {
-    scrollToBottom();
-  }, []);
+  const [scrollState, setScrollState] = useState(true); // 자동 스크롤 여부
+
+  const scrollEvent = debounce(() => {
+    console.log("scroll");
+
+    const scrollTop = messageBoxRef.current?.parentNode.scrollTop; // 스크롤 위치
+    const clientHeight = messageBoxRef.current?.parentNode.clientHeight; // 요소의 높이
+    const scrollHeight = messageBoxRef.current?.parentNode.scrollHeight; // 스크롤의 높이
+
+    // 스크롤이 맨 아래에 있을때
+    setScrollState(
+      scrollTop + clientHeight >= scrollHeight - 100 ? true : false
+    );
+  }, 100);
+
+  const scroll = React.useCallback(scrollEvent, []);
 
   React.useEffect(() => {
-    if (
-      newMessageReceived.User_userId &&
-      newMessageReceived.User_userId !== loggedUser.userId
-    ) {
-      // 다른 사람이 메시지를 보냈을 경우
-      setPressToBottom(true);
-    } else {
-      // 내가 메시지를 보냈을 경우
+    if (scrollState) {
       scrollToBottom();
+    } else {
+      if (
+        newMessageReceived.User_userId &&
+        newMessageReceived.User_userId !== loggedUser.userId
+      ) {
+        setPressToBottom(true);
+      } else {
+        scrollToBottom();
+      }
     }
-  }, [newMessageReceived]);
+  }, [messages.length]);
+
+  React.useEffect(() => {
+    messageBoxRef.current?.parentNode.addEventListener("scroll", scroll);
+    return () => {
+      messageBoxRef.current?.parentNode.removeEventListener("scroll", scroll);
+    };
+  });
 
   return (
     <>
       <Flex
+        ref={messageBoxRef}
         styles={{
           flexDirection: "column",
           justifyContent: "flex-start",
@@ -246,48 +274,69 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
           ))}
         <div ref={messagesEndRef}></div>
       </Flex>
-      <Flex
-        styles={{
-          position: "sticky",
-          height: "auto",
-          bottom: "10px",
-          borderRadius: "4px",
-          background: "rgba(255, 255, 255, 0.8)",
-          display: pressToBottom ? "flex" : "none",
-          minHeight: "40px",
-          boxShadow: "0 0 2px rgba(0, 0,0, 0.4)",
-        }}
-        _onClick={scrollToBottom}
-        className="hover-event"
-      >
-        <Text
-          styles={{
-            display: "block",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            textOverflow: "ellipsis",
-            width: "70%",
-            fontSize: "16px",
-          }}
-        >
-          {newMessageReceived.chat}
-        </Text>
-        {/* <Text styles={{
-          color: "#666"
-        }}>
-        {"▽"}
-        </Text> */}
-        <div
-          style={{
-            transform: "rotate(-90deg)",
-            width: "auto",
-            height: "auto",
-            display: "inline-block",
-          }}
-        >
-          &#9001;
-        </div>
-      </Flex>
+
+      {pressToBottom ? (
+        <>
+          <Flex
+            styles={{
+              position: "sticky",
+              height: "auto",
+              bottom: "10px",
+              borderRadius: "4px",
+              background: "rgba(255, 255, 255, 0.8)",
+              minHeight: "40px",
+              boxShadow: "0 0 2px rgba(0, 0,0, 0.4)",
+            }}
+            _onClick={scrollToBottom}
+            className="hover-event"
+          >
+            <Text
+              styles={{
+                display: "block",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                width: "70%",
+                fontSize: "16px",
+              }}
+            >
+              {newMessageReceived.chat}
+            </Text>
+            <Text
+              styles={{
+                color: "#666",
+              }}
+            >
+              {"▽"}
+            </Text>
+          </Flex>
+        </>
+      ) : !scrollState ? (
+        <>
+          <Flex
+            styles={{
+              position: "sticky",
+              bottom: "10px",
+              justifyContent: "flex-end",
+            }}
+          >
+            <div
+              className="hover-event"
+              onClick={scrollToBottom}
+              style={{
+                width: "30px",
+                height: "30px",
+                backgroundColor: "black",
+                borderRadius: "50%",
+                opacity: "0.4",
+                transition: "opacity 100ms ease-in-out",
+              }}
+            ></div>
+          </Flex>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
@@ -303,5 +352,6 @@ const Bubble = styled.div`
   padding: 6px 13px;
   text-align: center;
   color: #000;
+  word-break: break-all;
 `;
 export default MessageBox;
