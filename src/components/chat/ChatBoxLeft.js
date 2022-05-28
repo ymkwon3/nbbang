@@ -17,10 +17,12 @@ const ChatBoxLeft = forwardRef(
       closeChatRoom,
       title,
       newMessageReceived,
+      isDisabled,
     },
     ref
   ) => {
     const isChatLoading = useSelector((state) => state.chat.isLoading);
+
     return (
       <>
         {/* 왼쪽 */}
@@ -159,13 +161,14 @@ const ChatBoxLeft = forwardRef(
               ref={ref}
               onChange={typingHandler}
               onKeyUp={sendNewMessage}
+              disabled={isDisabled}
             />
             <img
               alt="send"
               src={send}
               style={{ marginRight: "8px" }}
-              onClick={sendNewMessage}
-              className="hover-event"
+              onClick={isDisabled ? "" : sendNewMessage}
+              className={isDisabled ? "make-it-blurr" : "hover-event-to-blurr"}
             ></img>
           </Flex>
         </Flex>

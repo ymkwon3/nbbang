@@ -30,8 +30,6 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
   const [scrollState, setScrollState] = useState(true); // 자동 스크롤 여부
 
   const scrollEvent = debounce(() => {
-    console.log("scroll");
-
     const scrollTop = messageBoxRef.current?.parentNode.scrollTop; // 스크롤 위치
     const clientHeight = messageBoxRef.current?.parentNode.clientHeight; // 요소의 높이
     const scrollHeight = messageBoxRef.current?.parentNode.scrollHeight; // 스크롤의 높이
