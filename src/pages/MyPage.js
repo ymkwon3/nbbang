@@ -459,13 +459,17 @@ const PostModal = ({ v }) => {
             {v.headList.length}/{v.headCount}
           </Flex>
         </Flex>
-        <Flex styles={{ justifyContent: "start" }}>
+        <Flex styles={{ justifyContent: "start", marginBottom: "6px" }}>
           {/* <img alt="price" src={priceGray} style={{ marginRight: "5px" }}></img> */}
+          {v.category === "eat" ? (
+            <img alt="eat" src={eatCategory} style={iconStyles}></img>
+          ) : (
+            <img alt="buy" src={buyCategory} style={iconStyles}></img>
+          )}
           <Text
             styles={{
               fontSize: "16px",
               fontWeight: "600",
-              marginBottom: "6px",
               color: secondaryColor,
             }}
           >
@@ -473,11 +477,7 @@ const PostModal = ({ v }) => {
           </Text>
         </Flex>
         <Flex styles={{ justifyContent: "start" }}>
-          {v.category === "eat" ? (
-            <img alt="eat" src={eatCategory} style={iconStyles}></img>
-          ) : (
-            <img alt="buy" src={buyCategory} style={iconStyles}></img>
-          )}
+          
           <Text
             styles={{
               fontSize: "28px",

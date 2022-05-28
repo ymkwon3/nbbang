@@ -8,5 +8,6 @@ import parti2 from "./parti2.png";
 import parti3 from "./parti3.png";
 import parti4 from "./parti4.png";
 import end from "./end.png";
+import intro from "./intro.jpg";
 
-export {start, host1, host2, host3, host4, parti1, parti2, parti3, parti4, end}
+export {intro, start, host1, host2, host3, host4, parti1, parti2, parti3, parti4, end}
