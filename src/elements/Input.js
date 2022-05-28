@@ -22,7 +22,7 @@ const Input = forwardRef((props, ref) => {
   // 요청으로 인한 textarea 추가 type에 textarea주시면 됩니다
   // type date형식 추가
   return (
-    <InputStyled style={{ ...styles }} className={className} {...defaultStyles}>
+    <InputStyled style={{ ...styles }} className={className} {...defaultStyles} {...styles}>
       <label>{label}</label>
       {type === "textarea" ? (
         <textarea
@@ -71,8 +71,6 @@ const Input = forwardRef((props, ref) => {
 
 Input.defaultProps = {
   defaultStyles: {
-    fontSize: "14px",
-    fontWeight: "700",
     color: "#000",
     width: "100%",
   },
@@ -99,6 +97,7 @@ const InputStyled = styled.div`
     line-height: 18px;
     width: 100%;
     text-decoration: none;
+    font-size: ${props => props.fontSize};
   }
 
   & > label {
