@@ -52,6 +52,12 @@
   opacity: 0.3;
 }
 
+.make-it-blurr {
+  cursor: none;
+  user-select: none;
+  opacity: 0.3;
+}
+
 .change-color-to-black:hover {
   color: #000000;
 }
