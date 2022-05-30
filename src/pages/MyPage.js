@@ -21,8 +21,9 @@ import Modal from "../shared/Modal";
 import { secondaryColor } from "../shared/color";
 import UserInfo from "../components/mypage/UserInfo";
 import UserUpdate from "../components/mypage/UserUpdate";
+import PersonalReviews from "../components/modal/PersonalReviews";
 
-const MyPage = props => {
+const MyPage = (props) => {
   const dispatch = useDispatch();
   // 유저페이지 리덕스 모듈에서 불러오는 유저정보, 나의 공구, 참여완료된 공구, 좋아요한 공구
   const userInfo = useSelector(state => state.userpage.userInfo);
@@ -82,7 +83,7 @@ const MyPage = props => {
   const [postType, setPostType] = React.useState("mine");
   const postList =
     postType === "mine" ? myList : postType === "join" ? joinList : likeList;
-  const changeType = type => {
+  const changeType = (type) => {
     setPostType(type);
   };
 
@@ -200,6 +201,9 @@ const MyPage = props => {
           <PostModal v={modalRef.current} />
         </Modal>
       )}
+      <Modal close={() => setModal(false)}>
+        <PersonalReviews />
+      </Modal>
     </>
   );
 };
@@ -226,7 +230,7 @@ const PostModal = ({ v }) => {
         borderRadius: "10px",
         overflow: "scroll",
       }}
-      _onClick={e => e.stopPropagation()}
+      _onClick={(e) => e.stopPropagation()}
     >
       <Flex styles={{ flexDirection: "column", padding: "25px" }}>
         <Flex styles={{ marginBottom: "10px" }}>

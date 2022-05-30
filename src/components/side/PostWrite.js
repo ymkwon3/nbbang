@@ -9,7 +9,7 @@ import { notify, toast } from "../ToastMessage";
 import { addImage } from "../../image";
 import { primaryColor, secondaryColor } from "../../shared/color";
 
-const PostWrite = props => {
+const PostWrite = (props) => {
   const { map, _clickContainer, _setRightContainer, _clickFold } = props;
   const geocoder = new kakao.maps.services.Geocoder();
   const markerRef = React.useRef(null);
@@ -19,6 +19,11 @@ const PostWrite = props => {
   const dispatch = useDispatch();
   const [preview, setPreview] = React.useState(addImage);
   const [image, setImage] = React.useState(null);
+  const [inputLength, setInputLength] = React.useState({
+    titleLength: 0,
+    addressDetailLength: 0,
+    contentLength: 0,
+  });
 
   // 유저피드백: 게시물 중복 등록을 방지하기 위한
   const btnRef = React.useRef(null);
@@ -75,6 +80,64 @@ const PostWrite = props => {
     };
   }, [findState]);
 
+  // input 길이 측정
+  const countInputLength = (e) => {
+    // 제목 input의 길이를 실시간으로 보여줌
+    if (e.target === submitRef.current.titleRef) {
+      setInputLength((prevState) => ({
+        ...prevState,
+        titleLength: e.target.value.length,
+      }));
+      return;
+    }
+    // 가격이 7자리 이상(천만원 이상)일 때 7자리만 화면에 보여줌
+    if (
+      e.target === submitRef.current.priceRef &&
+      submitRef.current.priceRef.value.length > 7 &&
+      !Number.isNaN(submitRef.current.priceRef.value)
+    ) {
+      if (parseInt(submitRef.current.priceRef.value) < 0) {
+        submitRef.current.priceRef.value = 0;
+        return;
+      }
+      submitRef.current.priceRef.value = submitRef.current.priceRef.value.slice(
+        0,
+        7
+      );
+      return;
+    }
+    // 총 인원 수가 2자리 이상(100명 이상)일 때 2자리만 화면에 보여줌
+    if (
+      e.target === submitRef.current.headCountRef &&
+      submitRef.current.headCountRef.value.length > 2 &&
+      !Number.isNaN(submitRef.current.headCountRef.value)
+    ) {
+      if (parseInt(submitRef.current.headCountRef.value) < 0) {
+        submitRef.current.headCountRef.value = 0;
+        return;
+      }
+      submitRef.current.headCountRef.value =
+        submitRef.current.headCountRef.value.slice(0, 2);
+      return;
+    }
+    // 상세주소 input의 길이를 실시간으로 보여줌
+    if (e.target === submitRef.current.addressDetailRef) {
+      setInputLength((prevState) => ({
+        ...prevState,
+        addressDetailLength: e.target.value.length,
+      }));
+      return;
+    }
+    // 내용 input의 길이를 실시간으로 보여줌
+    if (e.target === submitRef.current.contentRef) {
+      setInputLength((prevState) => ({
+        ...prevState,
+        contentLength: e.target.value.length,
+      }));
+      return;
+    }
+  };
+
   // 전송하기 버튼 이벤트
   const clickSubmit = () => {
     btnRef.current.disabled = true;
@@ -127,7 +190,12 @@ const PostWrite = props => {
     for (let ref in submitRef.current) {
       if (submitRef.current[ref].value === "") {
         // 빈 칸 종류 확인이 될까?
-        notify("warning", "빈 칸을 확인해주세요", autoClose);
+        notify(
+          "warning",
+          `${submitRef.current[ref].previousElementSibling.innerText}이(가) 비어있습니다.`,
+          autoClose
+        );
+        submitRef.current[ref].focus();
         btnRef.current.disabled = false;
         return;
       }
@@ -155,7 +223,7 @@ const PostWrite = props => {
     );
 
     // 게시물 작성이 완료되면 게시물 작성 창을 닫습니다.
-    dispatch(postActions.addPostDB(formData)).then(res => {
+    dispatch(postActions.addPostDB(formData)).then((res) => {
       markerRef.current.setMap(null);
       _clickContainer();
       _setRightContainer("none");
@@ -163,7 +231,7 @@ const PostWrite = props => {
     });
   };
 
-  const setUserImage = e => {
+  const setUserImage = (e) => {
     //사진이 변경되었으면 미리보기, 사진 데이터 저장
     if (e.target.files[0]) {
       setPreview(URL.createObjectURL(e.target.files[0]));
@@ -244,8 +312,8 @@ const PostWrite = props => {
             fontSize: "14px",
           }}
           title="category"
-          ref={e => (submitRef.current.categoryRef = e)}
-          _onChange={e => setTypeState(e.target.value)}
+          ref={(e) => (submitRef.current.categoryRef = e)}
+          _onChange={(e) => setTypeState(e.target.value)}
           options={[
             { key: "같이 사자", value: "buy" },
             { key: "같이 먹자", value: "eat" },
@@ -259,7 +327,7 @@ const PostWrite = props => {
             fontSize: "14px",
           }}
           title="category"
-          ref={e => (submitRef.current.typeRef = e)}
+          ref={(e) => (submitRef.current.typeRef = e)}
           options={
             typeState === "buy"
               ? [
@@ -287,15 +355,31 @@ const PostWrite = props => {
       </Flex>
       <Flex
         styles={{
+          position: "relative",
+          flexDirection: "column",
           borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
         }}
       >
         <Input
           label="제목"
           placehorder="20자 이하로 입력해주세요"
-          ref={e => (submitRef.current.titleRef = e)}
+          maxLength={20}
+          ref={(e) => (submitRef.current.titleRef = e)}
           styles={{ height: "60px" }}
+          _onChange={countInputLength}
         />
+        <Flex
+          styles={{
+            position: "absolute",
+            bottom: "0",
+            right: "0",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Text styles={{ fontSize: "12px", color: "#716969" }}>
+            {inputLength.titleLength >= 20 ? 20 : inputLength.titleLength} / 20
+          </Text>
+        </Flex>
       </Flex>
       <Flex
         styles={{
@@ -307,7 +391,7 @@ const PostWrite = props => {
           type="date"
           min={moment().add(0, "days").format("YYYY-MM-DD")}
           max={moment().add(14, "days").format("YYYY-MM-DD")}
-          ref={e => (submitRef.current.endTimeRef = e)}
+          ref={(e) => (submitRef.current.endTimeRef = e)}
           styles={{
             height: "60px",
           }}
@@ -318,14 +402,40 @@ const PostWrite = props => {
           borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
         }}
       >
-        <Input
-          label="가격"
-          type="number"
-          placehorder="ex) 50000"
-          ref={e => (submitRef.current.priceRef = e)}
-          styles={{ width: "calc(50% - 28px)", height: "60px" }}
-        />
-        원
+        <Flex
+          styles={{
+            width: "50%",
+            height: "60px",
+            flexDirection: "column",
+            position: "relative",
+          }}
+        >
+          <Flex styles={{ width: "100%", height: "100%" }}>
+            <Input
+              label="가격"
+              type="number"
+              placehorder="ex) 50000"
+              ref={(e) => (submitRef.current.priceRef = e)}
+              styles={{ width: "100%", height: "100%" }}
+              min={0}
+              max={10000000}
+              _onChange={countInputLength}
+            />
+            원
+          </Flex>
+
+          <Flex
+            styles={{
+              position: "absolute",
+              bottom: "0",
+              right: "0",
+            }}
+          >
+            <Text styles={{ fontSize: "12px", color: "red" }}>
+              *천만원 이하
+            </Text>
+          </Flex>
+        </Flex>
         <Flex
           styles={{
             width: "1px",
@@ -334,18 +444,41 @@ const PostWrite = props => {
             margin: "0 16px 0",
           }}
         />
-        <Input
-          label="인원"
-          type="number"
-          placehorder="ex) 5"
-          ref={e => (submitRef.current.headCountRef = e)}
+        <Flex
           styles={{
-            width: "calc(50% - 28px)",
+            position: "relative",
+            flexDirection: "column",
+            width: "50%",
             height: "60px",
             padding: "0 10px 0 0",
           }}
-        />
-        명
+        >
+          <Flex styles={{ width: "100%", height: "100%" }}>
+            <Input
+              label="인원"
+              type="number"
+              placehorder="ex) 5"
+              ref={(e) => (submitRef.current.headCountRef = e)}
+              styles={{
+                width: "100%",
+                height: "100%",
+              }}
+              min={2}
+              max={99}
+              _onChange={countInputLength}
+            />
+            명
+          </Flex>
+          <Flex
+            styles={{
+              position: "absolute",
+              bottom: "0",
+              right: "0",
+            }}
+          >
+            <Text styles={{ fontSize: "12px", color: "red" }}>*100명 이하</Text>
+          </Flex>
+        </Flex>
       </Flex>
       <Flex
         styles={{
@@ -356,7 +489,7 @@ const PostWrite = props => {
       >
         <Input
           label="주소"
-          ref={e => (submitRef.current.addressRef = e)}
+          ref={(e) => (submitRef.current.addressRef = e)}
           readOnly
           styles={{ height: "60px" }}
         ></Input>
@@ -385,28 +518,64 @@ const PostWrite = props => {
       </Flex>
       <Flex
         styles={{
+          position: "relative",
+          flexDirection: "column",
           borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
         }}
       >
         <Input
           label="상세위치"
           placehorder="30자 이하로 입력해주세요"
-          ref={e => (submitRef.current.addressDetailRef = e)}
+          maxLength={30}
+          ref={(e) => (submitRef.current.addressDetailRef = e)}
           styles={{ height: "60px" }}
+          _onChange={countInputLength}
         />
+        <Flex
+          styles={{
+            position: "absolute",
+            bottom: "0",
+            right: "0",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Text styles={{ fontSize: "12px", color: "#716969" }}>
+            {inputLength.addressDetailLength >= 30
+              ? 30
+              : inputLength.addressDetailLength}{" "}
+            / 30
+          </Text>
+        </Flex>
       </Flex>
       <Flex
         styles={{
+          position: "relative",
+          flexDirection: "column",
           borderBottom: "1px solid rgb(0, 0, 0, 0.5)",
         }}
       >
         <Input
           type="textarea"
           label="내용"
+          maxLength={100}
           placehorder="100자 이하로 입력해주세요"
-          ref={e => (submitRef.current.contentRef = e)}
+          ref={(e) => (submitRef.current.contentRef = e)}
           styles={{ height: "90px", margin: "15px 0" }}
+          _onChange={countInputLength}
         />
+        <Flex
+          styles={{
+            justifyContent: "flex-end",
+            position: "absolute",
+            bottom: "0",
+            right: "0",
+          }}
+        >
+          <Text styles={{ fontSize: "12px", color: "#716969" }}>
+            {inputLength.contentLength >= 100 ? 100 : inputLength.contentLength}{" "}
+            / 100
+          </Text>
+        </Flex>
       </Flex>
       <Flex
         styles={{
@@ -436,7 +605,7 @@ const PostWrite = props => {
             <Image src={preview} styles={{ width: "100%" }} shape="rectangle" />
           </label>
           <input
-            onChange={e => setUserImage(e)}
+            onChange={(e) => setUserImage(e)}
             id="profile"
             type="file"
             style={{ visibility: "hidden", width: "0" }}

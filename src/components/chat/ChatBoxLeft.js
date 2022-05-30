@@ -1,9 +1,10 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Flex, Text } from "../../elements";
-import { menu, send } from "../../image";
+import { people, send, question } from "../../image";
 import LottieAni from "./LottieAni";
 import MessageBox from "./MessageBox";
+import SpeechBubble from "./SpeechBubble";
 
 const ChatBoxLeft = forwardRef(
   (
@@ -14,15 +15,20 @@ const ChatBoxLeft = forwardRef(
       loggedUser,
       isTyping,
       OpenChatRoomUserList,
-      closeChatRoom,
       title,
       newMessageReceived,
       isDisabled,
+      closeChatRoom,
     },
     ref
   ) => {
     const isChatLoading = useSelector((state) => state.chat.isLoading);
+    const [showExplainBubble, setShowExplainBubble] = useState(false);
+    const bubbleRef = useRef(null);
 
+    const showBubble = () => {
+      setShowExplainBubble(!showExplainBubble);
+    };
     return (
       <>
         {/* 왼쪽 */}
@@ -38,30 +44,34 @@ const ChatBoxLeft = forwardRef(
             position: "relative",
           }}
         >
+          <Flex styles={{ justifyContent: "flex-end" }}>
+            <Text
+              className="hover-event"
+              styles={{
+                fontSize: "32px",
+                color: "rgb(187, 187, 187)",
+                padding: "0 10px",
+              }}
+              _onClick={() => {
+                closeChatRoom(loggedUser);
+              }}
+            >
+              {"×"}
+            </Text>
+          </Flex>
+
           <Flex
             styles={{
               justifyContent: "space-between",
-              padding: "0 10px",
-              margin: "5px 0 22px 0",
+              padding: "0 5px 0 10px",
+              margin: "5px 0 17px 0",
             }}
           >
             <Flex styles={{ width: "85%" }}>
-              <img
-                alt="menu"
-                src={menu}
-                style={{
-                  marginRight: "8px",
-                  width: "22px",
-                  height: "24px",
-                  zIndex: "22",
-                }}
-                className="hover-event"
-                onClick={OpenChatRoomUserList}
-              ></img>
               <Text
                 styles={{
                   fontWeight: "700",
-                  fontSize: "18px",
+                  fontSize: "30px",
                   lineHeight: "22px",
                   color: "#000000",
                   display: "block",
@@ -75,21 +85,30 @@ const ChatBoxLeft = forwardRef(
               </Text>
             </Flex>
 
-            <Flex styles={{ width: "auto" }}>
-              <Text
-                className="hover-event"
-                styles={{
-                  fontSize: "32px",
-                  position: "relative",
-                  color: "rgb(187, 187, 187)",
-                }}
-                _onClick={() => {
-                  closeChatRoom(loggedUser);
-                }}
-              >
-                {"×"}
-              </Text>
-            </Flex>
+            <img
+              alt="question"
+              src={question}
+              style={{
+                marginRight: "8px",
+                width: "25px",
+                height: "25px",
+                zIndex: "22",
+              }}
+              className="hover-event"
+              onClick={showBubble}
+            ></img>
+            <img
+              alt="people"
+              src={people}
+              style={{
+                width: "30px",
+                height: "30px",
+                marginBottom: "5px",
+                zIndex: "22",
+              }}
+              className="hover-event"
+              onClick={OpenChatRoomUserList}
+            ></img>
           </Flex>
 
           <Flex
@@ -172,6 +191,13 @@ const ChatBoxLeft = forwardRef(
             ></img>
           </Flex>
         </Flex>
+        {showExplainBubble ? (
+          <>
+            <SpeechBubble ref={bubbleRef} />
+          </>
+        ) : (
+          <></>
+        )}
       </>
     );
   }

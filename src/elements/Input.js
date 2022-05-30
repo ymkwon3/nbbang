@@ -17,12 +17,19 @@ const Input = forwardRef((props, ref) => {
     placehorder,
     min,
     max,
+    maxLength,
+    _onChange,
   } = props;
 
   // 요청으로 인한 textarea 추가 type에 textarea주시면 됩니다
   // type date형식 추가
   return (
-    <InputStyled style={{ ...styles }} className={className} {...defaultStyles} {...styles}>
+    <InputStyled
+      style={{ ...styles }}
+      className={className}
+      {...defaultStyles}
+      {...styles}
+    >
       <label>{label}</label>
       {type === "textarea" ? (
         <textarea
@@ -38,6 +45,8 @@ const Input = forwardRef((props, ref) => {
           }}
           placeholder={placehorder}
           ref={ref}
+          maxLength={maxLength}
+          onChange={_onChange}
         ></textarea>
       ) : type === "date" ? (
         <InputDate
@@ -55,13 +64,17 @@ const Input = forwardRef((props, ref) => {
           readOnly={readOnly}
           ref={ref}
           type={type}
-          onKeyPress={e => {
+          maxLength={maxLength}
+          min={type === "number" ? min : ""}
+          max={type === "number" ? max : ""}
+          onKeyPress={(e) => {
             // type이 number일 경우 숫자만 입력받게 -- 한글은 onkeypress적용이 안돼서 전송할 때 따로 한번 확인해줘야할듯
             // 모바일에서도 안먹히는 이슈가 있음
             if (type === "number") {
               return !/[0-9]/.test(e.key) && e.preventDefault();
             }
           }}
+          onChange={_onChange}
         ></input>
       )}
       {children}
@@ -74,6 +87,7 @@ Input.defaultProps = {
     color: "#000",
     width: "100%",
   },
+  _onChange: null,
 };
 
 const InputDate = styled.input`
@@ -85,9 +99,9 @@ const InputDate = styled.input`
 const InputStyled = styled.div`
   display: flex;
   position: relative;
-  font-size: ${props => props.fontSize};
-  color: ${props => props.color};
-  width: ${props => props.width};
+  font-size: ${(props) => props.fontSize};
+  color: ${(props) => props.color};
+  width: ${(props) => props.width};
   padding: 5px;
   & > input {
     flex: 1;
@@ -97,16 +111,14 @@ const InputStyled = styled.div`
     line-height: 18px;
     width: 100%;
     text-decoration: none;
-    color: inherit;
-    font-size: ${props => props.fontSize};
+    font-size: ${(props) => props.fontSize};
   }
 
   & > label {
     display: flex;
     align-items: center;
-    font-size: ${props => props.fontSize};
-    font-weight: ${props => props.fontWeight};
-    color: #000;
+    font-size: ${(props) => props.fontSize};
+    font-weight: ${(props) => props.fontWeight};
     white-space: nowrap;
   }
 `;
