@@ -4,6 +4,7 @@ import { Flex, Text } from "../../elements";
 import { people, send, question } from "../../image";
 import LottieAni from "./LottieAni";
 import MessageBox from "./MessageBox";
+import SpeechBubble from "./SpeechBubble";
 
 const ChatBoxLeft = forwardRef(
   (
@@ -22,7 +23,12 @@ const ChatBoxLeft = forwardRef(
     ref
   ) => {
     const isChatLoading = useSelector((state) => state.chat.isLoading);
+    const [showExplainBubble, setShowExplainBubble] = useState(false);
+    const bubbleRef = useRef(null);
 
+    const showBubble = () => {
+      setShowExplainBubble(!showExplainBubble);
+    };
     return (
       <>
         {/* 왼쪽 */}
@@ -44,7 +50,6 @@ const ChatBoxLeft = forwardRef(
               styles={{
                 fontSize: "32px",
                 color: "rgb(187, 187, 187)",
-                marginBottom: "5px",
                 padding: "0 10px",
               }}
               _onClick={() => {
@@ -90,7 +95,7 @@ const ChatBoxLeft = forwardRef(
                 zIndex: "22",
               }}
               className="hover-event"
-              // onClick={OpenChatRoomUserList}
+              onClick={showBubble}
             ></img>
             <img
               alt="people"
@@ -186,6 +191,13 @@ const ChatBoxLeft = forwardRef(
             ></img>
           </Flex>
         </Flex>
+        {showExplainBubble ? (
+          <>
+            <SpeechBubble ref={bubbleRef} />
+          </>
+        ) : (
+          <></>
+        )}
       </>
     );
   }

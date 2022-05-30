@@ -185,7 +185,7 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
                         styles={{
                           fontSize: "15px",
                           fontFamily: "Pretendard",
-                          textAlign: "right",
+                          textAlign: "left",
                         }}
                       >
                         {message.chat}
