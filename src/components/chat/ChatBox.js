@@ -85,11 +85,11 @@ const ChatBox = React.forwardRef(
             notify(
               "error",
               "짧은 시간에 많은 메세지를 보낼 수 없습니다.</br> 잠시 후 다시 시도해 주세요",
-              true
+              6000
             );
             setIsDisabled(true);
             setInputCount(0);
-
+            newMessageRef.current.value = "";
             setTimeout(() => {
               setIsDisabled(false);
               return;
