@@ -1,13 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  getAPI,
-} from "../../shared/api";
+import { getAPI, postFormAPI } from "../../shared/api";
 
 const getUserPageDB = createAsyncThunk("user/userId", async data => {
   const { userId } = data;
   return await getAPI(`/user/${userId}`, data).then(res => {
-    return res
+    return res;
   });
+});
+
+const setUserDB = createAsyncThunk("user/add", async data => {
+  return await postFormAPI("/user/me", data);
 });
 
 const initialState = {
@@ -17,6 +19,7 @@ const initialState = {
     userName: "",
     userImage: "",
     tradeCount: "",
+    statusMsg: "",
   },
   myList: [],
   joinList: [],
@@ -35,6 +38,10 @@ const userpageSlice = createSlice({
       state.joinList = action.payload.joinList;
       state.likeList = action.payload.likeList;
     });
+    builder.addCase(setUserDB.fulfilled, (state, action) => {
+      const { statusMsg, userImage, userName } = action.payload;
+      state.userInfo = { ...state.userInfo, statusMsg, userImage, userName };
+    });
   },
 });
 
@@ -43,6 +50,7 @@ export default userpageSlice.reducer;
 // return Action Creators to export
 const actionCreator = {
   getUserPageDB,
+  setUserDB,
   ...userpageSlice.actions,
 };
 

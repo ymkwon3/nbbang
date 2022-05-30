@@ -1,3 +1,4 @@
+import mintro from "./mintro.png"
 import mstart from "./mstart.png";
 import mhost1 from "./mhost1.png";
 import mhost2 from "./mhost2.png";
@@ -10,6 +11,7 @@ import mparti4 from "./mparti4.png";
 import mend from "./mend.png";
 
 export {
+  mintro,
   mstart,
   mhost1,
   mhost2,

@@ -97,6 +97,7 @@ const InputStyled = styled.div`
     line-height: 18px;
     width: 100%;
     text-decoration: none;
+    color: inherit;
     font-size: ${props => props.fontSize};
   }
 
@@ -105,6 +106,7 @@ const InputStyled = styled.div`
     align-items: center;
     font-size: ${props => props.fontSize};
     font-weight: ${props => props.fontWeight};
+    color: #000;
     white-space: nowrap;
   }
 `;
