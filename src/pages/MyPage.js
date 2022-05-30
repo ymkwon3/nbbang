@@ -201,9 +201,9 @@ const MyPage = (props) => {
           <PostModal v={modalRef.current} />
         </Modal>
       )}
-      <Modal close={() => setModal(false)}>
+      {/* <Modal close={() => setModal(false)}>
         <PersonalReviews />
-      </Modal>
+      </Modal> */}
     </>
   );
 };
