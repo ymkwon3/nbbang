@@ -328,8 +328,17 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
                 borderRadius: "50%",
                 opacity: "0.4",
                 transition: "opacity 100ms ease-in-out",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
-            ></div>
+            >
+              <span
+                style={{ fontSize: "22px", fontWeight: "900", color: "white" }}
+              >
+                ↓
+              </span>
+            </div>
           </Flex>
         </>
       ) : (

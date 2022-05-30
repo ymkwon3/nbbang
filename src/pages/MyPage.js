@@ -22,15 +22,16 @@ import moment from "moment";
 import "moment/locale/ko";
 import Modal from "../shared/Modal";
 import { primaryColor, primaryDarked, secondaryColor } from "../shared/color";
+import PersonalReviews from "../components/modal/PersonalReviews";
 
-const MyPage = props => {
+const MyPage = (props) => {
   const dispatch = useDispatch();
   // 유저페이지 리덕스 모듈에서 불러오는 유저정보, 나의 공구, 참여완료된 공구, 좋아요한 공구
-  const userInfo = useSelector(state => state.userpage.userInfo);
-  const myList = useSelector(state => state.userpage.myList);
-  const joinList = useSelector(state => state.userpage.joinList);
-  const likeList = useSelector(state => state.userpage.likeList);
-  const loginUserId = useSelector(state => state.user.userInfo.userId);
+  const userInfo = useSelector((state) => state.userpage.userInfo);
+  const myList = useSelector((state) => state.userpage.myList);
+  const joinList = useSelector((state) => state.userpage.joinList);
+  const likeList = useSelector((state) => state.userpage.likeList);
+  const loginUserId = useSelector((state) => state.user.userInfo.userId);
   const userId = parseInt(useParams().userId);
   const [isUpdate, setIsUpdate] = React.useState(false);
 
@@ -87,7 +88,7 @@ const MyPage = props => {
   const [postType, setPostType] = React.useState("mine");
   const postList =
     postType === "mine" ? myList : postType === "join" ? joinList : likeList;
-  const changeType = type => {
+  const changeType = (type) => {
     setPostType(type);
   };
 
@@ -105,7 +106,7 @@ const MyPage = props => {
     }
   }, [isUpdate]);
 
-  const setUserImage = e => {
+  const setUserImage = (e) => {
     //사진이 변경되었으면 미리보기, 사진 데이터 저장
     if (e.target.files[0]) {
       setPreview(URL.createObjectURL(e.target.files[0]));
@@ -253,7 +254,7 @@ const MyPage = props => {
                 />
               </label>
               <input
-                onChange={e => setUserImage(e)}
+                onChange={(e) => setUserImage(e)}
                 id="profile"
                 type="file"
                 style={{ visibility: "hidden", width: "0" }}
@@ -266,7 +267,10 @@ const MyPage = props => {
                   justifyContent: "start",
                   marginLeft: "20px",
                   height: "100%",
-                  width: isDesktop === undefined ? "calc(100% - 200px)" : "calc(100% - 120px)"
+                  width:
+                    isDesktop === undefined
+                      ? "calc(100% - 200px)"
+                      : "calc(100% - 120px)",
                 }}
               >
                 <Input
@@ -302,10 +306,12 @@ const MyPage = props => {
                     }}
                   ></input>
                 </Flex>
-                <Flex styles={{
-                  padding : "20px",
-                  gap: "20px"
-                }}>
+                <Flex
+                  styles={{
+                    padding: "20px",
+                    gap: "20px",
+                  }}
+                >
                   <Button
                     _onClick={clickUpdate}
                     styles={{
@@ -314,19 +320,24 @@ const MyPage = props => {
                       borderRadius: "10px",
                       backgroundColor: primaryDarked,
                       color: "#fff",
-                      fontSize: "16px"
+                      fontSize: "16px",
                     }}
                   >
                     수정하기
                   </Button>
-                  <Button _onClick={() => setIsUpdate(false)}  styles={{
+                  <Button
+                    _onClick={() => setIsUpdate(false)}
+                    styles={{
                       width: "160px",
                       height: "40px",
                       borderRadius: "10px",
                       backgroundColor: secondaryColor,
                       color: "#fff",
-                      fontSize: "16px"
-                    }}>취소하기</Button>
+                      fontSize: "16px",
+                    }}
+                  >
+                    취소하기
+                  </Button>
                 </Flex>
               </Flex>
             </>
@@ -366,7 +377,7 @@ const MyPage = props => {
           }}
         >
           {/* 이 부분에서 불러온 게시물 맵을 돌려야함 */}
-          {postList.map(v => (
+          {postList.map((v) => (
             <Image
               key={v.postId}
               styles={imageStyle}
@@ -392,6 +403,9 @@ const MyPage = props => {
           <PostModal v={modalRef.current} />
         </Modal>
       )}
+      <Modal close={() => setModal(false)}>
+        <PersonalReviews />
+      </Modal>
     </>
   );
 };
@@ -418,7 +432,7 @@ const PostModal = ({ v }) => {
         borderRadius: "10px",
         overflow: "scroll",
       }}
-      _onClick={e => e.stopPropagation()}
+      _onClick={(e) => e.stopPropagation()}
     >
       <Flex styles={{ flexDirection: "column", padding: "25px" }}>
         <Flex styles={{ marginBottom: "10px" }}>
@@ -477,7 +491,6 @@ const PostModal = ({ v }) => {
           </Text>
         </Flex>
         <Flex styles={{ justifyContent: "start" }}>
-          
           <Text
             styles={{
               fontSize: "28px",

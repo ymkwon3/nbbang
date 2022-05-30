@@ -376,7 +376,7 @@ const PostWrite = (props) => {
             justifyContent: "flex-end",
           }}
         >
-          <Text styles={{ fontSize: "12px" }}>
+          <Text styles={{ fontSize: "12px", color: "#716969" }}>
             {inputLength.titleLength >= 20 ? 20 : inputLength.titleLength} / 20
           </Text>
         </Flex>
@@ -539,7 +539,7 @@ const PostWrite = (props) => {
             justifyContent: "flex-end",
           }}
         >
-          <Text styles={{ fontSize: "12px" }}>
+          <Text styles={{ fontSize: "12px", color: "#716969" }}>
             {inputLength.addressDetailLength >= 30
               ? 30
               : inputLength.addressDetailLength}{" "}
@@ -571,7 +571,7 @@ const PostWrite = (props) => {
             right: "0",
           }}
         >
-          <Text styles={{ fontSize: "12px" }}>
+          <Text styles={{ fontSize: "12px", color: "#716969" }}>
             {inputLength.contentLength >= 100 ? 100 : inputLength.contentLength}{" "}
             / 100
           </Text>
