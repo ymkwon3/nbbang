@@ -5,9 +5,16 @@ import { Desktop } from "../../shared/Responsive";
 
 import { edit } from "../../image";
 
-const UserInfo = props => {
-  const { userInfo, _setIsUpdate, isUpdate, loginUserId, userId, myListLen } =
-    props;
+const UserInfo = (props) => {
+  const {
+    userInfo,
+    _setIsUpdate,
+    isUpdate,
+    loginUserId,
+    userId,
+    myListLen,
+    showReviews,
+  } = props;
   // isDesktop === undefined 일 경우가 데스크톱 상태
   const isDesktop = Desktop(0);
 
@@ -50,6 +57,7 @@ const UserInfo = props => {
             fontFamily: "Cafe24SsurroundAir",
             fontWeight: "600",
           }}
+          _onClick={showReviews}
         >
           공구 후기
         </Button>
@@ -91,7 +99,7 @@ const UserInfo = props => {
             styles={{
               overflow: "scroll",
               padding: "5px",
-              alignItems: "start"
+              alignItems: "start",
             }}
           >
             {userInfo?.statusMsg ? userInfo?.statusMsg : "안녕하세요!"}

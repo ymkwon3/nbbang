@@ -63,15 +63,21 @@ const ChatBoxLeft = forwardRef(
           <Flex
             styles={{
               justifyContent: "space-between",
-              padding: "0 5px 0 10px",
+              padding: "0 5px",
               margin: "5px 0 17px 0",
             }}
           >
-            <Flex styles={{ width: "85%" }}>
+            <Flex
+              styles={{
+                width: "auto",
+                overflow: "hidden",
+                justifyContent: "space-between",
+              }}
+            >
               <Text
                 styles={{
                   fontWeight: "700",
-                  fontSize: "30px",
+                  fontSize: "25px",
                   lineHeight: "22px",
                   color: "#000000",
                   display: "block",
@@ -84,31 +90,32 @@ const ChatBoxLeft = forwardRef(
                 {title}
               </Text>
             </Flex>
-
-            <img
-              alt="question"
-              src={question}
-              style={{
-                marginRight: "8px",
-                width: "25px",
-                height: "25px",
-                zIndex: "22",
-              }}
-              className="hover-event"
-              onClick={showBubble}
-            ></img>
-            <img
-              alt="people"
-              src={people}
-              style={{
-                width: "30px",
-                height: "30px",
-                marginBottom: "5px",
-                zIndex: "22",
-              }}
-              className="hover-event"
-              onClick={OpenChatRoomUserList}
-            ></img>
+            <Flex styles={{ justifyContent: "flex-end" }}>
+              <img
+                alt="question"
+                src={question}
+                style={{
+                  marginRight: "8px",
+                  width: "25px",
+                  height: "25px",
+                  zIndex: "22",
+                }}
+                className="hover-event"
+                onClick={showBubble}
+              ></img>
+              <img
+                alt="people"
+                src={people}
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  marginBottom: "5px",
+                  zIndex: "22",
+                }}
+                className="hover-event"
+                onClick={OpenChatRoomUserList}
+              ></img>
+            </Flex>
           </Flex>
 
           <Flex

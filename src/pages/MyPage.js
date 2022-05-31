@@ -6,7 +6,6 @@ import { actionCreator as userPageActions } from "../redux/modules/userpage";
 
 import { Desktop } from "../shared/Responsive";
 
-
 import Modal from "../shared/Modal";
 
 import UserInfo from "../components/mypage/UserInfo";
@@ -15,15 +14,15 @@ import PersonalReviews from "../components/modal/PersonalReviews";
 import PostModal from "../components/modal/PostModal";
 import PostReview from "../components/modal/PostReview";
 
-const MyPage = props => {
+const MyPage = (props) => {
   const dispatch = useDispatch();
   // 유저페이지 리덕스 모듈에서 불러오는 유저정보, 나의 공구, 참여완료된 공구, 좋아요한 공구
-  const userInfo = useSelector(state => state.userpage.userInfo);
-  const myList = useSelector(state => state.userpage.myList);
-  const joinList = useSelector(state => state.userpage.joinList);
-  const likeList = useSelector(state => state.userpage.likeList);
+  const userInfo = useSelector((state) => state.userpage.userInfo);
+  const myList = useSelector((state) => state.userpage.myList);
+  const joinList = useSelector((state) => state.userpage.joinList);
+  const likeList = useSelector((state) => state.userpage.likeList);
 
-  const loginUserId = useSelector(state => state.user.userInfo.userId);
+  const loginUserId = useSelector((state) => state.user.userInfo.userId);
   const userId = parseInt(useParams().userId);
   const [isUpdate, setIsUpdate] = React.useState(false);
 
@@ -31,6 +30,7 @@ const MyPage = props => {
 
   // 모달상태관리
   const [modal, setModal] = React.useState(false);
+  const [reviewModal, setReviewModal] = React.useState(false);
   // 모달내용관리
   const modalRef = React.useRef(null);
 
@@ -75,8 +75,14 @@ const MyPage = props => {
   const [postType, setPostType] = React.useState("mine");
   const postList =
     postType === "mine" ? myList : postType === "join" ? joinList : likeList;
-  const changeType = type => {
+  const changeType = (type) => {
     setPostType(type);
+  };
+
+  const showReviews = () => {
+    dispatch(userPageActions.getReviewListDB(userId)).then((res) =>
+      setReviewModal(true)
+    );
   };
 
   React.useEffect(() => {
@@ -111,6 +117,7 @@ const MyPage = props => {
               loginUserId={loginUserId}
               userId={userId}
               myListLen={myList.length}
+              showReviews={showReviews}
             ></UserInfo>
           ) : (
             <UserUpdate
@@ -166,7 +173,7 @@ const MyPage = props => {
             }}
           >
             {/* 이 부분에서 불러온 게시물 맵을 돌려야함 */}
-            {postList.map(v => (
+            {postList.map((v) => (
               <Image
                 key={v.postId}
                 styles={imageStyle}
@@ -197,16 +204,27 @@ const MyPage = props => {
       </Flex>
       {modal && modalRef.current.needReview ? (
         <Modal close={() => setModal(false)}>
-          <PostReview v={modalRef.current} close={() => setModal(false)}></PostReview>
+          <PostReview
+            v={modalRef.current}
+            close={() => setModal(false)}
+          ></PostReview>
         </Modal>
-      ) : modal && (
-        <Modal close={() => setModal(false)}>
-          <PostModal v={modalRef.current}/>
-        </Modal>
+      ) : (
+        modal && (
+          <Modal close={() => setModal(false)}>
+            <PostModal v={modalRef.current} />
+          </Modal>
+        )
       )}
-      {/* <Modal close={() => setModal(false)}>
-        <PersonalReviews />
-      </Modal> */}
+      {reviewModal ? (
+        <>
+          <Modal close={() => setReviewModal(false)}>
+            <PersonalReviews userName={userInfo.userName} />
+          </Modal>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
