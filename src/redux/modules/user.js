@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getAPI, postAPI, postFormAPI, patchAPI } from "../../shared/api";
+import { getAPI, postAPI, postFormAPI, patchAPI, deleteAPI } from "../../shared/api";
 import { setToken, removeToken } from "../../shared/localStorage";
 import { notify } from "../../components/ToastMessage";
 
@@ -33,6 +33,14 @@ const kakaoLogin = createAsyncThunk("user/kakaologin", async (code) => {
   return await getAPI(`/kakao-auth/kakao/callback?code=${code}`).then((res) => {
     if (res.msg === "success") {
       setToken(res.user.token);
+    }
+  });
+});
+
+const userDelete = createAsyncThunk("user/delete", async (userId) => {
+  return await deleteAPI(`/user/${userId}`).then((res) => {
+    if (res.msg === "success") {
+      removeToken();
     }
   });
 });
@@ -87,7 +95,7 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(loginDB.fulfilled, (state, action) => {
-      if (action.payload.userInfo) {
+      if (action.payload) {
         state.userInfo = action.payload.userInfo;
         state.isLogin = true;
         state.alarm = [
@@ -100,7 +108,7 @@ const userSlice = createSlice({
       }
     });
     builder.addCase(isLoginDB.fulfilled, (state, action) => {
-      if (action.payload.userInfo) {
+      if (action.payload) {
         state.userInfo = action.payload.userInfo;
         state.isLogin = true;
 
@@ -120,6 +128,10 @@ const userSlice = createSlice({
     builder.addCase(readAllAlarmDB.fulfilled, (state, action) => {
       state.alarm = [];
     });
+    builder.addCase(userDelete.fulfilled, (state, action) => {
+      state.userInfo = initialState.userInfo;
+      state.isLogin = false;
+    });
   },
 });
 
@@ -131,6 +143,7 @@ const actionCreator = {
   loginDB,
   isLoginDB,
   postUserImageDB,
+  userDelete,
   kakaoLogin,
   readAllAlarmDB,
   ...userSlice.actions,

@@ -9,17 +9,21 @@ import { Desktop } from "../../shared/Responsive";
 import _ from "lodash";
 import { postAPI } from "../../shared/api";
 import { actionCreator as userActions } from "../../redux/modules/userpage";
+import { actionCreator as user } from "../../redux/modules/user";
 import { useDispatch } from "react-redux";
 import Modal from "../../shared/Modal";
 import Confirm from "../modal/Confirm";
+import { useHistory } from "react-router-dom";
 
 const UserUpdate = props => {
   const { userInfo, _setIsUpdate, isUpdate } = props;
   const dispatch = useDispatch();
+  const history = useHistory();
   // isDesktop === undefined 일 경우가 데스크톱 상태
   const isDesktop = Desktop(0);
 
   const [isConfirm, setIsConfirm] = React.useState(false);
+  const [isDelete, setIsDelete] = React.useState(false);
 
   // 닉네임, 상태메시지 관리
   const nameRef = React.useRef(null);
@@ -83,6 +87,8 @@ const UserUpdate = props => {
   // 회원탈퇴
   const userDelete = () => {
     console.log("회원탈퇴")
+    dispatch(user.userDelete(userInfo.userId))
+    history.replace("/login")
   }
 
   React.useEffect(() => {
@@ -125,7 +131,7 @@ const UserUpdate = props => {
             bottom: "20px",
             color: secondaryColor,
           }}
-          _onClick={userDelete}
+          _onClick={() => setIsDelete(true)}
         >
           회원 탈퇴
         </Button>
@@ -215,6 +221,18 @@ const UserUpdate = props => {
             }}
             _close={() => setIsConfirm(false)}
             message="정말로 변경하시겠습니까?"
+          ></Confirm>
+        </Modal>
+      ) : null}
+      {isDelete ? (
+        <Modal close={() => setIsDelete(false)}>
+          <Confirm
+            _positive={() => {
+              // 회원탈퇴
+              userDelete();
+            }}
+            _close={() => setIsDelete(false)}
+            message="정말로 탈퇴하시겠습니까?"
           ></Confirm>
         </Modal>
       ) : null}
