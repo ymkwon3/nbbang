@@ -86,7 +86,6 @@ const UserUpdate = props => {
 
   // 회원탈퇴
   const userDelete = () => {
-    console.log("회원탈퇴")
     dispatch(user.userDelete(userInfo.userId))
     history.replace("/login")
   }

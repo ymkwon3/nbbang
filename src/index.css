@@ -1,8 +1,9 @@
 @font-face {
   font-family: "Pretendard";
-  src: url("./font/PretendardVariable.ttf") format("woff2");
+  src: url("./font/PretendardVariable.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -10,6 +11,7 @@
   src: url("./font/Cafe24Ssurround.ttf") format("woff2");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -17,6 +19,7 @@
   src: url("./font/Cafe24SsurroundAir.ttf") format("woff2");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 * {
