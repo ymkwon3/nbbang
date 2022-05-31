@@ -51,6 +51,7 @@ const UserUpdate = props => {
     formData.append("userName", nameRef.current.value);
     formData.append("statusMsg", statusMsgRef.current.value);
     dispatch(userActions.setUserDB(formData));
+    dispatch(user.setUserImage(preview))
     _setIsUpdate(false);
   };
 

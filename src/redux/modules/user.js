@@ -92,6 +92,9 @@ const userSlice = createSlice({
     },
     readAlarm: (state, action) => {
     },
+    setUserImage: (state, action) => {
+      state.userInfo.userImage = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(loginDB.fulfilled, (state, action) => {
