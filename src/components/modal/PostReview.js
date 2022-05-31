@@ -13,7 +13,7 @@ const PostReview = ({ v, close }) => {
   const inputRef = React.useRef(null);
 
   const clickReview = () => {
-    if (inputRef.current.value) {
+    if (inputRef.current.value && inputRef.current.value.length <= 200) {
       dispatch(
         userActions.setReviewDB({
           userId,
@@ -61,7 +61,7 @@ const PostReview = ({ v, close }) => {
           </Text>
         </Mobile>
       </Flex>
-      <InputStyle ref={inputRef}></InputStyle>
+      <InputStyle ref={inputRef} placeholder="200자 이내로 적어주세요"></InputStyle>
       <Flex styles={{ justifyContent: "end", gap: "10px", width: "90%" }}>
         <Button
           styles={{

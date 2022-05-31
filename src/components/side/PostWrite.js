@@ -441,7 +441,7 @@ const PostWrite = (props) => {
             width: "1px",
             height: "80%",
             backgroundColor: "#808080",
-            margin: "0 16px 0",
+            margin: "0 10px 0",
           }}
         />
         <Flex

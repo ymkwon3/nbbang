@@ -3,9 +3,10 @@ import { useSelector } from "react-redux";
 import { Flex, Image, Text } from "../../elements";
 import moment from "moment";
 import "moment/locale/ko";
+import { secondaryColor } from "../../shared/color";
 const PersonalReviews = ({ userName }) => {
-  const reviewList = useSelector((state) => state.userpage.reviewList);
-  const reviewCount = useSelector((state) => state.userpage.reviewCount);
+  const reviewList = useSelector(state => state.userpage.reviewList);
+  const reviewCount = useSelector(state => state.userpage.reviewCount);
   return (
     <>
       <Flex
@@ -22,11 +23,20 @@ const PersonalReviews = ({ userName }) => {
           padding: "20px",
           justifyContent: "flex-start",
         }}
-        _onClick={(e) => e.stopPropagation()}
+        _onClick={e => e.stopPropagation()}
       >
         <Flex styles={{ justifyContent: "flex-start", marginBottom: "30px" }}>
           <Text styles={{ fontSize: "30px", fontWeight: "700" }}>
-            {userName} 님에 대한 후기 {reviewCount ? reviewCount : 0}개
+            <Text
+              styles={{
+                fontSize: "30px",
+                fontWeight: "700",
+                color: secondaryColor,
+              }}
+            >
+              {userName}
+            </Text>{" "}
+            님에 대한 후기 {reviewCount ? reviewCount : 0}개
           </Text>
         </Flex>
         <Flex
@@ -52,7 +62,7 @@ const PersonalReviews = ({ userName }) => {
   );
 };
 
-const UserCard = (props) => {
+const UserCard = props => {
   const { userImage, userName, review, createdAt } = props;
   return (
     <>
@@ -63,14 +73,20 @@ const UserCard = (props) => {
           alignItems: "flex-start",
         }}
       >
-        <Flex styles={{ width: "50px", height: "50px", marginRight: "15px" }}>
+        <Flex styles={{ width: "50px", height: "50px", marginRight: "10px" }}>
           <Image
             shape="circle"
             src={userImage}
             styles={{ width: "100%", height: "100%" }}
           />
         </Flex>
-        <Flex styles={{ flexDirection: "column", alignItems: "flex-start" }}>
+        <Flex
+          styles={{
+            flexDirection: "column",
+            alignItems: "flex-start",
+            flex: 1,
+          }}
+        >
           <Flex
             styles={{ justifyContent: "space-between", marginBottom: "8px" }}
           >

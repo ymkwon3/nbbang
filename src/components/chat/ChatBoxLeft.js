@@ -69,8 +69,7 @@ const ChatBoxLeft = forwardRef(
           >
             <Flex
               styles={{
-                width: "auto",
-                overflow: "hidden",
+                width: "70%",
                 justifyContent: "space-between",
               }}
             >
