@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Flex from "./Flex";
-import {croissant} from "../image/bread" 
+import { croissant } from "../image/bread";
 
 const Image = props => {
   /*
@@ -74,18 +74,19 @@ const Image = props => {
         onClick={_onClick}
         className="hover-event"
       >
-        <img alt={src} src={src} ></img>
-        {children ? <Flex
-          styles={{
-            flexDirection: "column",
-            width: styles.width,
-            height: "30%",
-            maxWidth: styles.maxWidth,
-            maxHeight: styles.maxHeight,
-          }}
-        >
-          {children}
-        </Flex> : null}
+        <img alt={src} src={src}></img>
+        {children ? (
+          <Flex
+            styles={{
+              width: styles.width,
+              height: "30%",
+              maxWidth: styles.maxWidth,
+              maxHeight: styles.maxHeight,
+            }}
+          >
+            {children}
+          </Flex>
+        ) : null}
       </ImageContainer>
     );
   }
@@ -153,6 +154,13 @@ const ImageContainer = styled.div`
     background: rgba(0, 0, 0, 0.5);
     transition: 0.2s;
     opacity: 1;
+    color: #fff;
+    font-family: "Cafe24SsurroundAir";
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  & > div > * > * {
     color: #fff;
     font-family: "Cafe24SsurroundAir";
     font-size: 20px;

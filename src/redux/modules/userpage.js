@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getAPI, postFormAPI } from "../../shared/api";
+import { getAPI, postFormAPI, postAPI } from "../../shared/api";
 
 const getUserPageDB = createAsyncThunk("user/userId", async data => {
   const { userId } = data;
@@ -10,6 +10,12 @@ const getUserPageDB = createAsyncThunk("user/userId", async data => {
 
 const setUserDB = createAsyncThunk("user/add", async data => {
   return await postFormAPI("/user/me", data);
+});
+
+const setReviewDB = createAsyncThunk("user/review", async data => {
+  const {postId, userId, review} = data
+  const res = await postAPI(`/user/me/${postId}`, {userId, review});
+  return {res, postId};
 });
 
 const initialState = {
@@ -42,6 +48,14 @@ const userpageSlice = createSlice({
       const { statusMsg, userImage, userName } = action.payload;
       state.userInfo = { ...state.userInfo, statusMsg, userImage, userName };
     });
+    builder.addCase(setReviewDB.fulfilled, (state, action) => {
+      const {postId} = action.payload;
+      state.joinList = state.joinList.map(v => {
+        if(v.postId === postId)
+          v.needReview = 0;
+        return v;
+      })
+    });
   },
 });
 
@@ -51,6 +65,7 @@ export default userpageSlice.reducer;
 const actionCreator = {
   getUserPageDB,
   setUserDB,
+  setReviewDB,
   ...userpageSlice.actions,
 };
 
