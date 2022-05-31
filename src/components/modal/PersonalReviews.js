@@ -1,7 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Flex, Image, Text } from "../../elements";
-
-const PersonalReviews = () => {
+import moment from "moment";
+import "moment/locale/ko";
+const PersonalReviews = ({ userName }) => {
+  const reviewList = useSelector((state) => state.userpage.reviewList);
+  const reviewCount = useSelector((state) => state.userpage.reviewCount);
   return (
     <>
       <Flex
@@ -22,7 +26,7 @@ const PersonalReviews = () => {
       >
         <Flex styles={{ justifyContent: "flex-start", marginBottom: "30px" }}>
           <Text styles={{ fontSize: "30px", fontWeight: "700" }}>
-            영민님에 대한 후기 10개
+            {userName} 님에 대한 후기 {reviewCount ? reviewCount : 0}개
           </Text>
         </Flex>
         <Flex
@@ -33,44 +37,53 @@ const PersonalReviews = () => {
             overflowX: "hidden",
           }}
         >
-          <UserCard />
-          <UserCard />
-          <UserCard />
-          <UserCard />
-          <UserCard />
-          <UserCard />
-          <UserCard />
-          <UserCard />
-          <UserCard />
-          <UserCard />
+          {reviewCount ? (
+            reviewList.map((review, idx) => (
+              <UserCard key={review.userName} {...review} />
+            ))
+          ) : (
+            <Text styles={{ fontSize: "20px" }}>
+              후기 정보가 존재하지 않습니다.
+            </Text>
+          )}
         </Flex>
       </Flex>
     </>
   );
 };
 
-const UserCard = () => {
+const UserCard = (props) => {
+  const { userImage, userName, review, createdAt } = props;
   return (
     <>
       <Flex
         styles={{
           borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
           padding: "20px 10px",
+          alignItems: "flex-start",
         }}
       >
         <Flex styles={{ width: "50px", height: "50px", marginRight: "15px" }}>
-          <Image shape="circle" styles={{ width: "100%", height: "100%" }} />
+          <Image
+            shape="circle"
+            src={userImage}
+            styles={{ width: "100%", height: "100%" }}
+          />
         </Flex>
         <Flex styles={{ flexDirection: "column", alignItems: "flex-start" }}>
           <Flex
-            styles={{ justifyContent: "space-between", marginBottom: "5px" }}
+            styles={{ justifyContent: "space-between", marginBottom: "8px" }}
           >
-            <Text styles={{ fontWeight: "600" }}>햇빛가득장미가득</Text>
+            <Text styles={{ fontWeight: "600" }}>
+              {userName.slice(0, 1) + "*".repeat(userName.length - 1)}
+            </Text>
             <Text styles={{ color: "#716969", fontSize: "12px" }}>
-              1개월 전
+              {moment(createdAt).fromNow()}
             </Text>
           </Flex>
-          <Text>감사합니다. 잘쓰겠습니다~^^</Text>
+          <Flex styles={{ justifyContent: "flex-start" }}>
+            <Text>{review}</Text>
+          </Flex>
         </Flex>
       </Flex>
     </>
