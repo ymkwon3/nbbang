@@ -172,6 +172,11 @@ const PostDetail = ({
                 justifyContent: "start",
               }}
             >
+              {detailInfo.category === "eat" ? (
+              <img alt="eat" src={eatCategory} style={iconStyles}></img>
+            ) : (
+              <img alt="buy" src={buyCategory} style={iconStyles}></img>
+            )}
               <Text styles={{color: secondaryColor}}>{detailInfo.type}</Text>
             </Flex>
             {userInfo?.userId === detailInfo?.User_userId ? (
@@ -192,11 +197,7 @@ const PostDetail = ({
             </Flex>
           </Flex>
           <Flex styles={{ justifyContent: "start" }}>
-            {detailInfo.category === "eat" ? (
-              <img alt="eat" src={eatCategory} style={iconStyles}></img>
-            ) : (
-              <img alt="buy" src={buyCategory} style={iconStyles}></img>
-            )}
+            
             <Text
               styles={{
                 fontSize: "28px",

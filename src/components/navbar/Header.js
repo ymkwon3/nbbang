@@ -42,9 +42,6 @@ const Header = () => {
   };
 
   const readAllAlarm = () => {
-    if (notificationList.length === 0) {
-      return;
-    }
     if (dropNoti && notificationList.length > 0) {
       dispatch(userActions.readAllAlarmDB());
     }
@@ -127,8 +124,6 @@ const Header = () => {
         ) : null}
         {isLogin ? (
           <Flex styles={{ gap: "15px", justifyContent: "end" }}>
-            {/* <img src={whiteHeart} alt="filledHeart" /> */}
-
             {location.pathname === "/" && (
               <>
                 <div
@@ -182,7 +177,7 @@ const Header = () => {
                       gap: "10px",
                     }}
                   >
-                    {notificationList.map((noti, idx) => {
+                    {notificationList.length === 0 ? <Flex>알림이 없습니다!</Flex> : notificationList.map((noti, idx) => {
                       return (
                         <NotiBtn key={noti.alarmId}>
                           <img alt="postImage" src={noti.image} style={{

@@ -282,7 +282,7 @@ const Login = props => {
                 alignItems: "center",
                 width: "100%",
                 margin: "10px 0",
-                gap: "10px",
+                gap: "15px",
               }}
             >
               <InputLogin
@@ -313,6 +313,7 @@ const Login = props => {
                 fontSize: "16px",
                 fontWeight: "700",
                 borderRadius: "20px",
+                margin: "20px",
               }}
               _onClick={clickLogin}
             >
@@ -353,7 +354,7 @@ const Login = props => {
           </div>
           <div className="signup">
             <Flex
-              styles={{ maxWidth: "360px", width: "80%", alignItems: "start" }}
+              styles={{ maxWidth: "360px", width: "90%", alignItems: "start", marginBottom: "25px" }}
             >
               <InputLogin
                 label="이메일"
@@ -378,7 +379,7 @@ const Login = props => {
               </Button>
             </Flex>
             <Flex
-              styles={{ maxWidth: "360px", width: "80%", alignItems: "start" }}
+              styles={{ maxWidth: "360px", width: "90%", alignItems: "start", marginBottom: "25px" }}
             >
               <InputLogin
                 label="인증번호"
@@ -405,12 +406,18 @@ const Login = props => {
               ref={e => (signUpRef.current.userName = e)}
               _onChange={nameCheck}
               subText={nameText ? nameText : null}
+              styles={{
+                marginBottom: "25px"
+              }}
             ></InputLogin>
             <InputLogin
               label="비밀번호"
               type="password"
               ref={e => (signUpRef.current.userPassword = e)}
               _onChange={passwordCheck}
+              styles={{
+                marginBottom: "25px"
+              }}
             ></InputLogin>
             <InputLogin
               label="비밀번호 확인"
@@ -418,17 +425,21 @@ const Login = props => {
               ref={e => (signUpRef.current.userPasswordCheck = e)}
               _onChange={passwordCheck}
               subText={pwdText ? pwdText : null}
+              styles={{
+                marginBottom: "25px"
+              }}
             ></InputLogin>
             <Button
               styles={{
                 backgroundColor: secondaryColor,
                 color: "#fff",
                 maxWidth: "360px",
-                width: "80%",
+                width: "90%",
                 minHeight: "50px",
                 fontSize: "16px",
                 fontWeight: "700",
                 borderRadius: "20px",
+                marginBottom: "15px"
               }}
               _disabled={!emailAuth}
               _onClick={clickSignUp}
@@ -440,7 +451,7 @@ const Login = props => {
                 backgroundColor: primaryDarked,
                 color: "#fff",
                 maxWidth: "360px",
-                width: "80%",
+                width: "90%",
                 minHeight: "50px",
                 fontSize: "16px",
                 fontWeight: "700",
@@ -545,7 +556,6 @@ const FormContainer = styled.div`
     justify-content: center;
     flex-direction: column;
     padding: 30px 0;
-    gap: 10px;
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
 `;

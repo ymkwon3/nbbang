@@ -18,7 +18,7 @@ import {
 
 import ChatBoxLeft from "./ChatBoxLeft";
 import ChatBoxRight from "./ChatBoxRight";
-import { Flex } from "../../elements";
+import { Flex, Text } from "../../elements";
 import { notify } from "../ToastMessage";
 
 const ChatBox = React.forwardRef(
@@ -52,6 +52,8 @@ const ChatBox = React.forwardRef(
     const [socketConnected, setSocketConnected] = React.useState(false); // socket 연결 상태 체크
     const [awaiters, setAwaiters] = React.useState(null);
     const [participants, setParticipants] = React.useState(null);
+    const [inputCount, setInputCount] = React.useState(0);
+    const [isDisabled, setIsDisabled] = React.useState(false);
 
     const fetchMessages = async () => {
       if (!openChatroom && !postid) return;
@@ -76,6 +78,28 @@ const ChatBox = React.forwardRef(
         newMessageRef.current.value &&
         ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
       ) {
+        // input 이 0.1초 안에 연속으로 5번 이상 들어오면 8초간 입력 금지
+        // setInputCount((inputCount) => (inputCount += 1));
+        // setTimeout(() => {
+        //   if (inputCount >= 4) {
+        //     notify(
+        //       "error",
+        //       "짧은 시간에 많은 메세지를 보낼 수 없습니다.</br> 잠시 후 다시 시도해 주세요",
+        //       true
+        //     );
+        //     setIsDisabled(true);
+        //     setInputCount(0);
+        //     newMessageRef.current.value = "";
+        //     setTimeout(() => {
+        //       setIsDisabled(false);
+        //       return;
+        //     }, 8000);
+
+        //     return;
+        //   } else {
+        //     setIsDisabled(false);
+        //   }
+        // }, 100);
         let newChat = {
           Post_postId: postid,
           User_userId: loggedUser.userId,
@@ -242,6 +266,28 @@ const ChatBox = React.forwardRef(
 
     return (
       <>
+        {/* <Flex
+          styles={{
+            width: "auto",
+            position: "absolute",
+            top: "0",
+            right: "5%",
+          }}
+        >
+          <Text
+            className="hover-event"
+            styles={{
+              fontSize: "32px",
+              position: "relative",
+              color: "rgb(187, 187, 187)",
+            }}
+            _onClick={() => {
+              closeChatRoom(loggedUser);
+            }}
+          >
+            {"×"}
+          </Text>
+        </Flex> */}
         <ChatModal
           ref={ref}
           style={{
@@ -267,9 +313,10 @@ const ChatBox = React.forwardRef(
               loggedUser={loggedUser}
               isTyping={isTyping}
               OpenChatRoomUserList={OpenChatRoomUserList}
-              closeChatRoom={closeChatRoom}
               title={detailInfo.title}
               newMessageReceived={newMessageReceived}
+              isDisabled={isDisabled}
+              closeChatRoom={closeChatRoom}
             />
             <ChatBoxRight
               postid={postid}

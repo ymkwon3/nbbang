@@ -30,8 +30,6 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
   const [scrollState, setScrollState] = useState(true); // 자동 스크롤 여부
 
   const scrollEvent = debounce(() => {
-    console.log("scroll");
-
     const scrollTop = messageBoxRef.current?.parentNode.scrollTop; // 스크롤 위치
     const clientHeight = messageBoxRef.current?.parentNode.clientHeight; // 요소의 높이
     const scrollHeight = messageBoxRef.current?.parentNode.scrollHeight; // 스크롤의 높이
@@ -187,7 +185,7 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
                         styles={{
                           fontSize: "15px",
                           fontFamily: "Pretendard",
-                          textAlign: "right",
+                          textAlign: "left",
                         }}
                       >
                         {message.chat}
@@ -330,8 +328,17 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
                 borderRadius: "50%",
                 opacity: "0.4",
                 transition: "opacity 100ms ease-in-out",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
-            ></div>
+            >
+              <span
+                style={{ fontSize: "22px", fontWeight: "900", color: "white" }}
+              >
+                ↓
+              </span>
+            </div>
           </Flex>
         </>
       ) : (

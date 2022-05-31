@@ -1,5 +1,5 @@
 /* global kakao */
-import React from "react";
+import React, { Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { PostWrite, SideNav } from "../components";
@@ -47,6 +47,9 @@ const Main = () => {
   const [infoPage, setInfoPage] = React.useState(false);
   const [exp, setExp] = React.useState(false);
 
+  // 유저의 현재 주소 표시
+  const userLocation = React.useRef(null);
+
   /* 왼쪽 사이드네비 전체를 관리하기 위한 ref, state
   상세, 글쓰기 페이지를 관리하기 위한 ref, state */
   const sideNavRef = React.useRef(null);
@@ -62,17 +65,17 @@ const Main = () => {
 
   /*해당 지역의 전체 게시물, 현재 선택된 카테고리, 
   게시물 지역 범위, 현재 위치 구분*/
-  const postList = useSelector(state => state.post.postList);
-  const category = useSelector(state => state.post.category);
+  const postList = useSelector((state) => state.post.postList);
+  const category = useSelector((state) => state.post.category);
   const [range, setRange] = React.useState(true);
   const cityRange = React.useRef(1);
   const [city, setCity] = React.useState(3);
 
   // 로그인된 유저 정보
-  const userInfo = useSelector(state => state.user.userInfo);
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   const cateList = postList.filter(
-    v => v.category === category || category === "all"
+    (v) => v.category === category || category === "all"
   );
 
   // 글쓰기 상세보기 컨테이너 펼치기 및 컴포넌트 변경
@@ -88,7 +91,7 @@ const Main = () => {
   };
 
   // sidenav 전체 접어두기, 펼치기
-  const clickFold = markerClick => {
+  const clickFold = (markerClick) => {
     if (sideNavRef.current.style.maxWidth === "0px" || markerClick) {
       sideNavRef.current.style.maxWidth = "fit-content";
       leftContainerRef.current.style.display = "block";
@@ -124,13 +127,13 @@ const Main = () => {
   // 소켓으로부터 알림 받는 부분
   React.useEffect(() => {
     socket.emit("socket is connected", userInfo);
-    socket.on("send message alarm", messageNoti => {
+    socket.on("send message alarm", (messageNoti) => {
       dispatch(userActions.addAlarm(messageNoti[0]));
     });
-    socket.on("leaved chatroom", leaveNoti => {
+    socket.on("leaved chatroom", (leaveNoti) => {
       dispatch(userActions.addAlarm(leaveNoti[0]));
     });
-    socket.on("added_new_participant", addedNewParticiparntNoti => {
+    socket.on("added_new_participant", (addedNewParticiparntNoti) => {
       dispatch(userActions.addAlarm(addedNewParticiparntNoti[0]));
     });
     socket.on("disconnect", () => {
@@ -154,12 +157,13 @@ const Main = () => {
   userInfo를 updateMount에 지정해주지 않으면 무조건 비회원일 때의 데이터를 불러옴
   --IsLogin 컴포넌트에서 재로그인요청 시 자식 컴포넌트를 없애줌으로써 문제 해결
   */
+
   React.useEffect(() => {
     // 브라우저 geolocation을 이용해 현재 위치 좌표 불러오기
     dispatch(postActions.isLoading(true));
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        position => {
+        (position) => {
           // 배포서버에 들어갈 위치 ※매우중요 안지키면 발가락 문지방에 찧임
           const userLat = position.coords.latitude;
           const userLng = position.coords.longitude;
@@ -177,6 +181,13 @@ const Main = () => {
             // 지번 주소
             const addr = result[0].address;
 
+            // 현재 위치 표기
+            userLocation.current = {
+              province: addr.region_1depth_name,
+              city: addr.region_2depth_name,
+              town: addr.region_3depth_name,
+            };
+
             // 해당 지역들은 특별시, 광역시, 자치시라 보여지는 범위를 3단계로 분류
             const locale = [
               "서울",
@@ -188,10 +199,10 @@ const Main = () => {
               "대구",
               "제주특별자치도",
             ];
-            
-            if(locale.find(v => v === addr.region_1depth_name)) {
+
+            if (locale.find((v) => v === addr.region_1depth_name)) {
               setCity(3);
-            }else {
+            } else {
               setCity(2);
               cityRange.current === 1 && (cityRange.current = 2);
             }
@@ -233,7 +244,7 @@ const Main = () => {
           }
         },
         () => {
-          navigator.permissions.query({ name: "geolocation" }).then(res => {
+          navigator.permissions.query({ name: "geolocation" }).then((res) => {
             if (res.state === "denied") {
               dispatch(userActions.isGranting(false));
               // 코드상으로 어쩔수 없다면 모달창으로 라도 안내해야함 "브라우저 위치권한 허용 후 새로고침 해주세요" 라고
@@ -248,12 +259,12 @@ const Main = () => {
   React.useEffect(() => {
     // DB에서 받아오는 게시글들을 마커로 표시 후 띄워줌
     // 게시물이 바뀔 때마다, 마커들을 초기화 시킨 후 시작
-    markerListRef.current.map(m => {
+    markerListRef.current.map((m) => {
       m.setMap(null);
       return null;
     });
     markerListRef.current = [];
-    cateList.map(v => {
+    cateList.map((v) => {
       // 마커크기 45 x 60
       const markerImage = new kakao.maps.MarkerImage(
         v.category === "eat" ? eatMarker : buyMarker,
@@ -298,6 +309,9 @@ const Main = () => {
   }, [postList, category]);
 
   return (
+    <Suspense fallback={<h1>로딩주우우ㅜ우우ㅜ우웅</h1>}>
+
+
     <KaKaoMap ref={containerRef}>
       <LeftContainer ref={sideNavRef}>
         <SideNav
@@ -354,6 +368,50 @@ const Main = () => {
           </Flex>
         </div>
       </LeftContainer>
+      <AdressContainer>
+        {userLocation.current ? (
+          <Flex
+            styles={{
+              height: "40px",
+              backgroundColor: "#fff",
+              boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.25)",
+              borderRadius: "5px",
+              padding: "20px",
+              gap: "10px",
+            }}
+          >
+            <Flex
+              styles={{
+                whiteSpace: "nowrap",
+                fontFamily: "Cafe24SsurroundAir",
+                fontWeight: "600",
+              }}
+            >
+              {userLocation.current.province}
+            </Flex>
+            <span>&gt;</span>
+            <Flex
+              styles={{
+                whiteSpace: "nowrap",
+                fontFamily: "Cafe24SsurroundAir",
+                fontWeight: "600",
+              }}
+            >
+              {userLocation.current.city}
+            </Flex>
+            <span>&gt;</span>
+            <Flex
+              styles={{
+                whiteSpace: "nowrap",
+                fontFamily: "Cafe24SsurroundAir",
+                fontWeight: "600",
+              }}
+            >
+              {userLocation.current.town}
+            </Flex>
+          </Flex>
+        ) : null}
+      </AdressContainer>
       <ButtonContainer>
         {/*인포페이지이동버튼*/}
         <Desktop>
@@ -442,6 +500,7 @@ const Main = () => {
         </Modal>
       )}
     </KaKaoMap>
+    </Suspense>
   );
 };
 
@@ -465,6 +524,13 @@ const LeftContainer = styled.div`
   max-width: fit-content;
   width: 90vw;
   height: 100%;
+`;
+
+const AdressContainer = styled.div`
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  z-index: 7;
 `;
 
 const ButtonContainer = styled.div`

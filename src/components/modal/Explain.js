@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Flex } from "../../elements";
 import { Desktop, Mobile } from "../../shared/Responsive";
 import {
+  intro,
   start,
   end,
   host1,
@@ -14,6 +15,7 @@ import {
   parti4,
 } from "../../image/explain/web";
 import {
+  mintro,
   mstart,
   mend,
   mhost1,
@@ -30,11 +32,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { secondaryColor } from "../../shared/color";
 
-const Explain = (props) => {
+const Explain = props => {
   const { close } = props;
   const [isHost, setIsHost] = React.useState(true);
   const hostList = [host1, host2, host3, host4];
   const partiList = [parti1, parti2, parti3, parti4];
+
+  const sliderRef = React.useRef(null);
 
   // for mobile use
   const mhostList = [mhost1, mhost2, mhost3, mhost4];
@@ -50,7 +54,7 @@ const Explain = (props) => {
     slidesToScroll: 1,
     nextArrow: <NextArrow isDesktop={isDesktop} />,
     prevArrow: <PrevArrow isDesktop={isDesktop} />,
-    appendDots: (dots) => (
+    appendDots: dots => (
       <div
         style={{
           display: "absolute",
@@ -127,7 +131,7 @@ const Explain = (props) => {
         backgroundColor: "transparent",
         borderRadius: "20px",
       }}
-      _onClick={(e) => e.stopPropagation()}
+      _onClick={e => e.stopPropagation()}
     >
       <Desktop>
         <Slider
@@ -136,7 +140,34 @@ const Explain = (props) => {
             width: "100%",
             height: "100%",
           }}
+          ref={sliderRef}
         >
+          <Flex styles={{ position: "relative", height: "100%" }}>
+            <img
+              alt="intro"
+              src={intro}
+              style={{ width: "100%", height: "100%" }}
+            ></img>
+            <Flex styles={{ position: "absolute", bottom: "10%" }}>
+              <Button
+                styles={{
+                  width: "240px",
+                  height: "60px",
+                  borderRadius: "30px",
+                  border: "2px solid #fff",
+                  backgroundColor: "transparent",
+                  fontSize: "24px",
+                  fontWeight: "600",
+                  color: "#fff",
+                }}
+                _onClick={() => {
+                  sliderRef.current.slickNext();
+                }}
+              >
+                지금 참여하러 가기!
+              </Button>
+            </Flex>
+          </Flex>
           <Flex styles={{ position: "relative", height: "100%" }}>
             <img
               alt="start"
@@ -146,13 +177,19 @@ const Explain = (props) => {
             <Flex styles={{ position: "absolute", bottom: "15%", gap: "35px" }}>
               <Button
                 styles={isHost ? checkedBtn : btn}
-                _onClick={() => setIsHost(true)}
+                _onClick={() => {
+                  setIsHost(true);
+                  sliderRef.current.slickNext();
+                }}
               >
                 방장
               </Button>
               <Button
                 styles={!isHost ? checkedBtn : btn}
-                _onClick={() => setIsHost(false)}
+                _onClick={() => {
+                  setIsHost(false);
+                  sliderRef.current.slickNext();
+                }}
               >
                 참가자
               </Button>
@@ -196,7 +233,48 @@ const Explain = (props) => {
             width: "100%",
             height: "100%",
           }}
+          ref={sliderRef}
         >
+          <Flex
+            styles={{
+              position: "relative",
+              width: "100%",
+              height: "100%",
+              overflow: "hidden",
+            }}
+          >
+            <img
+              src={mintro}
+              alt="mintro"
+              style={{
+                width: "100%",
+                height: "100%",
+              }}
+            />
+            <Flex
+              styles={{
+                position: "absolute",
+                bottom: "15%",
+                gap: "calc(100%*21/400)",
+              }}
+            >
+              <Button
+                styles={{width: "180px",
+                height: "40px",
+                borderRadius: "30px",
+                border: "2px solid #fff",
+                backgroundColor: "transparent",
+                fontSize: "18px",
+                fontWeight: "600",
+                color: "#fff",}}
+                _onClick={() => {
+                  sliderRef.current.slickNext();
+                }}
+              >
+                지금 참여하러 가기!
+              </Button>
+            </Flex>
+          </Flex>
           <Flex
             styles={{
               position: "relative",
@@ -222,13 +300,19 @@ const Explain = (props) => {
             >
               <Button
                 styles={isHost ? mcheckedBtn : mbtn}
-                _onClick={() => setIsHost(true)}
+                _onClick={() => {
+                  setIsHost(true);
+                  sliderRef.current.slickNext();
+                }}
               >
                 방장
               </Button>
               <Button
                 styles={!isHost ? mcheckedBtn : mbtn}
-                _onClick={() => setIsHost(false)}
+                _onClick={() => {
+                  setIsHost(false);
+                  sliderRef.current.slickNext();
+                }}
               >
                 참가자
               </Button>
@@ -278,7 +362,7 @@ const Explain = (props) => {
   );
 };
 
-const NextArrow = (props) => {
+const NextArrow = props => {
   const { className, style, onClick, isDesktop } = props;
   return (
     <div
@@ -294,7 +378,7 @@ const NextArrow = (props) => {
   );
 };
 
-const PrevArrow = (props) => {
+const PrevArrow = props => {
   const { className, style, onClick, isDesktop } = props;
   return (
     <div

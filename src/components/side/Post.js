@@ -19,6 +19,7 @@ import {
   calendarGray,
   addressGray,
 } from "../../image";
+import { secondaryColor } from "../../shared/color";
 
 const Post = props => {
   const { image, title, category, price, endTime, address, postId, isLike, type } =
@@ -145,11 +146,11 @@ const Post = props => {
 
         <Flex
           styles={{
-            marginBottom: "6px",
+            marginBottom: "10px",
           }}
         >
           {/* <img alt="price" src={priceGray} style={{ marginRight: "5px" }}></img> */}
-          <Text styles={contentStyle}>
+          <Text styles={{color: secondaryColor, ...contentStyle}}>
             {type}
           </Text>
         </Flex>

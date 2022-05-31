@@ -31,8 +31,12 @@ import userpageWhite from "./userpageWhite.svg";
 import edit from "./edit.svg";
 import menu from "./menu.svg";
 import send from "./send.svg";
+import people from "./people.svg";
+import question from "./question.svg";
 
 export {
+  people,
+  question,
   menu,
   send,
   edit,
