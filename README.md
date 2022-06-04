@@ -1,70 +1,60 @@
-# Getting Started with Create React App
+#  :bread: N빵 ✨
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+위치 기반 서비스를 통해 주변 사람들과 같이 구매를 함으로써 경제적 부담을 줄여주는 공동 구매 플랫폼, [__N빵__](https://nbbang.site)
 
-## Available Scripts
 
-In the project directory, you can run:
+![image](https://user-images.githubusercontent.com/48580444/171997071-93a07d18-2707-4ea6-9a1b-b04721e56044.jpg)
 
-### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+🔗  [사이트](https://nbbang.site)<br>
+🔗  [시연 영상(Youtube)](https://www.youtube.com/watch?v=BtlWQiGYH0g)  
+🔗  [팀 노션 페이지](https://www.notion.so/N-e2bd04e8b0ee4a14aaf23805b96c7824)  
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 👨‍👧‍👧 아키텍쳐 설계
+- 클라이언트 배포
+  - AWS S3 + Cloudfront
+- 클라이언트와 서버 SSL 인증서 적용하여 HTTPS로 통신
 
-### `yarn test`
+![image](https://user-images.githubusercontent.com/48580444/171999023-3b3eaa95-933e-473f-a392-e2300c648a76.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+## :bread: 프로젝트 소개
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 🌱 기획 의도
+- 필라테스 같은 경우 3명이서 회원권을 구매하는 경우, 저렴하게 이용할 수 있다
+- 반찬 구매시 2+1를 나눠먹을 사람, 편의점 2+1를 나눠먹을 사람, 2마리 치킨을 나눠서 먹을 사람, 1인가구를 타켓
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 👨‍👧‍👧 팀원 소개
+- Front-end : 권영민, 곽진호, 장수찬 🔗 [Front-end github repository](https://github.com/ymkwon3/nbbang)
+- Back-end : 장윤아, 오경은, 한재혁 🔗 [Back-end github repository](https://github.com/moonhjang/09Project_BE)
+- Designer : 이화정, 김원경
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 👨‍👧‍👧 개발 기간
+- 2022년 04월 22일 ~ 06월 03일 (총 6주)
 
-### `yarn eject`
+### 👨‍👧‍👧 사용 기술 스택
+<div align='left'>
+  <img src="https://img.shields.io/badge/react-282C34?style=for-the-badge&logo=react&logoColor=61DAFB">
+  <img src="https://img.shields.io/badge/JavaScript-FFE400?style=for-the-badge&logo=JavaScript&logoColor=black"><br>
+  <img src="https://img.shields.io/badge/redux--toolkit-764ABC?style=for-the-badge&logo=react&logoColor=black">
+  <img src="https://img.shields.io/badge/socket.io--client-007CE2?style=for-the-badge&logo=axios&logoColor=white">
+  <img src="https://img.shields.io/badge/Axios-%23593d88.svg?style=for-the-badge&logoColor=000000">
+  <img src="https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white">
+  <br>
+  <img src="https://img.shields.io/badge/GitHub%20Actions-232F3E?style=for-the-badge&logo=GitHubActions&logoColor=2088FF"/>
+  <img src="https://img.shields.io/badge/AWS%20S3-232F3E?style=for-the-badge&logo=AmazonAWS&logoColor=FF9A00"/>
+  <img src="https://img.shields.io/badge/AWS%20CloudFront-232F3E?style=for-the-badge&logo=AmazonAWS&logoColor=FF9A00"/>
+</div>
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 📌 핵심 기능 요약
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+> 사용자가 **위치한 지역**의 게시물을 불러옵니다.
+>
+> 지도에서 **해당 위치에 등록된 게시물**을 볼 수 있습니다.
+>
+> 사용자 간 **실시간 채팅**을 이용한 소통이 가능합니다.
+>
+> 실시간 채팅 **참여자 확인 및 거래자 등록**이 가능합니다.
+>
+> 해당 채팅방에 있지않거나 오프라인 상태시, **알림 수신**이 가능합니다.
+>
