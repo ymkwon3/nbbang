@@ -44,17 +44,17 @@ const SideNav = props => {
 
   // 이벤트 배너 관련
   const [infoPage, setInfoPage] = React.useState(false);
-  const eventBanner = {
-    image: eventpage1,
-    title: "이벤트 참여하세요",
-    category: "eat",
-    type: "이벤트",
-    price: "0",
-    endTime: "2022-06-01",
-    address: "치킨, 커피 기프티콘 증정!",
-    postId: "event1",
-    isLike: 2,
-  }
+  // const eventBanner = {
+  //   image: eventpage1,
+  //   title: "이벤트 참여하세요",
+  //   category: "eat",
+  //   type: "이벤트",
+  //   price: "0",
+  //   endTime: "2022-06-01",
+  //   address: "치킨, 커피 기프티콘 증정!",
+  //   postId: "event1",
+  //   isLike: 2,
+  // }
 
   return (
     <Flex
@@ -218,9 +218,9 @@ const SideNav = props => {
         }}
       >
         {/* 이벤트 배너 */}
-        <StyledPost onClick={() => setInfoPage(true)}>
+        {/* <StyledPost onClick={() => setInfoPage(true)}>
           <Post {...eventBanner}></Post>
-        </StyledPost>
+        </StyledPost> */}
         {/* pagination 적용 후  */}
         {newPostList.length !== 0 ? (
           newPostList.slice(offset, offset + limit).map((v, i) => (
