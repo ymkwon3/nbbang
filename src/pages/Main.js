@@ -309,9 +309,6 @@ const Main = () => {
   }, [postList, category]);
 
   return (
-    <Suspense fallback={<h1>로딩주우우ㅜ우우ㅜ우웅</h1>}>
-
-
     <KaKaoMap ref={containerRef}>
       <LeftContainer ref={sideNavRef}>
         <SideNav
@@ -500,7 +497,6 @@ const Main = () => {
         </Modal>
       )}
     </KaKaoMap>
-    </Suspense>
   );
 };
 

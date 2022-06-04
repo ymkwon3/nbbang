@@ -204,4 +204,4 @@ const StyledClamp = styled.div`
   font-size: 13px;
 `;
 
-export default Post;
+export default React.memo(Post);
