@@ -17,15 +17,16 @@ const ChatBoxLeft = forwardRef(
       OpenChatRoomUserList,
       title,
       newMessageReceived,
-      isDisabled,
       closeChatRoom,
     },
     ref
   ) => {
     const isChatLoading = useSelector((state) => state.chat.isLoading);
+    // 채팅방 유저 목록창에 대한 설명 말풍선가 화면에 보이는지 안보이는지 나타내주는 상태값
     const [showExplainBubble, setShowExplainBubble] = useState(false);
     const bubbleRef = useRef(null);
 
+    // 채팅방 유저 목록창에 대한 설명 말풍선 제어하는 함수
     const showBubble = () => {
       setShowExplainBubble(!showExplainBubble);
     };
@@ -186,14 +187,13 @@ const ChatBoxLeft = forwardRef(
               ref={ref}
               onChange={typingHandler}
               onKeyUp={sendNewMessage}
-              disabled={isDisabled}
             />
             <img
               alt="send"
               src={send}
               style={{ marginRight: "8px" }}
-              onClick={isDisabled ? "" : sendNewMessage}
-              className={isDisabled ? "make-it-blurr" : "hover-event-to-blurr"}
+              onClick={sendNewMessage}
+              className="hover-event-to-blurr"
             ></img>
           </Flex>
         </Flex>

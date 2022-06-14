@@ -15,7 +15,7 @@ const LottieAni = (props) => {
       animationData: require(`../../image/chatani/${filename}`),
     });
     lottie.setSpeed(speed);
-  }, []);
+  }, [filename]);
   return <div ref={lottieAniRef} style={{ ...styles }}></div>;
 };
 

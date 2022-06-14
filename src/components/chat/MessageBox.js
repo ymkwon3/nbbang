@@ -19,6 +19,7 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
   const messageBoxRef = React.useRef(null);
   const messagesEndRef = React.useRef(null);
 
+  // 스크로을 맨 하단으로 이동시키는 함수
   const scrollToBottom = () => {
     messagesEndRef.current.scrollIntoView({
       block: "end",
@@ -27,14 +28,18 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
     setPressToBottom(false);
   };
 
-  const [scrollState, setScrollState] = useState(true); // 자동 스크롤 여부
+  // 자동 스크롤 여부
+  const [scrollState, setScrollState] = useState(true);
 
   const scrollEvent = debounce(() => {
-    const scrollTop = messageBoxRef.current?.parentNode.scrollTop; // 스크롤 위치
-    const clientHeight = messageBoxRef.current?.parentNode.clientHeight; // 요소의 높이
-    const scrollHeight = messageBoxRef.current?.parentNode.scrollHeight; // 스크롤의 높이
+    // 스크롤 위치
+    const scrollTop = messageBoxRef.current?.parentNode.scrollTop;
+    // 요소의 높이
+    const clientHeight = messageBoxRef.current?.parentNode.clientHeight;
+    // 스크롤의 높이
+    const scrollHeight = messageBoxRef.current?.parentNode.scrollHeight;
 
-    // 스크롤이 맨 아래에 있을때
+    // 스크롤이 맨 아래에 있을때 true, 아닐 때 false
     setScrollState(
       scrollTop + clientHeight >= scrollHeight - 100 ? true : false
     );
@@ -44,8 +49,11 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
 
   React.useEffect(() => {
     if (scrollState) {
+      // 처음 채팅방 접속시 자동으로 채팅창을 맨 하단으로 이동
       scrollToBottom();
     } else {
+      // 스크롤이 맨 하단에 있지 않을 때 새로운 메세지를 받으면 그 메세지를 채팅창 하단에 토스트 메세지 띄우고
+      // 이 메세지창을 클릭하면 맨 하단으로 이동
       if (
         newMessageReceived.User_userId &&
         newMessageReceived.User_userId !== loggedUser.userId
@@ -57,6 +65,7 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
     }
   }, [messages.length]);
 
+  // 스크롤 이벤트 추가
   React.useEffect(() => {
     messageBoxRef.current?.parentNode.addEventListener("scroll", scroll);
     return () => {
@@ -68,6 +77,7 @@ const MessageBox = ({ messages, loggedUser, newMessageReceived }) => {
     <>
       <Flex
         ref={messageBoxRef}
+        ㄴ
         styles={{
           flexDirection: "column",
           justifyContent: "flex-start",

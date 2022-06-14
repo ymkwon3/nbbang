@@ -18,8 +18,7 @@ import {
 
 import ChatBoxLeft from "./ChatBoxLeft";
 import ChatBoxRight from "./ChatBoxRight";
-import { Flex, Text } from "../../elements";
-import { notify } from "../ToastMessage";
+import { Flex } from "../../elements";
 
 const ChatBox = React.forwardRef(
   (
@@ -34,7 +33,7 @@ const ChatBox = React.forwardRef(
   ) => {
     const dispatch = useDispatch();
     const chatroomUserListRef = React.useRef(null);
-    let postid = `p${detailInfo.postId}`;
+    const postid = `p${detailInfo.postId}`;
 
     const selectedChat = useSelector((state) => state.chat);
     const chatRoomUsers = selectedChat.userInfo;
@@ -43,18 +42,28 @@ const ChatBox = React.forwardRef(
     const awaiterList = chatRoomUsers.filter((user) => user.isPick === 0);
     const loggedUser = useSelector((state) => state.user.userInfo);
 
+    // 새로 작성된 메세지
     const newMessageRef = React.useRef("");
-    const [isOpenUserList, setIsOpenUserList] = React.useState(false);
+    // 새로 수신된 메세지
     const [newMessageReceived, setNewMessageReceived] = React.useState([]);
+    // 새로 작성된 메세지 목록
     const [newlyAddedMessages, setNewlyAddedMessages] = React.useState([]);
-    const [typing, setTyping] = React.useState(false);
-    const [isTyping, setIsTyping] = React.useState(false);
-    const [socketConnected, setSocketConnected] = React.useState(false); // socket 연결 상태 체크
-    const [awaiters, setAwaiters] = React.useState(null);
-    const [participants, setParticipants] = React.useState(null);
-    const [inputCount, setInputCount] = React.useState(0);
-    const [isDisabled, setIsDisabled] = React.useState(false);
 
+    // 채팅방 유저 목록창를 open/close에 대한 상태값
+    const [isOpenUserList, setIsOpenUserList] = React.useState(false);
+    // 채팅 참여자 목록
+    const [awaiters, setAwaiters] = React.useState(null);
+    // 거래자 목록
+    const [participants, setParticipants] = React.useState(null);
+
+    // 해당 채팅방에 있는지에 대한 상태값
+    const [socketConnected, setSocketConnected] = React.useState(false);
+    // 내가 채팅을 입력하고 있는지에 대한 상태값
+    const [typing, setTyping] = React.useState(false);
+    // 상대방이 채팅을 입력하고 있는지에 대한 상태값
+    const [isTyping, setIsTyping] = React.useState(false);
+
+    // 이전 채팅 메세지 내용 fetch
     const fetchMessages = async () => {
       if (!openChatroom && !postid) return;
       await dispatch(chatActions.startChatDB(detailInfo.postId)).then(() =>
@@ -62,11 +71,13 @@ const ChatBox = React.forwardRef(
       );
     };
 
+    // 새로 작성된 메세지를 보내는 함수
     const sendNewMessage = (e) => {
-      // 입력값이 없으면
+      // 새로 작성된 메세지값이 없으면 함수 종료
       if (!newMessageRef.current.value.trim()) {
         return;
       }
+      // 새로 작성된 메세지의 길이를 최대 100자로 제한
       if (
         newMessageRef.current.value.trim().length >
         newMessageRef.current.maxLength
@@ -74,32 +85,11 @@ const ChatBox = React.forwardRef(
         newMessageRef.current.value = newMessageRef.current.value.slice(0, 100);
         return;
       }
+      // 엔터를 치거나 보내기 버튼을 클릭하면 메세지를 전송합ㄴ다.
       if (
         newMessageRef.current.value &&
         ((e.type === "keyup" && e.key === "Enter") || e.type === "click")
       ) {
-        // input 이 0.1초 안에 연속으로 5번 이상 들어오면 8초간 입력 금지
-        // setInputCount((inputCount) => (inputCount += 1));
-        // setTimeout(() => {
-        //   if (inputCount >= 4) {
-        //     notify(
-        //       "error",
-        //       "짧은 시간에 많은 메세지를 보낼 수 없습니다.</br> 잠시 후 다시 시도해 주세요",
-        //       true
-        //     );
-        //     setIsDisabled(true);
-        //     setInputCount(0);
-        //     newMessageRef.current.value = "";
-        //     setTimeout(() => {
-        //       setIsDisabled(false);
-        //       return;
-        //     }, 8000);
-
-        //     return;
-        //   } else {
-        //     setIsDisabled(false);
-        //   }
-        // }, 100);
         let newChat = {
           Post_postId: postid,
           User_userId: loggedUser.userId,
@@ -128,6 +118,10 @@ const ChatBox = React.forwardRef(
 
     React.useEffect(() => {
       socket.on("connected", (enteredUser, updatedChatroomUserList, status) => {
+        // 상대방이 채팅방에 입장, 나가기, 퇴장을 할 때 채팅 메세지 창에 상대의 상태 안내문을 수신
+        // 상대방이 채팅창에 입장 => "~님이 입장하셨습니다."
+        // 상대방이 채팅창에 나갈 때 => "~님이 나가셨습니다."
+        // 상대방이 채팅창에 퇴장 => "~님이 퇴장하셨습니다."
         setSocketConnected(true);
         let newChat = {
           status: "messageAlarm",
@@ -135,6 +129,7 @@ const ChatBox = React.forwardRef(
         };
         setNewlyAddedMessages((messageList) => [...messageList, newChat]);
 
+        // 유저 유입 혹은 퇴장시 채팅방 유저 목록 업데이트
         // 새로 업데이트된 채팅유저 목록있고, 채팅목록에 새로 추가된 유저가 방장이 아닐 때
         if (updatedChatroomUserList) {
           // 형식 다름에 따른 형식 변환
@@ -188,6 +183,7 @@ const ChatBox = React.forwardRef(
         }
       });
 
+      // 상대방이 채팅 입력중인지 체크
       socket.on("typing", () => setIsTyping(true));
       socket.on("stop typing", () => setIsTyping(false));
       return () => {
@@ -197,8 +193,8 @@ const ChatBox = React.forwardRef(
       };
     }, []);
 
-    //receive message
     React.useEffect(() => {
+      // 새 메세지 수신
       socket.on("receive message", (newMessageReceived) => {
         setNewMessageReceived(newMessageReceived);
         setNewlyAddedMessages((messageList) => [
@@ -207,6 +203,7 @@ const ChatBox = React.forwardRef(
         ]);
       });
 
+      // 새로운 거래자가 등록된 후 거래자 목록 업데이트
       socket.on(
         "receive_participant_list_after_added",
         (updatedParticipantList, updatedAwaiterList) => {
@@ -215,6 +212,7 @@ const ChatBox = React.forwardRef(
         }
       );
 
+      // 새로운 거래자가 취소된 후 거래자 목록 업데이트
       socket.on(
         "receive_participant_list_after_canceled",
         (updatedParticipantList, updatedAwaiterList) => {
@@ -230,6 +228,7 @@ const ChatBox = React.forwardRef(
       };
     }, []);
 
+    // 상대방이 메세지 입력중인지 알려주는 함수
     const typingHandler = (e) => {
       // Typing Indicator Logic
       if (!socketConnected) return;
@@ -266,28 +265,6 @@ const ChatBox = React.forwardRef(
 
     return (
       <>
-        {/* <Flex
-          styles={{
-            width: "auto",
-            position: "absolute",
-            top: "0",
-            right: "5%",
-          }}
-        >
-          <Text
-            className="hover-event"
-            styles={{
-              fontSize: "32px",
-              position: "relative",
-              color: "rgb(187, 187, 187)",
-            }}
-            _onClick={() => {
-              closeChatRoom(loggedUser);
-            }}
-          >
-            {"×"}
-          </Text>
-        </Flex> */}
         <ChatModal
           ref={ref}
           style={{
@@ -315,7 +292,6 @@ const ChatBox = React.forwardRef(
               OpenChatRoomUserList={OpenChatRoomUserList}
               title={detailInfo.title}
               newMessageReceived={newMessageReceived}
-              isDisabled={isDisabled}
               closeChatRoom={closeChatRoom}
             />
             <ChatBoxRight

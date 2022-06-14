@@ -27,27 +27,36 @@ const ChatBoxRight = forwardRef(
     const selectedChat = useSelector((state) => state.chat);
     const chatAdminId = selectedChat.chatAdmin;
     const [isModal, setIsModal] = React.useState(false);
+    // 새로운 거래자를 추가하는 함수
     const addNewParticipant = (selectedUser) => {
+      // 새로운 거래자 추가
       socket.emit("add_new_participant", { postid, selectedUser });
 
+      // 기존 거래자 목록 업데이트
       setParticipants((existingParticipantList) => {
         return existingParticipantList
           ? [selectedUser, ...existingParticipantList]
           : [selectedUser, ...participantList];
       });
+
+      // 기존 채팅 참여자 목록 업데이트
       let updatedAwaiterList = awaiters.filter(
         (awaiter) => awaiter.User_userId !== selectedUser.User_userId
       );
       setAwaiters(updatedAwaiterList);
     };
-
+    // 기존 거래자 한명을 목록에서 삭제하는 함수
     const deleteParticipant = (selectedUser) => {
+      // 선택된 기존 거래자 삭제
       socket.emit("cancel_new_participant", { postid, selectedUser });
 
+      // 기존 거래자 목록 업데이트
       let updatedParticipantList = participants.filter(
         (participant) => participant.User_userId !== selectedUser.User_userId
       );
       setParticipants(updatedParticipantList);
+
+      // 기존 채팅 참여자 목록 업데이트
       setAwaiters((existingAwaiterList) => {
         return existingAwaiterList
           ? [selectedUser, ...existingAwaiterList]
@@ -55,7 +64,7 @@ const ChatBoxRight = forwardRef(
       });
     };
 
-    // 채팅방에서 퇴장합니다(유저목록에서 삭제됩니다)
+    // 채팅장에서 퇴장할 때 퇴장 여부를 물어보는 모달창을 띄운다.
     const selfLeavChatroom = () => {
       setIsModal(true);
     };
